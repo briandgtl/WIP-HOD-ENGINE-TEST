@@ -1,4 +1,4 @@
-# Hills of Dowra: engine and art-direction briefing
+# ENGTEST: engine and art-direction briefing
 
 **Audience:** an agent that will turn this sheep-herding game into a top-down, isometric-style fantasy RPG / adventure / looter.
 **Purpose of this document:** to explain *how this engine works* and *why it looks the way it does*, so that you can change what the game
@@ -6,14 +6,18 @@
 or UI re-skin guidance). The one look decision that is already made: **the final look is the engine's "32-bit" retro filter (`U.ret = 1`,
 a PlayStation-style frame) applied over everything else** (section 6). Judge your work with that filter on.
 
-All line numbers refer to `Hills of Dowra.html` in this repo (2,736 lines, about 414 KB) and will drift as you edit. Search for the
+All line numbers refer to `ENGTEST.html` in this repo (2,736 lines, about 414 KB) and will drift as you edit. Search for the
 `// ---- ... ----` section headers instead of trusting a number.
+
+> **Update: the conversion has happened.** The game is now **Quest** (section 17). The sheep game (sections 9 and 16's flock and pen
+> hooks), the indoor night scene and its `NIGHT` composer (5.6), the cottage paint menu and the wardrobe are gone, and the day is no
+> longer 720 s. Sections 1-15 still describe the engine correctly; where they describe the sheep game, read section 17 instead.
 
 ---
 
 ## 1. The engine in one page
 
-- **One file, no build step.** `Hills of Dowra.html` holds the CSS, the HTML (HUD, menus, primer), an inline SVG icon sprite and **one
+- **One file, no build step.** `ENGTEST.html` holds the CSS, the HTML (HUD, menus, primer), an inline SVG icon sprite and **one
   `<script type="module">`** of about 2,300 very dense lines (it starts at line 423). Libraries come from jsDelivr through an import map (line 324): three.js
   **r185 WebGPU build** (`three`, `three/webgpu`, `three/tsl`, `three/addons/`), `three-mesh-bvh` 0.9.15, `meshoptimizer` 1.3.0
   (simplifier). Fonts come from Google Fonts. It needs a network connection (an offline single-file builder exists in the *other* repo,
@@ -39,15 +43,15 @@ All line numbers refer to `Hills of Dowra.html` in this repo (2,736 lines, about
 ## 2. Repo contents and how to run it
 
 ```
-Hills of Dowra.html   the whole game
+ENGTEST.html   the whole game
 index.html            tiny redirect to the game file (the filename has spaces)
 tutorial/*.jpg        8 screenshots shown by the how-to-play primer (cottage, crook, happy, home, shop, sundown, walk, welcome)
 ```
 
-Not in this repo (live in the original project, `briandgtl/hills-of-dowra`): `README.md`, `tools/make-offline.py` (embeds every library and
+Not in this repo (live in the original project): `README.md`, `tools/make-offline.py` (embeds every library and
 font into one ~6 MB file), and a separate iOS wrapper (`DowraiOS/`, own repo, its own copy of the game).
 
-**Run:** serve the folder and open it, for example `python3 -m http.server 8000` then `http://localhost:8000/Hills%20of%20Dowra.html`.
+**Run:** serve the folder and open it, for example `python3 -m http.server 8000` then `http://localhost:8000/ENGTEST.html`.
 
 - **macOS quirk:** a `python http.server` cannot read folders under `~/Documents` (privacy permission error). Serve a *copy* from a scratch
   folder instead.
@@ -263,7 +267,7 @@ Facts that matter when you build on it:
 | Day/night | `dayU`, `sundown`, `nightStart`, `NIGHT` | 720 s day; sundown, wolf howls, night escapes, a "counting sheep" dream sequence, dawn payout |
 | Finds (loot) | `FIND`, `fndU`, `fpQ` | ruins, farmsteads and graveyards hold a shimmering trunk; the crook opens it; a popup shows a 3D item and offers to wear it; items are wardrobe pieces. **The closest thing to a looter loop in the engine** |
 | Customisation | cottage menu, wardrobe | recolourable cottage (named heritage paints), window boxes, thatch/slate, character dyes, hair/beard |
-| Save | `sv`, key `hills-of-dowra-1` plus suffixed keys | localStorage JSON: wool, upgrade levels, penned count, happiness, day; separate keys for cottage look, wardrobe, farm name, music, fps, rumble |
+| Save | `sv`, key `engtest-1` plus suffixed keys | localStorage JSON: wool, upgrade levels, penned count, happiness, day; separate keys for cottage look, wardrobe, farm name, music, fps, rumble |
 | Primer / tips | `tu*`, `toast` | 7-page paged how-to-play; contextual toasts |
 
 ### 9.2 Per-frame order (see `loop`, line ~2700)
@@ -342,7 +346,7 @@ These are the choices visible in the code and in the user's repeated feedback du
 - **Match the house style.** The code is dense (long lines, short names) and heavily commented with the *why*: comments describe intent, history of bugs, and measurements. New code should read like its neighbours and
   explain non-obvious decisions the same way. Keep edits small and targeted (use exact-match replacements), and never overwrite the whole file blindly: other sessions have edited this file concurrently.
 - **Syntax-check without Node:** there may be no Node on the machine; the module can be checked by wrapping its text in `new Function("return async function(){"+code+"}")` under `osascript -l JavaScript`, or just by loading it.
-- **Related project pieces:** the original public repo `briandgtl/hills-of-dowra` (GitHub Pages site, README, `tools/make-offline.py`); the iOS wrapper `DowraiOS/` (WKWebView, serves its own copy of the game, own git repo).
+- **Related project pieces:** the original public repo (GitHub Pages site, README, `tools/make-offline.py`); the iOS wrapper `DowraiOS/` (WKWebView, serves its own copy of the game, own git repo).
   This repo (`WIP-HOD-ENGINE-TEST`, private) is an independent copy for the engine experiment: nothing here flows back to those unless someone copies it.
 
 ---
@@ -354,3 +358,61 @@ These are the choices visible in the code and in the user's repeated feedback du
 `VWT`/`VLT`/`VBT` tree-only variants with see-through · `U` shared uniforms · `NOHIST` fixed motion vector for rigged characters · `COLS`/`capsule`/`sweep`/`mkCol` collision · `S`/`MX` sheep pool · `shp` flock update ·
 `L`/`UP` upgrade levels and shop table · `W` wool · `hp` happiness · `DAY` day length (720 s) · `nph`/`NIGHT`/`NI`/`mkNI` night phase and scene · `CMP`/`NIGHT` post composers · `retro`/`RDM`/`U.ret` retro filter ·
 `ZM`/`ZMt`/`CO`/`LK` zoom, camera direction, look point · `mob` touch/mobile flag · `DBG` the test hook you add yourself.
+
+---
+
+## 16. Combat layer added on top (first test)
+
+Everything below lives in one block headed `// ---- wolves: the first enemy ...` just above `// ---- the shepherd ----`, plus a few one-line hooks. The renderer, grass, camera and
+post chain are untouched; wolves reuse the collie's sculpt and rig so they sit in the same look.
+
+- **Wolves** (`WLF`, pool of `WMX = 8`): one `InstancedMesh` (`WIM`) of `wolfG(DGM.geometry)`, posed by `dogRig` fed from per-instance attributes `aWT` (x, y, z, heading) and `aWU`
+  (scale, gait amplitude, gait phase, lunge). AI in `wlfAI`: 0 prowl, 1 hunt, 2 wind-up (0.5 s tell), 3 bite (dash, 1.5 m mouth check), 4 run off, 5 stagger, 6 dying. They spawn 40-58 m out
+  (`wlfNew`, never up the screen), are called off inside the pen's safe ring (`penR()+5`) and never spawn within `penR()+30`. Target count: 2 +1 per day (max +2), +2 in the last 90 s of daylight.
+  They are in the grass-trample list (`TRU`) so the grass flattens round them; they join the shader warm-up list (`hid`) with `WIM.count = 1` for the compile pass.
+- **Combat:** `crookSweep` calls `wlfSwing` (reach 3.4 m + 0.2 per crook level, same arc test as the sheep). Damage `bDmg()` = 1 + crook level / 2 + weapon gear; 12% crit for double; knockback; floating numbers (`dmgNum`).
+- **Health:** `bHP` / `bMax()` (5 hearts + coat gear), hearts in `#hh` beside the clock, red flash `#bfx`, 1.2 s of safety after a bite (`hiT`), regen out of combat, full heal at morning.
+  Knocked out (`bdie` / `bres`): fade, wake at the cottage, lose a fifth of the wool, wolves and loot cleared. Input is blocked by `bDead` in `mvP` and `swing`.
+- **Loot** (`LOOT`, `PKM` gems, colour = rarity): wool tufts always, heartroot 18%, gear 28% (`roll`: slot `w` weapon, `a` coat = hearts, `b` boots = speed, `c` charm = heart on kill; rarity Uncommon/Rare/Epic).
+  The best piece per slot is worn at once and a worse one is salvaged for wool (no bag yet). Gear (`EQ`) is saved in the save blob as `G` and listed on the pause card (`bGear`).
+- **Not done yet:** a gear/inventory screen, loot through the find popup (`fvModel` only knows wardrobe garments), more enemy kinds, enemies at night (the night scene is a separate indoor scene), sheep reacting to wolves.
+- **Testing:** serve a scratch copy (macOS blocks `http.server` in `~/Documents`) and add a `window.DBG` hook before `function loop(){` in that copy only (section 14). Useful members: `WLF`, `LOOT`, `EQ`, `wlfNew`, `lootPut`, `roll`, `swing`, `hurtP`.
+
+---
+
+## 17. Quest: the game as it now is
+
+`ENGTEST.html` (about 2,700 lines, 395 KB) is now **Quest**, a fantasy RPG / adventure / looter. The engine (sections 1-8, 10-14) is
+unchanged in kind; what follows is the gameplay layer and the content that replaced the sheep game. Save key `quest-1` (plus `-name`,
+`-music`, `-fps`, `-rumble`, `-tutorial`). **The 32-bit retro look is on from the first frame** (`U.ret` starts at 1; R still cycles it).
+
+- **Time** (`// ---- weather & the day`): `DAY=900` of daylight then `NGT=900` of night (`CYC=1800`), all played in the open world;
+  nothing pauses for bed. The sun's arc continues under the hills through the night (`tu` 1..2.05, turning so dawn has no jump); the
+  shadow light `SD` swings to the full moon (opposite the sun, kept 20 degrees up) once the sun is well down (`mw`), and `U.ngt` (the same
+  weight) cools the sky's glow, draws stars and turns the sun disc into a moon. `NF2` is night-ness for lamps and exposure. `dayU` does the
+  dusk howls and nightfall; `dawn()` starts the next day. The HUD dial turns a full circle per cycle (`clk`).
+- **The knight** (`manG`): the shepherd's rig and joints, re-sculpted: a bascinet with plume and aventail, plate (material 6, tinted
+  live through `SHU.boots` by `armTint` from the worn armour's rarity), a crimson surcoat and navy cape (material 4, the old coat skirt
+  swing), mail (5), gilt and leather trim (7, never tinted). The crook is a longsword (`staff`, its blade `BLM` glows in the sword's
+  rarity colour from Rare up); `poseStaff` holds it point-forward and the swing (`swA`, `SWD .66`) cuts level. `swordSweep` lands the blow.
+- **Home**: Greywatch Keep in the cottage's frame (`cot`, gate at local `KX = -1.2`, so the old yard and path masks still fit): ashlar
+  hall, slate roof (`SLM`), coned towers, banners, torches (`LGS`, `LGS2`), lit windows (`WGM`). The pen is the **muster ring**
+  (`mkPen`): stone pillars with braziers (`BZF`, lit with `LT`), a safe zone where foes break off and wounds heal fast.
+- **Foes**: wolves (`WLF`) plus **dire wolves** by night (`big`: 1.75 scale, two-heart bites). Humanoids (`HUM`, `foeU`/`foeAI`/
+  `foePose`): rigid puppets hinged at hips and shoulders (no skinning), material `HMM` (key `foe`); **brigands** (k 0) by day and night,
+  **skeletons** (k 1) only by night, rising from the ground and crumbling at dawn. Same state machine as the wolves, with a raised-blade tell.
+- **Loot** (`LOOT`, `lootU`): every drop stands under a **beam of light** (`LBM`, additive, colour per instance in `aC`, height and
+  brightness by rarity; it writes zero velocity) over a small glinting disc (`PKM`). Rarities `RAR`: Common, Uncommon, Rare, Epic,
+  Legendary. Gear (`roll`, `GEA`): slots w sword (attack), a armour (hearts), b boots (speed), c charm (heart on a kill), scaled by the
+  level it dropped at. Worn in `EQ`, the rest in the pack `BAG` (12). Gold is `W`.
+- **Progress**: `LV`/`XP` (`xpN`, `xpG`), the armoury `UP` (sword temper, plate harness, riding boots, warhound, healing draughts
+  `POT`, drunk with Q / B / the red flask: `drink`). The collie is the **warhound**: it runs down any foe near the knight.
+- **Bounties** (`QK`, `QST`, `qstU`): one at a time, posted at the keep (slay wolves / brigands / the risen dead, open chests, scout far);
+  claimed back at the muster ring. Tracker `#qt`.
+- **Chests** (`FIND`, `chestOpen`, `fndPop`): gold plus a piece of gear a grade up, shown in the find popup with its own 3D model
+  (`fvModel`: sword, breastplate, sabatons or amulet) and SVG (`itArt`); wear it now or pack it. `SHF` (opened keys) is saved with the quest.
+- **Gear and quests panel** (`#cm`, C / X on a pad): `gearMenu`, tabs Gear and Quests; the camera frames the knight head to toe.
+- **Landmarks** (`LMK`, `poiPut` t 4 and 5): watchtowers (whole with a slate cone, or ruined) from 200 m out, and rare fortresses on a
+  rock plinth from 380 m out, each with a chest. A fortress is wider than its field, so `fort(i,j)` / `nf` keep the neighbouring fields'
+  walls, hedges, trees and ground cover off it. The older places (farmsteads, graveyards, ruined cottages) are laid out exactly as before.
+- **Primer** (`TUP`): six pages of cards and keys; `tutorial/*.jpg` are the sheep game's screenshots and are no longer used.
