@@ -542,6 +542,8 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
 .mk{position:absolute;inset:0;pointer-events:none}
 .mk>i{position:absolute;translate:-50% -50%;display:grid;justify-items:center}
 .mpo svg{width:26px;height:26px;padding:4px;border-radius:50%;color:#f3dcbc;background:radial-gradient(circle at 50% 35%,#4e403a,#1d1615);box-shadow:0 0 0 1.5px #b08560,0 2px 5px rgba(0,0,0,.55);pointer-events:auto}
+.mpc svg{box-shadow:0 0 0 1.5px #5fb6ff,0 2px 5px rgba(0,0,0,.55)}.mpe svg{box-shadow:0 0 0 1.5px #ff5a4a,0 2px 5px rgba(0,0,0,.55)}.mph svg{box-shadow:0 0 0 1.5px #66e070,0 2px 5px rgba(0,0,0,.55)}.mpm svg{box-shadow:0 0 0 1.5px #c58bff,0 2px 5px rgba(0,0,0,.55)}
+.mpz{position:absolute;translate:-50% -50%;font:700 17px Cinzel,Georgia,serif;font-style:normal;letter-spacing:.2em;text-transform:uppercase;color:rgba(70,44,16,.62);text-shadow:0 0 4px #f1e1b8,0 0 8px #f1e1b8;white-space:nowrap;pointer-events:none}
 .mpo.sd{opacity:.45}
 .mpo.kp svg{width:34px;height:34px;padding:6px;color:#fbe9d6;background:var(--crim);box-shadow:0 0 0 1.5px #e0b060,0 0 14px rgba(255,90,60,.5)}
 .mpo b{position:absolute;top:100%;margin-top:3px;font:700 12px Cinzel,Georgia,serif;letter-spacing:.04em;color:#3a220c;text-shadow:0 0 3px #f1e1b8,0 0 6px #f1e1b8;white-space:nowrap}
@@ -673,8 +675,8 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
 <div id="mu" class="ov" role="dialog" aria-modal="true" aria-labelledby="fnm" hidden><div class="pn"><div class="r"><h2 id="fnm">Skills</h2><button class="b sm" id="bx" aria-label="Close the skill tree"><svg class="ic"><use href="#i-close"/></svg></button></div><div class="skw"><div id="ml" class="skh"></div><div class="skt"><div class="stree" id="ug"></div></div><div id="ski" class="ski"></div></div></div></div>
 <div id="mp" class="ov" role="dialog" aria-modal="true" aria-labelledby="mph" hidden><div class="pn"><div class="r"><h2 id="mph">Map of the Realm</h2><p id="mpd" class="mpd"></p><button class="b sm" id="mpx" aria-label="Close the map"><svg class="ic"><use href="#i-close"/></svg></button></div>
 <div class="mv" id="mv"><canvas id="mcv" aria-hidden="true"></canvas><div class="mk" id="mk"></div><svg class="mcr" viewBox="-50 -50 100 100" aria-hidden="true"><g transform="rotate(45)"><circle r="31" fill="rgba(246,232,196,.55)" stroke="#5a3d1c" stroke-width="1.2"/><circle r="24.5" fill="none" stroke="#5a3d1c" stroke-width=".8" stroke-dasharray="1.5 2.5"/><path d="M0-36 5.5-5.5 0 0z" fill="#8e1619"/><path d="M0-36-5.5-5.5 0 0z" fill="#5a0c0f"/><path d="M0 36 5.5 5.5 0 0z" fill="#5a3d1c"/><path d="M0 36-5.5 5.5 0 0z" fill="#3b2a18"/><path d="M-36 0-5.5-5.5 0 0zM36 0 5.5 5.5 0 0z" fill="#7a5a34"/><path d="M-36 0-5.5 5.5 0 0zM36 0 5.5-5.5 0 0z" fill="#a8845a"/><text y="-39" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-size="12" font-weight="700" fill="#5a0c0f">N</text></g></svg>
-<div class="mzb"><button class="b sm" id="mzi" aria-label="Zoom in"><svg class="ic"><path d="M12 5.5v13M5.5 12h13"/></svg></button><button class="b sm" id="mzo" aria-label="Zoom out"><svg class="ic"><path d="M5.5 12h13"/></svg></button><button class="b sm" id="mzc" aria-label="Find your knight"><svg class="ic"><use href="#i-aim"/></svg></button></div></div>
-<div class="mlg"><span><svg class="ic"><use href="#i-castle"/></svg>Keep, fortress</span><span><svg class="ic"><use href="#i-tower"/></svg>Watchtower</span><span><svg class="ic"><use href="#i-cottage"/></svg>Farmstead, cottage</span><span><svg class="ic"><use href="#i-grave"/></svg>Graveyard</span><span class="sd"><svg class="ic"><use href="#i-chest"/></svg>Dimmed once searched</span><small id="mph2"></small></div></div></div>
+<div class="mzb"><button class="b sm" id="mzi" aria-label="Zoom in"><svg class="ic"><path d="M12 5.5v13M5.5 12h13"/></svg></button><button class="b sm" id="mzo" aria-label="Zoom out"><svg class="ic"><path d="M5.5 12h13"/></svg></button><button class="b sm" id="mzc" aria-label="Find your knight"><svg class="ic"><use href="#i-aim"/></svg></button><button class="b sm" id="mzr" aria-label="See the whole realm"><svg class="ic"><use href="#i-map"/></svg></button></div></div>
+<div class="mlg"><span><svg class="ic"><use href="#i-castle"/></svg>Keep, fortress</span><span><svg class="ic"><use href="#i-tower"/></svg>Watchtower</span><span><svg class="ic"><use href="#i-cottage"/></svg>Farmstead, cottage</span><span><svg class="ic"><use href="#i-grave"/></svg>Graveyard</span><span><svg class="ic" style="color:#5fb6ff"><use href="#i-cottage"/></svg>Friendly town</span><span><svg class="ic" style="color:#ff5a4a"><use href="#i-skull"/></svg>Enemy site</span><span><svg class="ic" style="color:#66e070"><use href="#i-fence"/></svg>Land to buy</span><span><svg class="ic" style="color:#c58bff"><use href="#i-tower"/></svg>Mage tower</span><span class="sd"><svg class="ic"><use href="#i-chest"/></svg>Dimmed once searched</span><small id="mph2"></small></div></div></div>
 <div id="cm" role="dialog" aria-modal="true" aria-labelledby="cmh" hidden><div class="hx"><div class="pn sm"><h2 id="cmh">Sir Aldric</h2><div class="czt" role="tablist" aria-label="Character, inventory or quests"><button role="tab" id="cmtc" aria-selected="true">Character</button><button role="tab" id="cmti" aria-selected="false">Inventory</button><button role="tab" id="cmts" aria-selected="false">Quests</button></div><button class="b sm" id="cmx" aria-label="Close"><svg class="ic"><use href="#i-close"/></svg></button></div></div>
 <section id="chr" aria-label="Character"><div class="dl" id="dlL"></div><div id="cdw" aria-hidden="true"></div><div class="dl" id="dlR"></div><div id="chb"><div id="hsx" class="pn sm"></div><div id="cdt" class="pn sm" hidden></div></div></section>
 <section id="inv" aria-label="Inventory" hidden><div class="pn"><div class="ivh" id="ivh"></div><div class="ivc" id="ivc"></div><div class="ivg" id="ivg"></div><div class="ivd" id="ivd"></div></div></section>
@@ -729,24 +731,143 @@ const fmod=(x,m)=>x.sub(m.mul(x.div(m).floor()));
 // the bodies of water are filled in (LKM, H): see below
 const OFS=32768,ih=(i,j)=>{let h=(Math.imul(i+OFS,374761393)+Math.imul(j+OFS,668265263))|0;h=Math.imul(h^(h>>>13),1274126177);h^=h>>>16;return(h>>>0)/4294967296},
 vn=(x,y)=>{const i=floor(x),j=floor(y),f=x-i,g=y-j,u=f*f*(3-2*f),v=g*g*(3-2*g),a=ih(i,j),b=ih(i+1,j),c=ih(i,j+1);return a+(b-a)*u+(c-a)*v+(a-b-c+ih(i+1,j+1))*u*v},
-WL=-6.18,Hraw=(x,z)=>sm(38,86,hypot(x,z))*((vn(x*.011,z*.011)*.56+vn(x*.023+5.2,z*.023+1.3)*.28+vn(x*.05+9.1,z*.05+3.7)*.16)*36-16+sin(x*.02+z*.013)*5),
+WL=-6.18;
+// ---- the realm: the hand-drawn map, baked into the game ----
+// North is up the screen, so the sketch is turned 45 degrees to the world (the camera looks along (-1,-1): east is (+1,-1), north (-1,-1)). The keep,
+// the world's origin, stands in the middle of the grasslands (sketch pixel RLMU,RLMV); RLMM metres to a sketch pixel makes the island 10 km across.
+// The sketch is traced into RLMG x RLMG cells of a zone id (0 sea, 1-6 RLMZN), deflated and embedded (RLMB64). From it the game builds, as it starts,
+// a signed distance to the coast (metres, + inland) and smooth fields of each zone's character on RLMQ x RLMQ cells (how rough, how high, how
+// mountainous, how much of the coast is cliff, the least a cliff stands over the sea). The terrain reads them by one bilinear lookup over 8-bit
+// data, in JS (physics: rlf) and in TSL (GPU grass, water, rain: rlBil), the same arithmetic on the same bytes, so the two agree like the noise's twins
+const RLMX=2000,RLMG=1024,RLMQ=256,RLMM=6,RLMU=1046,RLMV=1264,RLMC=RLMX/RLMG*RLMM,RLMR=.70710678,
+RLMZN=['Grasslands','Winterlands','Autumn Grasslands','Haunted Hollow','Dry grasslands','Cliffs and coastline'],
+// per zone: scale of the old noise, base height, ridge relief (m), the share of its coast that is cliff, the least a cliff stands over the sea (m)
+RLMZP=[[1,0,0,0,0],[1.25,12,52,.45,5],[1.1,3,16,.3,5],[.8,-2.5,6,0,0],[.35,6,7,.8,9],[.9,20,10,1,14]],
+RLMB64='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',
+RLMSK=await(async()=>{const b=Uint8Array.from(atob(RLMB64),c=>c.charCodeAt(0));return new Uint8Array(await new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer())})(),
+// the radius of ground a site clears of wild growth and levels, by kind and size
+rlSR=(k,s)=>k=='c'?[0,45,70,90][s]:k=='e'?[40,35][s]:k=='h'?25:22,
+// the sites and the roads, as drawn on the annotated sketch, in its pixels (u, v): p = [kind, size, u, v] (c a friendly city or town, size 3 the keep's, 2 a
+// city, 1 a town; e an enemy site, 0 a ring and 1 a camp; h a plot of land to buy; m a mage tower), r = the roads, each a run of [u, v]. All on the same frame as the mask
+RLMS={"p":[["c",3,1046,1264],["c",2,1036,226],["c",2,1534,700],["c",2,258,960],["c",1,1483,1004],["c",1,1542,1297],["c",1,359,1554],["c",1,1182,1843],["e",0,588,388],["e",1,1747,1348],["e",1,1764,1590],["e",1,1407,1758],["h",0,1303,564],["h",0,400,1270],["h",0,599,1553],["h",0,1288,1611],["m",0,1442,383],["m",0,789,630],["m",0,619,781],["m",0,609,1400],["m",0,730,1843]],"r":[[[1032,265],[1036,294],[1070,305],[1126,308],[1149,285],[1194,268],[1270,222],[1276,246],[1306,242],[1334,257],[1346,285],[1349,325],[1323,381],[1284,389],[1126,395],[1048,381],[946,392],[828,381]],[[1349,336],[1396,341],[1430,364],[1442,383]],[[828,381],[738,370],[738,330],[609,336],[547,347],[541,364],[588,388]],[[828,381],[823,409],[800,448],[806,488],[834,510],[958,499],[1087,516],[1121,628],[1138,637]],[[789,630],[806,651],[935,656],[1070,637],[1138,637],[1284,673],[1362,684],[1436,688],[1503,684],[1534,700]],[[935,656],[980,741],[1031,758],[1042,780],[1019,819],[1014,870],[980,909],[958,921],[890,924],[845,949],[800,994],[795,1039],[811,1151],[826,1185]],[[1272,662],[1272,623],[1281,589],[1303,564]],[[1362,684],[1312,718],[1284,758],[1278,791],[1306,836],[1323,892],[1306,937],[1295,1050],[1306,1095],[1312,1151],[1306,1207],[1272,1370],[1267,1378]],[[1312,1151],[1374,1145],[1447,1129],[1520,1162],[1542,1207],[1548,1258],[1542,1297]],[[1447,1129],[1445,1072],[1436,1044],[1464,1016],[1483,1004]],[[1046,1264],[1019,1342],[980,1348],[946,1337],[873,1275],[856,1269],[843,1241],[834,1196],[826,1185]],[[826,1185],[789,1179],[660,1095],[586,1069],[452,1086],[339,1086],[305,1072],[283,1027],[258,960]],[[619,781],[615,797],[586,836],[586,904],[530,1005],[530,1050],[541,1072],[586,1069]],[[339,1086],[350,1117],[373,1151],[378,1207],[400,1270]],[[856,1269],[828,1320],[778,1331],[721,1365],[609,1400]],[[1046,1264],[1059,1348],[1115,1365],[1227,1382],[1289,1378],[1346,1387],[1368,1421],[1497,1477],[1548,1522],[1610,1562],[1638,1569]],[[1638,1569],[1655,1522],[1683,1466],[1711,1432],[1722,1387],[1747,1348]],[[1638,1569],[1666,1595],[1711,1601],[1764,1591]],[[1638,1569],[1621,1590],[1610,1623],[1520,1680],[1475,1702],[1407,1758]],[[1046,1264],[1053,1477],[1036,1612],[1008,1635],[935,1663],[868,1680],[778,1691]],[[1042,1578],[1064,1668],[1149,1803],[1182,1843]],[[1098,1691],[1205,1685],[1227,1663],[1233,1635],[1250,1618],[1288,1611]],[[778,1691],[721,1697],[693,1713],[676,1742],[609,1758],[485,1747],[474,1713],[491,1652],[474,1623],[429,1601],[384,1590],[362,1573],[359,1554]],[[491,1640],[575,1601],[592,1578],[599,1553]],[[676,1742],[682,1764],[676,1792],[730,1843]]]},
+RLM=(()=>{const n=RLMG,N2=n*n,Q=RLMQ,Q2=Q*Q,k=n/Q,
+ // exact squared distance, in cells, to the nearest zero (Felzenszwalb), in place
+ edt=f=>{const v=new Int32Array(n),z=new Float64Array(n+1),c=new Float64Array(n),run=(o,s)=>{for(let i=0;i<n;i++)c[i]=f[o+i*s];let kk=0;v[0]=0;z[0]=-1e30;z[1]=1e30;
+   for(let q=1;q<n;q++){let t;for(;;){const p=v[kk];t=(c[q]+q*q-c[p]-p*p)/(2*q-2*p);if(t>z[kk])break;kk--}kk++;v[kk]=q;z[kk]=t;z[kk+1]=1e30}
+   kk=0;for(let q=0;q<n;q++){while(z[kk+1]<q)kk++;const p=v[kk];f[o+q*s]=(q-p)*(q-p)+c[p]}};
+  for(let x=0;x<n;x++)run(x,n);for(let y=0;y<n;y++)run(y*n,1)},
+ a=new Float32Array(N2),b=new Float32Array(N2),sd=new Float32Array(N2);
+ for(let i=0;i<N2;i++){const l=RLMSK[i]>0;a[i]=l?1e9:0;b[i]=l?0:1e9}edt(a);edt(b);
+ for(let i=0;i<N2;i++)sd[i]=(RLMSK[i]>0?Math.sqrt(a[i])-.5:.5-Math.sqrt(b[i]))*RLMC;
+ // each zone's share of every field cell, then blurred (a box twice) into smooth fields: wide for the shape of the land, narrower for its colour
+ const W=[0,1,2,3,4,5].map(()=>new Float32Array(Q2));for(let j=0;j<n;j++)for(let i=0;i<n;i++){const id=RLMSK[j*n+i];id&&(W[id-1][(j/k|0)*Q+(i/k|0)]+=1/(k*k))}
+ const box=(s,r)=>{const t=new Float32Array(Q2),o=new Float32Array(Q2),w=2*r+1;
+  for(let y=0;y<Q;y++){const m=y*Q;let c=0;for(let x=0;x<=r&&x<Q;x++)c+=s[m+x];for(let x=0;x<Q;x++){t[m+x]=c/w;const lo=x-r,hi=x+r+1;lo>=0&&(c-=s[m+lo]);hi<Q&&(c+=s[m+hi])}}
+  for(let x=0;x<Q;x++){let c=0;for(let y=0;y<=r&&y<Q;y++)c+=t[y*Q+x];for(let y=0;y<Q;y++){o[y*Q+x]=c/w;const lo=y-r,hi=y+r+1;lo>=0&&(c-=t[lo*Q+x]);hi<Q&&(c+=t[hi*Q+x])}}
+  return o},bl=(s,r)=>box(box(s,r),r),
+ S0=new Float32Array(Q2),F=[0,1,2,3,4].map(()=>new Float32Array(Q2));
+ for(let z=0;z<6;z++)for(let i=0;i<Q2;i++){const w=W[z][i];S0[i]+=w;for(let q=0;q<5;q++)F[q][i]+=w*RLMZP[z][q]}
+ const Sb=bl(S0,6),Fb=F.map(f=>bl(f,6)),fl=q=>{const o=new Float32Array(Q2);for(let i=0;i<Q2;i++)o[i]=(Fb[q][i]+1e-3*RLMZP[0][q])/(Sb[i]+1e-3);return o},FA=fl(0),FE=fl(1),FM=fl(2),FC=fl(3),FH=fl(4),
+ CB=W.map(w=>bl(w,2)),CN=CB.map(()=>new Float32Array(Q2));
+ for(let i=0;i<Q2;i++){let s=1e-4;for(let z=0;z<6;z++)s+=CB[z][i];for(let z=0;z<6;z++)CN[z][i]=CB[z][i]/s}
+ // level ground round each site: the relief scale and the ridges fade out toward its middle, so a city stands on a plain, not a hillside
+ for(const[kd,sz,u,v]of RLMS.p){const R=rlSR(kd,sz),pc=RLMX/Q*RLMM,cx=u*Q/RLMX,cy=v*Q/RLMX,rc=3*R/pc;
+  for(let j=Math.max(0,cy-rc-1|0);j<=Math.min(Q-1,cy+rc+1|0);j++)for(let i=Math.max(0,cx-rc-1|0);i<=Math.min(Q-1,cx+rc+1|0);i++){const m=1-sm(R*1.2,R*3,Math.hypot(i+.5-cx,j+.5-cy)*pc);if(m>0){const o=j*Q+i;FA[o]*=1-.85*m;FM[o]*=1-m}}}
+ // 8-bit packing: P (field cells) = relief scale x100, ridge relief, base height over 16 bits; S (map cells) = coast distance over 16 bits, cliff share, cliff height x4
+ const q8=(v,m)=>Math.max(0,Math.min(255,Math.round(v*m))),pd=new Uint8Array(Q2*4),PA=new Float32Array(Q2),PM=new Float32Array(Q2),PE=new Float32Array(Q2);
+ for(let i=0;i<Q2;i++){const A=q8(FA[i],100),M=q8(FM[i],1),E=Math.round((Math.max(-64,Math.min(191.99,FE[i]))+64)/256*65535);pd[i*4]=A;pd[i*4+1]=M;pd[i*4+2]=E>>8;pd[i*4+3]=E&255;PA[i]=A/100;PM[i]=M;PE[i]=E/65535*256-64}
+ const sdat=new Uint8Array(N2*4),SDd=new Float32Array(N2),Sc=new Uint8Array(N2),Sh=new Uint8Array(N2),ix=new Int32Array(n),ix1=new Int32Array(n),fx=new Float32Array(n),
+ up=(A,y0,y1,x0,x1,f,g)=>{const t0=A[y0+x0]+(A[y0+x1]-A[y0+x0])*f,t1=A[y1+x0]+(A[y1+x1]-A[y1+x0])*f;return t0+(t1-t0)*g};
+ for(let i=0;i<n;i++){const g=Math.max(0,Math.min(Q-1,(i+.5)/k-.5));ix[i]=g|0;ix1[i]=Math.min(Q-1,ix[i]+1);fx[i]=g-ix[i]}
+ for(let j=0;j<n;j++){const y0=ix[j]*Q,y1=ix1[j]*Q,g=fx[j];for(let i=0;i<n;i++){const o=j*n+i,s16=Math.round((Math.max(-2048,Math.min(2047.9,sd[o]))+2048)/4096*65535),c=q8(up(FC,y0,y1,ix[i],ix1[i],fx[i],g),255),h=q8(up(FH,y0,y1,ix[i],ix1[i],fx[i],g),4);
+  sdat[o*4]=s16>>8;sdat[o*4+1]=s16&255;sdat[o*4+2]=c;sdat[o*4+3]=h;SDd[o]=s16/65535*4096-2048;Sc[o]=c;Sh[o]=h}}
+ // the colour weights of the six zones (two textures, filtered by the GPU: colour needn't agree to the byte)
+ const w0=new Uint8Array(Q2*4),w1=new Uint8Array(Q2*4);for(let i=0;i<Q2;i++){for(let z=0;z<4;z++)w0[i*4+z]=q8(CN[z][i],255);w1[i*4]=q8(CN[4][i],255);w1[i*4+1]=q8(CN[5][i],255);w1[i*4+3]=255}
+ const tex=(d,w,lin)=>{const t=new THREE.DataTexture(d,w,w,THREE.RGBAFormat,THREE.UnsignedByteType);t.magFilter=t.minFilter=lin?THREE.LinearFilter:THREE.NearestFilter;t.generateMipmaps=false;t.needsUpdate=true;return t};
+ return{SDd,Sc,Sh,PA,PM,PE,CN,txS:tex(sdat,n,1),txP:tex(pd,Q,1),txW0:tex(w0,Q,1),txW1:tex(w1,Q,1)}})(),
+{SDd:rlSD,Sc:rlSc,Sh:rlSh,PA:rlPA,PM:rlPM,PE:rlPE}=RLM;
+// the lookup: coast distance (rlD, + inland), cliff share (rlC) and least cliff height (rlH), and the zone's relief scale (rlA), ridge relief (rlM) and base height (rlE)
+let rlD=0,rlC=0,rlH=0,rlA=1,rlM=0,rlE=0;
+const rlf=(x,z)=>{const u=RLMU+(x-z)*RLMR/RLMM,v=RLMV+(x+z)*RLMR/RLMM;
+ let gx=u*RLMG/RLMX-.5,gy=v*RLMG/RLMX-.5;const ox=gx<0?-gx:gx>RLMG-1?gx-(RLMG-1):0,oy=gy<0?-gy:gy>RLMG-1?gy-(RLMG-1):0;
+ gx=gx<0?0:gx>RLMG-1?RLMG-1:gx;gy=gy<0?0:gy>RLMG-1?RLMG-1:gy;
+ let i=gx|0,j=gy|0;{const fx=gx-i,fy=gy-j,i1=i<RLMG-1?i+1:i,j1=j<RLMG-1?j+1:j,a=j*RLMG,b=j1*RLMG,k0=a+i,k1=a+i1,k2=b+i,k3=b+i1,w0=(1-fx)*(1-fy),w1=fx*(1-fy),w2=(1-fx)*fy,w3=fx*fy;
+  rlD=rlSD[k0]*w0+rlSD[k1]*w1+rlSD[k2]*w2+rlSD[k3]*w3-(ox||oy?hypot(ox,oy)*RLMC:0);rlC=(rlSc[k0]*w0+rlSc[k1]*w1+rlSc[k2]*w2+rlSc[k3]*w3)/255;rlH=(rlSh[k0]*w0+rlSh[k1]*w1+rlSh[k2]*w2+rlSh[k3]*w3)/4}
+ gx=u*RLMQ/RLMX-.5;gy=v*RLMQ/RLMX-.5;gx=gx<0?0:gx>RLMQ-1?RLMQ-1:gx;gy=gy<0?0:gy>RLMQ-1?RLMQ-1:gy;i=gx|0;j=gy|0;
+ {const fx=gx-i,fy=gy-j,i1=i<RLMQ-1?i+1:i,j1=j<RLMQ-1?j+1:j,a=j*RLMQ,b=j1*RLMQ,k0=a+i,k1=a+i1,k2=b+i,k3=b+i1,w0=(1-fx)*(1-fy),w1=fx*(1-fy),w2=(1-fx)*fy,w3=fx*fy;
+  rlA=rlPA[k0]*w0+rlPA[k1]*w1+rlPA[k2]*w2+rlPA[k3]*w3;rlM=rlPM[k0]*w0+rlPM[k1]*w1+rlPM[k2]*w2+rlPM[k3]*w3;rlE=rlPE[k0]*w0+rlPE[k1]*w1+rlPE[k2]*w2+rlPE[k3]*w3}},
+// a ragged coast (the distance warped by noise) and the mountains' ridge noise, 0..1
+rlWn=(x,z)=>(vn(x*.045+11.3,z*.045+3.7)-.5)*18+(vn(x*.13+2.9,z*.13+7.1)-.5)*6,
+rlMr=(x,z)=>{const a=1-abs(vn(x*.0016+3.3,z*.0016+8.1)*2-1),b=1-abs(vn(x*.0041+1.7,z*.0041+4.9)*2-1);return a*a*.7+b*b*.3},
+// the coast: the ground h (inland) is brought down to the sea by a beach (an 80m ramp from the waterline), by a cliff (the ground held at its height, least rlH over the sea,
+// then a face of a few metres' run), or a mix of the two (rlC, with noise so a cliff coast has its coves and ramps). Out to sea the bed falls away; a mix
+// cannot be waded past the ankle (wade), so the sea is as good as a wall
+rlShore=(h,x,z)=>{if(rlD>440)return h;const d=rlD+rlWn(x,z),cc=sm(.3,.6,rlC+(vn(x*.0075+5.1,z*.0075+2.3)-.5)*1.4);let hb,hc;
+ if(d>=0){const top=max(h,WL+rlH*(1-sm(120,420,d))),hi=max(h,WL+2.6*(1-sm(60,260,d))),run=5+(top-WL)*.12;hb=WL+(hi-WL)*sm(0,80,d);hc=WL-.8+(top-WL+.8)*sm(0,run,d)}
+ else{const q=-d;hb=WL-min(q*.05,5)-max(q-100,0)*.04;hc=WL-.8-min(q*.25,8)-max(q-60,0)*.04}
+ return hb+(hc-hb)*cc};
+// the sketch's pixel (u, v) in the world, and the zone (0-5, -1 the sea) of a point by the traced cell it falls in
+const rlw=(u,v)=>{const e=(u-RLMU)*RLMM,s=(v-RLMV)*RLMM;return[(e+s)/RLMR/2,(s-e)/RLMR/2]},
+rlz=(x,z)=>{const i=floor((RLMU+(x-z)*RLMR/RLMM)*RLMG/RLMX),j=floor((RLMV+(x+z)*RLMR/RLMM)*RLMG/RLMX);return i<0||j<0||i>=RLMG||j>=RLMG?-1:RLMSK[j*RLMG+i]-1},
+RLN=['Greywatch','Frostmere','Amberholt','Gullhaven','Thornfield','Eastwick','Dustwell','Saltreach','Rimewatch Ring','Ashen Hold','Mourncrag Camp','The Sunken Barrow','Russet Plot','Cliffside Plot','Sunbaked Plot','Meadowrest Plot','Frostveil Spire','Emberglass Tower','Tidewatch Spire','Ravenmoot Tower','Sandglass Tower'],
+// the sites in the world: k kind, s size, x z, n name, r the radius of ground they clear and level
+RLP=RLMS.p.map(([k,s,u,v],i)=>{const[x,z]=rlw(u,v);return{k,s,x,z,n:RLN[i],r:rlSR(k,s)}}),
+// the roads: each run smoothed (its corners cut twice, its ends kept), then cut into segments, indexed in a grid of 128m cells
+RLR=RLMS.r.map(r=>{let p=r.map(([u,v])=>rlw(u,v));for(let it=0;it<2;it++){const q=[p[0]];for(let i=0;i<p.length-1;i++){const a=p[i],b=p[i+1];q.push([a[0]*.75+b[0]*.25,a[1]*.75+b[1]*.25],[a[0]*.25+b[0]*.75,a[1]*.25+b[1]*.75])}q.push(p[p.length-1]);p=q}return p}),
+RLG=new Map(),RLS=[];
+for(const r of RLR)for(let i=0;i<r.length-1;i++){const s=[r[i][0],r[i][1],r[i+1][0],r[i+1][1]],n=RLS.push(s)-1;for(let a=floor((min(s[0],s[2])-8)/128);a<=floor((max(s[0],s[2])+8)/128);a++)for(let b=floor((min(s[1],s[3])-8)/128);b<=floor((max(s[1],s[3])+8)/128);b++){const k=a+','+b;(RLG.get(k)||RLG.set(k,[]).get(k)).push(n)}}
+// the distance to the nearest road (1e9 beyond the grid cell's reach), and the site a point stands within (m times its radius), if any
+const rlRoad=(x,z)=>{let d=1e9;const l=RLG.get(floor(x/128)+','+floor(z/128));if(l)for(const n of l){const s=RLS[n],ex=s[2]-s[0],ez=s[3]-s[1],t=cl(((x-s[0])*ex+(z-s[1])*ez)/(ex*ex+ez*ez||1),0,1),q=hypot(x-s[0]-ex*t,z-s[1]-ez*t);if(q<d)d=q}return d},
+rlSite=(x,z,m=1)=>{for(const p of RLP)if(hypot(x-p.x,z-p.z)<p.r*m)return p;return null},
+// a friendly city's ground (and a little round it): nothing hostile is set there
+rlSafe=(x,z)=>{for(const p of RLP)if(p.k=='c'&&hypot(x-p.x,z-p.z)<p.r*1.15)return true;return false},
+// the zones' woods: how many of the old plantations and lone trees each keeps (none of the plantations in the dry country), and the tint of their leaf
+// (the autumn's from a palette, by the tree's place): blended by the zones' weights where the tree stands, 0 for none
+RLPZ=[1,1.3,.6,.45,0,.15],RLTD=[1,1,1,.55,.2,.35],RLTA=[[1,.66,.32],[.85,.45,.22],[.8,.32,.2],[.95,.78,.38]],RLTN=[[1,1,1],[.9,.94,1],null,[.55,.58,.52],[.95,.88,.55],[.8,.86,.78]],
+rlTint=(x,z)=>{const o=cl(floor((RLMV+(x+z)*RLMR/RLMM)*RLMQ/RLMX),0,RLMQ-1)*RLMQ+cl(floor((RLMU+(x-z)*RLMR/RLMM)*RLMQ/RLMX),0,RLMQ-1),a=RLTA[Math.abs(x*7+z*13|0)&3];let r=0,g=0,b=0;
+ for(let q=0;q<6;q++){const w=RLM.CN[q][o],t=RLTN[q]||a;r+=w*t[0];g+=w*t[1];b+=w*t[2]}return r>.995&&g>.995&&b>.995?0:(r*255|0)<<16|(g*255|0)<<8|(b*255|0)},
+rlTD=(x,z)=>{const o=cl(floor((RLMV+(x+z)*RLMR/RLMM)*RLMQ/RLMX),0,RLMQ-1)*RLMQ+cl(floor((RLMU+(x-z)*RLMR/RLMM)*RLMQ/RLMX),0,RLMQ-1);let d=0;for(let q=0;q<6;q++)d+=RLM.CN[q][o]*RLTD[q];return d},
+// the roads near the view's focus, for the ground and the grass to draw: the RDK nearest segments, refreshed as the focus walks (rdUpd)
+RDK=20,RDU=uniformArray(Array.from({length:RDK},()=>new THREE.Vector4(1e5,1e5,1e5,1e5)),'vec4');let rdX=1e9,rdZ=0;
+const rdUpd=(x,z)=>{if(hypot(x-rdX,z-rdZ)<30)return;rdX=x;rdZ=z;const L=[];for(const s of RLS){const ex=s[2]-s[0],ez=s[3]-s[1],t=cl(((x-s[0])*ex+(z-s[1])*ez)/(ex*ex+ez*ez||1),0,1),d=hypot(x-s[0]-ex*t,z-s[1]-ez*t);d<260&&L.push([d,s])}
+ L.sort((a,b)=>a[0]-b[0]);for(let i=0;i<RDK;i++){const s=L[i]&&L[i][1];RDU.array[i].set(s?s[0]:1e5,s?s[1]:1e5,s?s[2]:1e5,s?s[3]:1e5)}};
+const Hraw=(x,z)=>{rlf(x,z);const f=sm(38,86,hypot(x,z));return f*(((vn(x*.011,z*.011)*.56+vn(x*.023+5.2,z*.023+1.3)*.28+vn(x*.05+9.1,z*.05+3.7)*.16)*36-16+sin(x*.02+z*.013)*5)*rlA+rlE+(rlM?rlM*rlMr(x,z):0))},
 // about 15% of the country's bodies of water (a fifth of its water area, as a few at the mask's edge shrink) are dry hollows instead. LKM, a smooth
 // mask of value noise (some 350m across), picks the regions; where it is up, the ground under the water is raised toward a floor 2-3m over WL
 // (gently uneven, never lowered; clear of the sand band and under the grass line, so a filled hollow is meadow), so a lake fills in from its rim.
 // The lake by the cottage (the nearest, to the right of its front view), at (28,-154), stays as it was: the mask is off within 130m of it and
 // fades in by 210m, and off within 100m of the farm. HT does the same on the GPU
 LKM=(x,z)=>sm(.5975,.7175,vn(x*.0028+19.2,z*.0028+7.8)*.75+vn(x*.00644+8.2,z*.00644+10.8)*.25)*sm(130,210,hypot(x-28,z+154))*sm(100,160,hypot(x,z)),
-H=(x,z)=>{const h=Hraw(x,z);if(h>=WL+3.1)return h;const m=LKM(x,z);return m>0?h+m*max(WL+2.6+(vn(x*.045+3.1,z*.045+8.7)-.5)*.9-h,0):h},
+H=(x,z)=>{let h=Hraw(x,z);if(h<WL+3.1){const m=LKM(x,z);if(m>0)h+=m*max(WL+2.6+(vn(x*.045+3.1,z*.045+8.7)-.5)*.9-h,0)}return rlShore(h,x,z)},
 CS=120,SN=mob?40:60,GS=CS/SN,
 // height of the rendered (triangulated) terrain surface, so feet and grass sit exactly on the mesh
 Hm=(x,z)=>{const gx=x/GS,gz=z/GS,ix=floor(gx),iz=floor(gz),fx=gx-ix,fz=gz-iz,x0=ix*GS,z0=iz*GS,h10=H(x0+GS,z0),h01=H(x0,z0+GS);if(fx+fz<=1){const h00=H(x0,z0);return h00+(h10-h00)*fx+(h01-h00)*fz}const h11=H(x0+GS,z0+GS);return h11+(h01-h11)*(1-fx)+(h10-h11)*(1-fz)};
 const ihT=Fn(([i,j])=>{const h=uint(i.add(int(OFS))).mul(uint(374761393)).add(uint(j.add(int(OFS))).mul(uint(668265263))).toVar();h.assign(h.bitXor(h.shiftRight(uint(13))).mul(uint(1274126177)));h.assign(h.bitXor(h.shiftRight(uint(16))));return float(h).mul(1/4294967296)}).setLayout({name:'ihT',type:'float',inputs:[{name:'i',type:'int'},{name:'j',type:'int'}]}),
 vnT=Fn(([p])=>{const i=p.floor().toVar(),f=p.sub(i).toVar(),u=f.mul(f).mul(f.mul(-2).add(3)).toVar(),x=int(i.x).toVar(),y=int(i.y).toVar(),x1=x.add(int(1)).toVar(),y1=y.add(int(1)).toVar(),a=ihT(x,y).toVar(),b=ihT(x1,y).toVar(),c=ihT(x,y1).toVar(),d=ihT(x1,y1).toVar();return a.add(b.sub(a).mul(u.x)).add(c.sub(a).mul(u.y)).add(a.sub(b).sub(c).add(d).mul(u.x).mul(u.y))}).setLayout({name:'vnT',type:'float',inputs:[{name:'p',type:'vec2'}]}),
-HT=Fn(([p])=>{const n=vnT(p.mul(.011)).mul(.56).add(vnT(p.mul(.023).add(vec2(5.2,1.3))).mul(.28)).add(vnT(p.mul(.05).add(vec2(9.1,3.7))).mul(.16)),h=smoothstep(38,86,p.length()).mul(n.mul(36).sub(16).add(Sin(p.x.mul(.02).add(p.y.mul(.013))).mul(5))).toVar(),
- m=smoothstep(.5975,.7175,vnT(p.mul(.0028).add(vec2(19.2,7.8))).mul(.75).add(vnT(p.mul(.00644).add(vec2(8.2,10.8))).mul(.25))).mul(smoothstep(130,210,p.sub(vec2(28,-154)).length())).mul(smoothstep(100,160,p.length()));
- return h.add(m.mul(Max(vnT(p.mul(.045).add(vec2(3.1,8.7))).sub(.5).mul(.9).add(WL+2.6).sub(h),0)))}).setLayout({name:'HT',type:'float',inputs:[{name:'p',type:'vec2'}]}),
+// the realm's lookup on the GPU: a bilinear fetch of four texels (8-bit data, cell centres at integers, sampled exactly at a texel's centre so the
+// hardware's own filter returns that texel and nothing else; three's nearest-filter path is avoided), each decoded, then blended: what rlf does in JS
+rlTS=texture(RLM.txS),rlTP=texture(RLM.txP),
+rlBil=(t,N,g,dec)=>{const c=g.clamp(0,N-1).toVar(),i=c.floor().toVar(),f=c.sub(i).toVar(),j=Min(i.add(1),N-1).toVar(),s=(a,b)=>dec(t.sample(vec2(a,b).add(.5).div(N)).level(0));return mix(mix(s(i.x,i.y),s(j.x,i.y),f.x),mix(s(i.x,j.y),s(j.x,j.y),f.x),f.y)},
+rlBy=v=>v.mul(255).add(.5).floor(),
+rlDS=v=>vec3(rlBy(v.x).mul(256).add(rlBy(v.y)).mul(4096/65535).sub(2048),v.z,v.w.mul(255/4)),
+rlDP=v=>vec3(rlBy(v.x).mul(.01),rlBy(v.y),rlBy(v.z).mul(256).add(rlBy(v.w)).mul(256/65535).sub(64)),
+rlWnT=p=>vnT(p.mul(.045).add(vec2(11.3,3.7))).sub(.5).mul(18).add(vnT(p.mul(.13).add(vec2(2.9,7.1))).sub(.5).mul(6)),
+rlMrT=p=>{const a=vnT(p.mul(.0016).add(vec2(3.3,8.1))).mul(2).sub(1).abs().oneMinus(),b=vnT(p.mul(.0041).add(vec2(1.7,4.9))).mul(2).sub(1).abs().oneMinus();return a.mul(a).mul(.7).add(b.mul(b).mul(.3))},
+HT=Fn(([p])=>{const n=vnT(p.mul(.011)).mul(.56).add(vnT(p.mul(.023).add(vec2(5.2,1.3))).mul(.28)).add(vnT(p.mul(.05).add(vec2(9.1,3.7))).mul(.16)),
+ uv=vec2(p.x.sub(p.y),p.x.add(p.y)).mul(RLMR/RLMM).add(vec2(RLMU,RLMV)),gs=uv.mul(RLMG/RLMX).sub(.5),Sf=rlBil(rlTS,RLMG,gs,rlDS).toVar(),Pf=rlBil(rlTP,RLMQ,uv.mul(RLMQ/RLMX).sub(.5),rlDP).toVar(),
+ og=Max(gs.negate(),gs.sub(RLMG-1)).max(0),
+ h=smoothstep(38,86,p.length()).mul(n.mul(36).sub(16).add(Sin(p.x.mul(.02).add(p.y.mul(.013))).mul(5)).mul(Pf.x).add(Pf.z).add(Pf.y.mul(rlMrT(p)))).toVar(),
+ m=smoothstep(.5975,.7175,vnT(p.mul(.0028).add(vec2(19.2,7.8))).mul(.75).add(vnT(p.mul(.00644).add(vec2(8.2,10.8))).mul(.25))).mul(smoothstep(130,210,p.sub(vec2(28,-154)).length())).mul(smoothstep(100,160,p.length())),
+ hh=h.add(m.mul(Max(vnT(p.mul(.045).add(vec2(3.1,8.7))).sub(.5).mul(.9).add(WL+2.6).sub(h),0))).toVar(),
+ // the coast, as rlShore
+ d=Sf.x.sub(og.length().mul(RLMC)).add(rlWnT(p)).toVar(),cc=smoothstep(.3,.6,Sf.y.add(vnT(p.mul(.0075).add(vec2(5.1,2.3))).sub(.5).mul(1.4))),
+ top=Max(hh,ss1(120,420,d).mul(Sf.z).add(WL)),hi=Max(hh,ss1(60,260,d).mul(2.6).add(WL)),run=top.sub(WL).mul(.12).add(5),
+ hbL=smoothstep(0,80,d).mul(hi.sub(WL)).add(WL),hcL=smoothstep(0,run,d).mul(top.sub(WL).add(.8)).add(WL-.8),q=d.negate(),
+ hbS=float(WL).sub(Min(q.mul(.05),5)).sub(Max(q.sub(100),0).mul(.04)),hcS=float(WL-.8).sub(Min(q.mul(.25),8)).sub(Max(q.sub(60),0).mul(.04)),
+ land=d.greaterThanEqual(0),hb=select(land,hbL,hbS),hc=select(land,hcL,hcS);
+ return hb.add(hc.sub(hb).mul(cc))}),
 // mesh-surface height + smooth normal (x,z) for the grass compute pass
-groundT=Fn(([p])=>{const g=p.div(GS),c=g.floor(),f=g.sub(c).toVar(),o=c.mul(GS).toVar(),h00=HT(o).toVar(),h10=HT(o.add(vec2(GS,0))).toVar(),h01=HT(o.add(vec2(0,GS))).toVar(),h11=HT(o.add(vec2(GS,GS))).toVar(),lo=h00.add(h10.sub(h00).mul(f.x)).add(h01.sub(h00).mul(f.y)),hi=h11.add(h01.sub(h11).mul(f.x.oneMinus())).add(h10.sub(h11).mul(f.y.oneMinus())),n=vec3(mix(h10.sub(h00),h11.sub(h01),f.y).div(-GS),1,mix(h01.sub(h00),h11.sub(h10),f.x).div(-GS)).normalize();return vec3(select(f.x.add(f.y).lessThanEqual(1),lo,hi),n.x,n.z)}).setLayout({name:'groundT',type:'vec3',inputs:[{name:'p',type:'vec2'}]});
+groundT=Fn(([p])=>{const g=p.div(GS),c=g.floor(),f=g.sub(c).toVar(),o=c.mul(GS).toVar(),h00=HT(o).toVar(),h10=HT(o.add(vec2(GS,0))).toVar(),h01=HT(o.add(vec2(0,GS))).toVar(),h11=HT(o.add(vec2(GS,GS))).toVar(),lo=h00.add(h10.sub(h00).mul(f.x)).add(h01.sub(h00).mul(f.y)),hi=h11.add(h01.sub(h11).mul(f.x.oneMinus())).add(h10.sub(h11).mul(f.y.oneMinus())),n=vec3(mix(h10.sub(h00),h11.sub(h01),f.y).div(-GS),1,mix(h01.sub(h00),h11.sub(h10),f.x).div(-GS)).normalize();return vec3(select(f.x.add(f.y).lessThanEqual(1),lo,hi),n.x,n.z)});  // (no setLayout on HT or this: they read the realm's textures, whose names a shared function would fix at its first stage)
 // 3D value noise (float hash) for object-space surface detail
 const h31=p=>Fract(Sin(dot(p,vec3(127.1,311.7,74.7))).mul(43758.5453)),
 nz3=Fn(([p])=>{const i=p.floor().toVar(),f=p.sub(i).toVar(),u=f.mul(f).mul(f.mul(-2).add(3)).toVar(),k=(x,y,z)=>h31(i.add(vec3(x,y,z)));return mix(mix(mix(k(0,0,0),k(1,0,0),u.x),mix(k(0,1,0),k(1,1,0),u.x),u.y),mix(mix(k(0,0,1),k(1,0,1),u.x),mix(k(0,1,1),k(1,1,1),u.x),u.y),u.z)}).setLayout({name:'nz3',type:'float',inputs:[{name:'p',type:'vec3'}]}),
@@ -763,16 +884,29 @@ sunCol:uniform(new THREE.Color(1,.95,.85)),mieG:uniform(.62),rays:uniform(.35),a
 stS:uniform(.55),stH:uniform(.5),stShadow:uniform(new THREE.Color(.16,.34,.46)),stHigh:uniform(new THREE.Color(1,.8,.5)),sat:uniform(1.12),
 rt:uniform(0),pud:uniform(0),roofY:uniform(0),rc:uniform(V()),rwv:uniform(new THREE.Vector2()),rcol:uniform(new THREE.Color(.62,.68,.74)),win:uniform(0),ngt:uniform(0),fill:uniform(new THREE.Color(.5,.55,.65))};
 const tcA=color(0x3d7a2c),tcB=color(0x80ad48),tcC=color(0xd9d06a),tcD=color(0xdcc98f),tcP=color(0x8a6a43),tcY=color(0xb8a274),
-terrainColT=Fn(([p,y])=>{const c=mix(tcA,tcB,smoothstep(-8,20,y)).toVar();c.assign(mix(c,tcC,smoothstep(.6,.85,vnT(p.mul(.04))).mul(.42)));c.assign(mix(c,tcD,ss1(WL+.3,WL+1.5,y)));c.mulAssign(vnT(p.mul(.11)).mul(.6).add(vnT(p.mul(.31).add(vec2(7.3,2.1))).mul(.4)).mul(.2).add(.9));return c}).setLayout({name:'terrainCol',type:'vec3',inputs:[{name:'p',type:'vec2'},{name:'y',type:'float'}]}),
+// each zone's ground (the realm): its low and high colour, the meadow's patches, the shore (the grasslands' are the old ones), and its bare rock,
+// blended by the zones' weights where the point stands (rlWs: the realm's colour textures). The rock shows on steep ground (TM, below)
+rlPal=[[0x3d7a2c,0x80ad48,0xd9d06a,0xdcc98f],[0xc2cfdd,0xf3f7fc,0x8e9aa9,0xbcc4cc],[0x8e4d22,0xc97b2c,0xe3b44a,0xb89a6a],[0x3e4a3b,0x5a664f,0x695a6f,0x6a6558],[0xa59b55,0xd3c47d,0xc5a25b,0xd9c58f],[0x4e7a38,0x8ba95b,0x9d927d,0x6e6962]].map(r=>r.map(h=>color(h))),
+rlRk=[0x7b7466,0x6f7782,0x7a6652,0x4d4a50,0xa8906a,0x8a8274].map(h=>color(h)),rlTW0=texture(RLM.txW0),rlTW1=texture(RLM.txW1),
+rlWs=p=>{const u=vec2(p.x.sub(p.y),p.x.add(p.y)).mul(RLMR/RLMM).add(vec2(RLMU,RLMV)).div(RLMX),a=rlTW0.sample(u).level(0),b=rlTW1.sample(u).level(0);return[a.x,a.y,a.z,a.w,b.x,b.y]},
+rlSum=(ws,t)=>ws.reduce((s,w,i)=>s.add(t[i].mul(w)),vec3(0)),
+// how much grass each zone grows (thin in the snow and the dry country)
+rlDen=p=>{const d=[1,.25,.95,.6,.5,.75];return rlWs(p).reduce((s,w,i)=>s.add(w.mul(d[i])),float(0))},
+// strata (coarse and fine bands of height, wavering with the ground's position), vertical cracking, and a dark wet foot at the waterline
+rockT=Fn(([p,y])=>{const s1=Sin(y.mul(1.6).add(vnT(p.mul(.12)).mul(5))).mul(.5).add(.5),s2=Sin(y.mul(6.1).add(vnT(p.mul(.35)).mul(4))).mul(.5).add(.5),cr=vnT(vec2(p.x.add(p.y).mul(.7),y.mul(.45)));
+ return rlSum(rlWs(p),rlRk).mul(s1.mul(.4).add(.75)).mul(s2.mul(.14).add(.93)).mul(cr.mul(.35).add(.8)).mul(smoothstep(WL,WL+2.2,y).mul(.45).add(.55))}),
+terrainColT=Fn(([p,y])=>{const ws=rlWs(p),c=mix(rlSum(ws,rlPal.map(z=>z[0])),rlSum(ws,rlPal.map(z=>z[1])),smoothstep(-8,20,y)).toVar();c.assign(mix(c,rlSum(ws,rlPal.map(z=>z[2])),smoothstep(.6,.85,vnT(p.mul(.04))).mul(.42)));c.assign(mix(c,rlSum(ws,rlPal.map(z=>z[3])),ss1(WL+.3,WL+1.5,y)));c.mulAssign(vnT(p.mul(.11)).mul(.6).add(vnT(p.mul(.31).add(vec2(7.3,2.1))).mul(.4)).mul(.2).add(.9));return c}),
 segD=(p,a,b)=>{const pa=p.sub(a),ba=b.sub(a),h=pa.dot(ba).div(ba.dot(ba)).clamp();return pa.sub(ba.mul(h)).length()},
 pathT=Fn(([p])=>ss1(.75,1.55,segD(p,U.gate,vec2(-19.7,-17)).add(vnT(p.mul(.9)).sub(.5).mul(.8)))),
 // the cottage yard: packed earth whose edge frays into the meadow. Returns the elliptical distance (1 = the old plinth rim) roughened by noise,
 // shared by the ground colour and the grass mask so the grass thins out exactly where the earth shows through
 yardT=Fn(([p])=>{const d=p.add(vec2(21,20)),lx=d.x.sub(d.y).mul(.7071),lz=d.x.add(d.y).mul(.7071);return vec2(lx.div(7.4),lz.div(5.4)).length().add(vnT(p.mul(.55)).sub(.5).mul(.34)).add(vnT(p.mul(2.1).add(vec2(4.1,8.3))).sub(.5).mul(.12))}),
 // where grass may grow: not in the cottage yard, the flagstones, the worn path, under farm upgrades or near water
+// the roads (the realm): 1 on one, 0 off it, from the segments near the focus (RDU); a road is about 4m across
+rlRdT=p=>{const m=float(0).toVar();Loop(RDK,({i})=>{const s=RDU.element(i);m.assign(Max(m,ss1(2,3.4,segD(p,s.xy,s.zw))))});return m},
 grassMaskT=Fn(([p,h])=>{const d=p.add(vec2(21,20)),lx=d.x.sub(d.y).mul(.7071),lz=d.x.add(d.y).mul(.7071),m=smoothstep(WL+.8,WL+2,h).mul(smoothstep(.98,1.4,yardT(p))).toVar();
  m.mulAssign(select(lz.greaterThan(0).and(lz.lessThan(11.5)),smoothstep(.7,1.5,lx.add(1.2).abs()),float(1)));m.mulAssign(pathT(p).mul(-.85).add(1));
- m.mulAssign(select(p.length().lessThan(U.penR.add(.5)),float(.55),float(1)));m.mulAssign(float(1).sub(U.trough.mul(step(p.sub(vec2(4.6,-2.4)).length(),2.2))));m.mulAssign(float(1).sub(U.hay.mul(step(p.sub(vec2(-4.8,-2.6)).length(),2.4))));m.mulAssign(float(1).sub(U.shed.mul(step(p.sub(vec2(0,5.4)).length(),2.8))));return m}),
+ m.mulAssign(select(p.length().lessThan(U.penR.add(.5)),float(.55),float(1)));m.mulAssign(float(1).sub(U.trough.mul(step(p.sub(vec2(4.6,-2.4)).length(),2.2))));m.mulAssign(float(1).sub(U.hay.mul(step(p.sub(vec2(-4.8,-2.6)).length(),2.4))));m.mulAssign(float(1).sub(U.shed.mul(step(p.sub(vec2(0,5.4)).length(),2.8))));m.mulAssign(rlDen(p));m.mulAssign(rlRdT(p).oneMinus());return m}),
 // rain puddles: blobs of standing water on flat ground (f = up component of the ground normal) that swell with U.pud (0 dry .. 1 full),
 // favouring the worn path and the yard and keeping off the lake shore. Shared by the ground, the grass and the splashes.
 puddleT=Fn(([p,y,f])=>{const n=vnT(p.mul(.27).add(vec2(13.7,5.2))).mul(.7).add(vnT(p.mul(.8).add(vec2(2.9,11.1))).mul(.3)).add(pathT(p).mul(.2)).add(ss1(.9,1.3,yardT(p)).mul(.14)),t=mix(float(1.02),float(.72),U.pud),k=smoothstep(.955,.985,f).mul(smoothstep(WL+.6,WL+1.4,y));
@@ -1204,7 +1338,7 @@ fcp=(i,j,u,v)=>{const a=fnode(i,j),b=fnode(i+1,j),c=fnode(i+1,j+1),d=fnode(i,j+1
 // the farm keeps an open infield round the pen and the cottage
 farmClear=(x,z)=>hypot(x,z)<46||hypot(x+21,z+20)<32,
 // is field (i,j) a spruce plantation (high ground, well out from the farm)?
-plant=(i,j,c=fcp(i,j,.5,.5))=>hypot(c[0],c[1])>150&&H(c[0],c[1])>6&&fh(i,j,30)<.12,
+plant=(i,j,c=fcp(i,j,.5,.5))=>hypot(c[0],c[1])>150&&H(c[0],c[1])>6&&fh(i,j,30)<.12*RLPZ[max(0,rlz(c[0],c[1]))],
 // is field (i,j) a fortress's (its centre, or 0)? The same draw the chunk's field loop makes for a place to search (poiPut, t 5)
 fort=(i,j)=>{const c=fcp(i,j,.5,.5),pk=fh(i,j,90);if(!(hypot(c[0]+21,c[1]+20)>380&&pk>=.12&&pk<.1285&&H(c[0],c[1])>WL+2)||plant(i,j,c))return 0;
  let y0=1e9,y1=-1e9;for(const[u,v]of[[.2,.2],[.8,.2],[.8,.8],[.2,.8],[.5,.5]]){const p=fcp(i,j,u,v),y=H(p[0],p[1]);y0=min(y0,y);y1=max(y1,y)}return y0>WL+1.2&&y1-y0<4?c:0},
@@ -1235,10 +1369,38 @@ mkCol=gs=>{const P=[],I=[];for(const g of gs){const p=g.attributes.position,o=P.
 // ---- streamed terrain chunks ----
 const TM=new BotwMat({roughness:.95},{key:'terrain',toon:.85,rim:0,spec:.35,wet:0});
 const PUD2=puddleAt(positionWorld.xz,positionWorld.y,normalGeometry.y),PUD=PUD2.x,FRS=positionViewDirection.dot(transformNormalToView(vec3(0,1,0))).clamp().oneMinus().pow(3).mul(.7).add(.18);
-TM.colorNode=Fn(()=>{const p=positionWorld.xz,c=terrainColT(p,positionWorld.y).toVar();c.assign(mix(c,tcP.mul(vnT(p.mul(1.7)).mul(.3).add(.85)),pathT(p).mul(.85)));c.assign(mix(c,mix(tcY,tcP,vnT(p.mul(.4)).mul(.55)).mul(vnT(p.mul(1.9)).mul(.24).add(.88)),ss1(.78,1.24,yardT(p))));c.mulAssign(U.wet.mul(-.3).add(1));c.mulAssign(PUD2.y.mul(-.45).add(1));return mix(c,mix(c.mul(.22),U.hor.mul(.42),FRS),PUD)})();
+TM.colorNode=Fn(()=>{const p=positionWorld.xz,c=terrainColT(p,positionWorld.y).toVar();c.assign(mix(c,rockT(p,positionWorld.y),ss1(.55,.78,normalGeometry.y)));c.assign(mix(c,tcP.mul(vnT(p.mul(1.7)).mul(.3).add(.85)),pathT(p).mul(.85)));c.assign(mix(c,tcP.mul(vnT(p.mul(2.3)).mul(.28).add(.8)),rlRdT(p).mul(.92)));c.assign(mix(c,mix(tcY,tcP,vnT(p.mul(.4)).mul(.55)).mul(vnT(p.mul(1.9)).mul(.24).add(.88)),ss1(.78,1.24,yardT(p))));c.mulAssign(U.wet.mul(-.3).add(1));c.mulAssign(PUD2.y.mul(-.45).add(1));return mix(c,mix(c.mul(.22),U.hor.mul(.42),FRS),PUD)})();
 TM.roughnessNode=mix(mix(float(.95),float(.32),U.wet),float(.04),PUD);
 TM.emissiveNode=U.hor.mul(PUD.mul(FRS).mul(.1));
 const CH=new Map(),CHL=[],seen=new Set(),QU=[],CCOL=new Map(),GATES=[],GOPEN=new Map();let pcx=0,pcz=0;
+// ---- the realm's sites: what stands at each (rlParts: [{g, x, z, ry, c}], geometry about its own origin, a collider's size if it has one) ----
+// Houses take each zone's walls, roof and trim; a city has its plaza (a well, stalls), a camp its stakes, tents and fire, a ring its standing stones, a plot its
+// boundary stones and a green-flagged sign, a mage tower its stair of stone and a glowing orb. Every part is placed by the chunk it stands in, so a city across a seam is whole
+const RLPAL=[[0xd8c9a2,0x8c4a32,0x5a4130],[0x6b5a48,0x6f7f95,0x3c3026],[0xcbb084,0xa0522d,0x5a3d24],[0x5a5560,0x3a3640,0x2a2630],[0xdcc191,0xb8653a,0x6a4a2c],[0x9b968a,0x4e5864,0x6a6258]],
+rlRng=s=>()=>(s=s*16807%2147483647)/2147483647,
+rlHouse=(w,d,h,pal,ch)=>{const rh=h*.62,L=[[B(w,h+1.4,d).translate(0,(h-1.4)/2,0),pal[0]],[Cy(0,.7071,1,4).rotateY(PI/4).scale(w*1.18,rh,d*1.18).translate(0,h+rh/2,0),pal[1]],[B(.95,1.9,.14).translate(0,.95,d/2+.03),pal[2]],[B(.7,.7,.14).translate(w*.28,h*.55,d/2+.03),pal[2]],[B(.7,.7,.14).translate(-w*.28,h*.55,d/2+.03),pal[2]]];
+ ch&&L.push([B(.55,rh+1.2,.55).translate(w*.28,h+rh*.35,-d*.2),0x7a746a]);return mg(L)},
+rlTower=(r,h)=>mg([[Cy(r*1.25,r*1.4,2.6,12).translate(0,-.5,0),0x6e6a70],[Cy(r*.92,r,h,12).translate(0,h/2,0),0x8d8996],[Cy(r*1.18,r*1.18,.5,12).translate(0,h,0),0x6e6a70],[Cy(0,r*1.4,h*.42,12).translate(0,h+h*.21+.2,0),0x5a3a8c],[B(.5,1.3,.18).translate(0,h*.55,r*.95),0x1e1830],[B(.5,1.3,.18).translate(r*.95,h*.8,0),0x1e1830],[Sp(.7,10,8).translate(0,h+h*.42+.8,0),0xc79bff]]),
+rlCamp=rng=>{const L=[];for(let i=0;i<20;i++){const a=i/20*TAU;if(abs(wa(a-PI/2))<.28)continue;L.push([Cy(.12,.2,3.4,5).translate(cos(a)*17,1.3,sin(a)*17),0x6a4a2c])}
+ for(let i=0;i<4;i++){const a=i*1.6+rng()*.6,d=7+rng()*4;L.push([Cy(0,2.5,3,6).translate(cos(a)*d,1.5,sin(a)*d),[0x6b5a45,0x5a4a3a,0x7a6a50][i%3]])}
+ L.push([Cy(1,1.1,.35,8).translate(0,.1,0),0x5c5850],[Cy(0,.55,1.2,5).translate(0,.9,0),0xff8a2a],[Cy(.08,.08,6.5,5).translate(5,3,-5),0x4a3220],[B(1.7,1.1,.06).translate(5.9,5.6,-5),0xa82424]);return mg(L)},
+rlRing=rng=>{const L=[];for(let i=0;i<12;i++){const a=i/12*TAU;L.push([B(1.2,3.8+rng()*1.4,.8).rotateY(a).rotateZ((rng()-.5)*.08).translate(cos(a)*11,1.9,sin(a)*11),0x6f7886])}L.push([B(3.2,1,1.7).translate(0,.5,0),0x4a505c],[B(3.6,.3,2.1).translate(0,1.1,0),0x3a3f4a]);return mg(L)},
+rlPlot=()=>{const L=[];for(let x=-9;x<=9;x+=2)L.push([B(1.3,.4,.5).translate(x,.1,-6),0x8a867a],[B(1.3,.4,.5).translate(x,.1,6),0x8a867a]);for(let z=-5;z<=5;z+=2)L.push([B(.5,.4,1.3).translate(-9,.1,z),0x8a867a],[B(.5,.4,1.3).translate(9,.1,z),0x8a867a]);
+ L.push([Cy(.1,.12,2.2,5).translate(-9.8,1,-6.8),0x5a4130],[B(1.4,.8,.08).translate(-9.8,2.2,-6.8),0x3aa845]);return mg(L)},
+rlStall=col=>mg([[B(2.2,.9,1.2).translate(0,.45,0),0x8a6a43],[B(2.7,.12,1.7).translate(0,2.2,0),col],...[[-1.2,.7],[1.2,.7],[-1.2,-.7],[1.2,-.7]].map(([x,z])=>[Cy(.06,.06,2.2,5).translate(x,1.1,z),0x5a4130])]),
+rlWell=()=>mg([[Cy(1.2,1.3,1,10).translate(0,.5,0),0x8d8996],[Cy(.95,.95,.1,10).translate(0,.95,0),0x2a4c6a],[Cy(.07,.07,2.6,5).translate(-1.1,1.3,0),0x5a4130],[Cy(.07,.07,2.6,5).translate(1.1,1.3,0),0x5a4130],[B(2.8,.15,1.4).translate(0,2.6,0),0x6a4a2c]]),
+rlParts=p=>{if(p.parts)return p.parts;const rng=rlRng(Math.abs(Math.round(p.x*13+p.z*7))%2147483646+1),zn=rlz(p.x,p.z),pal=RLPAL[zn<0?0:zn],P=[],put=(g,x,z,ry,c)=>P.push({g,x,z,ry,c});
+ // flat enough, dry, clear of the roads
+ const flat=(x,z,r)=>{const y=H(x,z);if(y<WL+1.2)return false;for(const[a,b]of[[r,0],[-r,0],[0,r],[0,-r]])if(abs(H(x+a,z+b)-y)>2.2)return false;return rlRoad(x,z)>r+1};
+ if(p.k=='m')put(rlTower(3.2,14+rng()*4),p.x,p.z,0,[0,0,3.6]);
+ else if(p.k=='e')p.s?put(rlCamp(rng),p.x,p.z,rng()*TAU):put(rlRing(rng),p.x,p.z,0);
+ else if(p.k=='h')put(rlPlot(),p.x,p.z,rng()*PI);
+ else{const n=[0,6,11,12][p.s],r0=[0,12,16,56][p.s],r1=[0,30,50,82][p.s],hs=[];
+  if(p.s>1){put(rlWell(),p.x,p.z,0,[0,0,1.5]);const cs=[0xb83a3a,0x3a62b8,0x3aa06a,0xc8a03a];for(let i=0;i<3;i++){const a=i*2.1+.6;put(rlStall(cs[(i+(rng()*4|0))%4]),p.x+cos(a)*6,p.z+sin(a)*6,-a+PI/2)}}
+  for(let t=0;t<n*8&&hs.length<n;t++){const a=rng()*TAU,r=r0+rng()*(r1-r0),x=p.x+cos(a)*r,z=p.z+sin(a)*r;if(!flat(x,z,4.5)||hs.some(q=>hypot(q[0]-x,q[1]-z)<10))continue;hs.push([x,z]);
+   const w=4.6+rng()*3,d=4+rng()*3;put(rlHouse(w,d,3.1+rng()*.9,pal,rng()<.6),x,z,atan2(-cos(a),-sin(a)),[w,d])}}
+ return p.parts=P};
+
 function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometry(CS,CS,SN,SN).rotateX(-PI/2),p=g.attributes.position,nr=g.attributes.normal,S1=SN+1;
  for(let i=0;i<p.count;i++)p.setY(i,H(p.getX(i)+ox,p.getZ(i)+oz));g.computeVertexNormals();
  // chunk-border normals from the analytic surface so neighbouring chunks meet without a lighting seam
@@ -1252,15 +1414,15 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
  for(let i=0;i<8;i++){const q=pt(0),t=.5+r()*1.4,ry=r()*7,rx=r()*.3;if(q){A[3].push([q[0],q[1],q[2],t,ry,t*.7,rx]);t>1&&cg.push(new THREE.IcosahedronGeometry(.92,0).scale(t,t*.7*.9,t).rotateX(rx).rotateY(ry).translate(q[0],q[1],q[2]))}}
  for(let i=0;i<13;i++){const q=pt(),c=[0xffffff,0xffe066,0xc77dff,0xff8fab][i%4];if(q)for(let j=0;j<8;j++){const x=q[0]+(r()-.5)*7,z=q[2]+(r()-.5)*7,y=Hm(x,z);y>WL+1&&A[4].push([x,y-.02,z,.9+r()*.5,r()*7,0,0,c])}}
  // this chunk's share of the fields: everything is placed by the chunk it stands in, so each wall run, hedge and tree is built exactly once
- const lo=ox-CS/2,lz=oz-CS/2,ok=(x,z)=>x>=lo&&x<lo+CS&&z>=lz&&z<lz+CS&&!farmClear(x,z),T=SPC.map(()=>[]),WS=[[],[],[],[]],HG=[[],[]],GO=[],PR=[],GT=[],gts=[],BL=[],RU=[[],[]],wc=[],OFL=[],GCP=[],
- tree=(k,x,z,t,ry=r()*7,rx=0)=>{if(!ok(x,z)||!nf(x,z))return;const y=Hm(x,z);if(y<WL+.5)return;T[k].push([x,y-.2,z,t,ry,t,rx]);const c=SPC[k][2]*t;cg.push(Cy(c,c*1.12,7,8).translate(x,y+2.5,z))},
+ const lo=ox-CS/2,lz=oz-CS/2,ok=(x,z)=>x>=lo&&x<lo+CS&&z>=lz&&z<lz+CS&&!farmClear(x,z)&&rlRoad(x,z)>5&&!rlSite(x,z),T=SPC.map(()=>[]),WS=[[],[],[],[]],HG=[[],[]],GO=[],PR=[],GT=[],gts=[],BL=[],RU=[[],[]],wc=[],OFL=[],GCP=[],
+ tree=(k,x,z,t,ry=r()*7,rx=0)=>{if(!ok(x,z)||!nf(x,z))return;const y=Hm(x,z);if(y<WL+.5)return;T[k].push([x,y-.2,z,t,ry,t,rx,rlTint(x,z)]);const c=SPC[k][2]*t;cg.push(Cy(c,c*1.12,7,8).translate(x,y+2.5,z))},
  // the thorns all lean the same way, away from the prevailing wind
  thorn=(x,z,f=.35)=>tree(r()<f?5:4,x,z,.85+r()*.4,-.6+(r()-.5)*.5,(r()-.5)*.08),
  bush=(x,z,ry,k=0,b=.95+r()*.3)=>{if(!ok(x,z)||!nf(x,z))return;const y=Hm(x,z);y>WL+.5&&HG[k].push([x,y+.8,z,b,ry+(r()-.5)*.3,b*(1.05+r()*.3),0,HTN[r()*4|0]])},
  gorse=(x,z,n,sp)=>{for(let j=0;j<n;j++){const a=r()*TAU,d=sqrt(r())*sp,X=x+cos(a)*d,Z=z+sin(a)*d,b=.75+r()*.6;if(!ok(X,Z)||!nf(X,Z))continue;const y=Hm(X,Z);y>WL+.8&&GO.push([X,y+.3*b,Z,b,r()*7,b*(.8+r()*.35)])}},
  syc=(x,z)=>tree(r()<.7?0:1,x,z,(.8+r()*.6)*1.54),
  // a lone field tree for the ground it stands on: pine, thorn or a windswept one up high; oak, sycamore, thorn or ash below
- lone=(x,z,h)=>H(x,z)>9?h<.4?tree(6,x,z,1.45+r()*.45):h<.7?thorn(x,z,.25):tree(1,x,z,(.8+r()*.6)*1.54):h<.3?tree(2,x,z,1.15+r()*.45):h<.52?syc(x,z):h<.8?thorn(x,z,.45):tree(3,x,z,1.25+r()*.45);
+ lone=(x,z,h)=>h*977%1>rlTD(x,z)?0:H(x,z)>9?h<.4?tree(6,x,z,1.45+r()*.45):h<.7?thorn(x,z,.25):tree(1,x,z,(.8+r()*.6)*1.54):h<.3?tree(2,x,z,1.15+r()*.45):h<.52?syc(x,z):h<.8?thorn(x,z,.45):tree(3,x,z,1.25+r()*.45);
  // ---- places to search, laid out square to the field lattice round the field's middle; each piece is built by the chunk it stands in ----
  // the ruined cottages are built 1.4x their modelled plan (RUK) and 1.2x its height (RUY), roomier inside and with 4.5m gaps through
  // the middle of their long walls (their old 1.1m door, barely wider than the shepherd, had him wedged on its jambs). RUB, their walls'
@@ -1439,6 +1601,9 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
  addI(BYRE,VW,PX.byre,1);addI(CART,VC,PX.cart,1);addI(CHURCH,VW,PX.church,1);addI(LMK.tw,VC,PX.tower,1);addI(LMK.tr,VC,PX.towerR,1);addI(LMK.cs,VC,PX.castle,1);PX.st.forEach((a,k)=>addI(GSTONE[k],VW,a,1));
  LGI.forEach((M,n)=>addM(LOGS[n],VWF,M,1));STI.forEach((a,n)=>addI(STUMPS[n],VWF,a,1));TDI.forEach((a,n)=>addI(MSH[n],VWF,a,!mob));
  seen.add(k);
+ // the realm's sites: each part is built by the chunk it stands in (rlParts)
+ for(const p of RLP){if(hypot(p.x-ox,p.z-oz)>p.r+CS*.8)continue;for(const q of rlParts(p)){if(abs(q.x-ox)>=CS/2||abs(q.z-oz)>=CS/2)continue;const y=Hm(q.x,q.z),m=new THREE.Mesh(q.g.clone(),VC);m.position.set(q.x,y,q.z);m.rotation.y=q.ry;m.castShadow=m.receiveShadow=true;G.add(m);
+  if(q.c)cg.push(q.c[0]?B(q.c[0],4,q.c[1]).rotateY(q.ry).translate(q.x,y+1.5,q.z):Cy(q.c[2],q.c[2],8,10).translate(q.x,y+4,q.z))}}
  const cc=[];cg.length&&cc.push(mkCol(cg));wc.length&&cc.push(Object.assign(mkCol(wc),{wall:1}));for(const gr of gts)gr.tg||(gr.col=Object.assign(mkCol([gtBox(gr)]),{wall:1}),cc.push(gr.col));cc.length&&CCOL.set(k,cc);colList();sc.add(G);const rec={g:G,x:ox,z:oz,k,gc:GCP,itm};gcD=1;plD=1;CH.set(k,rec);CHL.push(rec)}
 const colList=()=>{COLS.length=0;COLS.push(FARMC,FENCEC);for(const c of CCOL.values())COLS.push(...c)};
 let FARMC=null,FENCEC=null;
@@ -1539,7 +1704,7 @@ GL.forEach((L,li)=>{// four storage buffers (WebGL 2's transform-feedback comput
   // the ground cover's clearings (GCU): the least any of them leaves the grass here
   const cf=float(1).toVar();Loop(GCK,({i:k})=>{const q=GCU.element(k),dl=w.sub(q.xy).length(),rg=q.z.lessThan(0),r1=select(rg,float(1.1),q.z);cf.assign(Min(cf,mix(q.w,float(1),smoothstep(r1.mul(.45),r1,select(rg,dl.add(q.z).abs(),dl)))))});
   const d=w.sub(U.gF).length(),fade=smoothstep(L.fi[0],L.fi[1],d).mul(ss1(L.fo[0],L.fo[1],d)),dn=vnT(w.mul(.045).add(vec2(3.1,7.7))).toVar(),keep=step(Fract(sd.z.mul(7.31).add(sd.w.mul(3.17))),dn.mul(.5).add(.72)),
-  hgt=sd.z.mul(.7).add(.7).mul(L.h).mul(dn.mul(.45).add(.8)).mul(grassMaskT(w,y)).mul(fade).mul(keep).mul(puddleAt(w,y,r0.zw.dot(r0.zw).oneMinus().sqrt()).x.mul(-.9).add(1)).mul(cf),g0=Sin(w.dot(U.wd).mul(.11).sub(U.wp.mul(1.7))).mul(.5).add(.5),gust=g0.mul(g0).toVar(),
+  hgt=sd.z.mul(.7).add(.7).mul(L.h).mul(dn.mul(.45).add(.8)).mul(grassMaskT(w,y)).mul(smoothstep(.62,.82,r0.zw.dot(r0.zw).oneMinus().sqrt())).mul(fade).mul(keep).mul(puddleAt(w,y,r0.zw.dot(r0.zw).oneMinus().sqrt()).x.mul(-.9).add(1)).mul(cf),g0=Sin(w.dot(U.wd).mul(.11).sub(U.wp.mul(1.7))).mul(.5).add(.5),gust=g0.mul(g0).toVar(),
   tgt=U.wd.mul(gust.mul(.55).add(.1)).mul(U.wind.min(2)).add(vec2(Sin(U.t.mul(3.3).add(sd.z.mul(30))),Cos(U.t.mul(2.9).add(sd.w.mul(30)))).mul(U.wind.mul(.035).add(.05))).toVar();
   if(L.tr)Loop(TRN,({i:k})=>{const q=TRU.element(k),dv=w.sub(q.xy),dl=dv.length();tgt.addAssign(dv.div(dl.max(.01)).mul(ss1(q.z.mul(.25),q.z,dl)).mul(q.w))});
   const b=r0.xy.toVar(),v=c.zw.toVar();
@@ -1803,8 +1968,10 @@ DW0=attribute('aD0','vec4'),DW1=attribute('aD1','vec4'),KN=DW0.x,TWd=DW0.y,TRz=D
 manRig=(p,rot,Q=PU)=>{const aJ=attribute('aJ','vec4'),hW=attribute('aH','float'),sx=sign(p.x).toVar(),ps=sx.greaterThan(0),
  // the hip swing fades out toward the centre line only up in the crotch, where the two trouser legs are fused and would tear apart;
  // below it the trousers (5) and wellies (6) swing whole. Faded all the way down, each leg's inner side (|x| < .1) stayed put while
- // the outer side swung, so the legs sheared into a smear between the feet
- hipW=aJ.x.mul(Max(smoothstep(.02,.1,p.x.abs()),ss1(1.15,1.3,p.y).mul(smoothstep(4.6,4.9,aM)).mul(ss1(6.1,6.5,aM)))).toVar(),
+ // the outer side swung, so the legs sheared into a smear between the feet. The knight's mail (5), plate (6) and the gilt rims round
+ // his greaves' tops (trim, 7) all swing whole: cut off at 6.5, the rims and the plate blended into them (aM 6.4-6.9) were left
+ // behind on each leg's inner side and the boots smeared at every stride
+ hipW=aJ.x.mul(Max(smoothstep(.02,.1,p.x.abs()),ss1(1.15,1.3,p.y).mul(smoothstep(4.6,4.9,aM)).mul(ss1(7.1,7.5,aM)))).toVar(),
  // the knee bends by height, over a band about as tall as the kneecap: the baked shin weight fades in from mid-thigh to mid-shin, and
  // at a jogging fold (~2 rad) that bent the whole leg like a hose and ballooned the knee
  knW=ss1(.72,.9,p.y).mul(aJ.x).toVar();
@@ -1992,7 +2159,7 @@ amb=dt=>{if(!AC)return;MU&&MU.tick(mof||!run||dT>DAY-60&&dT<CYC-20?0:pz?.35:1-ch
  if(chN>.05&&R()<.55){const N=[1760,2093,2349.32,2793.83,3135.96,3520],i=R()*5|0,v=.022*chN,pn=cl(chP+(R()-.5)*.3,-1,1),dl=R()*.15;tink(N[i],v,pn,dl);R()<.3&&tink(N[i+1],v*.8,pn,dl+.07)}if(rn>.3&&R()<dt*rn*2)snd(1600+R()*1800,.05,'sine',.01*rn,700+R()*300,0,R()*.15,(R()-.5)*1.4);
  if((bt-=dt)<0){bt=2.5+R()*6+wx.r*14+max(0,wx.w-1.5)*4;R()>max(wx.r,wx.hf*.8)&&(dT<DAY?bird():R()<.45&&owl())}},
 // nothing hostile is placed within 40m of home (the muster ring at the origin, or the keep), nor in a plantation's block of spruce
-nearFarm=(x,z)=>hypot(x,z)<40||hypot(x+21,z+20)<40||inPlant(x,z),
+nearFarm=(x,z)=>hypot(x,z)<40||hypot(x+21,z+20)<40||inPlant(x,z)||rlSafe(x,z),
 // is a spot on the ground at least 15% outside the camera's view (behind it, or past the frame edges by 15%)?
 offView=(x,z)=>{T3.set(x,Hm(x,z)+1,z).project(cam);return T3.z>1||abs(T3.x)>1.15||abs(T3.y)>1.15};
 
@@ -2497,7 +2664,7 @@ lootU=dt=>{const p=P.position;let n=0;
   C1.setHex(c).multiplyScalar(3.4);PKM.setColorAt(i,C1);R()<dt*(q.k==2?4+q.r*3:3)&&emit(q.x+(R()-.5)*.5,q.y,q.z+(R()-.5)*.5,1,c,.4,1.6,1.4,-1.2,.18)}
  PKM.instanceMatrix.needsUpdate=PKM.instanceColor.needsUpdate=LBM.instanceMatrix.needsUpdate=LBG.attributes.aC.needsUpdate=true;PKM.count=LBM.count=n;PKM.visible=LBM.visible=n>0},
 // a new wolf comes in from 40-58m off, never from up the screen (the fixed view looks one way, so that's where it would be seen popping in), and never near the farm
-wlfNew=()=>{const p=P.position,big=dT>=DAY&&R()<.4;for(let k=0;k<8;k++){const a=R()*TAU,d=40+R()*18,x=p.x+cos(a)*d,z=p.z+sin(a)*d;if(-(cos(a)+sin(a))*.7071>.45||H(x,z)<WL+.8||nearFarm(x,z)||hypot(x,z)<penR()+30)continue;
+wlfNew=()=>{const p=P.position,big=(dT>=DAY||rlz(p.x,p.z)==1)&&R()<.4;for(let k=0;k<8;k++){const a=R()*TAU,d=40+R()*18,x=p.x+cos(a)*d,z=p.z+sin(a)*d;if(-(cos(a)+sin(a))*.7071>.45||H(x,z)<WL+.8||nearFarm(x,z)||hypot(x,z)<penR()+30)continue;
   const w=WLF.find(q=>!q.on);if(!w)return;Object.assign(w,{on:1,x,z,y:Hm(x,z),ry:atan2(p.x-x,p.z-z),hp:big?9+LV:WHP+(LV>>1),st:0,t:0,tw:2,kx:0,kz:0,ph:R()*6,am:0,ln:0,fl:0,sc:big?1.75:1.25,cd:0,tx:x,tz:z,hb:0,big});w.mh=w.hp;return}},
 // the wolf: st 0 prowl, 1 hunt, 2 wind-up (a half-second crouch: the tell), 3 bite (a short dash; bites if the mouth ends within 1.5m of him), 4 run off after it,
 // 5 stagger (hit), 6 dying. The pen's safe ring calls them off, and a wolf that has lost him (50m) goes back to prowling
@@ -2523,7 +2690,7 @@ function wlfU(dt){if(!run){WIM.visible&&wlfClr();foeClr();return}hrt();if(pz)ret
  // the ward renews, and while it is up a few motes of its light hang about him
  wardT-=dt;skr('ward')&&wardT<=0&&!bDead&&R()<dt*3&&emit(p.x+(R()-.5)*1.4,p.y+.8+R()*1.8,p.z+(R()-.5)*1.4,1,0x9fd0ff,.3,.6,.9,-.5,.2);
  let live=0;for(const w of WLF)w.on&&w.st<6&&live++;
- const nt=dT>=DAY,tgt=safe||bDead||hypot(p.x,p.z)<penR()+28?0:min(WMX,(nt?3:2)+min(2,dy-1)+(nt&&dy>1?1:0));if(live<tgt&&(wlT-=dt)<=0){wlT=5+R()*5;wlfNew()}
+ const nt=dT>=DAY,tgt=safe||bDead||hypot(p.x,p.z)<penR()+28||rlSafe(p.x,p.z)?0:min(WMX,(nt?3:2)+min(2,dy-1)+(nt&&dy>1?1:0));if(live<tgt&&(wlT-=dt)<=0){wlT=5+R()*5;wlfNew()}
  let top=0;const A=WA.T.array,B=WA.U.array;
  for(const w of WLF){const o=w.i*4;if(!w.on){B[o]=0;continue}if(!bDead)wlfAI(w,dt,p,safe);if(!w.on){B[o]=0;continue}top=w.i+1;
   A[o]=w.x;A[o+1]=w.y+abs(sin(w.ph))*.1*w.am;A[o+2]=w.z;A[o+3]=w.ry;B[o]=w.sc*(w.st==6?max(0,1-w.t/.7):1);B[o+1]=w.am;B[o+2]=w.ph;B[o+3]=w.ln;
@@ -2593,8 +2760,10 @@ EYM.colorNode=color(0xff4a1a).mul(3.2);
 // how many are out: brigands by day (none until the first day is a few minutes old), one by night; the dead only by night, more as the
 // days go on. None near home or while he is down. At dawn every skeleton still standing crumbles
 let fhT=3;
-function foeU(dt,p,safe){const nt=dT>=DAY,off=safe||bDead||hypot(p.x,p.z)<penR()+28,nB=off?0:nt?1:dy<2&&dT<150?0:min(4,1+(dy>>1)),nS=off||!nt?0:min(5,2+(dy>>1));let lb=0,ls=0;
- for(const h of HUM){if(!h.on)continue;if(h.k&&!nt&&h.st<6){h.st=6;h.t=0;emit(h.x,h.y+1.4,h.z,18,0xd9d0b4,3,3,.8,6,.4)}h.st<6&&(h.k?ls++:lb++)}
+function foeU(dt,p,safe){const nt=dT>=DAY,hol=rlz(p.x,p.z)==3,camp=RLP.some(q=>q.k=='e'&&hypot(p.x-q.x,p.z-q.z)<160),off=safe||bDead||hypot(p.x,p.z)<penR()+28||rlSafe(p.x,p.z),
+ // brigands gather near an enemy camp, and the dead walk by day in the Haunted Hollow
+ nB=off?0:(nt?1:dy<2&&dT<150?0:min(4,1+(dy>>1)))+(camp?2:0),nS=off||!(nt||hol)?0:min(5,2+(dy>>1));let lb=0,ls=0;
+ for(const h of HUM){if(!h.on)continue;if(h.k&&!nt&&!hol&&h.st<6){h.st=6;h.t=0;emit(h.x,h.y+1.4,h.z,18,0xd9d0b4,3,3,.8,6,.4)}h.st<6&&(h.k?ls++:lb++)}
  if((fhT-=dt)<=0){fhT=4+R()*4;lb<nB?foeNew(0):ls<nS&&foeNew(1)}
  for(const h of HUM){if(!h.on)continue;bDead||foeAI(h,dt,p,safe);h.on&&foePose(h)}}
 // ---- the knight ----
@@ -2651,12 +2820,15 @@ const swTrail=su=>{if(su>.2&&su<.88){staff.updateWorldMatrix(true,false);const w
  while(swTq.length&&tm-swTq[0][2]>swTL)swTq.shift();const n=swTq.length;
  for(let i=0;i<n;i++){const[a,b,t]=swTq[i],l=1-(tm-t)/swTL,k=.3+.7*l;swTP.set(a,i*6);for(let j=0;j<3;j++)swTP[i*6+3+j]=a[j]+(b[j]-a[j])*k;swTA[i*2]=0;swTA[i*2+1]=l*l*.8}
  swTG.attributes.position.needsUpdate=swTG.attributes.aA.needsUpdate=true;swTG.setDrawRange(0,max(0,n-1)*6);swTM.visible=n>1};
+// ground too steep to walk (the face of a cliff, over its lip): a step onto it is turned back, or slid along the lip if only one of its two directions is steep
+const cliffStop=(p,bx,bz)=>{const h0=Hm(bx,bz),st=(x,z)=>{const l=hypot(x-bx,z-bz);return l>1e-4&&abs(Hm(x,z)-h0)>l*1.7};
+ if(!st(p.x,p.z))return;if(!st(p.x,bz))p.z=bz;else if(!st(bx,p.z))p.x=bx;else{p.x=bx;p.z=bz}};
 function mvP(dt){let mx=(K.KeyD||K.ArrowRight?1:0)-(K.KeyA||K.ArrowLeft?1:0)+jx+gx,my=(K.KeyS||K.ArrowDown?1:0)-(K.KeyW||K.ArrowUp?1:0)+jy+gy,l=hypot(mx,my);if(l>1){mx/=l;my/=l;l=1}if(ov||bDead)mx=my=l=0;
  const s=7.35*(1+.05*skr('fleet')+eqv('b')),vx=(mx+my)*.7071,vz=(my-mx)*.7071,p=P.position;
  const dyw=l>.05?wa(atan2(vx,vz)-P.rotation.y):0;ptn+=(dyw-ptn)*min(1,dt*8);if(l>.05)P.rotation.y+=dyw*min(1,dt*9);
- const bx=p.x,bz=p.z,ix=l>.05?vx*s*dt:0,iz=l>.05?vz*s*dt:0;sweep(p,ix,iz,.45,2.4);slip(p,bx,bz,ix,iz);wade(p,bx,bz);p.y=max(Hm(p.x,p.z),WL-1.2);
+ const bx=p.x,bz=p.z,ix=l>.05?vx*s*dt:0,iz=l>.05?vz*s*dt:0;sweep(p,ix,iz,.45,2.4);slip(p,bx,bz,ix,iz);wade(p,bx,bz);cliffStop(p,bx,bz);p.y=max(Hm(p.x,p.z),WL-1.2);
  // a dash carries him on the way he faces (Windrunner: and strikes each foe he passes, once a dash)
- dsC-=dt;if(dsT>0){dsT-=dt;const s=21*dt,fy=P.rotation.y,cx=p.x,cz=p.z;sweep(p,sin(fy)*s,cos(fy)*s,.45,2.4);wade(p,cx,cz);p.y=max(Hm(p.x,p.z),WL-1.2);R()<.6&&emit(p.x,p.y+.2,p.z,1,0xd9cdb0,1.5,.8,.4,4,.3);
+ dsC-=dt;if(dsT>0){dsT-=dt;const s=21*dt,fy=P.rotation.y,cx=p.x,cz=p.z;sweep(p,sin(fy)*s,cos(fy)*s,.45,2.4);wade(p,cx,cz);cliffStop(p,cx,cz);p.y=max(Hm(p.x,p.z),WL-1.2);R()<.6&&emit(p.x,p.y+.2,p.z,1,0xd9cdb0,1.5,.8,.4,4,.3);
   if(skr('runner')){for(const w of WLF)w.on&&w.st<6&&w.dn!=dsN&&hypot(w.x-p.x,w.z-p.z)<2.2&&(w.dn=dsN,wlfHit(w,bDmg()));for(const h of HUM)h.on&&h.st<6&&h.up>=1&&h.dn!=dsN&&hypot(h.x-p.x,h.z-p.z)<2.2&&(h.dn=dsN,foeHit(h,bDmg()))}}
  const sp=min(l*s,hypot(p.x-bx,p.z-bz)/max(dt,1e-4)),rn0=cl((sp-3.5)/3,0,1);RN+=(rn0-RN)*min(1,dt*4);const rn=RN;pvel=sp;ph+=sp/lp(2.2,2.9)*PI*dt;{const st=Math.floor(ph/PI);if(st!=pSt){pSt=st;sp>.8&&wetStep(st&1)}}pw+=(min(sp/3.5,1)-pw)*min(1,dt*6);const w=pw,q=sin(ph),c=cos(ph);
  let su=0,sk=0,sa=0;
@@ -2722,7 +2894,7 @@ function camU(dt){ZM+=(ZMt-ZM)*min(1,dt*6);const p=P.position,pit=.48+.36*cl((ZM
  seeK+=((run&&!m?1:0)-seeK)*min(1,dt*4);U.seeK.value=seeK;U.seeC.value.copy(cam.position);U.seeT.value.set(p.x,p.y+.8,p.z);U.seeR.value=cl(cam.position.distanceTo(P.position)*.126,4.1,8.6)}
 // every frame, paused or not, after camU: the grass field, the sun's shadow box, the lake and the far terrain ring gather round where
 // the camera is looking (8m past the look point), so they follow it to the cottage menu however far off the shepherd was left
-function vwU(){const fx=LK.x-cam.position.x,fz=LK.z-cam.position.z,fl=hypot(fx,fz)||1,ux=LK.x+fx/fl*8,uz=LK.z+fz/fl*8;U.gF.value.set(ux,uz);gcUpd(ux,uz);
+function vwU(){const fx=LK.x-cam.position.x,fz=LK.z-cam.position.z,fl=hypot(fx,fz)||1,ux=LK.x+fx/fl*8,uz=LK.z+fz/fl*8;U.gF.value.set(ux,uz);gcUpd(ux,uz);rdUpd(ux,uz);
  SHC.set(LK.x+fx/fl*5.6,LK.y-1.5,LK.z+fz/fl*5.6);sun.position.copy(SHC).add(SO);sun.target.position.copy(SHC);wat.position.x=ux;wat.position.z=uz;
  if(!FTJ&&max(abs(ux-ftx),abs(uz-ftz))>60)ftUpd(Math.round(ux/20)*20,Math.round(uz/20)*20);ftStep()}
 // sky dial: hours VI..VI round the arch (the ends sit on the hilltops), stars on the night half of the disc, rays on the sun
@@ -2740,7 +2912,7 @@ let clkD=0;const clk=()=>{const a=-90+360*dT/CYC,q=sm(40,70,abs(a));$('dsk').sty
 let cbV=-1;const cbE=$('cb'),cbU=()=>{const v=Math.round((1-max(swC,0)/swCD())*1e3)/1e3;if(v!=cbV){cbV=v;cbE.style.setProperty('--c',v)}};
 let hudK='';function hud(){$('fc').textContent=LV;$('wl').textContent=W|0;$('hp').textContent=POT;$('qbn').textContent=POT;$('qb').disabled=!POT;$('spb').hidden=!SP;$('spb').textContent=SP;$('dsb').hidden=!skr('dash');$('dsb').classList.toggle('cd',dsC>0);
  const nt=dT>=DAY,mn=Math.ceil((nt?CYC-dT:DAY-dT)/60),wi=nt&&wxI<2?'moon':WXD[wxI][1],k=wi+wxI+'/'+dy+'/'+mn+nt;
- $('hf').style.width=min(100,XP/xpN(LV)*100)+'%';$('hf').style.background='linear-gradient(#6fdcae,#2a8f6b)';xpR(P.position.x,P.position.z);mIdle();
+ $('hf').style.width=min(100,XP/xpN(LV)*100)+'%';$('hf').style.background='linear-gradient(#6fdcae,#2a8f6b)';xpR(P.position.x,P.position.z);mIdle();wcFlush(60,3);
  $('di').textContent='Day '+dy;clk();qtU();
  if(k!=hudK){hudK=k;$('clk').setAttribute('aria-label',`Day ${dy}, about ${mn} minute${mn==1?'':'s'} until ${nt?'dawn':'nightfall'}`);$('wiu').setAttribute('href','#i-'+wi);$('wq').textContent=WXD[wxI][0]}}
 // ---- the map (M): the country you have seen, painted like an old chart and turned to match the camera (up the screen is up the map),
@@ -2752,9 +2924,44 @@ let hudK='';function hud(){$('fc').textContent=LV;$('wl').textContent=W|0;$('hp'
 const MCL=32,MT=new Map(),MQ=[],SQ=Math.SQRT1_2,xk=(i,j)=>(i+32768)*65536+j+32768,
  MPI=[0,['cottage','A deserted farmstead'],['grave','An old graveyard'],['cottage','An overgrown cottage'],['tower','A watchtower'],['castle','A fortress']];
 let mSp=600,mcx=0,mcz=0,mAT=null,mMK=null,mAB=[0,0,1,1],mPQ=[],mPO=[],mDg=null,mWA=0,mRaf=0;
+// ---- the realm's chart: the island's outline and the zones' borders are always drawn; the land inside is blank until it is explored, then filled in
+// (WCH: a cell at a time, in its zone's colour shaded by the lie of the ground), with the roads laid over where they have been seen (WMK says where),
+// the sites and the zones' names as they are found. The canvases are in the sketch's frame (WG cells across, WCM taking them to the world) ----
+const rlu=(x,z)=>[RLMU+(x-z)*RLMR/RLMM,RLMV+(x+z)*RLMR/RLMM],WG=1024,WS=RLMX/WG,WK=RLMM/(2*RLMR),WCM=[WK*WS,-WK*WS,WK*WS,WK*WS,-WK*(RLMU+RLMV),WK*(RLMU-RLMV)],
+ WCH=document.createElement('canvas'),WMK=document.createElement('canvas'),WRT=document.createElement('canvas'),
+ WZC=[[150,172,98],[232,238,244],[204,128,66],[112,100,128],[216,194,120],[152,146,130]],ZS=new Set(),WQ=[...XPL],
+ // where each zone's name stands on the sketch (its label there), the kinds of site and what to call them
+ RLZL=[[1066,1277],[1052,362],[1376,707],[1619,1624],[567,1672],[423,1092]],RLK={c:'mpc',e:'mpe',h:'mph',m:'mpm'},RLKT={c:'A friendly town',e:'An enemy site',h:'Land to buy',m:'A mage tower'};
+WCH.width=WCH.height=WMK.width=WMK.height=WG;const wcx=WCH.getContext('2d'),wmx=WMK.getContext('2d');wmx.fillStyle='#fff';let WOL=null;
+// paint a cell that has been seen: its zone's colour, lit from the screen's top left by the lie of the ground, water darker with depth, sand at the shore
+const wcPaint=(i,j)=>{const x=(i+.5)*MCL,z=(j+.5)*MCL,zn=rlz(x,z),[u,v]=rlu(x,z),cx=u*WG/RLMX,cy=v*WG/RLMX;if(cx<2||cy<2||cx>=WG-2||cy>=WG-2)return;zn>=0&&ZS.add(zn);
+ const y=H(x,z),e=H(x+8,z-8)-H(x-8,z+8);let r,g,b;
+ if(zn<0||y<WL){const q=min(1,(WL-y)/6);r=126-40*q;g=160-38*q;b=170-26*q}else if(y<WL+.9){r=220;g=204;b=156}
+ else{const c=WZC[zn],L=cl(1+e*.05,.72,1.28);r=c[0]*L;g=c[1]*L;b=c[2]*L}
+ wcx.fillStyle=`rgb(${r|0},${g|0},${b|0})`;wcx.fillRect(cx-2,cy-2,4,4);wmx.fillRect(cx-2,cy-2,4,4)},
+ wcFlush=(n,ms)=>{const t0=performance.now();while(n-->0&&WQ.length&&performance.now()-t0<ms){const k=WQ.pop();wcPaint(floor(k/65536)-32768,k%65536-32768)}},
+ // the outline: the edges between cells of different zones (or land and sea), chained, then smoothed three times so the cells' steps ease out
+ wcChains=coast=>{const E=[],L=RLMSK,n=RLMG;
+  for(let j=0;j<n;j++)for(let i=0;i<n;i++){const a=L[j*n+i];
+   if(i<n-1){const b=L[j*n+i+1];if(a!=b&&((a==0||b==0)==coast))E.push([(i+1)*2048+j,(i+1)*2048+j+1])}
+   if(j<n-1){const b=L[(j+1)*n+i];if(a!=b&&((a==0||b==0)==coast))E.push([i*2048+j+1,(i+1)*2048+j+1])}}
+  const A=new Map();E.forEach((e,id)=>{for(const v of e)(A.get(v)||A.set(v,[]).get(v)).push(id)});
+  const used=new Uint8Array(E.length),out=[],walk=v0=>{const ch=[v0];let v=v0;for(;;){let id=-1;for(const q of A.get(v))if(!used[q]){id=q;break}if(id<0)break;used[id]=1;const e=E[id];v=e[0]==v?e[1]:e[0];ch.push(v);if(A.get(v).length!=2)break}return ch};
+  for(const[v,l]of A)if(l.length!=2)for(const id of l)used[id]||out.push(walk(v));
+  for(const[v,l]of A)used[l[0]]||out.push(walk(v));
+  return out.filter(ch=>ch.length>3).map(ch=>{const closed=ch[0]===ch[ch.length-1];let P=ch.map(k=>rlw(floor(k/2048)*WS,(k%2048)*WS));
+   for(let it=0;it<3;it++){const m=P.length,Q=P.map((p,i)=>{const a=P[i?i-1:closed?m-2:0],b=P[i<m-1?i+1:closed?1:m-1];return[(a[0]+2*p[0]+b[0])/4,(a[1]+2*p[1]+b[1])/4]});if(!closed){Q[0]=P[0];Q[m-1]=P[m-1]}P=Q}return P})},
+ wcStroke=(x,ch,w,col)=>{x.strokeStyle=col;x.lineWidth=w;x.beginPath();for(const P of ch){x.moveTo(P[0][0],P[0][1]);for(let i=1;i<P.length;i++)x.lineTo(P[i][0],P[i][1])}x.stroke()},
+ // the layers: x has the world's transform on it (s pixels a metre). The chart goes behind the finer tiles; roads over, kept to the seen; the outline over all
+ wcDraw=(x,s)=>{WOL||(WOL=[wcChains(true),wcChains(false)]);
+  x.save();x.globalCompositeOperation='destination-over';x.transform(...WCM);x.imageSmoothingEnabled=true;x.drawImage(WCH,0,0);x.restore();
+  const cw=x.canvas.width,chh=x.canvas.height;if(WRT.width!=cw||WRT.height!=chh){WRT.width=cw;WRT.height=chh}const t=WRT.getContext('2d');t.setTransform(1,0,0,1,0,0);t.clearRect(0,0,cw,chh);t.globalCompositeOperation='source-over';t.setTransform(x.getTransform());
+  t.lineJoin=t.lineCap='round';t.strokeStyle='#8a5a2e';t.lineWidth=2.6/s;t.beginPath();for(const r of RLR){t.moveTo(r[0][0],r[0][1]);for(let i=1;i<r.length;i++)t.lineTo(r[i][0],r[i][1])}t.stroke();
+  t.globalCompositeOperation='destination-in';t.save();t.transform(...WCM);t.imageSmoothingEnabled=true;t.drawImage(WMK,0,0);t.restore();x.save();x.setTransform(1,0,0,1,0,0);x.drawImage(WRT,0,0);x.restore();
+  x.lineJoin=x.lineCap='round';x.setLineDash([7/s,5/s]);wcStroke(x,WOL[1],1.5/s,'rgba(120,84,40,.75)');x.setLineDash([]);wcStroke(x,WOL[0],2.6/s,'#3a2410')};
 // reveal the cells whose centres lie within r of (x,z), queueing them and their neighbours to be painted
 const xpR=(x,z,r=80)=>{for(let i=floor((x-r)/MCL);i<=floor((x+r)/MCL);i++)for(let j=floor((z-r)/MCL);j<=floor((z+r)/MCL);j++){const k=xk(i,j);if(XPL.has(k)||hypot((i+.5)*MCL-x,(j+.5)*MCL-z)>r)continue;
-  XPL.add(k);for(let a=-1;a<2;a++)for(let b=-1;b<2;b++)MT.has(xk(i+a,j+b))||MQ.push([i+a,j+b])}},
+  XPL.add(k);WQ.push(k);for(let a=-1;a<2;a++)for(let b=-1;b<2;b++)MT.has(xk(i+a,j+b))||MQ.push([i+a,j+b])}},
  mTile=(i,j)=>{const k=xk(i,j);let t=MT.get(k);if(t)return t;t=new ImageData(16,16);const d=t.data,h=new Float32Array(324),x0=i*MCL-1,z0=j*MCL-1;
   for(let b=0;b<18;b++)for(let a=0;a<18;a++)h[b*18+a]=H(x0+a*2,z0+b*2);
   for(let b=0;b<16;b++)for(let a=0;a<16;a++){const n=(b+1)*18+a+1,y=h[n],e=h[n+1],w=h[n-1],lo=min(e,w,h[n+18],h[n-18]),o=(b*16+a)*4;let r,g,c;
@@ -2784,22 +2991,25 @@ const xpR=(x,z,r=80)=>{for(let i=floor((x-r)/MCL);i<=floor((x+r)/MCL);i++)for(le
   if(cv.width!=cw||cv.height!=ch){cv.width=cw;cv.height=ch}
   const x=cv.getContext('2d'),k=dp*s*SQ,[i0,j0,nw,nh]=mAB;x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,cw,ch);
   x.setTransform(k,k,-k,k,dp*w/2-k*(mcx-mcz),dp*h/2-k*(mcx+mcz));x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
-  x.drawImage(mAT,i0*MCL,j0*MCL,nw*MCL,nh*MCL);x.globalCompositeOperation='destination-in';x.drawImage(mMK,i0*MCL,j0*MCL,nw*MCL,nh*MCL);x.globalCompositeOperation='source-over';
+  x.drawImage(mAT,i0*MCL,j0*MCL,nw*MCL,nh*MCL);x.globalCompositeOperation='destination-in';x.drawImage(mMK,i0*MCL,j0*MCL,nw*MCL,nh*MCL);x.globalCompositeOperation='source-over';wcDraw(x,s);
   const sp=(X,Z)=>[w/2+s*(X-mcx-Z+mcz)*SQ,h/2+s*(X-mcx+Z-mcz)*SQ],L=[],put=(X,Z,c,ic,t,lb='')=>{const[a,b]=sp(X,Z);a>-40&&b>-40&&a<w+40&&b<h+40&&L.push(`<i class="${c}" style="left:${a.toFixed(1)}px;top:${b.toFixed(1)}px" title="${t}"><svg class="ic"><use href="#i-${ic}"/></svg>${lb}</i>`)};
   for(const[X,Z,t,d]of mPO)put(X,Z,'mpo'+(d?' sd':''),MPI[t][0],MPI[t][1]+(d?', searched':''));
   put(-21,-20,'mpo kp','castle','Greywatch Keep','<b>Greywatch Keep</b>');
+  // the realm's sites, once their ground has been seen, and the zones' names once they have been entered
+  for(const p of RLP){if(p.k=='c'&&p.s==3||!XPL.has(xk(floor(p.x/MCL),floor(p.z/MCL))))continue;put(p.x,p.z,'mpo '+RLK[p.k],p.k=='c'?p.s>1?'castle':'cottage':p.k=='e'?'skull':p.k=='h'?'fence':'tower',RLKT[p.k]+': '+p.n,`<b>${p.n}</b>`)}
+  for(const z of ZS){const[X,Z]=rlw(RLZL[z][0],RLZL[z][1]),[a,b]=sp(X,Z);L.push(`<i class="mpz" style="left:${a.toFixed(1)}px;top:${b.toFixed(1)}px">${RLMZN[z]}</i>`)}
   const p=P.position,fx=sin(P.rotation.y),fz=cos(P.rotation.y),[a,b]=sp(p.x,p.z);
   L.push(`<i class="mme" style="left:${a.toFixed(1)}px;top:${b.toFixed(1)}px;--a:${atan2(fx-fz,-fx-fz).toFixed(3)}rad" title="You are here"><svg viewBox="-12 -12 24 24"><path d="M0-11 8 9 0 4.6-8 9z"/></svg></i>`);
   $('mk').innerHTML=L.join('')},
  // paint the queued tiles, about 10ms a frame, while the map is open
  mLoop=()=>{if(ov!=5)return;if(mPQ.length){const t0=performance.now(),ax=mAT.getContext('2d'),[i0,j0]=mAB;while(mPQ.length&&performance.now()-t0<10){const[i,j]=mPQ.pop();ax.putImageData(mTile(i,j),(i-i0)*16,(j-j0)*16)}mDraw()}mRaf=requestAnimationFrame(mLoop)},
- mapOpen=()=>{const p=P.position,d=hypot(p.x,p.z)|0;mcx=p.x;mcz=p.z;mBuild();mPOI();const n=mPO.length,f=mPO.filter(q=>q[3]).length;
-  $('mpd').innerHTML=(d<45?'You are home at <b>Greywatch Keep</b>':`Greywatch Keep is <b>${d} m</b> away`)+(n?` · <b>${n}</b> place${n>1?'s':''} found, <b>${f}</b> searched`:'');
+ mapOpen=()=>{const p=P.position,d=hypot(p.x,p.z)|0;mcx=p.x;mcz=p.z;wcFlush(6000,30);mBuild();mPOI();const n=mPO.length,f=mPO.filter(q=>q[3]).length;
+  $('mpd').innerHTML=(rlz(p.x,p.z)>=0?'<b>'+RLMZN[rlz(p.x,p.z)]+'</b> · ':'')+(d<45?'You are home at <b>Greywatch Keep</b>':`Greywatch Keep is <b>${d} m</b> away`)+(n?` · <b>${n}</b> place${n>1?'s':''} found, <b>${f}</b> searched`:'');
   $('mph2').textContent=gpOn?'Stick to look around · LB, RB to zoom · Y finds you':mob?'Drag to look around':'Drag to look around · scroll to zoom · M closes';
   mDraw();cancelAnimationFrame(mRaf);mRaf=requestAnimationFrame(mLoop)},
  // look (rx, ry) metres right and down the map; zoom by f about a point on it (from its top left; its middle if none), which stays put
  mLook=(rx,ry)=>{mcx+=(rx+ry)*SQ;mcz+=(ry-rx)*SQ;mDraw()},
- mZ=(f,sx,sy)=>{const v=$('mv'),w=v.clientWidth,h=v.clientHeight,s=min(w,h)/mSp,n=cl(mSp*f,250,2400),q=1-n/mSp;mSp=n;mLook(((sx??w/2)-w/2)/s*q,((sy??h/2)-h/2)/s*q)},
+ mZ=(f,sx,sy)=>{const v=$('mv'),w=v.clientWidth,h=v.clientHeight,s=min(w,h)/mSp,n=cl(mSp*f,250,15000),q=1-n/mSp;mSp=n;mLook(((sx??w/2)-w/2)/s*q,((sy??h/2)-h/2)/s*q)},
  mMe=()=>{mcx=P.position.x;mcz=P.position.z;mDraw()};
 {const v=$('mv');v.onpointerdown=e=>{if(e.button||e.target.closest('button'))return;mDg=[e.clientX,e.clientY];v.setPointerCapture(e.pointerId);v.classList.add('dg')};
  v.onpointermove=e=>{if(!mDg)return;const s=min(v.clientWidth,v.clientHeight)/mSp;mLook((mDg[0]-e.clientX)/s,(mDg[1]-e.clientY)/s);mDg=[e.clientX,e.clientY]};
@@ -2864,7 +3074,7 @@ $('cm').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled||b.id==
  else if(d.k!=null){BAG.sort((a,b)=>b.r-a.r||'wshabc'.indexOf(a.s)-'wshabc'.indexOf(b.s)||b.v-a.v);iSel=-1;sfx.dab()}
  else if(d.j!=null){let g=0,n=0;for(let i=BAG.length-1;i>=0;i--)if(!BAG[i].r){g+=sellP(BAG[i]);n++;BAG.splice(i,1)}if(n){W+=g;iSel=-1;sfx.coin();toast(`${n} common piece${n>1?'s':''} sold for <b>${g}</b> gold.`,'','coin');sv()}}
  else if(d.p!=null)drink(1);
- heroMenu();czFit();document.body.classList.contains('pd')&&gpF($('cm'))};$('ps').onclick=tgm;$('p32').onclick=t32;$('pfr').onclick=tfr;$('cb').onclick=swing;$('qb').onclick=()=>drink();$('cb').querySelector('small').textContent=mob?'Strike':'Space';$('mu').onclick=$('pm').onclick=$('mp').onclick=e=>e.target.classList.contains('ov')&&sho(0);$('bmp').onclick=()=>sho(5);$('mpx').onclick=()=>sho(0);$('mzi').onclick=()=>mZ(1/1.5);$('mzo').onclick=()=>mZ(1.5);$('mzc').onclick=mMe;
+ heroMenu();czFit();document.body.classList.contains('pd')&&gpF($('cm'))};$('ps').onclick=tgm;$('p32').onclick=t32;$('pfr').onclick=tfr;$('cb').onclick=swing;$('qb').onclick=()=>drink();$('cb').querySelector('small').textContent=mob?'Strike':'Space';$('mu').onclick=$('pm').onclick=$('mp').onclick=e=>e.target.classList.contains('ov')&&sho(0);$('bmp').onclick=()=>sho(5);$('mpx').onclick=()=>sho(0);$('mzi').onclick=()=>mZ(1/1.5);$('mzo').onclick=()=>mZ(1.5);$('mzc').onclick=mMe;$('mzr').onclick=()=>{const[x,z]=rlw(1011,1014);mcx=x;mcz=z;mSp=12600;mDraw()};
 $('alc').onclick=()=>$('al').close();$('alo').onclick=()=>$('al').close('ok');$('prm').onclick=tgr;
 // the scroll edge: a list that runs past its panel fades out at whichever end has more to see, under the pinned header or above the foot
 for(const e of document.querySelectorAll('.sc')){const f=()=>{e.classList.toggle('et',e.scrollTop>2);e.classList.toggle('eb',e.scrollTop+e.clientHeight<e.scrollHeight-2)};e.addEventListener('scroll',f,{passive:true});new ResizeObserver(f).observe(e);new MutationObserver(f).observe(e,{childList:true,subtree:true})}
@@ -3142,6 +3352,8 @@ const stage=async(k,t)=>{ldp(k,t);await new Promise(r=>setTimeout(r,30))};
  // reach), and the game runs, unseen behind the panel, until its frames come steady. three builds some render state on the first
  // real frames (a third of a second on a desktop), which otherwise stalled the title's fade-in
  AC||aud();renderer.setAnimationLoop(loop);
+ // development: ?dev puts the game's insides in the console as q (q.tp(x,z) walks the knight there; q.f(x,z) reads the realm at a point)
+ QS.has('dev')&&(window.q={P,H,Hm,vn,sm,WL,RLM,xpR,sho,WCH,WMK,WQ,ZS,wcFlush,wcPaint,RLP,RLS,RLR,rlRoad,rlz,rlw,rlParts,tp:(x,z)=>P.position.set(x,Hm(x,z),z),f:(x,z)=>{rlf(x,z);return{d:rlD,c:rlC,h:rlH,A:rlA,M:rlM,E:rlE,y:H(x,z)}}});
  await within(document.fonts.ready.then(()=>Promise.all(['Cinzel Decorative','Cinzel','Alegreya'].map(f=>document.fonts.load(`1em "${f}"`)))),5000).catch(()=>{});
  await new Promise(r=>{let n=0,ok=0,t=performance.now();const t0=t,f=now=>{ok=now-t<50?ok+1:0;t=now;++n>=12&&ok>=8||now-t0>15000||dead?r():requestAnimationFrame(f)};requestAnimationFrame(f)});
  if(dead)return;
