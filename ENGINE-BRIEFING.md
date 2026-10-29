@@ -411,7 +411,17 @@ unchanged in kind; what follows is the gameplay layer and the content that repla
   claimed back at the muster ring. Tracker `#qt`.
 - **Chests** (`FIND`, `chestOpen`, `fndPop`): gold plus a piece of gear a grade up, shown in the find popup with its own 3D model
   (`fvModel`: sword, breastplate, sabatons or amulet) and SVG (`itArt`); wear it now or pack it. `SHF` (opened keys) is saved with the quest.
-- **Gear and quests panel** (`#cm`, C / X on a pad): `gearMenu`, tabs Gear and Quests; the camera frames the knight head to toe.
+- **The look of the UI**: a dark fantasy kit (WoW / Diablo): warm charcoal panels in a bronze keyline with filigree corners (the
+  `--knot` border-image and `--grain`, both inline SVG), crimson title bars and primary buttons (`--crim`), charcoal secondary ones
+  (`--char`), amber buy buttons (`--amb`), a teal XP bar; Cinzel / Cinzel Decorative / Alegreya. It is one block at the end of the
+  stylesheet laid over the parchment-era rules (the tokens flip to light ink on dark), so their layout and accessibility rules still apply.
+- **Gear slots**: six: w sword, s shield (a chance to block a blow, `hurtP`), h helm and a armour (hearts), b boots, c charm. A worn
+  shield hangs on the knight's left forearm (`SHS`/`SHE`/`SHG`, posed each frame from `PU.ar.x/y` and `PU.el.x` as `manRig` bends the arm).
+  The pack holds 30 (`BGM`). `RCO(r)` is a rarity's colour as text (do not reuse the name `RC`: it is the capsule SDF).
+- **Hero screens** (`#cm`, `heroMenu`, `hero(t)`): C **Character** (a paper doll: Helm, Armour, Boots left and Sword, Shield, Charm
+  right of the live knight, whom the camera frames in the window between them, `czFit` on `#cdw`; stats beneath; a slot picked shows
+  its piece, to take off or swap from the pack), I **Inventory** (the pack's 30-cell grid with rarity frames and an upgrade mark, a
+  piece's tooltip card with its comparison, wear / sell, sort, sell commons, draughts), J **Quests**. X on a pad, LB/RB turn the tabs.
 - **Landmarks** (`LMK`, `poiPut` t 4 and 5): watchtowers (whole with a slate cone, or ruined) from 200 m out, and rare fortresses on a
   rock plinth from 380 m out, each with a chest. A fortress is wider than its field, so `fort(i,j)` / `nf` keep the neighbouring fields'
   walls, hedges, trees and ground cover off it. The older places (farmsteads, graveyards, ruined cottages) are laid out exactly as before.
