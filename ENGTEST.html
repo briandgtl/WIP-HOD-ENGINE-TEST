@@ -46,13 +46,6 @@ em{font-style:normal}
 /* with sheep home the triskele becomes a face for the flock's mood (fa): no spin, and the frown keeps the warning wobble */
 #hi.fa .ic{animation:none}#hi.fa.ms .ic{animation:wob 1.2s ease-in-out infinite}
 @keyframes wob{50%{rotate:-18deg}}
-/* home compass: a free-standing gilt Celtic arrow that points back to the farm, centred just under the HUD badge (220px, scaled
-   .85 on desktop and .78 on phones, from 14px in and 12px down) */
-#hc{position:fixed;left:calc(14px + 220px*.85/2 + env(safe-area-inset-left,0px));top:calc(12px + 220px*.85 + 8px + env(safe-area-inset-top,0px));translate:-50% 0;display:grid;justify-items:center;gap:4px;pointer-events:none;transition:opacity .5s}
-#hc.nr{opacity:0}
-#hc i{display:grid;filter:drop-shadow(0 2px 1.5px rgba(10,6,2,.6)) drop-shadow(0 0 6px rgba(10,6,2,.35))}
-#hc svg{width:62px;height:62px;overflow:visible;transition:transform .2s}
-#hc small{font:400 12px Cinzel,Georgia,serif;letter-spacing:.04em;color:#fff6dc;text-shadow:0 1px 3px #000,0 0 8px rgba(0,0,0,.6);white-space:nowrap}
 #hm{height:10px;margin:1px 0 3px;border-radius:6px;background:linear-gradient(#b99b62,#d9c28d);box-shadow:inset 0 1px 3px rgba(60,35,8,.55),0 1px 0 rgba(255,250,230,.6);overflow:hidden;border:1px solid #7b5a2b}
 #hf{height:100%;width:65%;border-radius:5px;background:var(--moss);box-shadow:inset 0 1px 0 rgba(255,255,255,.35);transition:width .6s,background .6s}
 /* sky dial: a painted day/night disc turns behind the hills while a gilt sun hand walks the hours */
@@ -154,7 +147,7 @@ body:not(.gp) #prm{display:none}
 .czb .ic{width:15px;height:15px}
 .czb:disabled{color:var(--mut);background:rgba(120,90,40,.16);border-color:rgba(93,60,16,.3);box-shadow:none;cursor:default}
 #cmw b{font:400 15px Cinzel,Georgia,serif;color:var(--ink)}
-body.cz :is(#hud,#tb,#cb,#hc,#ts){visibility:hidden}
+body.cz :is(#hud,#tb,#cb,#ts){visibility:hidden}
 @keyframes cmup{from{opacity:0;translate:0 24px}}
 @media (max-width:640px){#cm{left:calc(8px + env(safe-area-inset-left,0px));right:calc(8px + env(safe-area-inset-right,0px));top:auto;bottom:calc(8px + env(safe-area-inset-bottom,0px));width:auto;align-items:flex-end}#cm>.pn{max-height:46vh;gap:9px;padding:8px 14px 14px;animation-name:cmup}#cm .sc{gap:9px}#cm h2{font-size:24px}#cmi{display:none}#cmo{gap:9px}.cz{gap:5px}.sw{width:30px;height:30px}.czs{gap:8px}}
 /* title */
@@ -186,7 +179,7 @@ kbd{margin-right:6px;padding:1px 7px 2px;border-radius:4px;font:400 12px Cinzel,
 .cth{display:flex;align-items:center;gap:12px;font:400 15px Cinzel,Georgia,serif;letter-spacing:.08em;color:var(--ink2)}
 .cth::before,.cth::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold2))}.cth::after{rotate:180deg}
 .cg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.cg.tch{grid-template-columns:repeat(5,minmax(0,1fr))}
+.cg.tch{grid-template-columns:repeat(3,minmax(0,1fr))}
 .cg.tch,.cg.pad{display:none}body.gp .cg.kbc,body.mob .cg.kbc{display:none}body.mob:not(.gp) .cg.tch{display:grid}body.gp .cg.pad{display:grid}
 .ci{display:grid;justify-items:center;align-content:start;gap:4px;padding:8px 6px 7px;border-radius:5px;background:rgba(255,249,228,.5);border:1px solid rgba(112,74,30,.5);box-shadow:inset 0 0 0 3px rgba(255,250,235,.35)}
 .kc{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;min-height:32px}
@@ -199,7 +192,7 @@ kbd{margin-right:6px;padding:1px 7px 2px;border-radius:4px;font:400 12px Cinzel,
 /* a stone button as the toolbar draws it, small */
 .sb{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none;color:var(--gold3);background:var(--stonetex),radial-gradient(circle at 34% 28%,#aca79a,#76726a 52%,#45413a);box-shadow:inset 0 0 0 1.5px #21160a,inset 0 0 0 3px var(--gold2),inset 0 0 0 4px #21160a}
 .sb .ic{width:17px;height:17px;margin:0;color:var(--gold3)}
-@media (max-width:560px){.cg,.cg.tch{grid-template-columns:repeat(2,minmax(0,1fr))}.cg.kbc>.ci:first-child,.cg.kbc>.ci:last-child,.cg.tch>.ci:last-child{grid-column:1/-1}}
+@media (max-width:560px){.cg,.cg.tch{grid-template-columns:repeat(2,minmax(0,1fr))}.cg.kbc>.ci:first-child,.cg.kbc>.ci:last-child{grid-column:1/-1}}
 @media (max-height:700px){.ci small{display:none}.ci{padding:6px 6px 5px;gap:2px}.kc{min-height:28px}}
 /* how to play: a paged primer on the menus' parchment. The medallion, title and close cross are pinned above the page and the dots and buttons
    below it (as in the farm shop), so the panel keeps one size from page to page. Keycaps on it light while their key is held */
@@ -287,7 +280,7 @@ kbd{margin-right:6px;padding:1px 7px 2px;border-radius:4px;font:400 12px Cinzel,
 #jb i{position:absolute;left:50%;top:50%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;background:var(--stonetex),radial-gradient(circle at 34% 28%,#bdb8ab,#7b776d 60%,#45413a);box-shadow:inset 0 0 0 2px #21160a,inset 0 0 0 3.5px var(--gold2),0 4px 10px rgba(0,0,0,.35)}
 i.wt{font:400 12px Cinzel,Georgia,serif;color:var(--moss);margin-left:4px}
 #fd{position:fixed;inset:0;background:#05070d;opacity:0;pointer-events:none;transition:opacity .9s}
-@media (max-width:640px){#hc{left:calc(14px + 220px*.78/2 + env(safe-area-inset-left,0px));top:calc(12px + 220px*.78 + 8px + env(safe-area-inset-top,0px))}#hc svg{width:46px;height:46px}#hc small{font-size:9.5px;letter-spacing:.08em}#hud{scale:.78}.r b{font-size:15px}.r>span{font-size:12.5px;gap:5px}.r>span .ic{width:17px;height:17px}.b{width:44px;height:44px}}
+@media (max-width:640px){#hud{scale:.78}.r b{font-size:15px}.r>span{font-size:12.5px;gap:5px}.r>span .ic{width:17px;height:17px}.b{width:44px;height:44px}}
 /* on a touch screen every control is at least 44pt to the finger: small swatches and chips reach out past their painted edge
    into the gap beside them, text buttons simply stand taller */
 @media (pointer:coarse){
@@ -301,7 +294,7 @@ i.wt{font:400 12px Cinzel,Georgia,serif;color:var(--moss);margin-left:4px}
 @media (prefers-contrast:more){
  :root{--ink2:#3a2411;--mut:#553a1c}
  .ov{background:rgba(14,10,4,.66)}
- #cb small,#hc small{padding:1px 7px;border-radius:5px;background:rgba(20,12,4,.88);text-shadow:none}
+ #cb small{padding:1px 7px;border-radius:5px;background:rgba(20,12,4,.88);text-shadow:none}
  .sw,.ch{box-shadow:inset 0 0 0 2px #1b1007}
  .t{box-shadow:0 0 0 1.5px #1b1007,0 6px 16px rgba(18,10,2,.35)}
 }
@@ -406,7 +399,7 @@ h1{font-weight:700;letter-spacing:.03em}h2{font-weight:600;letter-spacing:.03em}
 kbd{background:var(--char);color:#efe4d6;box-shadow:inset 0 1px 0 rgba(255,235,220,.2),0 2px 0 #0d0a0a}
 .tk kbd.on,.ci kbd.on{color:#fbe9d6;background:var(--crim);box-shadow:0 0 0 1px #d04a3a,0 0 10px rgba(208,69,58,.6)}
 @media (prefers-contrast:more){:root{--ink2:#f6ecdf;--mut:#bfae9c}}
-body.cz :is(#hh,#qt,#qb){visibility:hidden}
+body.cz :is(#hh,#qt,#qb,#dsb){visibility:hidden}
 /* ---- the hero screens (C character, I inventory, J quests): the tabs in a crimson bar along the top; the character's six slots in two
    columns round the knight (the camera frames him in the window between them, czFit) over his numbers; the pack docked beside him ---- */
 #cm{left:0;right:0;top:0;bottom:0;width:auto;display:block;align-items:normal;pointer-events:none}
@@ -476,6 +469,93 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
  #hsx{gap:6px 12px;padding:6px 10px}.sx b{font-size:15px}#cdt{grid-template-columns:auto 1fr;max-height:46vh;overflow:auto}.cdp{grid-column:1/-1}
  #inv,#qst{left:8px;right:8px;width:auto}
 }
+/* ---- the skill tree (K): three branches, Attack red, Mobility yellow, Magic arcane blue, grow from one trunk at the foot of a dark field.
+   Each skill is a round node on its branch, joined to the one it needs by a curve that lights in the branch's colour once both are
+   learned; a node learned is filled with the colour, one ready to learn pulses in it, one locked wears a padlock; keystones are bigger.
+   Each node carries its ranks (1/3); each branch its name and the points spent in it. The skill picked shows in the panel beside ---- */
+#mu>.pn{width:min(1180px,100%);height:min(800px,100%);max-height:100%;grid-template-rows:auto minmax(0,1fr)}
+.skw{display:grid;grid-template-columns:minmax(0,1fr) 290px;grid-template-rows:auto minmax(0,1fr);gap:10px 14px;min-height:0}
+.skh{grid-column:1/-1;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.spn{display:inline-flex;align-items:center;gap:9px;font:600 16px Cinzel,Georgia,serif;letter-spacing:.05em;color:var(--gold3)}
+.spn b{min-width:34px;height:34px;padding:0 6px;border-radius:17px;display:grid;place-items:center;font-size:19px;color:#fff;background:var(--crim);box-shadow:0 0 0 1px #f07060,0 0 14px rgba(255,80,60,.5)}
+.skh .spl{flex:1;font-size:14px;color:var(--ink2)}
+.rsb,.ski button{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:4px;font:600 12.5px Cinzel,Georgia,serif;letter-spacing:.06em;color:var(--ink);background:var(--char);border:1px solid #6e6262;box-shadow:inset 0 1px 0 rgba(255,235,220,.16),0 2px 0 #0d0a0a}
+.rsb .ic,.ski button .ic{width:15px;height:15px}
+.rsb:disabled,.ski button:disabled{color:var(--mut);border-color:#3e3434;box-shadow:none;cursor:default}
+.skt{position:relative;display:grid;place-items:center;min-height:0;border-radius:6px;overflow:hidden;background:radial-gradient(70% 60% at 50% 70%,rgba(255,255,255,.04),transparent 70%),radial-gradient(120% 100% at 50% 100%,#1c1315,#0e0a0b 75%);box-shadow:inset 0 0 0 1px #3e3330,inset 0 0 60px rgba(0,0,0,.7)}
+.stree{position:relative;width:100%;max-height:100%;aspect-ratio:1000/640;container-type:inline-size;display:block}
+.skt .stree{max-width:calc((100vh - 220px)*1000/640)}
+.stree svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.stree path{fill:none;stroke:#3b3236;stroke-width:5;stroke-linecap:round}
+.stree path.on{stroke:var(--bc);filter:drop-shadow(0 0 5px var(--bc))}
+.bl{position:absolute;left:calc(var(--x)*.1%);top:calc(var(--y)/6.4*1%);translate:-50% -50%;display:grid;justify-items:center;pointer-events:none;color:var(--bc);text-shadow:0 2px 6px #000}
+.bl small{font:600 clamp(9px,1.6cqw,15px) Cinzel,Georgia,serif;letter-spacing:.16em;text-transform:uppercase}
+.bl b{font:700 clamp(16px,3.6cqw,36px)/1 Cinzel,Georgia,serif}
+.sn{position:absolute;left:calc(var(--x)*.1%);top:calc(var(--y)/6.4*1%);translate:-50% -50%;width:clamp(28px,5.4cqw,54px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;color:#8f8790;background:radial-gradient(circle at 50% 35%,#2c2427,#151012);box-shadow:0 0 0 2px #4a4248,0 4px 12px rgba(0,0,0,.6);transition:transform .12s}
+.sn.bg{width:clamp(38px,7.8cqw,78px)}
+.sn>.ic{width:50%;height:auto;aspect-ratio:1;stroke-width:2}
+.sn:hover:not(.lk){transform:scale(1.08)}
+.sn.on{color:#150d0d;background:var(--bc);box-shadow:0 0 0 2px var(--bc),0 0 18px color-mix(in srgb,var(--bc) 65%,transparent)}
+.sn.ok:not(.on){color:var(--bc);box-shadow:0 0 0 2.5px var(--bc),0 4px 12px rgba(0,0,0,.6);animation:skp 1.5s ease-in-out infinite}
+.sn.ok.on{animation:skp 1.5s ease-in-out infinite}
+@keyframes skp{50%{box-shadow:0 0 0 2.5px var(--bc),0 0 22px var(--bc)}}
+.sn.lk>.ic{opacity:.45}
+.sn.sel{outline:2px solid #fff4e0;outline-offset:5px}
+.sn .lkb{position:absolute;left:-8%;bottom:-8%;width:40%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;color:#cfc4cc;background:#2a2326;box-shadow:0 0 0 1.5px #5a5258}
+.sn .lkb .ic{width:64%;height:auto;aspect-ratio:1;stroke-width:2.4}
+.sn .rkb{position:absolute;left:50%;top:100%;translate:-50% -45%;padding:0 .5em;border-radius:1em;font:600 clamp(8px,1.15cqw,11.5px)/1.55 Cinzel,Georgia,serif;font-style:normal;white-space:nowrap;color:#efe4d6;background:#141011;box-shadow:0 0 0 1.5px #5a5258}
+.sn.on .rkb,.sn.ok .rkb{box-shadow:0 0 0 1.5px var(--bc)}
+.ski{grid-row:2;grid-column:2;display:grid;gap:9px;align-content:start;padding:12px 14px;border-radius:6px;overflow:auto;background:rgba(14,10,10,.88);border:1px solid #6b5240;box-shadow:inset 0 0 0 1px #000}
+.skc{display:flex;align-items:center;gap:12px}
+.sni{width:52px;height:52px;flex:none;border-radius:50%;display:grid;place-items:center;color:#150d0d;background:var(--bc);box-shadow:0 0 16px color-mix(in srgb,var(--bc) 55%,transparent)}
+.sni .ic{width:26px;height:26px;stroke-width:2}
+.skc small{font:600 10.5px Cinzel,Georgia,serif;letter-spacing:.14em;text-transform:uppercase;color:var(--bc)}
+.skc h3{font:600 18px/1.15 Cinzel,Georgia,serif;color:var(--ink)}
+.skc .rkl{font-size:13px;color:var(--ink2)}
+.ski>p{font-size:14.5px;line-height:1.4;color:var(--ink2)}
+.ski .req{display:flex;align-items:center;gap:6px;color:#e9a08e}.ski .req .ic{width:16px;height:16px}
+.ski button.lrn{justify-content:center;padding:9px 13px;font-size:14px}
+.ski button.lrn:not(:disabled){color:#150d0d;background:var(--bc);border-color:color-mix(in srgb,var(--bc) 70%,#fff);text-shadow:none;box-shadow:0 0 14px color-mix(in srgb,var(--bc) 45%,transparent)}
+.sup{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:center;margin-top:6px;padding-top:10px;border-top:1px solid #3e3330}
+.sup .md{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#ffb3a6;background:radial-gradient(circle at 50% 35%,#5a2622,#1d0d0c);box-shadow:inset 0 0 0 2px #120d0c,inset 0 0 0 3.5px #b08560}
+.sup .md .ic{width:21px;height:21px}
+.sup p{font-size:13.5px;line-height:1.3;color:var(--ink2)}.sup p b{font:600 14px Cinzel,Georgia,serif;color:var(--gold3)}
+.sup button{grid-column:1/-1;justify-self:start}
+.sup small{grid-column:1/-1;font:600 10.5px Cinzel,Georgia,serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+/* a toolbar stone carries a badge (the skill points to spend) */
+.b{position:relative}
+.b .bd{position:absolute;right:-4px;top:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;font:600 11.5px/18px Cinzel,Georgia,serif;text-align:center;color:#fff;background:var(--crim);border:1px solid #f07060;box-shadow:0 0 10px rgba(255,80,60,.6)}
+/* the dash: a green-rimmed stone the other side of the sword (Shift at a keyboard, RB on a pad), dimmed while it recovers */
+#dsb{position:fixed;left:calc(50% - 114px);bottom:calc(38px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:50%;display:grid;place-items:center;color:#fff1c0;background:radial-gradient(closest-side,#6a5418 0,#2e2408 70%,#0d0909 72.5%,transparent 75%);box-shadow:0 6px 16px rgba(8,4,0,.45)}
+#dsb .ic{width:26px;height:26px;filter:drop-shadow(0 1px 0 #000)}
+#dsb small{position:absolute;top:100%;margin-top:3px;font:600 10.5px Cinzel,Georgia,serif;letter-spacing:.06em;color:#fff6dc;text-shadow:0 1px 3px #000}
+#dsb.cd{opacity:.45}
+@media (orientation:landscape){body.mob #dsb{left:auto;right:calc(28px + 10vw + 188px + env(safe-area-inset-right,0px));bottom:auto;top:56%;translate:0 -50%}}
+@media (max-width:820px){.skw{grid-template-columns:1fr;grid-template-rows:auto auto auto}.skt{grid-row:2}.ski{grid-row:3;grid-column:1}.skt .stree{max-width:none}#mu>.pn{height:auto}}
+/* ---- the map (M): a chart on aged paper in the dark frame, a compass rose in its corner, round bronze-rimmed markers for the places
+   (the keep's crimson and named), and the knight a gold arrowhead with a red ring pulsing out from it ---- */
+#mp>.pn{width:min(1180px,100%);height:min(820px,100%);max-height:100%;overflow:hidden;grid-template-rows:auto minmax(0,1fr) auto;gap:10px}
+.mpd{flex:1;min-width:0;text-align:right;font:400 15px/1.25 Alegreya,Georgia,serif;color:var(--ink2)}.mpd b{color:var(--gold3)}
+.mv{position:relative;min-height:0;border-radius:4px;overflow:hidden;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;background:radial-gradient(130% 110% at 50% 45%,#e9d8ae,#d3ba8a 60%,#a3824f);box-shadow:inset 0 0 0 1px #6b4f33,inset 0 0 0 4px rgba(20,12,6,.5),inset 0 0 60px rgba(70,42,14,.5)}
+.mv.dg{cursor:grabbing}
+#mcv{position:absolute;inset:0;width:100%;height:100%}
+.mk{position:absolute;inset:0;pointer-events:none}
+.mk>i{position:absolute;translate:-50% -50%;display:grid;justify-items:center}
+.mpo svg{width:26px;height:26px;padding:4px;border-radius:50%;color:#f3dcbc;background:radial-gradient(circle at 50% 35%,#4e403a,#1d1615);box-shadow:0 0 0 1.5px #b08560,0 2px 5px rgba(0,0,0,.55);pointer-events:auto}
+.mpo.sd{opacity:.45}
+.mpo.kp svg{width:34px;height:34px;padding:6px;color:#fbe9d6;background:var(--crim);box-shadow:0 0 0 1.5px #e0b060,0 0 14px rgba(255,90,60,.5)}
+.mpo b{position:absolute;top:100%;margin-top:3px;font:700 12px Cinzel,Georgia,serif;letter-spacing:.04em;color:#3a220c;text-shadow:0 0 3px #f1e1b8,0 0 6px #f1e1b8;white-space:nowrap}
+.mme{width:30px;height:30px;rotate:var(--a)}
+.mme svg{width:100%;height:100%;overflow:visible;fill:#ffd36b;stroke:#3a1a06;stroke-width:1.6;stroke-linejoin:round;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+.mme::before{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid #b0201a;animation:mmp 1.8s ease-out infinite}
+@keyframes mmp{from{scale:.4;opacity:1}to{scale:1.5;opacity:0}}
+.mcr{position:absolute;left:10px;top:10px;width:92px;height:92px;pointer-events:none}
+.mzb{position:absolute;right:12px;bottom:12px;display:grid;gap:8px}
+.mlg{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;font-size:13.5px;color:var(--ink2)}
+.mlg span{display:inline-flex;align-items:center;gap:6px}.mlg .ic{width:17px;height:17px;color:var(--gold3)}.mlg .sd{opacity:.6}
+.mlg small{margin-left:auto;font-size:12.5px;color:var(--mut)}
+@media (max-width:640px){#tb{flex-direction:column;gap:10px;top:calc(196px + env(safe-area-inset-top,0px))}#mp>.pn{padding:12px 12px 14px}#mp .r{flex-wrap:wrap;row-gap:2px}#mp h2{font-size:22px}.mpd{order:3;flex-basis:100%;text-align:left;font-size:13.5px}.mlg{font-size:12px;gap:4px 12px}.mlg small{display:none}.mcr{width:64px;height:64px}}
+@media (prefers-reduced-motion:reduce){.mme::before{animation:none;opacity:.6}}
 </style>
 <script type="importmap">
 {"imports":{
@@ -508,6 +588,17 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
 <symbol id="i-helm" viewBox="0 0 24 24"><path d="M5 20.4v-8C5 7.4 8.1 3.6 12 3.6s7 3.8 7 8.8v8zM5 12.2h14M12 12.2v8.2M8.2 15.6h1.8M14 15.6h1.8"/><path d="M12 3.6c1.6-1.6 4.2-1.8 6-.8" style="stroke-width:1.4"/></symbol>
 <symbol id="i-anvil" viewBox="0 0 24 24"><path d="M3.4 7.4h12.2c0 2.6 2 4 5 4-1.3 1.6-3.3 2.4-5.6 2.4H11l1 3.1h3.4v3H6.6v-3H10l1-3.1C6 13.8 3.4 11.2 3.4 7.4z"/></symbol>
 <symbol id="i-ring" viewBox="0 0 24 24"><circle cx="12" cy="14.6" r="5.8"/><path d="M9.4 6.6 12 3.4l2.6 3.2L12 8.8z"/></symbol>
+<symbol id="i-skill" viewBox="0 0 24 24"><path d="M12 2.8l2.3 6.4 6.9.2-5.4 4.2 1.9 6.6L12 16.4l-5.7 3.8 1.9-6.6-5.4-4.2 6.9-.2z"/></symbol>
+<symbol id="i-rune" viewBox="0 0 24 24"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6zM18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.5 2.8 5.5 13.4h5.6l-1.2 7.8 8.6-11h-5.8z"/></symbol>
+<symbol id="i-dash" viewBox="0 0 24 24"><path d="M3 12h10M5 8h6M5 16h6M14 6l6 6-6 6"/></symbol>
+<symbol id="i-burst" viewBox="0 0 24 24"><path d="M12 2.5v5M12 16.5v5M2.5 12h5M16.5 12h5M5.3 5.3l3.5 3.5M15.2 15.2l3.5 3.5M5.3 18.7l3.5-3.5M15.2 8.8l3.5-3.5"/><circle cx="12" cy="12" r="2.2"/></symbol>
+<symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3c3.6 4.6 5.6 8 5.6 10.8a5.6 5.6 0 0 1-11.2 0C6.4 11 8.4 7.6 12 3z"/></symbol>
+<symbol id="i-reach" viewBox="0 0 24 24"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"/></symbol>
+<symbol id="i-hammer" viewBox="0 0 24 24"><path d="M5 9.5 10.5 4l4.5 4.5L9.5 14zM12.2 11.8 20 19.6 18.6 21l-7.8-7.8"/></symbol>
+<symbol id="i-feather" viewBox="0 0 24 24"><path d="M20 4C11 4 6 9 6 18l-2 2M6 18c6 0 11-3 12-9M9 15h5M11 12h5"/></symbol>
+<symbol id="i-cleave" viewBox="0 0 24 24"><path d="M3.5 17.5C6 9.5 13 5 20.5 5.5M3.5 17.5l3.4-.6M3.5 17.5l.4-3.4M8.5 18.5c2-4 6-7 11-8"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><path d="M7.5 11V8a4.5 4.5 0 0 1 9 0v3M5.5 11h13v9.5h-13zM12 14.5v2.5"/></symbol>
 <symbol id="i-armor" viewBox="0 0 24 24"><path d="M8.2 3.6 12 5l3.8-1.4 4.6 2.6-1.2 4.6-2-.6v10H6.8V10.2l-2 .6-1.2-4.6z"/><path d="M12 5v15.6M9.2 11.8h5.6"/></symbol>
 <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.3"/><path d="M12 2.2v2.6M12 19.2v2.6M2.2 12h2.6M19.2 12h2.6M5.1 5.1l1.8 1.8M17.1 17.1l1.8 1.8M5.1 18.9l1.8-1.8M17.1 6.9l1.8-1.8"/><path d="M12 12.9a.9.9 0 1 1 .9-.9 1.9 1.9 0 1 1-1.9-1.9"/></symbol>
 <symbol id="i-fair" viewBox="0 0 24 24"><circle cx="8.5" cy="8.5" r="3.2"/><path d="M8.5 2.3v1.6M2.3 8.5h1.6M4.1 4.1l1.1 1.1M12.9 4.1l-1.1 1.1M4.1 12.9l1.1-1.1"/><path d="M9.8 20h8a3.1 3.1 0 0 0 .3-6.2 4.3 4.3 0 0 0-8.2-.4 3.3 3.3 0 0 0-.1 6.6z"/></symbol>
@@ -534,6 +625,10 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
 <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3.4 21.4 20H2.6zM12 9.6v5M12 17.4v.1"/></symbol>
 <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M4.6 19.4C4.8 11 9.8 5.2 19.6 4.4c-.4 9.6-6.1 14.8-15 15zM4.6 19.4c3.3-3.6 6.6-6.4 10.2-8.6"/></symbol>
 <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 5.5v13M15 5.5v13" style="stroke-width:2.8"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M3.4 6.4l5.4-2.2 6.4 2.4 5.4-2.2V18l-5.4 2.2-6.4-2.4-5.4 2.2zM8.8 4.2v13.6M15.2 6.6v13.6"/></symbol>
+<symbol id="i-aim" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6.6"/><circle cx="12" cy="12" r="1.3"/><path d="M12 2.4v4.2M12 17.4v4.2M2.4 12h4.2M17.4 12h4.2"/></symbol>
+<symbol id="i-tower" viewBox="0 0 24 24"><path d="M7.6 21V9.6h8.8V21M6.4 9.6V4.4h2.3v2h2.1v-2h2.4v2h2.1v-2h2.3v5.2M10.4 21v-3.6a1.6 1.6 0 0 1 3.2 0V21M12 11.8v2.2M4 21h16"/></symbol>
+<symbol id="i-grave" viewBox="0 0 24 24"><path d="M6.6 20.6V10.2a5.4 5.4 0 0 1 10.8 0v10.4M4 20.6h16M12 8.6v6.8M9.4 11.2h5.2"/></symbol>
 <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6l-4.6 4.6M10.6 13.4 6 18"/></symbol>
 <!-- controller glyphs (full colour, drawn with .gg): the sticks from above with the ways they push, the face buttons in each pad's
  colours (x = Xbox letters, p = PlayStation shapes) and the menu button -->
@@ -551,6 +646,8 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
 <symbol id="g-px" viewBox="0 0 24 24"><use href="#g-fb"/><rect x="8.5" y="8.5" width="7" height="7" rx=".6" fill="none" stroke="#eaa6d2" stroke-width="2"/></symbol>
 <symbol id="g-py" viewBox="0 0 24 24"><use href="#g-fb"/><path d="M12 7.4l4.3 7.6H7.7z" fill="none" stroke="#6fd3ae" stroke-width="2" stroke-linejoin="round"/></symbol>
 <symbol id="g-pb" viewBox="0 0 24 24"><use href="#g-fb"/><circle cx="12" cy="12" r="4.4" fill="none" stroke="#f08a8a" stroke-width="2"/></symbol>
+<symbol id="g-xvw" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="url(#gpS)" stroke="#2b2822"/><path d="M7.4 8.2h6v4.8h-6zM10.6 13v2.8h6V11h-3.2" fill="none" stroke="#f6ead0" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+<symbol id="g-pvw" viewBox="0 0 24 24"><rect x="7" y="2.2" width="10" height="19.6" rx="5" fill="url(#gpS)" stroke="#2b2822"/><path d="M12 7.4v3.2M9.6 15.6l2.4-2.4 2.4 2.4" fill="none" stroke="#f6ead0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="g-pst" viewBox="0 0 24 24"><rect x="7" y="2.2" width="10" height="19.6" rx="5" fill="url(#gpS)" stroke="#2b2822"/><path d="M9.8 8.8h4.4M9.8 12h4.4M9.8 15.2h4.4" fill="none" stroke="#f6ead0" stroke-width="1.5" stroke-linecap="round"/></symbol>
 </defs></svg>
 <div id="hud" class="pn" hidden>
@@ -570,22 +667,22 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
 <div id="hm" title="Experience toward the next level"><div id="hf"></div></div>
 </div>
 <div id="hh" class="pn sm" role="img" aria-label="Health" hidden></div><div id="qt" class="pn sm" aria-live="polite" hidden><small id="qtt"></small><b id="qtp"></b></div><div id="bfx"></div>
-<div id="tb" hidden><button class="b" id="bk" title="Character (C)" aria-label="Open your character"><svg class="ic"><use href="#i-helm"/></svg></button><button class="b" id="bc" title="Inventory (I)" aria-label="Open your inventory"><svg class="ic"><use href="#i-bag"/></svg></button><button class="b" id="bf" title="Armoury (F)" aria-label="Open the armoury"><svg class="ic"><use href="#i-anvil"/></svg></button><button class="b" id="bp" title="Pause (Esc)" aria-label="Pause the game"><svg class="ic"><use href="#i-pause"/></svg></button></div>
-<div id="hc" class="nr" hidden><i aria-hidden="true"><svg id="ar" viewBox="0 0 64 64"><defs><linearGradient id="arG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbe9ad"/><stop offset=".55" stop-color="#e2b451"/><stop offset="1" stop-color="#a8761f"/></linearGradient>
-<path id="arR" d="M32 23C38.5 27 38.5 31 32 35S25.5 43 32 47"/><path id="arL" d="M32 23C25.5 27 25.5 31 32 35S38.5 43 32 47"/><path id="arT" d="M32 47C25 46.5 20.5 52 23.6 56.4S31.5 58 32 52.6C32.5 58 37.3 60.8 40.4 56.4S39 46.5 32 47M32 52.6C35.6 54.6 35.8 60.4 32 61.6C28.2 60.4 28.4 54.6 32 52.6"/><path id="arB" d="M24.4 20.6C19.6 24.4 22.2 29.6 26 28.2C28.4 27.2 27.6 24.2 25.4 24.8M39.6 20.6C44.4 24.4 41.8 29.6 38 28.2C35.6 27.2 36.4 24.2 38.6 24.8"/></defs>
-<g fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#arT" stroke="#1b1007" stroke-width="4.6"/><use href="#arT" stroke="url(#arG)" stroke-width="2.1"/><use href="#arB" stroke="#1b1007" stroke-width="4.2"/><use href="#arB" stroke="url(#arG)" stroke-width="1.9"/><use href="#arR" stroke="#1b1007" stroke-width="4.6"/><use href="#arR" stroke="url(#arG)" stroke-width="2.1"/><use href="#arL" stroke="#1b1007" stroke-width="4.6"/><use href="#arL" stroke="url(#arG)" stroke-width="2.1"/></g>
-<path d="M32 3.4C35.2 9.4 39.6 15 43.4 21.8Q32 17.4 20.6 21.8C24.4 15 28.8 9.4 32 3.4Z" fill="url(#arG)" stroke="#1b1007" stroke-width="1.7" stroke-linejoin="round"/><path d="M32 8.6V18.4M32 11.4C34 14 36.2 16.2 38.6 18.6M32 11.4C30 14 27.8 16.2 25.4 18.6" fill="none" stroke="#7a5212" stroke-width=".85" stroke-linecap="round"/></svg></i><small id="hd">0m</small></div>
-<button id="cb" hidden aria-label="Strike with your sword"><svg class="ic"><use href="#i-sword"/></svg><small>Space</small></button><button id="qb" hidden aria-label="Drink a healing draught"><svg class="ic"><use href="#i-potion"/></svg><small id="qbn">0</small></button>
+<div id="tb" hidden><button class="b" id="bk" title="Character (C)" aria-label="Open your character"><svg class="ic"><use href="#i-helm"/></svg></button><button class="b" id="bc" title="Inventory (I)" aria-label="Open your inventory"><svg class="ic"><use href="#i-bag"/></svg></button><button class="b" id="bf" title="Skills (K)" aria-label="Open the skill tree"><svg class="ic"><use href="#i-skill"/></svg><small class="bd" id="spb" hidden></small></button><button class="b" id="bmp" title="Map (M)" aria-label="Open the map"><svg class="ic"><use href="#i-map"/></svg></button><button class="b" id="bp" title="Pause (Esc)" aria-label="Pause the game"><svg class="ic"><use href="#i-pause"/></svg></button></div>
+<button id="cb" hidden aria-label="Strike with your sword"><svg class="ic"><use href="#i-sword"/></svg><small>Space</small></button><button id="dsb" hidden aria-label="Dash"><svg class="ic"><use href="#i-dash"/></svg><small>Shift</small></button><button id="qb" hidden aria-label="Drink a healing draught"><svg class="ic"><use href="#i-potion"/></svg><small id="qbn">0</small></button>
 <div id="ts" role="log" aria-live="polite"></div>
-<div id="mu" class="ov" role="dialog" aria-modal="true" aria-labelledby="fnm" hidden><div class="pn"><div class="r"><h2 id="fnm">The Armoury</h2><button class="b sm" id="bx" aria-label="Close the armoury"><svg class="ic"><use href="#i-close"/></svg></button></div><div class="sc"><p id="ml"></p><div id="ug"></div></div></div></div>
+<div id="mu" class="ov" role="dialog" aria-modal="true" aria-labelledby="fnm" hidden><div class="pn"><div class="r"><h2 id="fnm">Skills</h2><button class="b sm" id="bx" aria-label="Close the skill tree"><svg class="ic"><use href="#i-close"/></svg></button></div><div class="skw"><div id="ml" class="skh"></div><div class="skt"><div class="stree" id="ug"></div></div><div id="ski" class="ski"></div></div></div></div>
+<div id="mp" class="ov" role="dialog" aria-modal="true" aria-labelledby="mph" hidden><div class="pn"><div class="r"><h2 id="mph">Map of the Realm</h2><p id="mpd" class="mpd"></p><button class="b sm" id="mpx" aria-label="Close the map"><svg class="ic"><use href="#i-close"/></svg></button></div>
+<div class="mv" id="mv"><canvas id="mcv" aria-hidden="true"></canvas><div class="mk" id="mk"></div><svg class="mcr" viewBox="-50 -50 100 100" aria-hidden="true"><g transform="rotate(45)"><circle r="31" fill="rgba(246,232,196,.55)" stroke="#5a3d1c" stroke-width="1.2"/><circle r="24.5" fill="none" stroke="#5a3d1c" stroke-width=".8" stroke-dasharray="1.5 2.5"/><path d="M0-36 5.5-5.5 0 0z" fill="#8e1619"/><path d="M0-36-5.5-5.5 0 0z" fill="#5a0c0f"/><path d="M0 36 5.5 5.5 0 0z" fill="#5a3d1c"/><path d="M0 36-5.5 5.5 0 0z" fill="#3b2a18"/><path d="M-36 0-5.5-5.5 0 0zM36 0 5.5 5.5 0 0z" fill="#7a5a34"/><path d="M-36 0-5.5 5.5 0 0zM36 0 5.5-5.5 0 0z" fill="#a8845a"/><text y="-39" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-size="12" font-weight="700" fill="#5a0c0f">N</text></g></svg>
+<div class="mzb"><button class="b sm" id="mzi" aria-label="Zoom in"><svg class="ic"><path d="M12 5.5v13M5.5 12h13"/></svg></button><button class="b sm" id="mzo" aria-label="Zoom out"><svg class="ic"><path d="M5.5 12h13"/></svg></button><button class="b sm" id="mzc" aria-label="Find your knight"><svg class="ic"><use href="#i-aim"/></svg></button></div></div>
+<div class="mlg"><span><svg class="ic"><use href="#i-castle"/></svg>Keep, fortress</span><span><svg class="ic"><use href="#i-tower"/></svg>Watchtower</span><span><svg class="ic"><use href="#i-cottage"/></svg>Farmstead, cottage</span><span><svg class="ic"><use href="#i-grave"/></svg>Graveyard</span><span class="sd"><svg class="ic"><use href="#i-chest"/></svg>Dimmed once searched</span><small id="mph2"></small></div></div></div>
 <div id="cm" role="dialog" aria-modal="true" aria-labelledby="cmh" hidden><div class="hx"><div class="pn sm"><h2 id="cmh">Sir Aldric</h2><div class="czt" role="tablist" aria-label="Character, inventory or quests"><button role="tab" id="cmtc" aria-selected="true">Character</button><button role="tab" id="cmti" aria-selected="false">Inventory</button><button role="tab" id="cmts" aria-selected="false">Quests</button></div><button class="b sm" id="cmx" aria-label="Close"><svg class="ic"><use href="#i-close"/></svg></button></div></div>
 <section id="chr" aria-label="Character"><div class="dl" id="dlL"></div><div id="cdw" aria-hidden="true"></div><div class="dl" id="dlR"></div><div id="chb"><div id="hsx" class="pn sm"></div><div id="cdt" class="pn sm" hidden></div></div></section>
 <section id="inv" aria-label="Inventory" hidden><div class="pn"><div class="ivh" id="ivh"></div><div class="ivc" id="ivc"></div><div class="ivg" id="ivg"></div><div class="ivd" id="ivd"></div></div></section>
 <section id="qst" aria-label="Quests" hidden><div class="pn"><p id="cmi"></p><p id="cmw"></p><div id="cmo"></div></div></section></div>
-<div id="pm" class="ov" role="dialog" aria-modal="true" aria-labelledby="pmh" hidden><div class="pn"><h2 id="pmh">Paused</h2><p id="pl"></p><div class="pb"><button id="rs" class="pr">Resume</button><button id="po">Armoury</button><button id="phw">How to play</button><button id="ps">Music: on</button><button id="p32">Retro look: off</button><button id="pfr">Frame rate: 60</button><button id="prm" hidden>Controller rumble: on</button><i class="sep" aria-hidden="true"></i><button id="nf" class="dg">Start a new quest</button></div><div class="ks"><span><kbd>WASD</kbd>walk</span><span><kbd>Space</kbd>strike</span><span><kbd>Q</kbd>draught</span><span><kbd>F</kbd>armoury</span><span><kbd>C</kbd>character</span><span><kbd>I</kbd>inventory</span><span><kbd>J</kbd>quests</span><span><kbd>Esc</kbd>pause</span><span><kbd>M</kbd>music</span><span><kbd>R</kbd>retro look</span></div><div class="ks tp"><span><kbd>Drag</kbd>walk</span><span><svg class="ic" aria-hidden="true"><use href="#i-sword"/></svg>strike</span><span><svg class="ic" aria-hidden="true"><use href="#i-anvil"/></svg>armoury</span><span><svg class="ic" aria-hidden="true"><use href="#i-helm"/></svg>character</span><span><svg class="ic" aria-hidden="true"><use href="#i-bag"/></svg>inventory</span></div><div class="ks kp"></div><small class="rn" id="prn"></small></div></div>
+<div id="pm" class="ov" role="dialog" aria-modal="true" aria-labelledby="pmh" hidden><div class="pn"><h2 id="pmh">Paused</h2><p id="pl"></p><div class="pb"><button id="rs" class="pr">Resume</button><button id="po">Skills</button><button id="phw">How to play</button><button id="ps">Music: on</button><button id="p32">Retro look: off</button><button id="pfr">Frame rate: 60</button><button id="prm" hidden>Controller rumble: on</button><i class="sep" aria-hidden="true"></i><button id="nf" class="dg">Start a new quest</button></div><div class="ks"><span><kbd>WASD</kbd>walk</span><span><kbd>Space</kbd>strike</span><span><kbd>Q</kbd>draught</span><span><kbd>K</kbd>skills</span><span><kbd>Shift</kbd>dash</span><span><kbd>C</kbd>character</span><span><kbd>I</kbd>inventory</span><span><kbd>J</kbd>quests</span><span><kbd>Esc</kbd>pause</span><span><kbd>M</kbd>map</span><span><kbd>N</kbd>music</span><span><kbd>R</kbd>retro look</span></div><div class="ks tp"><span><kbd>Drag</kbd>walk</span><span><svg class="ic" aria-hidden="true"><use href="#i-sword"/></svg>strike</span><span><svg class="ic" aria-hidden="true"><use href="#i-skill"/></svg>skills</span><span><svg class="ic" aria-hidden="true"><use href="#i-helm"/></svg>character</span><span><svg class="ic" aria-hidden="true"><use href="#i-bag"/></svg>inventory</span><span><svg class="ic" aria-hidden="true"><use href="#i-map"/></svg>map</span></div><div class="ks kp"></div><small class="rn" id="prn"></small></div></div>
 <div id="st"><div class="pn"><h1>Quest</h1><svg class="dv" viewBox="0 0 300 20" aria-hidden="true"><path d="M6 14C10 14 10 6 14 6C18 6 18 14 22 14C26 14 26 6 30 6C34 6 34 14 38 14C42 14 42 6 46 6C50 6 50 14 54 14C58 14 58 6 62 6C66 6 66 14 70 14C74 14 74 6 78 6C82 6 82 14 86 14C90 14 90 6 94 6C98 6 98 14 102 14C106 14 106 6 110 6C114 6 114 14 118 14C122 14 122 6 126 6C130 6 130 14 134 14M162 14C166 14 166 6 170 6C174 6 174 14 178 14C182 14 182 6 186 6C190 6 190 14 194 14C198 14 198 6 202 6C206 6 206 14 210 14C214 14 214 6 218 6C222 6 222 14 226 14C230 14 230 6 234 6C238 6 238 14 242 14C246 14 246 6 250 6C254 6 254 14 258 14C262 14 262 6 266 6C270 6 270 14 274 14C278 14 278 6 282 6C286 6 286 14 290 14" style="stroke:#3a240f;stroke-width:4.2"/><path d="M6 14C10 14 10 6 14 6C18 6 18 14 22 14C26 14 26 6 30 6C34 6 34 14 38 14C42 14 42 6 46 6C50 6 50 14 54 14C58 14 58 6 62 6C66 6 66 14 70 14C74 14 74 6 78 6C82 6 82 14 86 14C90 14 90 6 94 6C98 6 98 14 102 14C106 14 106 6 110 6C114 6 114 14 118 14C122 14 122 6 126 6C130 6 130 14 134 14M162 14C166 14 166 6 170 6C174 6 174 14 178 14C182 14 182 6 186 6C190 6 190 14 194 14C198 14 198 6 202 6C206 6 206 14 210 14C214 14 214 6 218 6C222 6 222 14 226 14C230 14 230 6 234 6C238 6 238 14 242 14C246 14 246 6 250 6C254 6 254 14 258 14C262 14 262 6 266 6C270 6 270 14 274 14C278 14 278 6 282 6C286 6 286 14 290 14" style="stroke-width:1.8"/><path d="M6 6C10 6 10 14 14 14C18 14 18 6 22 6C26 6 26 14 30 14C34 14 34 6 38 6C42 6 42 14 46 14C50 14 50 6 54 6C58 6 58 14 62 14C66 14 66 6 70 6C74 6 74 14 78 14C82 14 82 6 86 6C90 6 90 14 94 14C98 14 98 6 102 6C106 6 106 14 110 14C114 14 114 6 118 6C122 6 122 14 126 14C130 14 130 6 134 6M162 6C166 6 166 14 170 14C174 14 174 6 178 6C182 6 182 14 186 14C190 14 190 6 194 6C198 6 198 14 202 14C206 14 206 6 210 6C214 6 214 14 218 14C222 14 222 6 226 6C230 6 230 14 234 14C238 14 238 6 242 6C246 6 246 14 250 14C254 14 254 6 258 6C262 6 262 14 266 14C270 14 270 6 274 6C278 6 278 14 282 14C286 14 286 6 290 6" style="stroke:#3a240f;stroke-width:4.2"/><path d="M6 6C10 6 10 14 14 14C18 14 18 6 22 6C26 6 26 14 30 14C34 14 34 6 38 6C42 6 42 14 46 14C50 14 50 6 54 6C58 6 58 14 62 14C66 14 66 6 70 6C74 6 74 14 78 14C82 14 82 6 86 6C90 6 90 14 94 14C98 14 98 6 102 6C106 6 106 14 110 14C114 14 114 6 118 6C122 6 122 14 126 14C130 14 130 6 134 6M162 6C166 6 166 14 170 14C174 14 174 6 178 6C182 6 182 14 186 14C190 14 190 6 194 6C198 6 198 14 202 14C206 14 206 6 210 6C214 6 214 14 218 14C222 14 222 6 226 6C230 6 230 14 234 14C238 14 238 6 242 6C246 6 246 14 250 14C254 14 254 6 258 6C262 6 262 14 266 14C270 14 270 6 274 6C278 6 278 14 282 14C286 14 286 6 290 6" style="stroke:var(--gold);stroke-width:1.8"/><circle cx="150" cy="10" r="9.4" style="fill:#f1e2bd;stroke:#3a240f;stroke-width:1.5"/><use href="#i-shield" x="141" y="1" width="18" height="18" style="color:var(--ox);stroke:var(--ox);stroke-width:2.2"/></svg><p class="sub">Shadow lies over the realm. Take up your sword, hunt the beasts of the wilds and the dead that rise by night, and win gold and glory for the crown.</p><div id="ld" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="Sounding the horn"><div id="lbt" aria-hidden="true"><div id="lbg"><div id="lbf"></div></div><div id="lbb"><i><svg class="ic"><use href="#i-shield"/></svg></i></div></div><span id="lds">Sounding the horn…</span></div><button id="sg" hidden>Start</button><label id="fnw" hidden>Name your knight<input id="fn" maxlength="24" placeholder="Sir Aldric" autocomplete="off" spellcheck="false"></label><button id="go" hidden>Begin</button><button id="ng" class="lk" hidden>Start a new quest instead</button><section class="ct" aria-label="Controls"><h2 class="cth">Controls</h2><p class="cn">Connect a controller for controller input</p>
-<div class="cg kbc"><div class="ci"><span class="kc"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span><b>Walk</b><small>or the arrow keys</small></div><div class="ci"><span class="kc"><kbd class="wd">Space</kbd></span><b>Strike</b><small>Q drinks a draught</small></div><div class="ci"><span class="kc"><kbd>Scroll</kbd></span><b>Zoom</b><small>in and out</small></div><div class="ci"><span class="kc"><kbd>F</kbd></span><b>Armoury</b><small>spend your gold</small></div><div class="ci"><span class="kc"><kbd>C</kbd><kbd>I</kbd></span><b>Hero</b><small>character, inventory</small></div><div class="ci"><span class="kc"><kbd>Esc</kbd></span><b>Pause</b><small>M music, R retro</small></div></div>
-<div class="cg tch"><div class="ci"><span class="kc"><kbd>Drag</kbd></span><b>Walk</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-sword"/></svg></i></span><b>Strike</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-anvil"/></svg></i></span><b>Armoury</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-bag"/></svg></i></span><b>Inventory</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-pause"/></svg></i></span><b>Pause</b></div></div>
+<div class="cg kbc"><div class="ci"><span class="kc"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span><b>Walk</b><small>or the arrow keys</small></div><div class="ci"><span class="kc"><kbd class="wd">Space</kbd></span><b>Strike</b><small>Q drinks a draught</small></div><div class="ci"><span class="kc"><kbd>Scroll</kbd></span><b>Zoom</b><small>in and out</small></div><div class="ci"><span class="kc"><kbd>K</kbd><kbd>C</kbd><kbd>I</kbd></span><b>Hero</b><small>skills, character, pack</small></div><div class="ci"><span class="kc"><kbd>M</kbd></span><b>Map</b><small>where you are</small></div><div class="ci"><span class="kc"><kbd>Esc</kbd></span><b>Pause</b><small>N music, R retro</small></div></div>
+<div class="cg tch"><div class="ci"><span class="kc"><kbd>Drag</kbd></span><b>Walk</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-sword"/></svg></i></span><b>Strike</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-skill"/></svg></i></span><b>Skills</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-bag"/></svg></i></span><b>Inventory</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-map"/></svg></i></span><b>Map</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-pause"/></svg></i></span><b>Pause</b></div></div>
 <div class="cg pad"></div></section><button id="htp" class="lk">How to play</button></div><div id="tt" hidden><h1>Quest</h1><p id="ttp">Press any button to start</p></div></div>
 <div id="tu" class="ov" role="dialog" aria-modal="true" aria-labelledby="tut" hidden><div class="pn" tabindex="-1"><div class="tuh"><i class="tum" id="tum" aria-hidden="true"></i><div><small class="tus" id="tus"></small><h2 id="tut"></h2></div><button class="b sm" id="tux" aria-label="Close how to play"><svg class="ic"><use href="#i-close"/></svg></button></div><div class="sc" id="tuc"><div class="tpg" id="tpg" aria-live="polite"></div></div><div class="tuf"><div class="tup" id="tup" role="group" aria-label="Steps"></div><div class="pb tn"><button id="tub2">Back</button><button id="tun" class="pr">Next</button></div></div></div></div>
 <dialog id="al" class="pn" role="alertdialog" aria-labelledby="alt" aria-describedby="alm"><div id="alv" hidden></div><h2 id="alt"></h2><p id="alm"></p><div class="pb ab"><button id="alc" autofocus>Cancel</button><button id="alo" class="dg"></button></div></dialog>
@@ -1111,6 +1208,10 @@ plant=(i,j,c=fcp(i,j,.5,.5))=>hypot(c[0],c[1])>150&&H(c[0],c[1])>6&&fh(i,j,30)<.
 // is field (i,j) a fortress's (its centre, or 0)? The same draw the chunk's field loop makes for a place to search (poiPut, t 5)
 fort=(i,j)=>{const c=fcp(i,j,.5,.5),pk=fh(i,j,90);if(!(hypot(c[0]+21,c[1]+20)>380&&pk>=.12&&pk<.1285&&H(c[0],c[1])>WL+2)||plant(i,j,c))return 0;
  let y0=1e9,y1=-1e9;for(const[u,v]of[[.2,.2],[.8,.2],[.8,.8],[.2,.8],[.5,.5]]){const p=fcp(i,j,u,v),y=H(p[0],p[1]);y0=min(y0,y);y1=max(y1,y)}return y0>WL+1.2&&y1-y0<4?c:0},
+// what place to search field (i,j) holds, if any: 1 a deserted farmstead, 2 a graveyard, 3 an overgrown cottage, 4 a watchtower, 5 a
+// fortress, 0 none (the draw is described at the chunk's field loop, which uses it; a plantation's field holds none whatever this says)
+poiT=(i,j,c=fcp(i,j,.5,.5),hc=H(c[0],c[1]))=>{const pk=fh(i,j,90),cd=hypot(c[0]+21,c[1]+20),pq=cd>200&&hc>WL+2?cd>265&&pk<.0315?1:cd>265&&pk<.0525?(cd>500&&fh(i,j,92)<.4?2:0):cd>265&&pk<.0945?3:pk>=.0945&&pk<.12?4:cd>380&&pk>=.12&&pk<.1285?5:0:0;
+ return pq&&(()=>{let y0=1e9,y1=-1e9;for(const[u,v]of[[.2,.2],[.8,.2],[.8,.8],[.2,.8],[.5,.5]]){const p=fcp(i,j,u,v),y=H(p[0],p[1]);y0=min(y0,y);y1=max(y1,y)}return y0>WL+1.2&&y1-y0<(pq==3?7:pq==4?8:pq==5?4:5.5)})()?pq:0},
 // is (x,z) in a plantation's block of trees? Sheep are never put, and never go to ground, in there: nobody could reach them
 inPlant=(x,z)=>{const u=floor((x*FLC+z*FLS)/FLD),v=floor((z*FLC-x*FLS)/FLD);for(let i=u-1;i<=u+1;i++)for(let j=v-1;j<=v+1;j++){if(!plant(i,j))continue;
  const q=[fcp(i,j,.04,.04),fcp(i,j,.96,.04),fcp(i,j,.96,.96),fcp(i,j,.04,.96)];let a=0,b=0;for(let k=0;k<4;k++){const p=q[k],n=q[(k+1)%4],c=(n[0]-p[0])*(z-p[1])-(n[1]-p[1])*(x-p[0]);c>0?a++:b++}if(!a||!b)return true}return false},
@@ -1238,7 +1339,7 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
   // a place worth searching, well out from the farm on dry and fairly level ground: a deserted farmstead, an old graveyard or an overgrown
   // cottage, in ~9.5% of fields, none of them within 250m of the cottage (at -21,-20; its centre 265m out, as a place spreads ~15m). The
   // graveyards, though, are kept 500m+ from it and to two fifths of their share of those fields (under one in a hundred), the rest staying open field
-  const pk=f(90),cd=hypot(c[0]+21,c[1]+20),pq=cd>200&&hc>WL+2?cd>265&&pk<.0315?1:cd>265&&pk<.0525?(cd>500&&f(92)<.4?2:0):cd>265&&pk<.0945?3:pk>=.0945&&pk<.12?4:cd>380&&pk>=.12&&pk<.1285?5:0:0,poi=pq&&(()=>{let y0=1e9,y1=-1e9;for(const[u,v]of[[.2,.2],[.8,.2],[.8,.8],[.2,.8],[.5,.5]]){const p=fcp(i,j,u,v),y=H(p[0],p[1]);y0=min(y0,y);y1=max(y1,y)}return y0>WL+1.2&&y1-y0<(pq==3?7:pq==4?8:pq==5?4:5.5)})()?pq:0;
+  const poi=poiT(i,j,c,hc);
   if(plant(i,j,c))for(let a=0;a<9;a++)for(let b=0;b<9;b++){const q=fcp(i,j,.1+(a+ih(i*9+a,j*9+b)*.25)*.09,.1+(b+ih(j*9+b+7,i*9+a)*.25)*.09);tree(8,q[0],q[1],1.3+r()*.4,r()*7,(r()-.5)*.05)}
   else if(poi)poiPut(poi,i,j,c,f);
   else{for(let k=0,n=f(20)<.45?1:f(20)<.72?2:0;k<n;k++){const q=fcp(i,j,.2+f(21+k)*.6,.2+f(24+k)*.6);lone(q[0],q[1],f(27+k))}
@@ -1879,106 +1980,181 @@ bird=()=>{const pn=(R()-.5)*1.6,k=R()*3|0,b=2600+R()*1400;if(k==0)for(let i=0,n=
 // as an "ambient" session the game's sound follows the iPhone's silent switch and plays under the player's own music rather than
 // stopping it (Safari; other browsers skip this)
 aud=()=>{try{navigator.audioSession&&(navigator.audioSession.type='ambient')}catch(e){}try{AC=new(window.AudioContext||window.webkitAudioContext)();MS=AC.createGain();MS.connect(AC.destination);AG=AC.createGain();AG.connect(MS);const n=AC.createBuffer(1,AC.sampleRate*2,AC.sampleRate),d=n.getChannelData(0);let b=0;for(let i=0;i<d.length;i++){const w=R()*2-1;b=(b+.02*w)/1.02;d[i]=w*.4+b*3}NB=n;const mk=(ty,f,q)=>{const s=AC.createBufferSource(),fl=AC.createBiquadFilter(),g=AC.createGain();s.buffer=n;s.loop=true;fl.type=ty;fl.frequency.value=f;fl.Q.value=q;g.gain.value=0;s.connect(fl).connect(g).connect(AG);s.start(0,R()*2);return[g,fl]};WN=mk('lowpass',420,.7);WR=mk('bandpass',2600,.9);RH=mk('highpass',2400,.3);RL=mk('bandpass',800,.5);
- // the unopened trunks' shimmer: a high D-major chord (the music's key), each note a pair of triangle waves (brighter than sines) a
+ // the unopened trunks' shimmer: a high open fifth on D (the music's key; no third, so it sits under minor or major), each note a pair of triangle waves (brighter than sines) a
  // beat apart so it swells and fades on its own slow pulse. Silent until a trunk is near: amb sets its level and pan from the nearest
  // one (chN, chP, from fndU)
- CHS=[AC.createGain(),AC.createStereoPanner?AC.createStereoPanner():null];{const q=AC.createBiquadFilter();q.frequency.value=9000;[1174.66,1479.98,1760,2349.32].forEach((f,i)=>{for(const d of[0,[.83,1.27,1.61,2.13][i]]){const o=AC.createOscillator();o.type='triangle';o.frequency.value=f+d;o.connect(q);o.start()}});CHS[0].gain.value=0;q.connect(CHS[0]);CHS[1]?CHS[0].connect(CHS[1]).connect(MS):CHS[0].connect(MS)}
+ CHS=[AC.createGain(),AC.createStereoPanner?AC.createStereoPanner():null];{const q=AC.createBiquadFilter();q.frequency.value=9000;[1174.66,1760,2349.32,3520].forEach((f,i)=>{for(const d of[0,[.83,1.27,1.61,2.13][i]]){const o=AC.createOscillator();o.type='triangle';o.frequency.value=f+d;o.connect(q);o.start()}});CHS[0].gain.value=0;q.connect(CHS[0]);CHS[1]?CHS[0].connect(CHS[1]).connect(MS):CHS[0].connect(MS)}
  MU=mkMusic(AC,MS)}catch(e){AC=null}},
 // the music dips (to 55% right beside one) as the shepherd nears an unopened trunk, so its shimmer rings through
 amb=dt=>{if(!AC)return;MU&&MU.tick(mof||!run||dT>DAY-60&&dT<CYC-20?0:pz?.35:1-chN*.45);const p=P.position,wd=U.wd.value,g=(sin((p.x*wd.x+p.z*wd.y)*.11-U.wp.value*1.7)*.5+.5)**2,t=AC.currentTime,lv=!pz||ov==3,f=lv?1:.3,wf=.35+.65*wx.w,rn=wx.r;WN[0].gain.setTargetAtTime((.02+g*.08)*wf*f,t,.25);WR[0].gain.setTargetAtTime((.005+g*.026*wf+min(pvel/9,1.5)*.022)*f,t,.12);WR[1].frequency.setTargetAtTime(2200+g*900*min(wf,1.5),t,.3);RH[0].gain.setTargetAtTime(rn*.045*f,t,.6);RL[0].gain.setTargetAtTime(rn*.06*f,t,.6);CHS&&(CHS[0].gain.setTargetAtTime(lv?chN*.009:0,t,.35),CHS[1]&&CHS[1].pan.setTargetAtTime(chP,t,.25));if(!lv)return;
- // over the chord, a chime now and then from the high pentatonic, quieter the further off the trunk is; sometimes the next note up
+ // over the chord, a chime now and then from the high D minor pentatonic, quieter the further off the trunk is; sometimes the next note up
  // follows it quickly, a little run of sparkle
- if(chN>.05&&R()<.55){const N=[1760,1975.53,2349.32,2637.02,2959.96,3520],i=R()*5|0,v=.022*chN,pn=cl(chP+(R()-.5)*.3,-1,1),dl=R()*.15;tink(N[i],v,pn,dl);R()<.3&&tink(N[i+1],v*.8,pn,dl+.07)}if(rn>.3&&R()<dt*rn*2)snd(1600+R()*1800,.05,'sine',.01*rn,700+R()*300,0,R()*.15,(R()-.5)*1.4);
+ if(chN>.05&&R()<.55){const N=[1760,2093,2349.32,2793.83,3135.96,3520],i=R()*5|0,v=.022*chN,pn=cl(chP+(R()-.5)*.3,-1,1),dl=R()*.15;tink(N[i],v,pn,dl);R()<.3&&tink(N[i+1],v*.8,pn,dl+.07)}if(rn>.3&&R()<dt*rn*2)snd(1600+R()*1800,.05,'sine',.01*rn,700+R()*300,0,R()*.15,(R()-.5)*1.4);
  if((bt-=dt)<0){bt=2.5+R()*6+wx.r*14+max(0,wx.w-1.5)*4;R()>max(wx.r,wx.hf*.8)&&(dT<DAY?bird():R()<.45&&owl())}},
 // nothing hostile is placed within 40m of home (the muster ring at the origin, or the keep), nor in a plantation's block of spruce
 nearFarm=(x,z)=>hypot(x,z)<40||hypot(x+21,z+20)<40||inPlant(x,z),
 // is a spot on the ground at least 15% outside the camera's view (behind it, or past the frame edges by 15%)?
 offView=(x,z)=>{T3.set(x,Hm(x,z)+1,z).project(cam);return T3.z>1||abs(T3.x)>1.15||abs(T3.y)>1.15};
 
-// ---- daytime music: a procedural Celtic folk quartet, all synthesised, played back like a 32-bit console ----
-// A wooden flute and a breathy low whistle (with cuts and delayed vibrato) play the tune together: the flute alone for the closing
-// eight bars, an octave up as well on the repeat of A and through B, and swelling chord tones under the whole tune. A thin plucked
-// harp (Karplus-Strong, rendered once per note) keeps the beat, with a soft bodhran, in a relaxed 6/8 jig. Every tune is new: AABB with 8-bar parts over D major / D mixolydian changes, the melody landing on chord
-// tones on the strong beats and stepping through the scale between them. The PlayStation treatment: harp notes are 22 kHz samples
-// pitched by playback rate, as its sound chip played instruments; the band is quantised to 11 bits for the grit of its compressed
-// samples; and it all plays into a long, dark hall reverb that, like the chip's, only updates at 22 kHz
+// ---- music: gothic darkwave, a dark 80s synth band with medieval undertones, all synthesised, played back like a 32-bit console ----
+// Every piece is new, in D minor (the harmonic minor's A major, and now and then a Phrygian E flat, for the gothic cadences) at a slow
+// 84-96 bpm. A church bell tolls it in over an organ's open-fifth drone and a choir of monks singing root, fifth and octave (the old
+// organum), while a lute picks out the chords. Then the band: a saw bass pumping under the kick, wide detuned-saw pads and a pulse
+// arpeggio into a dark dotted-eighth echo, over an 80s drum machine, a half-time beat at first and then a gated-reverb snare on two
+// and four with a tom fill to end each chorus. Strings run through it all, a string machine's chorused section: a cello bows the
+// roots from the first bar, the violins swell in halfway through the verse, and in the last chorus they shiver in tremolo while one
+// line doubles the tune an octave up. The tune moves by step through the mode like a chant: on a nasal shawm at first, then
+// on a gliding synth lead with the shawm an octave under it; midway the band drops out and the lute plays it alone, tremolo on the
+// long notes, over the drone and the choir. The PlayStation treatment as before: lute notes are 22 kHz samples pitched by playback
+// rate, the band is quantised to 11 bits, and it all plays into a long, dark hall that only updates at 22 kHz
 const mkMusic=(A,out)=>{const sr=A.sampleRate,SR=22050,rnd=Math.random,mix=A.createGain(),crush=A.createWaveShaper(),bus=A.createGain(),JB=A.createGain(),tone=A.createBiquadFilter(),rv=A.createConvolver(),wet=A.createGain(),
- pan=p=>{if(!A.createStereoPanner)return mix;const s=A.createStereoPanner();s.pan.value=p;s.connect(mix);return s},HP=pan(-.28),WP=pan(.18),FP=pan(-.1),
- NZ=A.createBuffer(1,sr*2,sr),mf=m=>440*2**((m-69)/12),KS={};
+ pump=A.createGain(),dl=A.createDelay(1),fb=A.createGain(),dlf=A.createBiquadFilter(),DS=A.createGain(),LS=A.createGain(),CI=A.createGain(),SB=A.createGain(),
+ pan=(p,o=mix)=>{if(!A.createStereoPanner)return o;const s=A.createStereoPanner();s.pan.value=p;s.connect(o);return s},
+ PL=pan(-.45,pump),PR=pan(.45,pump),AP=pan(-.25,pump),DP=pan(.45),LP=pan(-.2),LD=pan(.1),SP=pan(-.1),HP=pan(.3),
+ NZ=A.createBuffer(1,sr*2,sr),mf=m=>440*2**((m-69)/12),KS={},SC={},
+ // wavetables: the organ's stops (8', 4', 2 2/3', 2', the 1 3/5' tierce, 1 1/3', 1'), the shawm's reedy middle harmonics, and the
+ // arpeggio's narrow pulse
+ pw=a=>{const re=new Float32Array(a.length+1),im=new Float32Array(a.length+1);a.forEach((v,i)=>im[i+1]=v);return A.createPeriodicWave(re,im)},
+ ORG=pw([1,.5,.38,.3,.1,.16,0,.12]),SHW=pw([.45,.6,1,.85,.7,.5,.38,.28,.2,.14,.1,.07]),PU=pw(Array.from({length:40},(_,i)=>sin((i+1)*PI*.3)/(i+1)));
  {const d=NZ.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=rnd()*2-1}
- // hall: 35 ms pre-delay, 3.4 s tail darkening as it decays, each noise value held for the length of a 22 kHz sample
- {const n=sr*3.4|0,b=A.createBuffer(2,n,sr),h=max(1,Math.round(sr/SR));for(let c=0;c<2;c++){const d=b.getChannelData(c);let lp=0;
-  for(let i=0;i<n;i++){const t=i/sr-.035;if(i%h==0)lp+=((t<0?0:(rnd()*2-1)*Math.exp(-t*2.1))-lp)*(.5-.35*min(1,max(0,t)/2));d[i]=lp*min(1,max(0,t)/.02)}}rv.buffer=b}
+ // the hall: 40 ms pre-delay, a 3.8 s tail darkening as it decays, each noise value held for the length of a 22 kHz sample
+ {const n=sr*3.8|0,b=A.createBuffer(2,n,sr),h=max(1,Math.round(sr/SR));for(let c=0;c<2;c++){const d=b.getChannelData(c);let lp=0;
+  for(let i=0;i<n;i++){const t=i/sr-.04;if(i%h==0)lp+=((t<0?0:(rnd()*2-1)*Math.exp(-t*1.85))-lp)*(.5-.35*min(1,max(0,t)/2));d[i]=lp*min(1,max(0,t)/.02)}}rv.buffer=b}
  {const n=65536,c=new Float32Array(n);for(let i=0;i<n;i++)c[i]=Math.round((i/(n-1)*2-1)*1024)/1024;crush.curve=c}
- // JB, the find's jingle: past the band's fader (bus), so it plays with the music off, into the same tone and hall
- JB.gain.value=.6;JB.connect(tone);bus.gain.value=0;tone.type='lowpass';tone.frequency.value=5200;wet.gain.value=.42;mix.connect(crush);crush.connect(bus);bus.connect(tone);tone.connect(out);tone.connect(rv);rv.connect(wet);wet.connect(out);
- // the Karplus-Strong loop runs N + 1/2 samples a period, so playing it back at f(N + 1/2)/SR lands exactly on pitch
- const ksN=m=>max(2,Math.round(SR/mf(m))),pluck=m=>{if(KS[m])return KS[m];const N=ksN(m),L=SR*(m<55?3.4:2.4)|0,b=A.createBuffer(1,L,SR),y=b.getChannelData(0),k=m<55?.9986:.9978;
+ // JB, the find's jingle: past the band's fader (bus), so it plays with the music off, into the same tone and hall. pump: the bass,
+ // pads and arpeggio duck under each kick and swell back, as if a compressor were keyed off it
+ JB.gain.value=.6;JB.connect(tone);bus.gain.value=0;mix.gain.value=.82;tone.type='lowpass';tone.frequency.value=7000;wet.gain.value=.45;pump.connect(mix);mix.connect(crush);crush.connect(bus);bus.connect(tone);tone.connect(out);tone.connect(rv);rv.connect(wet);wet.connect(out);
+ // the echo: dotted eighths (timed per piece), each repeat darker than the last; the arpeggio sends to it, and the lead a little
+ DS.gain.value=.5;LS.gain.value=.22;dlf.type='lowpass';dlf.frequency.value=1800;fb.gain.value=.4;DS.connect(dl);LS.connect(dl);dl.connect(dlf);dlf.connect(fb);fb.connect(dl);dlf.connect(DP);
+ // the choir's mouth: one bank of formant filters, an open 'oh', that every voice sings through
+ for(const[f,q,g]of[[520,5,1],[860,7,.6],[2450,9,.2]]){const b=A.createBiquadFilter(),G=A.createGain();b.type='bandpass';b.frequency.value=f;b.Q.value=q;G.gain.value=g;CI.connect(b).connect(G).connect(mix)}
+ // the strings' ensemble: they play into SB, heard dry and through two short delays swaying at their own slow rates, panned apart, as
+ // an 80s string machine's chorus spread its saws
+ SB.connect(mix);for(const[q,r,d]of[[-.6,.53,.012],[.6,.71,.017]]){const y=A.createDelay(.05),l=A.createOscillator(),g=A.createGain();y.delayTime.value=d;l.frequency.value=r;g.gain.value=.004;l.connect(g).connect(y.delayTime);l.start();SB.connect(y).connect(pan(q))}
+ // os starts an oscillator (a type, or a wavetable) into o; ad gives a gain an attack, holds it to the note's end, then releases it
+ const os=(ty,f,t,e,o,dt=0)=>{const x=A.createOscillator();typeof ty=='string'?x.type=ty:x.setPeriodicWave(ty);x.frequency.value=f;x.detune.value=dt;x.connect(o);x.start(t);x.stop(e);return x},
+ ad=(p,t,d,v,a,r)=>{const h=t+max(a,d);p.setValueAtTime(0,t);p.linearRampToValueAtTime(v,t+a);p.setValueAtTime(v,h);p.linearRampToValueAtTime(0,h+r)},
+ // nz: a burst of filtered noise dying away over d, or, given g, held and then cut dead at g (the gated snare's tail)
+ nz=(t,d,v,ty,f,q,o,g=0)=>{const n=A.createBufferSource(),b=A.createBiquadFilter(),G=A.createGain(),e=t+(g||d);n.buffer=NZ;b.type=ty;b.frequency.value=f;b.Q.value=q;G.gain.setValueAtTime(v,t);
+  if(g){G.gain.linearRampToValueAtTime(v*.5,t+.03);G.gain.linearRampToValueAtTime(v*.38,e);G.gain.linearRampToValueAtTime(0,e+.01)}else G.gain.exponentialRampToValueAtTime(.001,e);
+  n.connect(b).connect(G).connect(o);n.start(t,rnd()*1.5);n.stop(e+.02)},
+ // the lute: Karplus-Strong, rendered once per note at 22 kHz; the loop runs N + 1/2 samples a period, so playing it back at
+ // f(N + 1/2)/SR lands exactly on pitch. pl plucks it into the band (LP) unless given another output (the find's jingle, JB)
+ ksN=m=>max(2,Math.round(SR/mf(m))),pluck=m=>{if(KS[m])return KS[m];const N=ksN(m),L=SR*(m<55?3.4:2.4)|0,b=A.createBuffer(1,L,SR),y=b.getChannelData(0),k=m<55?.9986:.9978;
   for(let i=0;i<N;i++)y[i]=rnd()*2-1;for(let i=1;i<N;i++)y[i]=(y[i]+y[i-1])*.5;for(let i=N;i<L;i++)y[i]=k*.5*(y[i-N]+y[i-N-(i>N?1:0)]);
   let pk=0;for(let i=0;i<L;i++)pk=max(pk,abs(y[i]));const f=L-SR*.05|0;for(let i=0;i<L;i++)y[i]*=.6/(pk||1)*(i>f?(L-i)/(L-f):1);return KS[m]=b},
- // pl and wh play into the band (HP, WP) unless given another output (the find's jingle, JB)
- pl=(m,t,v,H=HP)=>{const s=A.createBufferSource(),g=A.createGain();s.buffer=pluck(m);s.playbackRate.value=mf(m)*(ksN(m)+.5)/SR;g.gain.value=v;s.connect(g).connect(H);s.start(t)},
- wh=(m,t,d,v,cut,W=WP)=>{const f=mf(m),o=A.createOscillator(),o2=A.createOscillator(),g=A.createGain(),g2=A.createGain(),lp=A.createBiquadFilter(),vb=A.createOscillator(),vg=A.createGain(),n=A.createBufferSource(),bf=A.createBiquadFilter(),ng=A.createGain(),e=t+d;
-  o2.type='triangle';g2.gain.value=.16;for(const x of[o,o2]){x.frequency.setValueAtTime(cut?f*1.189:f,t);cut&&x.frequency.setValueAtTime(f,t+.04)}
-  vb.frequency.value=5.2;vg.gain.setValueAtTime(0,t);vg.gain.linearRampToValueAtTime(f*.007,t+min(.45,d*.7));vb.connect(vg);vg.connect(o.frequency);vg.connect(o2.frequency);
-  lp.type='lowpass';lp.frequency.value=f*3.5;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.045);g.gain.setValueAtTime(v,max(t+.05,e-.07));g.gain.linearRampToValueAtTime(0,e+.05);
-  o.connect(g);o2.connect(g2).connect(g);g.connect(lp).connect(W);
-  n.buffer=NZ;bf.type='bandpass';bf.frequency.value=f*2;bf.Q.value=1.1;ng.gain.setValueAtTime(0,t);ng.gain.linearRampToValueAtTime(v*.3,t+.03);ng.gain.linearRampToValueAtTime(v*.08,t+.14);ng.gain.linearRampToValueAtTime(0,e+.05);n.connect(bf).connect(ng).connect(W);
-  for(const x of[o,o2,vb]){x.start(t);x.stop(e+.08)}n.start(t,rnd());n.stop(e+.08)},
- // fl: a wooden flute: mostly fundamental with a little second harmonic, a steady breath of noise (with a chiff on a tongued start)
- // and a late shallow vibrato. soft swells in and out slowly instead, for the held chord tones under the tune
- fl=(m,t,d,v,cut,soft,W=FP)=>{const f=mf(m),o=A.createOscillator(),o2=A.createOscillator(),g=A.createGain(),g2=A.createGain(),lp=A.createBiquadFilter(),vb=A.createOscillator(),vg=A.createGain(),n=A.createBufferSource(),bf=A.createBiquadFilter(),ng=A.createGain(),e=t+d,at=soft?min(.3,d*.3):.06,rl=soft?min(.35,d*.3):.09;
-  for(const[x,k]of[[o,1],[o2,2]]){x.frequency.setValueAtTime(cut?f*k*1.189:f*k,t);cut&&x.frequency.setValueAtTime(f*k,t+.04);vg.connect(x.frequency)}
-  g2.gain.value=.2;vb.frequency.value=5.4;vg.gain.setValueAtTime(0,t);vg.gain.setValueAtTime(0,t+min(.3,d*.4));vg.gain.linearRampToValueAtTime(f*.004,t+min(.9,d*.9));vb.connect(vg);
-  lp.type='lowpass';lp.frequency.value=min(f*5,6000);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+at);g.gain.setValueAtTime(v,max(t+at,e-rl));g.gain.linearRampToValueAtTime(0,e+.05);
-  o.connect(g);o2.connect(g2).connect(g);g.connect(lp).connect(W);
-  n.buffer=NZ;n.loop=true;bf.type='bandpass';bf.frequency.value=f*2.2;bf.Q.value=.7;ng.gain.setValueAtTime(0,t);ng.gain.linearRampToValueAtTime(v*(soft?.14:.34),t+(soft?at:.025));ng.gain.linearRampToValueAtTime(v*.14,t+max(.12,at));ng.gain.setValueAtTime(v*.14,max(t+.13,e-rl));ng.gain.linearRampToValueAtTime(0,e+.05);n.connect(bf).connect(ng).connect(W);
-  for(const x of[o,o2,vb]){x.start(t);x.stop(e+.1)}n.start(t,rnd());n.stop(e+.1)},
- bd=(t,v)=>{const o=A.createOscillator(),g=A.createGain(),n=A.createBufferSource(),bf=A.createBiquadFilter(),ng=A.createGain();o.frequency.setValueAtTime(115,t);o.frequency.exponentialRampToValueAtTime(52,t+.18);
-  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.006);g.gain.exponentialRampToValueAtTime(.001,t+.38);o.connect(g).connect(mix);o.start(t);o.stop(t+.42);
-  n.buffer=NZ;bf.type='lowpass';bf.frequency.value=1100;ng.gain.setValueAtTime(v*.45,t);ng.gain.exponentialRampToValueAtTime(.001,t+.07);n.connect(bf).connect(ng).connect(mix);n.start(t,rnd());n.stop(t+.09)},
- // chord voicings (bass root, fifth, octave, tenth) and 8-bar changes; bars 1-2 match bars 5-6 so the opening phrase can return
- CH={D:[50,57,62,66],G:[43,50,55,59],A:[45,52,57,61],Bm:[47,54,59,62],C:[48,55,60,64]},
- PA=[['D','G','D','A','D','G','A','D'],['D','D','C','C','D','D','A','D'],['D','Bm','G','A','D','Bm','A','D']],
- PB=[['G','G','D','D','G','G','A','D'],['Bm','Bm','G','A','Bm','Bm','A','D'],['D','C','D','A','D','C','A','D']],
- RH=[[2,1,2,1],[2,1,2,1],[1,1,1,2,1],[2,1,1,1,1],[1,1,1,1,1,1],[3,2,1],[2,1,3]],
- sc=c=>{const r=[];for(let m=59;m<=86;m++){const p=m%12;([2,4,6,7,9,11].includes(p)||p==(c=='C'?0:1))&&r.push(m)}return r},
- // a phrase over chords cs from pitch st; with end (a pitch class) its last bar cadences there
- phr=(cs,st,end)=>{const o=[];let cur=st;cs.forEach((c,bi)=>{const S=sc(c),ct=CH[c].map(m=>m%12),last=bi==cs.length-1&&end!=null,rh=last?(rnd()<.5?[3,3]:[2,1,3]):RH[rnd()*RH.length|0];let e=0;
+ pl=(m,t,v,H=LP)=>{const s=A.createBufferSource(),g=A.createGain();s.buffer=pluck(m);s.playbackRate.value=mf(m)*(ksN(m)+.5)/SR;g.gain.value=v;s.connect(g).connect(H);s.start(t)},
+ // bs: the bass, two saws a few cents apart and a triangle for body, through a resonant low-pass that snaps shut
+ bs=(m,t,d,v)=>{const f=mf(m),g=A.createGain(),lp=A.createBiquadFilter(),e=t+d+.05;lp.type='lowpass';lp.Q.value=5;lp.frequency.setValueAtTime(min(f*10,4000),t);lp.frequency.exponentialRampToValueAtTime(f*2.4,t+.16);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.005);g.gain.linearRampToValueAtTime(v*.6,t+.12);g.gain.setValueAtTime(v*.6,t+max(.12,d));g.gain.linearRampToValueAtTime(0,e);
+  os('sawtooth',f,t,e+.02,lp,-7);os('sawtooth',f,t,e+.02,lp,7);os('triangle',f,t,e+.02,lp);lp.connect(g).connect(pump)},
+ // pd: the pad, each chord tone on two saws detuned apart and spread left and right, through a low-pass that swells open and closes
+ pd=(ms,t,d,v,o)=>{const e=t+d;for(const[P,dt]of[[o||PL,-11],[o||PR,11]]){const lp=A.createBiquadFilter(),g=A.createGain();lp.type='lowpass';lp.Q.value=1.5;lp.frequency.setValueAtTime(500,t);lp.frequency.linearRampToValueAtTime(1500,t+d*.55);lp.frequency.linearRampToValueAtTime(700,e+.8);
+  ad(g.gain,t,d,v,min(.7,d*.3),.8);for(const m of ms)os('sawtooth',mf(m),t,e+.85,lp,dt+(rnd()-.5)*4);lp.connect(g).connect(P)}},
+ // cr: the monks, each voice two saws wavering together, into the choir's mouth
+ cr=(ms,t,d,v)=>{const g=A.createGain(),vb=A.createOscillator(),vg=A.createGain(),e=t+d+1.15;vb.frequency.value=4.6+rnd()*.6;vg.gain.value=12;vb.connect(vg);
+  ad(g.gain,t,d,v,min(.9,d*.35),1.1);for(const m of ms)for(const dt of[-6,6])vg.connect(os('sawtooth',mf(m),t,e,g,dt).detune);vb.start(t);vb.stop(e);g.connect(CI)},
+ // og: the organ, its stops in one wavetable, the pipes speaking slowly
+ og=(ms,t,d,v,o=mix)=>{const g=A.createGain(),lp=A.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2600;ad(g.gain,t,d,v,.09,.5);for(const m of ms)os(ORG,mf(m),t,t+d+.55,lp);lp.connect(g).connect(o)},
+ // bl: a church bell: hum, prime, the minor-third tierce, quint, nominal and three above, each dying away at its own rate
+ bl=(m,t,v,o=mix)=>{const f=mf(m);for(const[k,a,dc]of[[.5,.5,5.5],[1,.8,3.2],[1.19,.45,2.6],[1.5,.25,2],[2,.6,1.6],[2.51,.25,1],[3.01,.18,.7],[4.17,.1,.45]]){const g=A.createGain();
+  os('sine',f*k,t,t+dc*1.5+.05,g);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v*a,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+dc*1.5);g.connect(o)}},
+ // ar: the arpeggio, a narrow pulse through a low-pass plucked shut, half of it into the echo
+ ar=(m,t,d,v)=>{const f=mf(m),g=A.createGain(),lp=A.createBiquadFilter(),e=t+d;lp.type='lowpass';lp.Q.value=6;lp.frequency.setValueAtTime(min(f*7,5000),t);lp.frequency.exponentialRampToValueAtTime(f*1.5,e);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.003);g.gain.exponentialRampToValueAtTime(v*.08,e);g.gain.linearRampToValueAtTime(0,e+.02);os(PU,f,t,e+.03,lp);lp.connect(g);g.connect(AP);g.connect(DS)},
+ // sw: the shawm, a buzzing double reed, tongued in from just under the note, with a vibrato that creeps in
+ sw=(m,t,d,v,o=SP)=>{const f=mf(m),g=A.createGain(),lp=A.createBiquadFilter(),vb=A.createOscillator(),vg=A.createGain(),e=t+d+.08;lp.type='lowpass';lp.frequency.value=min(f*8,3500);
+  vb.frequency.value=5.6;vg.gain.setValueAtTime(0,t);vg.gain.linearRampToValueAtTime(14,t+min(.5,d));vb.connect(vg);
+  const x=os(SHW,f,t,e+.02,lp);x.frequency.setValueAtTime(f*.97,t);x.frequency.exponentialRampToValueAtTime(f,t+.05);vg.connect(x.detune);
+  ad(g.gain,t,d,v,.03,.07);lp.connect(g).connect(o);vb.start(t);vb.stop(e+.02)},
+ // ld: the synth lead, a saw and a square a few cents apart, gliding in from the note before (p), its vibrato coming in late
+ ld=(m,t,d,v,p)=>{const f=mf(m),g=A.createGain(),lp=A.createBiquadFilter(),vb=A.createOscillator(),vg=A.createGain(),e=t+d+.25;lp.type='lowpass';lp.Q.value=2;lp.frequency.setValueAtTime(min(f*6,4200),t);lp.frequency.linearRampToValueAtTime(min(f*3.5,3000),t+d);
+  vb.frequency.value=5.2;vg.gain.setValueAtTime(0,t);vg.gain.setValueAtTime(0,t+min(.25,d*.4));vg.gain.linearRampToValueAtTime(18,t+min(.8,d));vb.connect(vg);
+  for(const[ty,dt]of[['sawtooth',-5],['square',5]]){const x=os(ty,f,t,e,lp,dt);if(p&&p!=m){x.frequency.setValueAtTime(mf(p),t);x.frequency.exponentialRampToValueAtTime(f,t+.07)}vg.connect(x.detune)}
+  ad(g.gain,t,d,v,.02,.22);lp.connect(g);g.connect(LD);g.connect(LS);vb.start(t);vb.stop(e)},
+ // str: the violins, each note on two saws a few cents apart, bowed in slowly with a vibrato, darkened and thinned of their lowest
+ // buzz; with tr bowed in tremolo, shivering on the note in sixteenths
+ str=(ms,t,d,v,tr)=>{const e=t+d+.7,g=A.createGain(),lp=A.createBiquadFilter(),hp=A.createBiquadFilter(),vb=A.createOscillator(),vg=A.createGain();lp.type='lowpass';lp.frequency.value=3200;lp.Q.value=.5;hp.type='highpass';hp.frequency.value=180;
+  vb.frequency.value=5.5;vg.gain.value=9;vb.connect(vg);for(const m of ms)for(const dt of[-7,7])vg.connect(os('sawtooth',mf(m),t,e,lp,dt+(rnd()-.5)*3).detune);
+  ad(g.gain,t,d,v,min(.45,d*.3),.6);lp.connect(hp).connect(g);vb.start(t);vb.stop(e);
+  if(!tr)return g.connect(SB);const q=A.createGain(),lf=A.createOscillator(),lg=A.createGain();q.gain.value=.55;lf.frequency.value=1/E;lg.gain.value=.45;lf.connect(lg).connect(q.gain);lf.start(t);lf.stop(e);g.connect(q).connect(SB)},
+ // cel: the cello, one saw with a woody body (a lift at 280 Hz), bowed in with its vibrato coming late
+ cel=(m,t,d,v)=>{const f=mf(m),e=t+d+.4,g=A.createGain(),lp=A.createBiquadFilter(),pk=A.createBiquadFilter(),vb=A.createOscillator(),vg=A.createGain();lp.type='lowpass';lp.frequency.value=1500;pk.type='peaking';pk.frequency.value=280;pk.Q.value=1.2;pk.gain.value=6;
+  vb.frequency.value=5;vg.gain.setValueAtTime(0,t);vg.gain.linearRampToValueAtTime(14,t+min(.6,d));vb.connect(vg);vg.connect(os('sawtooth',f,t,e,lp).detune);
+  ad(g.gain,t,d,v,.14,.35);lp.connect(pk).connect(g).connect(SB);vb.start(t);vb.stop(e)},
+ // the drum machine: kk the kick, ducking the pump; sn the snare, a crack and then a big tail held and cut dead (gated reverb); hh the
+ // hats, closed or open; tm a tom
+ kk=(t,v)=>{const g=A.createGain(),x=os('sine',160,t,t+.45,g);x.frequency.setValueAtTime(160,t);x.frequency.exponentialRampToValueAtTime(42,t+.13);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.004);g.gain.exponentialRampToValueAtTime(.001,t+.42);g.connect(mix);
+  nz(t,.02,v*.4,'highpass',2500,.7,mix);pump.gain.setTargetAtTime(.4,t,.005);pump.gain.setTargetAtTime(1,t+.03,.1)},
+ sn=(t,v)=>{const g=A.createGain(),x=os('triangle',190,t,t+.15,g);x.frequency.setValueAtTime(190,t);x.frequency.exponentialRampToValueAtTime(150,t+.1);g.gain.setValueAtTime(v*.8,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);g.connect(mix);
+  nz(t,.12,v,'bandpass',1900,.8,mix);nz(t,0,v*.45,'highpass',900,.7,mix,.24)},
+ hh=(t,v,op)=>nz(t,op?.28:.045,v,'highpass',4800,.5,HP),
+ tm=(m,t,v)=>{const f=mf(m),g=A.createGain(),x=os('sine',f,t,t+.5,g);x.frequency.setValueAtTime(f*1.5,t);x.frequency.exponentialRampToValueAtTime(f,t+.06);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+.45);g.connect(mix)},
+ // the chords as root (in the bass's octave) and third: D minor's own, the harmonic minor's A major and the Phrygian E flat; and the
+ // 4-bar changes, each played twice for an 8-bar part, the verse's always turning on A or C back to D minor
+ CH={Dm:[38,3],Eb:[39,4],F:[41,4],Gm:[43,3],A:[45,4],Bb:[34,4],C:[36,4]},
+ PA=[['Dm','Bb','C','A'],['Dm','C','Bb','A'],['Dm','Gm','Bb','A'],['Dm','Dm','Bb','C'],['Dm','Eb','Dm','C']],
+ PB=[['Bb','C','Dm','Dm'],['Gm','Bb','C','A'],['Bb','F','C','A'],['F','C','Gm','A'],['Bb','Gm','Eb','A']],
+ // sc: the scale the tune draws on over chord c, D natural minor with C sharp under A and E flat under E flat; ct: c's chord tones;
+ // vc: c voiced close from pitch lo up
+ sc=c=>SC[c]||(SC[c]=(()=>{const q=[2,4,5,7,9,10,0].map(p=>c=='A'&&p==0?1:c=='Eb'&&p==4?3:p),r=[];for(let m=57;m<=84;m++)q.includes(m%12)&&r.push(m);return r})()),
+ ct=c=>{const[r,q]=CH[c];return[r%12,(r+q)%12,(r+7)%12]},
+ vc=(c,lo)=>{const[r,q]=CH[c];return[0,q,7].map(k=>{let m=r+k;while(m<lo)m+=12;return m}).sort((a,b)=>a-b)},
+ // bar rhythms in sixteenths, slow and plain like a chant
+ RH=[[8,8],[6,6,4],[4,4,8],[12,4],[4,2,2,8],[6,2,8],[16],[4,4,4,4],[8,4,4],[2,2,4,8]],
+ // a phrase over chords cs from pitch st, landing on chord tones on the beats and stepping through the mode between them; with end
+ // (a pitch class) its last note cadences there
+ phr=(cs,st,end)=>{const o=[];let cur=st;cs.forEach((c,bi)=>{const S=sc(c),T=ct(c),last=bi==cs.length-1&&end!=null,rh=last?(rnd()<.5?[16]:[4,12]):RH[rnd()*RH.length|0];let e=0;
   rh.forEach((d,ni)=>{let i=S.indexOf(cur);if(i<0)i=max(0,S.findIndex(m=>m>=cur));
-   if(last&&ni==rh.length-1){let b=cur+99;for(const m of S)if(m%12==end&&m>=62&&m<=83&&abs(m-cur)<abs(b-cur))b=m;cur=b<99+cur?b:cur}
-   else if(e==0||e==3){const c2=S.filter(m=>ct.includes(m%12)&&abs(m-cur)<=7&&m>=62&&m<=83);if(c2.length)cur=c2[rnd()*c2.length|0]}
-   else{const k=rnd()<.8?1:2,dr=cur>78?-1:cur<66?1:rnd()<.5?-1:1;cur=S[cl(i+dr*k,0,S.length-1)]}
-   o.push([bi*6+e,d,cur,d>=2&&rnd()<.35]);e+=d})});return o},
- sh=(p,k)=>p.map(n=>[n[0]+k*6,n[1],n[2],n[3]]),
- // an 8-bar tune over chords cs: a phrase from s0 or s1, an answer to it, the first phrase again, then a closing phrase on D
- mp=(cs,s0,s1)=>{const a=phr(cs.slice(0,2),rnd()<.5?s0:s1),b=phr(cs.slice(2,4),a.at(-1)[2],rnd()<.5?9:4),d=phr(cs.slice(6,8),a.at(-1)[2],2);return[...a,...sh(b,2),...sh(a,4),...sh(d,6)]},
- tune=()=>{const pa=PA[rnd()*3|0],pb=PB[rnd()*3|0];return[{ch:pa,mel:mp(pa,66,69),dr:0},{ch:pb,mel:mp(pb,74,76),dr:1}]},
- // the flute's held chord tones: the chord's octave and tenth, moved into the flute's easy range
- nm=m=>m<62?nm(m+12):m>73?nm(m-12):m;
- let Q=[],bi=0,T=0,lv=0,off=0,E=.29,dk=0;
- // one tune per cycle: a two-bar lead-in on the flute's chord tones, A A B B (bodhran joins on the repeat of A and through B), then
- // eight bars of flute alone (solo)
- const solo=()=>{const pa=PA[rnd()*3|0];return{ch:pa,mel:mp(pa,66,69),dr:0,solo:1}},
- next=()=>{const[a,b]=tune();E=60/((66+rnd()*8)*3);Q.push({ch:['D','A'],mel:[],dr:0},a,{...a,dr:.5},b,b,solo())},
- bar=t=>{if(!Q.length)next();const p=Q[0],b=bi,c=CH[p.ch[b]];
-  // the harp keeps to the beat (root, then the tenth) with an odd pick between, at .7 of its old level
-  [0,1,2,3,2,1].forEach((k,j)=>(j%3==0||rnd()<.25)&&pl(c[k]+(j==3&&rnd()<.3?12:0),t+j*E+(rnd()-.5)*.012,.7*(j?j==3?.17:.12:.26)*(.85+rnd()*.3)));
-  for(const k of[2,3])fl(nm(c[k]),t-.08,6*E+.16,p.mel.length?p.solo?.02:.03:.045,0,1);
-  for(const n of p.mel){const o=n[0]-b*6;if(o<0||o>=6)continue;const x=t+o*E+(rnd()-.5)*.01,d=n[1]*E*.94,s=o%3?1:1.2;
-   p.solo||wh(n[2],x,d,.045*s,n[3]);fl(n[2],x+.01,d,.055*s,n[3]);p.dr&&n[2]<=74&&fl(n[2]+12,x+.02,d,.018*s,n[3])}
-  if(p.dr){bd(t,.05*p.dr);bd(t+3*E,.032*p.dr);rnd()<.5&&bd(t+5*E,.016*p.dr)}
+   if(last&&ni==rh.length-1){let b=cur+99;for(const m of S)if(m%12==end&&m>=62&&m<=79&&abs(m-cur)<abs(b-cur))b=m;cur=b<99+cur?b:cur}
+   else if(e%8==0){const c2=S.filter(m=>T.includes(m%12)&&abs(m-cur)<=7&&m>=62&&m<=79);if(c2.length)cur=c2[rnd()*c2.length|0]}
+   else{const k=rnd()<.85?1:2,dr=cur>76?-1:cur<65?1:rnd()<.5?-1:1;cur=S[cl(i+dr*k,0,S.length-1)]}
+   o.push([bi*16+e,d,cur]);e+=d})});return o},
+ sh=(p,k)=>p.map(n=>[n[0]+k*16,n[1],n[2]]),
+ // an 8-bar tune over chords cs: a phrase from s0 or s1, an answer to it ending on the fourth chord's fifth, the first phrase again,
+ // then a closing phrase on the last chord's root
+ mp=(cs,s0,s1)=>{const a=phr(cs.slice(0,2),rnd()<.5?s0:s1),b=phr(cs.slice(2,4),a.at(-1)[2],(CH[cs[3]][0]+7)%12),d=phr(cs.slice(6,8),a.at(-1)[2],CH[cs[7]][0]%12);return[...a,...sh(b,2),...sh(a,4),...sh(d,6)]},
+ // per piece, a bass line (1 the root, 2 its octave, 0 rest), an arpeggio order (through the chord and its octave) and a beat (kick,
+ // snare); DH is the half-time beat, the snare on three
+ BPS=['1010101010101010','1011101110111011','1010201010102010','1111111111111111','1000101010001010'],
+ APS=['0123','0132','0121','3210','0213','01230321'],
+ DH=['1000000000100000','0000000010000000'],
+ DKS=[['1000000010100000','0000100000001000'],['1000000010000000','0000100000001000'],['1000001010000000','0000100000001001'],['1000100010001000','0000100000001000']];
+ let Q=[],bi=0,T=0,lv=0,off=0,E=.17,dk=0,pv=0,BP='',AQ='',DK=DH;
+ // one piece per cycle: an intro (bell, drone, choir, the lute picking the chords), A (the shawm's tune, half-time beat), B (lead and
+ // shawm, the full beat, choir, a bell, a tom fill), A again on the lead, a break (the lute plays the tune over drone and choir), B
+ // again, and two bars of D minor held over the drone
+ const next=t=>{const pa=PA[rnd()*PA.length|0],pb=PB[rnd()*PB.length|0],A8=[...pa,...pa],B8=[...pb,...pb],ma=mp(A8,69,74),mb=mp(B8,74,77);
+  E=60/((84+rnd()*12)*4);dl.delayTime.setValueAtTime(E*3,t);BP=BPS[rnd()*BPS.length|0];AQ=APS[rnd()*APS.length|0];DK=DKS[rnd()*DKS.length|0];
+  Q.push({ch:pa,o:1,c:1,bl:1,lu:1,ce:1},{ch:A8,mel:ma,ld:1,b:1,p:1,a:1,d:DH,ce:1,s:1,s0:4},{ch:B8,mel:mb,ld:2,b:1,p:1,a:1,c:1,d:DK,bl:1,f:1,ce:1,s:1},{ch:A8,mel:ma,ld:2,b:1,p:1,a:1,d:DK,ce:1,s:1,s0:4},
+   {ch:pa,mel:ma.filter(n=>n[0]<64),ld:3,o:1,c:1,ce:1,s:1},{ch:B8,mel:mb,ld:2,b:1,p:1,a:1,c:1,d:DK,f:1,ce:1,s:2,vd:1},{ch:['Dm','Dm'],o:1,c:1,p:1,ce:1,s:1})},
+ bar=t=>{if(!Q.length)next(t);const p=Q[0],b=bi,c=p.ch[b],r=CH[c][0],V=vc(c,62),o=r<45?r+12:r;
+  // the drone holds the whole part; the choir sings the chord's root, fifth and octave from about the D below middle C
+  if(b==0){p.bl&&bl(50,t,.1);p.o&&og([38,45,50],t,p.ch.length*16*E,.03)}
+  p.c&&cr([o,o+7,o+12],t,16*E,.055);p.p&&pd(vc(c,57),t,16*E,.016);p.ce&&cel(o,t,16*E,.03);if(p.s&&b>=(p.s0|0)){const q=vc(c,64);str([...q,q[0]+12],t,16*E,p.s>1?.016:.012,p.s>1)}
+  if(p.lu){const q=[...vc(c,50),vc(c,50)[0]+12];[0,1,2,3,2,1,2,1].forEach((k,j)=>(j%2==0||rnd()<.6)&&pl(q[k],t+j*2*E+(rnd()-.5)*.012,.18*(j%4?.75:1)))}
+  if(p.b)for(let i=0;i<16;i++){const k=BP[i];if(k=='0')continue;let j=i+1;while(j<16&&j-i<2&&BP[j]=='0')j++;bs(r+(k=='2'?12:0),t+i*E,(j-i)*E*.8,.05*(i%4?.8:1))}
+  if(p.a){const q=[...V,V[0]+12];for(let i=0;i<16;i++)ar(q[+AQ[i%AQ.length]]+(b%2&&i>7?12:0),t+i*E,E*.9,i%4?.018:.026)}
+  if(p.d){const f=p.f&&b==p.ch.length-1;for(let i=0;i<16;i++){const x=t+i*E;if(f&&i>=12){tm([55,52,48,45][i-12],x,.1);continue}
+   p.d[0][i]=='1'&&kk(x,.14);p.d[1][i]=='1'&&sn(x,.085);i%2||hh(x,i%4?.014:.02);p.d!=DH&&i==14&&rnd()<.35&&hh(x,.016,1)}}
+  // the tune: 1 the shawm, 2 the lead with the shawm an octave under, 3 the lute, re-plucking its long notes in a tremolo
+  for(const n of p.mel||[]){const k=n[0]-b*16;if(k<0||k>=16)continue;const x=t+k*E,d=n[1]*E*.95,v=k%8?1:1.12;
+   if(p.ld==1)sw(n[2],x,d,.034*v);
+   else if(p.ld==2){ld(n[2],x,d,.026*v,pv);sw(n[2]-12,x+.012,d,.016*v);p.vd&&str([n[2]+12],x,d,.02*v)}
+   else{pl(n[2],x,.22*v);if(n[1]>=6)for(let s=2;s<n[1];s+=2)pl(n[2],x+s*E,.09*v)}
+   pv=n[2]}
   if(++bi>=p.ch.length){bi=0;Q.shift()}};
- // level 0..1 fades the band in or out; once silent for a few seconds it stops and restarts with a fresh tune next time
+ // level 0..1 fades the band in or out; once silent for a few seconds it stops and restarts with a fresh piece next time
  // (while the jingle plays, until dk, the band stays dipped under it: level changes wait, then it comes back up)
  return{tick(level,now=A.currentTime){if(level!=lv){(!dk||now>dk)&&bus.gain.setTargetAtTime(level*.6,now,level>lv?1.6:1.4);lv=level;level||(off=now)}
   if(dk&&now>dk){dk=0;bus.gain.setTargetAtTime(lv*.6,now,.9)}
-  if(!lv&&now-off>6){Q.length=bi=T=0;return}if(T<now+.05)T=now+.12;while(T<now+.9){bar(T);T+=6*E}},
-  // the find's jingle: the whistle runs up the D-major scale in quavers, A to a held top D with a cut into it and vibrato creeping
-  // in, over the harp strumming D, G and D again (I IV I). The band dips to a quarter under it
-  jingle(){const n=A.currentTime,t=n+.06,q=.13;dk=t+q*8+.9;bus.gain.setTargetAtTime(lv*.15,n,.12);
-   for(const[m,b,d,c]of[[69,0,1],[74,1,1],[78,2,1],[81,3,2],[79,5,1],[81,6,1],[83,7,1],[86,8,7,1]])wh(m,t+b*q,d*q*.94,.09,c,JB);
-   for(const[b,C,sp]of[[0,[50,57,62,66],.025],[5,[55,62,67,71],.025],[8,[50,57,62,66,69,74],.04]])C.forEach((m,i)=>pl(m,t+b*q+i*sp,(b==8?.24:.2)*(i?1:1.2),JB))}}};
+  if(!lv&&now-off>6){Q.length=bi=T=0;return}if(T<now+.05)T=now+.12;while(T<now+.9){bar(T);T+=16*E}},
+  // the find's jingle: the shawm runs up D minor to the leading note and a held top D, over the lute strumming D minor, A, then a
+  // bright D major (the old Picardy third), the pad swelling under it and a small bell ringing it home. The band dips to a quarter
+  jingle(){const n=A.currentTime,t=n+.06,q=.12;dk=t+q*8+.9;bus.gain.setTargetAtTime(lv*.15,n,.12);
+   for(const[m,b,d]of[[62,0,1],[65,1,1],[69,2,1],[74,3,2],[73,5,1],[74,6,5]])sw(m,t+b*q,d*q*.94,.08,JB);
+   for(const[b,C,sp]of[[0,[50,57,62,65],.025],[3,[45,52,57,61],.025],[6,[50,57,62,66,69,74],.04]])C.forEach((m,i)=>pl(m,t+b*q+i*sp,(b==6?.22:.18)*(i?1:1.2),JB));
+   pd([62,66,69],t+q*6,q*5,.03,JB);bl(86,t+q*6,.05,JB)}}};
 
 // ---- weather & the day ----
 const EXB=.58,DAY=900,NGT=900,CYC=DAY+NGT,SDp=V(),MD=V(),IC=n=>`<svg class="ic" aria-hidden="true"><use href="#i-${n}"/></svg>`,
@@ -2022,27 +2198,59 @@ wxU=dt=>{if(run&&!pz&&(wxN-=dt)<0){const o=WXN[wxI];wxGo(o[R()*o.length|0])}cons
  RNM.visible=SPM.visible=RFM.visible=wx.r>.01;FRM.visible=U.pud.value>0;if(RNM.visible){U.rt.value=(U.rt.value+dt)%1000;U.rwv.value.copy(U.wd.value).multiplyScalar(2+3*wx.w);U.rc.value.set(LK.x+CO.x*8,LK.y+12,LK.z+CO.z*8)}};
 let wxI=1,wxN=150,wxD=1e9;
 let dy=1,dT=0,hw=0,DSK=0,LT=0,NF2=0;
-let W=0,run=0,pz=0,svT=15,tm=0,LV=1,XP=0,POT=1,QN=0;
-// the armoury: the sword's temper (attack and reach), the plate harness (hearts), riding boots (speed), the warhound, and healing draughts
-// by the flask (at most POTM carried). [key, icon, name, what it does at level l, prices per level, r: bought again and again]
-const L={sword:0,armor:0,boots:0,dog:0},POTM=5,penR=()=>9,swR=()=>3.4+.25*L.sword,
+let W=0,run=0,pz=0,svT=15,tm=0,LV=1,XP=0,POT=1,QN=0,SP=1,skSel='blade',dsT=0,dsC=0,dsN=0,wardT=0;
+// ---- the skill tree (K): three branches, Attack, Mobility and Magic, each of six skills grown from a root: a stem of three, a fork of two,
+// and a keystone that needs both. A skill can be learned once all it needs have a rank. A skill point comes with every level (and one to
+// begin with); gold unlearns them all (rsP, the points come back) and buys healing draughts (POTP each, POTM at most). SKT rows: [key,
+// name, colour, icon, skills]; a skill: [key, icon, name, ranks, what it does, needs, x, y on the tree's 1000 x 640 field, drawn big (1 a root, 2 a keystone)].
+// SKL: the ranks learned; skr(k): a skill's rank ----
+const SKT=[['atk','Attack','#ff4a3d','sword',[['blade','sword','Tempered Blade',3,'+0.75 attack a rank.',[],330,485,1],['crit','burst','Keen Edge',3,'+6% a rank to land a critical blow, for double damage.',['blade'],250,410],
+  ['reach','reach','Long Reach',2,'The blade reaches 0.4m further a rank.',['crit'],195,330],['heavy','hammer','Heavy Blows',2,'Blows hurl foes 50% further a rank, and they reel for longer.',['reach'],110,250],
+  ['cleave','cleave','Cleave',2,'Each rank widens the sword\'s arc, until it sweeps nearly all round you.',['reach'],255,240],['exec','skull','Executioner',1,'+60% damage to any foe below a third of its health.',['heavy','cleave'],170,140,2]]],
+ ['mob','Mobility','#ffcc1a','dash',[['fleet','boot','Fleet Foot',3,'+5% speed a rank.',[],500,525,1],['quick','bolt','Quick Hands',2,'The sword comes back to guard 15% faster a rank.',['fleet'],500,425],
+  ['dash','dash','Dash',1,'Dash forward with Shift (RB on a pad), untouchable as you go. Ready again in under 3 seconds.',['quick'],500,330],['wind','leaf','Second Wind',2,'Out of a fight, wounds close faster a rank.',['dash'],420,240],
+  ['evade','feather','Evasion',2,'+7% a rank to slip a blow entirely.',['dash'],580,240],['runner','wind','Windrunner',1,'Your dash strikes every foe in its path, and recovers twice as fast.',['wind','evade'],500,140,2]]],
+ ['mag','Magic','#4fb3ff','rune',[['vit','heart','Vitality',3,'+1 heart a rank.',[],670,485,1],['blood','drop','Blood Rite',2,'+8% a rank to win a heart back on each kill.',['vit'],750,410],
+  ['hound','hound','Spirit Hound',1,'A great black hound runs at your side and goes for any foe near you.',['blood'],805,330],['arcane','rune','Arcane Blade',2,'Each stroke has a 12% chance a rank to burst with force, striking every foe within 4.5m.',['hound'],890,250],
+  ['ward','shield','Holy Ward',1,'A ward of light takes a blow for you, and renews every 15 seconds.',['hound'],745,240],['avatar','sun','Avatar of Light',1,'+2 hearts. The ward renews in 8 seconds, and every arcane burst heals you a heart.',['arcane','ward'],830,140,2]]]],
+ SKS=SKT.flatMap(b=>b[4].map(s=>[b,s])),skG=k=>SKS.find(q=>q[1][0]==k),SKL={},skr=k=>SKL[k]|0,skSpent=()=>{let n=0;for(const k in SKL)n+=SKL[k];return n},
+ skOpen=s=>s[5].every(q=>skr(q)>0),SKLB={atk:[215,585],mob:[612,560],mag:[785,585]},
+ POTM=5,POTP=25,rsP=()=>20+15*LV,penR=()=>9,swR=()=>3.4+.4*skr('reach'),crit=()=>.12+.06*skr('crit'),kbM=()=>1+.5*skr('heavy'),swCD=()=>SWCD*(1-.15*skr('quick')),arcT=()=>.2-.45*skr('cleave'),
 // experience to the next level, from level l
 xpN=l=>30+l*25+l*l*5,
-UP=[['sword','sword','Tempered Blade',l=>`+${l} attack and a longer reach.`+(l<4?' The smith can temper it once more.':''),[40,110,240,450]],
- ['armor','armor','Plate Harness',l=>`+${l} heart${l==1?'':'s'} from the harness.`+(l<3?' Another plate riveted on adds one more.':''),[60,160,320]],
- ['boots','boot','Riding Boots',l=>`+${5*l}% speed.`+(l<3?' Better leather for 5% more.':''),[30,90,200]],
- ['dog','hound','Warhound',()=>'A great black hound bred for the hunt. He runs at your side and goes for any foe that comes near you.',[450]],
- ['potion','potion','Healing Draught',()=>`Three hearts back, drunk with <b>Q</b>. You carry <b>${POT}</b> of ${POTM}.`,[25],1]];
+// Dash: a short burst the way he faces, untouchable through it (the hits it lands with Windrunner are in mvP)
+dash=()=>{if(!run||pz||bDead||!skr('dash')||dsC>0)return;dsT=.24;dsC=skr('runner')?1.3:2.6;dsN++;hiT=max(hiT,.34);sfx.swish();const p=P.position;emit(p.x,p.y+.3,p.z,10,0xd9cdb0,2.5,1.2,.5,4,.35)},
+// Arcane Blade: a burst of force round the knight, striking every foe within 4.5m for three quarters of a blow (and, with Avatar of Light, healing a heart)
+arcane=()=>{const p=P.position,dm=bDmg()*.75;for(let i=0;i<28;i++){const a=i/28*TAU;emit(p.x+cos(a)*1.4,p.y+1,p.z+sin(a)*1.4,1,0x7fc4ff,4,1.4,.6,0,.42)}
+ for(const w of WLF)w.on&&w.st<6&&hypot(w.x-p.x,w.z-p.z)<4.5&&wlfHit(w,dm);for(const h of HUM)h.on&&h.st<6&&h.up>=1&&hypot(h.x-p.x,h.z-p.z)<4.5&&foeHit(h,dm);
+ skr('avatar')&&bHP<bMax()&&(bHP++,hrt());[784,988,1175,1568].forEach((f,i)=>snd(f,.5,'triangle',.035,f*1.5,0,i*.03))};
 const toast=(m,c='',ic='')=>{const d=document.createElement('div'),ts=$('ts');d.className='t pn sm '+c;d.innerHTML=(ic?IC(ic):'')+'<span>'+m+'</span>';ts.prepend(d);while(ts.children.length>4)ts.lastChild.remove();setTimeout(()=>d.classList.add('o'),3200);setTimeout(()=>d.remove(),3800)};
-const ug=$('ug');function menu(){$('ml').innerHTML=`Level <b>${LV}</b> · <b>${W|0}</b> gold · <b>${POT}</b> draught${POT==1?'':'s'}`;ug.innerHTML=UP.map(([k,i,n,d,c,r],j)=>{const l=L[k]||0,full=r?POT>=POTM:l>=c.length,pr=r?c[0]:c[l];
- return`<div class="cd"><i>${IC(i)}</i><div><h3>${n}</h3><p>${d(l)}</p>${r?'':`<div class="pp" role="img" aria-label="Level ${l} of ${c.length}">${c.map((_,x)=>`<i class="${x<l?'on':''}"></i>`).join('')}</div>`}<button data-j="${j}"${full?' disabled':W<pr?` disabled title="You need ${pr} gold"`:''} aria-label="${full?`${n}: ${r?'full':'complete'}`:`Buy ${n} for ${pr} gold`}">${full?(r?'Full':'Complete'):'Buy · '+IC('coin')+' '+pr}</button></div></div>`}).join('')}
-ug.onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const[k,i,n,,c,r]=UP[b.dataset.j],pr=r?c[0]:c[L[k]];if(W<pr)return;W-=pr;
- if(r)POT++;else{L[k]++;apply();k=='armor'&&(bHP=min(bMax(),bHP+1),hrt())}sfx.coin();toast(r?'A healing draught, corked and ready.':n+(L[k]>1?' improved!':' ready!'),'g',i);menu();sv()};
-function apply(){dog.visible=L.dog>0;farmCol();fen||mkPen();armTint()}
-const SK='quest-1',sv=()=>{try{localStorage.setItem(SK,JSON.stringify({W,L,LV,XP,POT,dy,dT,G:EQ,B:BAG,Q:QST,QN,F:[...SHF]}))}catch(e){}};let sd=null;try{sd=JSON.parse(localStorage.getItem(SK))}catch(e){}
+// the skill tree's page: the points to spend and the respec over the tree; the tree (the trunk, each branch's curves, lit where learned,
+// its name and points, its nodes); the picked skill's card with its Learn button, and the supplies, in the panel beside
+const ug=$('ug'),skCv=(x1,y1,x2,y2)=>`M${x1} ${y1}C${x1} ${(y1+y2)/2} ${x2} ${(y1+y2)/2} ${x2} ${y2}`;function menu(){const n=skSpent();skG(skSel)||(skSel='blade');
+ $('ml').innerHTML=`<span class="spn"><b>${SP}</b>skill point${SP==1?'':'s'}</span><span class="spl">One comes with every level. Pick a skill to read it, then learn it.</span><button class="rsb" data-rs${n&&W>=rsP()?'':' disabled'}${n?'':' title="Nothing learned yet"'}>Unlearn all · ${IC('coin')} ${rsP()}</button>`;
+ let pa='',nd='',lb='';
+ for(const[b,bn,c,,S]of SKT){const r0=S[0];pa+=`<path d="${skCv(500,640,r0[6],r0[7])}" style="--bc:${c}" stroke-width="${skr(r0[0])?10:7}" class="${skr(r0[0])?'on':''}"/>`;
+  for(const s of S)for(const q of s[5]){const a=S.find(z=>z[0]==q);pa+=`<path d="${skCv(a[6],a[7],s[6],s[7])}" style="--bc:${c}" class="${skr(q)&&skr(s[0])?'on':''}"/>`}
+  lb+=`<div class="bl" style="--x:${SKLB[b][0]};--y:${SKLB[b][1]};--bc:${c}"><small>${bn}</small><b>${S.reduce((a,s)=>a+skr(s[0]),0)}</b></div>`;
+  for(const s of S){const[k,i,nm,mx,,,x,y,big]=s,r=skr(k),op=skOpen(s),can=op&&r<mx&&SP>0;
+   nd+=`<button class="sn${big?' bg':''}${r?' on':''}${can?' ok':''}${op?'':' lk'}${skSel==k?' sel':''}" data-sk="${k}" style="--x:${x};--y:${y};--bc:${c}" aria-label="${nm}, ${bn}, rank ${r} of ${mx}${op?'':', locked'}${can?', can be learned':''}">${IC(i)}${op?'':`<i class="lkb">${IC('lock')}</i>`}<i class="rkb">${r}/${mx}</i></button>`}}
+ ug.innerHTML=`<svg viewBox="0 0 1000 640" preserveAspectRatio="none" aria-hidden="true">${pa}</svg>${lb}${nd}`;
+ const[b,s]=skG(skSel),[k,i,nm,mx,d,req,,,big]=s,r=skr(k),op=skOpen(s),can=op&&r<mx&&SP>0;
+ $('ski').innerHTML=`<div class="skc" style="--bc:${b[2]}"><span class="sni">${IC(i)}</span><div><small>${b[1]}${big==2?' · keystone':big?' · root':''}</small><h3>${nm}</h3><p class="rkl">Rank ${r} of ${mx}</p></div></div><p>${d}</p>${op?'':`<p class="req">${IC('lock')} Needs ${req.map(q=>skG(q)[1][2]).join(' and ')}.</p>`}
+  <button class="lrn" data-learn style="--bc:${b[2]}"${can?'':' disabled'}>${r>=mx?'Mastered':!op?'Locked':SP?(r?'Learn the next rank':'Learn'):'No skill points left'}</button>
+  <div class="sup"><small>Supplies</small><span class="md">${IC('potion')}</span><p><b>Healing draught</b><br>Three hearts back, drunk with Q. You carry ${POT} of ${POTM}.</p><button data-buy${POT>=POTM?' disabled':W<POTP?` disabled title="You need ${POTP} gold"`:''}>${POT>=POTM?'Full':'Buy · '+IC('coin')+' '+POTP}</button></div>`}
+// learning a rank (a node clicked when already picked, or the card's Learn): a point spent and the skill's effect live at once
+const skLearn=k=>{const[,s]=skG(k);if(!skOpen(s)||skr(k)>=s[3]||SP<1)return;SP--;SKL[k]=skr(k)+1;apply();(k=='vit'||k=='avatar')&&(bHP=min(bMax(),bHP+(k=='vit'?1:2)),hrt());sfx.find();toast(`<b>${s[2]}</b>${s[3]>1?`, rank ${skr(k)},`:''} learned.`,'g',s[1]);sv()};
+ug.onclick=e=>{const b=e.target.closest('[data-sk]');if(!b)return;const k=b.dataset.sk;skSel==k?skLearn(k):(skSel=k);menu();hud();$('ug').querySelector(`[data-sk="${k}"]`)?.focus()};
+$('ski').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(b.dataset.learn!=null)skLearn(skSel);else if(b.dataset.buy!=null){if(W<POTP||POT>=POTM)return;W-=POTP;POT++;sfx.coin();toast('A healing draught, corked and ready.','g','potion');sv()}menu();hud()};
+$('ml').onclick=async e=>{const b=e.target.closest('[data-rs]');if(!b||b.disabled)return;const n=skSpent(),g=rsP();if(!n||W<g)return;
+ if(!await ask('Unlearn every skill?',`All <b>${n}</b> point${n>1?'s':''} come back to spend again, for <b>${g}</b> gold.`,'Unlearn all'))return;W-=g;SP+=n;for(const q in SKL)delete SKL[q];apply();bHP=min(bHP,bMax());hrt();sfx.coin();menu();hud();sv()};
+function apply(){dog.visible=skr('hound')>0;farmCol();fen||mkPen();armTint()}
+const SK='quest-1',sv=()=>{try{localStorage.setItem(SK,JSON.stringify({W,K:SKL,SP,LV,XP,POT,dy,dT,G:EQ,B:BAG,Q:QST,QN,F:[...SHF],X:[...XPL]}))}catch(e){}};let sd=null;try{sd=JSON.parse(localStorage.getItem(SK))}catch(e){}
 // ---- treasure: iron-bound chests at deserted farmsteads, in graveyards and ruins and at the foot of old towers (FIND, fndU), each opened
 // once for good (SHF keeps their keys, saved with the quest); a chest holds gold and a piece of gear rolled a grade above the field's ----
-const SHF=new Set(),FND=[];try{(JSON.parse(localStorage.getItem(SK))?.F||[]).forEach(k=>SHF.add(k))}catch(e){}
+const SHF=new Set(),FND=[],XPL=new Set();try{const s=JSON.parse(localStorage.getItem(SK));(s?.F||[]).forEach(k=>SHF.add(k));(s?.X||[]).forEach(k=>XPL.add(k))}catch(e){}
 let fndT=0,fndTip=0,fpQ=[],fpT=0,fvR=null,fvO=null,fvK=0,fvC=null,gtTip=0;const
 // a piece of gear drawn for its popup, on a 120 box: its silhouette in its metal and its rarity's colour, shaded and outlined like the icons,
 // with a few sparkles, and its rarity named on the tag
@@ -2215,7 +2423,7 @@ GEA={w:[['Rusted','Steel','Runed','Dragonbone','Sunforged'],['Blade','Longsword'
  c:[['Rowan','Silver','Bloodstone','Moonsilver','Phoenix'],['Charm','Amulet','Ring','Talisman','Sigil']],
  h:[['Dented','Iron','Gilded','Wardstone','Kingsguard'],['Cap','Kettle Helm','Bascinet','Great Helm','Sallet']],
  s:[['Splintered','Iron-bound','Heraldic','Dragonscale','Sunforged'],['Buckler','Heater Shield','Kite Shield','Tower Shield','Pavise']]},
-EQ={w:null,s:null,h:null,a:null,b:null,c:null},BAG=[],BGM=30,eqv=s=>EQ[s]?EQ[s].v:0,bMax=()=>5+L.armor+(LV-1>>1)+eqv('a')+eqv('h'),bDmg=()=>1+L.sword+(LV-1)*.25+eqv('w'),
+EQ={w:null,s:null,h:null,a:null,b:null,c:null},BAG=[],BGM=30,eqv=s=>EQ[s]?EQ[s].v:0,bMax=()=>5+skr('vit')+2*skr('avatar')+(LV-1>>1)+eqv('a')+eqv('h'),bDmg=()=>1+.75*skr('blade')+(LV-1)*.25+eqv('w'),
 gTxt=it=>it.s=='s'?`${Math.round(it.v*100)}% chance to block`:it.s=='a'||it.s=='h'?`+${it.v} heart${it.v==1?'':'s'}`:it.s=='b'?`+${Math.round(it.v*100)}% speed`:it.s=='c'?`${Math.round(it.v*100)}% heart on a kill`:`+${it.v} attack`,
 // a piece rolled at the knight's level: its slot at random (or s), its rarity from the odds, up grades better (a chest, a big foe)
 roll=(up=0,s)=>{s=s||'wshabc'[R()*6|0];const q=R(),r=min(4,(q<.5?0:q<.8?1:q<.94?2:q<.99?3:4)+up),il=LV,g=GEA[s],
@@ -2226,12 +2434,12 @@ cmpTxt=(a,b)=>a.v>b.v?'<span class="gup">better</span>':a.v<b.v?'<span class="gd
 // wearing a piece: what it replaces goes in the pack (or is sold, the pack being full); the hearts follow the armour, the look follows both
 equip=it=>{const cur=EQ[it.s],i=BAG.indexOf(it);i>=0&&BAG.splice(i,1);EQ[it.s]=it;cur&&bagAdd(cur,1);bHP=min(bMax(),bHP+max(0,(it.s=='a'?it.v:0)-(cur&&it.s=='a'?cur.v:0)));hrt();armTint();sfx.dab();sv()},
 bagAdd=(it,q)=>{if(BAG.length<BGM){BAG.push(it);q||toast(`<b style="color:${RCO(it.r)}">${escH(it.n)}</b> goes in your pack${EQ[it.s]?`: ${cmpTxt(it,EQ[it.s])} than yours`:''}.`,'','bag')}else{const g=sellP(it);W+=g;toast(`Your pack is full: the ${escH(it.n)} is sold for <b>${g}</b> gold.`,'','coin')}sv()},
-bGear=()=>`Hearts <b>${bMax()}</b> · Attack <b>${+bDmg().toFixed(1)}</b> · Speed <b>+${Math.round((eqv('b')+.05*L.boots)*100)}%</b>`,
+bGear=()=>`Hearts <b>${bMax()}</b> · Attack <b>${+bDmg().toFixed(1)}</b> · Speed <b>+${Math.round((eqv('b')+.05*skr('fleet'))*100)}%</b>`,
 // the knight's look follows his kit: the plate takes on the worn armour's finish (bright steel, then greened, blued, purpled and gilt with
 // rarity), and from Rare up the blade glows in the sword's rarity colour
 armTint=()=>{const a=EQ.a,w=EQ.w,s=EQ.s;SHG.visible=!!s;s&&SHRM.color.setHex([0xa8b0ba,0x9fb5a6,0x8fa6c8,0xa898c0,0xd8b65a][s.r]);SHU.boots.value.setHex(a?[0xa8b0ba,0x9fb5a6,0x8fa6c8,0xa898c0,0xd8b65a][a.r]:WEL);BLM.emissive.setHex(w&&w.r>1?RAR[w.r][1]:0);BLM.emissiveIntensity=w?[0,0,.45,.75,1.1][w.r]:0},
 // experience: kills, chests and bounties. Each level is a heart every other level and a quarter more attack, and heals him
-xpG=n=>{XP+=n;const p=P.position;dmgNum(p.x+.8,p.y+3.4,p.z,'+'+n+' xp','x');while(XP>=xpN(LV)){XP-=xpN(LV);LV++;bHP=bMax();hrt();dmgNum(p.x,p.y+4.4,p.z,'Level '+LV,'l');toast(`You reach level <b>${LV}</b>. Your arm grows stronger.`,'g','crown');sfx.find();emit(p.x,p.y+1.5,p.z,30,0xffe08a,3,5,1.2,2,.5)}},
+xpG=n=>{XP+=n;const p=P.position;dmgNum(p.x+.8,p.y+3.4,p.z,'+'+n+' xp','x');while(XP>=xpN(LV)){XP-=xpN(LV);LV++;bHP=bMax();hrt();dmgNum(p.x,p.y+4.4,p.z,'Level '+LV,'l');SP++,toast(`You reach level <b>${LV}</b>: a skill point to spend${mob?'':' (K)'}.`,'g','skill');sfx.find();emit(p.x,p.y+1.5,p.z,30,0xffe08a,3,5,1.2,2,.5)}},
 // ---- bounties: one at a time, posted at the keep. Slay so many of a kind (wolves, brigands, by night the risen dead), break open chests or
 // scout far out from home; then come back to the muster ring or the keep's gate to claim gold, experience and, for every other one, a
 // piece of gear a grade up. Each asks a little more than the last (QN, the number done) ----
@@ -2260,16 +2468,16 @@ const hrt=()=>{const m=bMax(),k=bHP+'/'+m,h=$('hh');h.hidden=$('hud').hidden;if(
 PJ=V(),dmgNum=(x,y,z,t,c='')=>{PJ.set(x,y,z).project(cam);if(PJ.z>1)return;const d=document.createElement('div');d.className='dn '+c;d.textContent=t;d.style.left=(PJ.x+1)/2*innerWidth+'px';d.style.top=(1-PJ.y)/2*innerHeight+'px';document.body.append(d);setTimeout(()=>d.remove(),950)},
 sfxW={hit:()=>{snd(190,.11,'sine',.2,55);snd(900,.06,'square',.03,300)},yelp:()=>snd(780,.2,'sawtooth',.05,360),hurt:()=>{snd(260,.22,'square',.06,120);snd(90,.2,'sine',.2,45)},snarl:()=>snd(120,.4,'sawtooth',.035,80),die:()=>snd(640,.35,'sawtooth',.05,150)},
 wlfClr=()=>{for(const w of WLF)w.on=0;WIM.count=0;WIM.visible=false},
-hurtP=(n,sx,sz)=>{if(hiT>0||bDead||!run)return;if(R()<eqv('s')){const q=P.position;hiT=.45;dmgNum(q.x,q.y+3,q.z,'Blocked','w');snd(1500,.07,'square',.04,700);snd(240,.14,'sine',.16,90);emit(q.x,q.y+1.8,q.z,8,0xfff1c9,3,2,.3,6,.25);return}const p=P.position,dx=p.x-sx,dz=p.z-sz,l=hypot(dx,dz)||1,b=$('bfx');bHP=max(0,bHP-n);hiT=1.2;bRg=8;pkx=dx/l*9;pkz=dz/l*9;sfxW.hurt();b.classList.add('on');setTimeout(()=>b.classList.remove('on'),120);
+hurtP=(n,sx,sz)=>{if(hiT>0||bDead||!run)return;{const q=P.position;if(skr('ward')&&wardT<=0){wardT=skr('avatar')?8:15;hiT=.45;dmgNum(q.x,q.y+3,q.z,'Warded','w');emit(q.x,q.y+1.6,q.z,18,0x9fd0ff,3,2,.5,0,.3);snd(1175,.4,'triangle',.05,1568);return}if(R()<.07*skr('evade')){hiT=.4;dmgNum(q.x,q.y+3,q.z,'Evaded','w');sfx.swish();return}}if(R()<eqv('s')){const q=P.position;hiT=.45;dmgNum(q.x,q.y+3,q.z,'Blocked','w');snd(1500,.07,'square',.04,700);snd(240,.14,'sine',.16,90);emit(q.x,q.y+1.8,q.z,8,0xfff1c9,3,2,.3,6,.25);return}const p=P.position,dx=p.x-sx,dz=p.z-sz,l=hypot(dx,dz)||1,b=$('bfx');bHP=max(0,bHP-n);hiT=1.2;bRg=8-2*skr('wind');pkx=dx/l*9;pkz=dz/l*9;sfxW.hurt();b.classList.add('on');setTimeout(()=>b.classList.remove('on'),120);
  emit(p.x,p.y+1.6,p.z,12,0xd23b2a,3,3.5,.6,5,.35);dmgNum(p.x,p.y+3,p.z,'-'+n,'p');hrt();bHP<=0&&bdie()},
 // knocked out: the screen fades, and he comes to at the keep's gate a fifth lighter in gold, with the wilds cleared of foes and loot
 bdie=()=>{bDead=1;swT=-1;pkx=pkz=0;$('fd').style.opacity=1;setTimeout(bres,1700)},
 bres=()=>{const[x,z]=cw(KX,5.2),l=Math.floor(W*.2);P.position.set(x,Hm(x,z),z);P.rotation.y=PI/4;W-=l;bHP=bMax();hiT=2.5;bDead=0;wlfClr();foeClr();for(const q of LOOT)q.on=0;wlT=20;hrt();$('fd').style.opacity=0;
  toast(l?`You wake at the keep's gate. Thieves took <b>${l}</b> gold while you lay senseless.`:"You wake at the keep's gate, bruised but alive.",'w','castle');sv()},
 // a stroke of the sword (swordSweep) lands on every wolf in the arc: damage from the blade's temper, the level and gear, a knockback, and a one-in-eight crit for double
-wlfHit=(w,dm,fx,fz)=>{const p=P.position,dx=w.x-p.x,dz=w.z-p.z,l=hypot(dx,dz)||1,cr=R()<.12;if(cr)dm*=2;w.hp-=dm;w.fl=1;w.kx=dx/l*(cr?13:9);w.kz=dz/l*(cr?13:9);emit(w.x,w.y+1.1,w.z,9,0xfff1c9,3.5,3.5,.4,8,.3);dmgNum(w.x,w.y+2.4,w.z,String(+dm.toFixed(1)),cr?'c':'');
- if(w.hp<=0){w.st=6;w.t=0;sfxW.die();wlfDrop(w);xpG(w.big?20:8);qEv('wolf');const cc=eqv('c');if(cc&&R()<cc&&bHP<bMax()){bHP++;hrt();dmgNum(p.x,p.y+3.4,p.z,'+1 heart','w')}}else{w.st=5;w.t=0;sfxW.yelp()}},
-wlfSwing=(p,fx,fz)=>{const r=swR(),dm=bDmg();let h=0;for(const w of WLF){if(!w.on||w.st>5)continue;const dx=w.x-p.x,dz=w.z-p.z,d=hypot(dx,dz);if(d>r+.6||(d>1.8&&(dx*fx+dz*fz)/d<.2))continue;wlfHit(w,dm,fx,fz);h++}h&&sfxW.hit()},
+wlfHit=(w,dm,fx,fz)=>{const p=P.position,dx=w.x-p.x,dz=w.z-p.z,l=hypot(dx,dz)||1,cr=R()<crit();if(cr)dm*=2;skr('exec')&&w.hp<w.mh*.34&&(dm*=1.6);w.hp-=dm;w.fl=1;w.kx=dx/l*(cr?13:9)*kbM();w.kz=dz/l*(cr?13:9)*kbM();emit(w.x,w.y+1.1,w.z,9,0xfff1c9,3.5,3.5,.4,8,.3);dmgNum(w.x,w.y+2.4,w.z,String(+dm.toFixed(1)),cr?'c':'');
+ if(w.hp<=0){w.st=6;w.t=0;sfxW.die();wlfDrop(w);xpG(w.big?20:8);qEv('wolf');const cc=eqv('c')+.08*skr('blood');if(cc&&R()<cc&&bHP<bMax()){bHP++;hrt();dmgNum(p.x,p.y+3.4,p.z,'+1 heart','w')}}else{w.st=5;w.t=0;sfxW.yelp()}},
+wlfSwing=(p,fx,fz)=>{const r=swR(),dm=bDmg();let h=0;for(const w of WLF){if(!w.on||w.st>5)continue;const dx=w.x-p.x,dz=w.z-p.z,d=hypot(dx,dz);if(d>r+.6||(d>1.8&&(dx*fx+dz*fz)/d<arcT()))continue;wlfHit(w,dm,fx,fz);h++}h&&sfxW.hit()},
 // what a foe leaves: gold always, a healing herb sometimes, and now and then a piece of gear (more often, and better, from a big one)
 lootPut=(x,z,k,r,it)=>{const q=LOOT.find(o=>!o.on)||LOOT[0],g=Hm(x,z);Object.assign(q,{on:1,x,z,gy:g,y:g+1,vx:(R()-.5)*3,vz:(R()-.5)*3,vy:5+R()*2,t:0,k,r,it})},
 wlfDrop=(w,g0=3)=>{lootPut(w.x,w.z,0,0,(g0+R()*5|0)+LV*(w.big?3:1));R()<.18&&lootPut(w.x,w.z,1,1,1);if(R()<(w.big?.6:.22)){const it=roll(w.big?1:0);lootPut(w.x,w.z,2,it.r,it)}},
@@ -2290,7 +2498,7 @@ lootU=dt=>{const p=P.position;let n=0;
  PKM.instanceMatrix.needsUpdate=PKM.instanceColor.needsUpdate=LBM.instanceMatrix.needsUpdate=LBG.attributes.aC.needsUpdate=true;PKM.count=LBM.count=n;PKM.visible=LBM.visible=n>0},
 // a new wolf comes in from 40-58m off, never from up the screen (the fixed view looks one way, so that's where it would be seen popping in), and never near the farm
 wlfNew=()=>{const p=P.position,big=dT>=DAY&&R()<.4;for(let k=0;k<8;k++){const a=R()*TAU,d=40+R()*18,x=p.x+cos(a)*d,z=p.z+sin(a)*d;if(-(cos(a)+sin(a))*.7071>.45||H(x,z)<WL+.8||nearFarm(x,z)||hypot(x,z)<penR()+30)continue;
-  const w=WLF.find(q=>!q.on);if(!w)return;Object.assign(w,{on:1,x,z,y:Hm(x,z),ry:atan2(p.x-x,p.z-z),hp:big?9+LV:WHP+(LV>>1),st:0,t:0,tw:2,kx:0,kz:0,ph:R()*6,am:0,ln:0,fl:0,sc:big?1.75:1.25,cd:0,tx:x,tz:z,hb:0,big});return}},
+  const w=WLF.find(q=>!q.on);if(!w)return;Object.assign(w,{on:1,x,z,y:Hm(x,z),ry:atan2(p.x-x,p.z-z),hp:big?9+LV:WHP+(LV>>1),st:0,t:0,tw:2,kx:0,kz:0,ph:R()*6,am:0,ln:0,fl:0,sc:big?1.75:1.25,cd:0,tx:x,tz:z,hb:0,big});w.mh=w.hp;return}},
 // the wolf: st 0 prowl, 1 hunt, 2 wind-up (a half-second crouch: the tell), 3 bite (a short dash; bites if the mouth ends within 1.5m of him), 4 run off after it,
 // 5 stagger (hit), 6 dying. The pen's safe ring calls them off, and a wolf that has lost him (50m) goes back to prowling
 wlfAI=(w,dt,p,safe)=>{const dx=p.x-w.x,dz=p.z-w.z,d=hypot(dx,dz)||.01,bx=w.x,bz=w.z;let vx=0,vz=0,fc=0;
@@ -2301,7 +2509,7 @@ wlfAI=(w,dt,p,safe)=>{const dx=p.x-w.x,dz=p.z-w.z,d=hypot(dx,dz)||.01,bx=w.x,bz=
  else if(w.st==2){fc=1;if(w.t>.5){w.st=3;w.t=0;w.hb=0}}
  else if(w.st==3){vx=sin(w.ry)*11;vz=cos(w.ry)*11;if(!w.hb&&w.t>.05){w.hb=1;if(hypot(p.x-(w.x+sin(w.ry)*1.3),p.z-(w.z+cos(w.ry)*1.3))<1.5)hurtP(w.big?2:1,w.x,w.z)}if(w.t>.28){w.st=4;w.t=0;w.cd=1.3}}
  else if(w.st==4){vx=-dx/d*5.5;vz=-dz/d*5.5;if(w.t>.8){w.st=1;w.t=0}}
- else if(w.st==5){fc=1;if(w.t>.4){w.st=1;w.t=0;w.cd=.4}}
+ else if(w.st==5){fc=1;if(w.t>.4+.25*skr('heavy')){w.st=1;w.t=0;w.cd=.4}}
  else if(w.t>.7){emit(w.x,w.y+.8,w.z,16,0xd9d2c4,4,3,.7,6,.5);w.on=0;return}
  for(const o of WLF)if(o!==w&&o.on){const ex=w.x-o.x,ez=w.z-o.z,e=hypot(ex,ez);if(e<1.8&&e>.01){vx+=ex/e*3;vz+=ez/e*3}}
  if(fc)w.ry+=wa(atan2(dx,dz)-w.ry)*min(1,dt*12);else if(w.st!=3&&(vx||vz))w.ry+=wa(atan2(vx,vz)-w.ry)*min(1,dt*9);
@@ -2311,7 +2519,9 @@ wlfAI=(w,dt,p,safe)=>{const dx=p.x-w.x,dz=p.z-w.z,d=hypot(dx,dz)||.01,bx=w.x,bz=
 function wlfU(dt){if(!run){WIM.visible&&wlfClr();foeClr();return}hrt();if(pz)return;
  const p=P.position,safe=hypot(p.x,p.z)<penR()+5;hiT-=dt;
  if(pkx*pkx+pkz*pkz>.01){const bx=p.x,bz=p.z;sweep(p,pkx*dt,pkz*dt,.45,2.4);wade(p,bx,bz);p.y=max(Hm(p.x,p.z),WL-1.2)}pkx*=Math.exp(-8*dt);pkz*=Math.exp(-8*dt);
- if(!bDead&&bHP<bMax()){bRg-=dt*(safe?3:1);if(bRg<=0){bHP++;bRg=6;hrt()}}
+ if(!bDead&&bHP<bMax()){bRg-=dt*(safe?3:1);if(bRg<=0){bHP++;bRg=6-1.8*skr('wind');hrt()}}
+ // the ward renews, and while it is up a few motes of its light hang about him
+ wardT-=dt;skr('ward')&&wardT<=0&&!bDead&&R()<dt*3&&emit(p.x+(R()-.5)*1.4,p.y+.8+R()*1.8,p.z+(R()-.5)*1.4,1,0x9fd0ff,.3,.6,.9,-.5,.2);
  let live=0;for(const w of WLF)w.on&&w.st<6&&live++;
  const nt=dT>=DAY,tgt=safe||bDead||hypot(p.x,p.z)<penR()+28?0:min(WMX,(nt?3:2)+min(2,dy-1)+(nt&&dy>1?1:0));if(live<tgt&&(wlT-=dt)<=0){wlT=5+R()*5;wlfNew()}
  let top=0;const A=WA.T.array,B=WA.U.array;
@@ -2351,7 +2561,7 @@ foeClr=()=>{for(const h of HUM){h.on=0;h.g.visible=false}},
 // where he may well see it, and never near home
 foeNew=k=>{const p=P.position,h=HUM.find(q=>!q.on&&q.k==k);if(!h)return;for(let t=0;t<8;t++){const a=R()*TAU,d=k?20+R()*14:40+R()*18,x=p.x+cos(a)*d,z=p.z+sin(a)*d;
   if(!k&&-(cos(a)+sin(a))*.7071>.45||H(x,z)<WL+.8||nearFarm(x,z)||hypot(x,z)<penR()+40)continue;
-  Object.assign(h,{on:1,x,z,y:Hm(x,z),ry:atan2(p.x-x,p.z-z),hp:(k?3:4)+LV*.6,st:k?1:0,t:0,kx:0,kz:0,ph:R()*6,am:0,cd:1,tx:x,tz:z,hb:0,up:k?0:1,tw:2});h.g.visible=true;k&&sfxF.rise();return}},
+  Object.assign(h,{on:1,x,z,y:Hm(x,z),ry:atan2(p.x-x,p.z-z),hp:(k?3:4)+LV*.6,st:k?1:0,t:0,kx:0,kz:0,ph:R()*6,am:0,cd:1,tx:x,tz:z,hb:0,up:k?0:1,tw:2});h.mh=h.hp;h.g.visible=true;k&&sfxF.rise();return}},
 // st 0 prowl, 1 close in, 2 wind-up (the blade raised: the tell), 3 the cut (a short step in; it lands if the blade's reach ends within
 // 1.8m of him), 4 recover, 5 stagger (hit), 6 dying. A skeleton does nothing until it is out of the ground (up)
 foeAI=(h,dt,p,safe)=>{const dx=p.x-h.x,dz=p.z-h.z,d=hypot(dx,dz)||.01,bx=h.x,bz=h.z,sk=h.k==1;let vx=0,vz=0,fc=0;h.t+=dt;h.cd-=dt;
@@ -2363,7 +2573,7 @@ foeAI=(h,dt,p,safe)=>{const dx=p.x-h.x,dz=p.z-h.z,d=hypot(dx,dz)||.01,bx=h.x,bz=
  else if(h.st==2){fc=1;if(h.t>(sk?.6:.5)){h.st=3;h.t=0;h.hb=0;sfx.swish()}}
  else if(h.st==3){vx=sin(h.ry)*4;vz=cos(h.ry)*4;if(!h.hb&&h.t>.1){h.hb=1;hypot(p.x-(h.x+sin(h.ry)*1.3),p.z-(h.z+cos(h.ry)*1.3))<1.8&&hurtP(LV>=6&&!sk?2:1,h.x,h.z)}if(h.t>.22){h.st=4;h.t=0}}
  else if(h.st==4){if(h.t>.45){h.st=1;h.t=0;h.cd=1.1+R()*.5}}
- else if(h.st==5){fc=1;if(h.t>.35){h.st=1;h.t=0;h.cd=.45}}
+ else if(h.st==5){fc=1;if(h.t>.35+.2*skr('heavy')){h.st=1;h.t=0;h.cd=.45}}
  for(const o of HUM)if(o!==h&&o.on){const ex=h.x-o.x,ez=h.z-o.z,e=hypot(ex,ez);if(e<1.6&&e>.01){vx+=ex/e*3;vz+=ez/e*3}}
  if(fc)h.ry+=wa(atan2(dx,dz)-h.ry)*min(1,dt*10);else if(vx||vz)h.ry+=wa(atan2(vx,vz)-h.ry)*min(1,dt*8);
  const mx=(h.st==2?0:vx)+h.kx,mz=(h.st==2?0:vz)+h.kz;if(mx||mz){sweep(h,mx*dt,mz*dt,.55,2.6,1);wade(h,bx,bz)}
@@ -2375,10 +2585,10 @@ foePose=h=>{const g=h.g,sw=sin(h.ph)*.8*h.am;let ar=sw*.6-.3,ln=.08*h.am,u;g.pos
  if(h.st==2){u=min(1,h.t/.45);ar=-.3-2.9*u;ln=-.12*u}else if(h.st==3){u=min(1,h.t/.2);ar=-3.2+2.6*u;ln=.3*u}else if(h.st==4){u=min(1,h.t/.4);ar=-.6+.3*u;ln=.3*(1-u)}else if(h.st==5)ln=-.4*max(0,1-h.t/.35);
  h.aR.rotation.x=ar;h.b.rotation.x=ln;if(h.st==6){u=min(1,h.t/.5);g.rotation.x=-PI/2*u*u;g.position.y-=max(0,h.t-1.1)*1.2}else g.rotation.x=0},
 // a blow: damage, a knockback away from him, sparks; at nought it dies, leaving gold and maybe more (wlfDrop), experience and the bounty's tally
-foeHit=(h,dm)=>{const p=P.position,dx=h.x-p.x,dz=h.z-p.z,l=hypot(dx,dz)||1,cr=R()<.12;if(cr)dm*=2;h.hp-=dm;h.kx=dx/l*(cr?11:7);h.kz=dz/l*(cr?11:7);emit(h.x,h.y+2,h.z,9,h.k?0xe8e0c8:0xfff1c9,3.5,3.5,.4,8,.3);dmgNum(h.x,h.y+3.4,h.z,String(+dm.toFixed(1)),cr?'c':'');
- if(h.hp<=0){h.st=6;h.t=0;sfxF.die(h.k);emit(h.x,h.y+1.4,h.z,h.k?22:10,h.k?0xd9d0b4:0x8a2a20,3,3,.8,6,.4);wlfDrop(h,h.k?6:8);xpG(h.k?14:12);qEv(h.k?'dead':'foe');const cc=eqv('c');if(cc&&R()<cc&&bHP<bMax()){bHP++;hrt();dmgNum(p.x,p.y+3.4,p.z,'+1 heart','w')}}
+foeHit=(h,dm)=>{const p=P.position,dx=h.x-p.x,dz=h.z-p.z,l=hypot(dx,dz)||1,cr=R()<crit();if(cr)dm*=2;skr('exec')&&h.hp<h.mh*.34&&(dm*=1.6);h.hp-=dm;h.kx=dx/l*(cr?11:7)*kbM();h.kz=dz/l*(cr?11:7)*kbM();emit(h.x,h.y+2,h.z,9,h.k?0xe8e0c8:0xfff1c9,3.5,3.5,.4,8,.3);dmgNum(h.x,h.y+3.4,h.z,String(+dm.toFixed(1)),cr?'c':'');
+ if(h.hp<=0){h.st=6;h.t=0;sfxF.die(h.k);emit(h.x,h.y+1.4,h.z,h.k?22:10,h.k?0xd9d0b4:0x8a2a20,3,3,.8,6,.4);wlfDrop(h,h.k?6:8);xpG(h.k?14:12);qEv(h.k?'dead':'foe');const cc=eqv('c')+.08*skr('blood');if(cc&&R()<cc&&bHP<bMax()){bHP++;hrt();dmgNum(p.x,p.y+3.4,p.z,'+1 heart','w')}}
  else{h.st=5;h.t=0;sfxF.hurt(h.k)}},
-foeSwing=(p,fx,fz)=>{const r=swR(),dm=bDmg();let n=0;for(const h of HUM){if(!h.on||h.st>5||h.up<1)continue;const dx=h.x-p.x,dz=h.z-p.z,d=hypot(dx,dz);if(d>r+.7||(d>1.8&&(dx*fx+dz*fz)/d<.2))continue;foeHit(h,dm);n++}n&&sfxW.hit()};
+foeSwing=(p,fx,fz)=>{const r=swR(),dm=bDmg();let n=0;for(const h of HUM){if(!h.on||h.st>5||h.up<1)continue;const dx=h.x-p.x,dz=h.z-p.z,d=hypot(dx,dz);if(d>r+.7||(d>1.8&&(dx*fx+dz*fz)/d<arcT()))continue;foeHit(h,dm);n++}n&&sfxW.hit()};
 EYM.colorNode=color(0xff4a1a).mul(3.2);
 // how many are out: brigands by day (none until the first day is a few minutes old), one by night; the dead only by night, more as the
 // days go on. None near home or while he is down. At dawn every skeleton still standing crumbles
@@ -2420,14 +2630,14 @@ const K={},CO=V(1,1.25,1).normalize(),LK=V(0,4,0),tv=V(),SHC=V(),lp=(a,b)=>a+(b-
 // with smoothsteps so the blade and torso never snap. swA(u) is the blade's heading (radians, 0 = straight ahead).
 let swT=-1,swC=0,swH=0,swP=0,pSt=0;const SWD=.66,SWCD=.7,
 swA=u=>-1.35+2.75*sm(.24,.78,u)-.25*sin(PI*sm(0,.4,u))+.1*sm(.72,1,u),
-swing=()=>{if(!run||pz||bDead||swC>0)return;swT=swH=0;swC=SWCD;swP=P.rotation.y+swA(0)},
+swing=()=>{if(!run||pz||bDead||swC>0)return;swT=swH=0;swC=swCD();swP=P.rotation.y+swA(0)},
 // a boot comes down every half walk cycle; in a puddle it throws droplets, leaves a ring and splashes
 wetStep=sd=>{const p=P.position,fy=P.rotation.y,o=sd?.16:-.16,x=p.x+cos(fy)*o+sin(fy)*.18,z=p.z-sin(fy)*o+cos(fy)*.18;if(pudAt(x,z)<.4)return;
  const y=Hm(x,z);FRA.setXYZW(frI,x,y,z,tm);FRA.needsUpdate=true;frI=(frI+1)%FRN;emit(x,y+.08,z,7,0xd2e3f0,1.8,2.6,.45,9,.22);sfx.splash(sd?.12:-.12)},
 // the blow lands mid-stroke on every foe in the arc (wlfSwing, foeSwing); a chest in the same reach is broken open (chestOpen), and a shut
 // gate within a few metres swung open
-swordSweep=()=>{const p=P.position,fy=P.rotation.y,fx=sin(fy),fz=cos(fy),r=swR(),inR=(x,z)=>{const dx=x-p.x,dz=z-p.z,d=hypot(dx,dz);return d<=r+.4&&(d<=1.5||(dx*fx+dz*fz)/d>=.2)};
- for(const f of FND)!f.got&&inR(f.x,f.z)&&chestOpen(f);gtSwing(p.x,p.z,fx,fz,r+1);wlfSwing(p,fx,fz);foeSwing(p,fx,fz)};
+swordSweep=()=>{const p=P.position,fy=P.rotation.y,fx=sin(fy),fz=cos(fy),r=swR(),inR=(x,z)=>{const dx=x-p.x,dz=z-p.z,d=hypot(dx,dz);return d<=r+.4&&(d<=1.5||(dx*fx+dz*fz)/d>=arcT())};
+ for(const f of FND)!f.got&&inR(f.x,f.z)&&chestOpen(f);gtSwing(p.x,p.z,fx,fz,r+1);wlfSwing(p,fx,fz);foeSwing(p,fx,fz);skr('arcane')&&R()<.12*skr('arcane')&&arcane()};
 // the swing trail: a ribbon the blade sweeps through the air, from just past the guard out to its point. Each frame of the
 // stroke adds a slice at the staff's pose; slices fade out over swTL seconds, clear toward the shaft and narrowing as they age, so the
 // stroke leaves one clean crescent that thins away from its tail
@@ -2442,9 +2652,12 @@ const swTrail=su=>{if(su>.2&&su<.88){staff.updateWorldMatrix(true,false);const w
  for(let i=0;i<n;i++){const[a,b,t]=swTq[i],l=1-(tm-t)/swTL,k=.3+.7*l;swTP.set(a,i*6);for(let j=0;j<3;j++)swTP[i*6+3+j]=a[j]+(b[j]-a[j])*k;swTA[i*2]=0;swTA[i*2+1]=l*l*.8}
  swTG.attributes.position.needsUpdate=swTG.attributes.aA.needsUpdate=true;swTG.setDrawRange(0,max(0,n-1)*6);swTM.visible=n>1};
 function mvP(dt){let mx=(K.KeyD||K.ArrowRight?1:0)-(K.KeyA||K.ArrowLeft?1:0)+jx+gx,my=(K.KeyS||K.ArrowDown?1:0)-(K.KeyW||K.ArrowUp?1:0)+jy+gy,l=hypot(mx,my);if(l>1){mx/=l;my/=l;l=1}if(ov||bDead)mx=my=l=0;
- const s=7.35*(1+.05*L.boots+eqv('b')),vx=(mx+my)*.7071,vz=(my-mx)*.7071,p=P.position;
+ const s=7.35*(1+.05*skr('fleet')+eqv('b')),vx=(mx+my)*.7071,vz=(my-mx)*.7071,p=P.position;
  const dyw=l>.05?wa(atan2(vx,vz)-P.rotation.y):0;ptn+=(dyw-ptn)*min(1,dt*8);if(l>.05)P.rotation.y+=dyw*min(1,dt*9);
  const bx=p.x,bz=p.z,ix=l>.05?vx*s*dt:0,iz=l>.05?vz*s*dt:0;sweep(p,ix,iz,.45,2.4);slip(p,bx,bz,ix,iz);wade(p,bx,bz);p.y=max(Hm(p.x,p.z),WL-1.2);
+ // a dash carries him on the way he faces (Windrunner: and strikes each foe he passes, once a dash)
+ dsC-=dt;if(dsT>0){dsT-=dt;const s=21*dt,fy=P.rotation.y,cx=p.x,cz=p.z;sweep(p,sin(fy)*s,cos(fy)*s,.45,2.4);wade(p,cx,cz);p.y=max(Hm(p.x,p.z),WL-1.2);R()<.6&&emit(p.x,p.y+.2,p.z,1,0xd9cdb0,1.5,.8,.4,4,.3);
+  if(skr('runner')){for(const w of WLF)w.on&&w.st<6&&w.dn!=dsN&&hypot(w.x-p.x,w.z-p.z)<2.2&&(w.dn=dsN,wlfHit(w,bDmg()));for(const h of HUM)h.on&&h.st<6&&h.up>=1&&h.dn!=dsN&&hypot(h.x-p.x,h.z-p.z)<2.2&&(h.dn=dsN,foeHit(h,bDmg()))}}
  const sp=min(l*s,hypot(p.x-bx,p.z-bz)/max(dt,1e-4)),rn0=cl((sp-3.5)/3,0,1);RN+=(rn0-RN)*min(1,dt*4);const rn=RN;pvel=sp;ph+=sp/lp(2.2,2.9)*PI*dt;{const st=Math.floor(ph/PI);if(st!=pSt){pSt=st;sp>.8&&wetStep(st&1)}}pw+=(min(sp/3.5,1)-pw)*min(1,dt*6);const w=pw,q=sin(ph),c=cos(ph);
  let su=0,sk=0,sa=0;
  if(swT>=0){swT+=dt;su=min(swT/SWD,1);sk=sm(0,.3,su)*(1-sm(.72,1,su));sa=swA(su);
@@ -2524,12 +2737,75 @@ let clkD=0;const clk=()=>{const a=-90+360*dT/CYC,q=sm(40,70,abs(a));$('dsk').sty
  if(dy!=clkD){clkD=dy;const p=((dy-1)/8+.5)%1,c=cos(p*TAU),w=p<.5?1:-1,R=6.6;$('cml').setAttribute('d',`M0-${R}A${R} ${R} 0 0 ${w>0?1:0} 0 ${R}A${abs(c)*R} ${R} 0 0 ${(c>0?w:-w)>0?0:1} 0-${R}Z`)}}
 // the crook button's ring refills every frame rather than with the 5Hz hud, so it sweeps round smoothly instead of in four jumps;
 // the style is only written while the ring is moving
-let cbV=-1;const cbE=$('cb'),cbU=()=>{const v=Math.round((1-max(swC,0)/SWCD)*1e3)/1e3;if(v!=cbV){cbV=v;cbE.style.setProperty('--c',v)}};
-let hudK='',arA=0;function hud(){$('fc').textContent=LV;$('wl').textContent=W|0;$('hp').textContent=POT;$('qbn').textContent=POT;$('qb').disabled=!POT;
- const x=-P.position.x,z=-P.position.z,nt=dT>=DAY,mn=Math.ceil((nt?CYC-dT:DAY-dT)/60),wi=nt&&wxI<2?'moon':WXD[wxI][1],k=wi+wxI+'/'+dy+'/'+mn+nt;
- $('hf').style.width=min(100,XP/xpN(LV)*100)+'%';$('hf').style.background='linear-gradient(#6fdcae,#2a8f6b)';$('hd').textContent=(hypot(x,z)|0)+'m';$('hc').classList.toggle('nr',hypot(x,z)<=60);arA+=wa(atan2(x-z,-x-z)-arA);$('ar').style.transform=`rotate(${arA}rad)`;
+let cbV=-1;const cbE=$('cb'),cbU=()=>{const v=Math.round((1-max(swC,0)/swCD())*1e3)/1e3;if(v!=cbV){cbV=v;cbE.style.setProperty('--c',v)}};
+let hudK='';function hud(){$('fc').textContent=LV;$('wl').textContent=W|0;$('hp').textContent=POT;$('qbn').textContent=POT;$('qb').disabled=!POT;$('spb').hidden=!SP;$('spb').textContent=SP;$('dsb').hidden=!skr('dash');$('dsb').classList.toggle('cd',dsC>0);
+ const nt=dT>=DAY,mn=Math.ceil((nt?CYC-dT:DAY-dT)/60),wi=nt&&wxI<2?'moon':WXD[wxI][1],k=wi+wxI+'/'+dy+'/'+mn+nt;
+ $('hf').style.width=min(100,XP/xpN(LV)*100)+'%';$('hf').style.background='linear-gradient(#6fdcae,#2a8f6b)';xpR(P.position.x,P.position.z);mIdle();
  $('di').textContent='Day '+dy;clk();qtU();
  if(k!=hudK){hudK=k;$('clk').setAttribute('aria-label',`Day ${dy}, about ${mn} minute${mn==1?'':'s'} until ${nt?'dawn':'nightfall'}`);$('wiu').setAttribute('href','#i-'+wi);$('wq').textContent=WXD[wxI][0]}}
+// ---- the map (M): the country you have seen, painted like an old chart and turned to match the camera (up the screen is up the map),
+// with Greywatch Keep, the places to search you have come across (dimmed once their chest is open) and your knight. The country shows
+// in 32m cells (XPL, in the save), revealed within 80m of wherever you ride. Each cell is painted once into a 16px tile (2m a pixel:
+// water darker with depth, the shore inked, sand, then meadow to pale stone with height, lit from the screen's top left and contoured
+// every 5m) and kept: a few a beat as you ride (mIdle), the rest nearest first while the map is open. What you have not seen fades out
+// over a cell ----
+const MCL=32,MT=new Map(),MQ=[],SQ=Math.SQRT1_2,xk=(i,j)=>(i+32768)*65536+j+32768,
+ MPI=[0,['cottage','A deserted farmstead'],['grave','An old graveyard'],['cottage','An overgrown cottage'],['tower','A watchtower'],['castle','A fortress']];
+let mSp=600,mcx=0,mcz=0,mAT=null,mMK=null,mAB=[0,0,1,1],mPQ=[],mPO=[],mDg=null,mWA=0,mRaf=0;
+// reveal the cells whose centres lie within r of (x,z), queueing them and their neighbours to be painted
+const xpR=(x,z,r=80)=>{for(let i=floor((x-r)/MCL);i<=floor((x+r)/MCL);i++)for(let j=floor((z-r)/MCL);j<=floor((z+r)/MCL);j++){const k=xk(i,j);if(XPL.has(k)||hypot((i+.5)*MCL-x,(j+.5)*MCL-z)>r)continue;
+  XPL.add(k);for(let a=-1;a<2;a++)for(let b=-1;b<2;b++)MT.has(xk(i+a,j+b))||MQ.push([i+a,j+b])}},
+ mTile=(i,j)=>{const k=xk(i,j);let t=MT.get(k);if(t)return t;t=new ImageData(16,16);const d=t.data,h=new Float32Array(324),x0=i*MCL-1,z0=j*MCL-1;
+  for(let b=0;b<18;b++)for(let a=0;a<18;a++)h[b*18+a]=H(x0+a*2,z0+b*2);
+  for(let b=0;b<16;b++)for(let a=0;a<16;a++){const n=(b+1)*18+a+1,y=h[n],e=h[n+1],w=h[n-1],lo=min(e,w,h[n+18],h[n-18]),o=(b*16+a)*4;let r,g,c;
+   if(y<WL){const q=min(1,(WL-y)/4);r=122-46*q;g=152-42*q;c=152-28*q}
+   else if(lo<WL){r=84;g=68;c=48}
+   else{const q=cl((y-WL)/24,0,1),L=cl(1+(e-w)*.16,.6,1.32);if(y<WL+.6){r=218;g=200;c=152}else{r=166+58*q;g=168+42*q;c=106+66*q}r*=L;g*=L;c*=L;
+    if(floor((y-WL)/5)>floor((lo-WL)/5)){r*=.8;g*=.77;c*=.72}}
+   d[o]=r;d[o+1]=g;d[o+2]=c;d[o+3]=255}
+  MT.set(k,t);return t},
+ mIdle=()=>{for(let n=0;n<3&&MQ.length;){const[i,j]=MQ.pop();MT.has(xk(i,j))||(mTile(i,j),n++)}},
+ // the chart (mAT): the tiles of the cells seen and their neighbours, as far as 2km from the knight; mMK, a pixel a cell, opaque where
+ // seen, is laid over it smoothed so the edge of what you know fades
+ mBuild=()=>{const p=P.position,pi=floor(p.x/MCL),pj=floor(p.z/MCL);let i0=pi,i1=pi,j0=pj,j1=pj;
+  for(const k of XPL){const i=floor(k/65536)-32768,j=k%65536-32768;if(abs(i-pi)>64||abs(j-pj)>64)continue;i0=min(i0,i);i1=max(i1,i);j0=min(j0,j);j1=max(j1,j)}
+  i0--;j0--;i1++;j1++;const nw=i1-i0+1,nh=j1-j0+1,sn=(i,j)=>XPL.has(xk(i,j));mAB=[i0,j0,nw,nh];mPQ=[];
+  mAT=document.createElement('canvas');mAT.width=nw*16;mAT.height=nh*16;mMK=document.createElement('canvas');mMK.width=nw;mMK.height=nh;
+  const ax=mAT.getContext('2d'),mx=mMK.getContext('2d'),im=mx.createImageData(nw,nh);
+  for(let i=i0;i<=i1;i++)for(let j=j0;j<=j1;j++){sn(i,j)&&(im.data[((j-j0)*nw+i-i0)*4+3]=255);let n=0;for(let a=-1;a<2&&!n;a++)for(let b=-1;b<2;b++)if(sn(i+a,j+b)){n=1;break}
+   if(!n)continue;const t=MT.get(xk(i,j));t?ax.putImageData(t,(i-i0)*16,(j-j0)*16):mPQ.push([i,j,hypot(i-pi,j-pj)])}
+  mx.putImageData(im,0,0);mPQ.sort((a,b)=>b[2]-a[2])},
+ // the places to search whose field's middle lies in a cell seen: [x, z, kind, searched]
+ mPOI=()=>{mPO=[];const[i0,j0,nw,nh]=mAB;let u0=1e9,u1=-1e9,v0=1e9,v1=-1e9;
+  for(const[x,z]of[[i0,j0],[i0+nw,j0],[i0,j0+nh],[i0+nw,j0+nh]].map(([a,b])=>[a*MCL,b*MCL])){const u=floor((x*FLC+z*FLS)/FLD),v=floor((z*FLC-x*FLS)/FLD);u0=min(u0,u-1);u1=max(u1,u+1);v0=min(v0,v-1);v1=max(v1,v+1)}
+  for(let i=u0;i<=u1;i++)for(let j=v0;j<=v1;j++){const c=fcp(i,j,.5,.5);if(!XPL.has(xk(floor(c[0]/MCL),floor(c[1]/MCL))))continue;const t=poiT(i,j,c);t&&!plant(i,j,c)&&mPO.push([c[0],c[1],t,SHF.has(i+','+j)])}},
+ // draw it: s pixels a metre, (mcx, mcz) in the middle; a world step (dx, dz) goes (dx - dz)/sqrt2 right and (dx + dz)/sqrt2 down
+ mDraw=()=>{const v=$('mv'),cv=$('mcv'),w=v.clientWidth,h=v.clientHeight,dp=min(2,devicePixelRatio||1),s=min(w,h)/mSp,cw=Math.round(w*dp),ch=Math.round(h*dp);if(!w||!mAT)return;
+  if(cv.width!=cw||cv.height!=ch){cv.width=cw;cv.height=ch}
+  const x=cv.getContext('2d'),k=dp*s*SQ,[i0,j0,nw,nh]=mAB;x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,cw,ch);
+  x.setTransform(k,k,-k,k,dp*w/2-k*(mcx-mcz),dp*h/2-k*(mcx+mcz));x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
+  x.drawImage(mAT,i0*MCL,j0*MCL,nw*MCL,nh*MCL);x.globalCompositeOperation='destination-in';x.drawImage(mMK,i0*MCL,j0*MCL,nw*MCL,nh*MCL);x.globalCompositeOperation='source-over';
+  const sp=(X,Z)=>[w/2+s*(X-mcx-Z+mcz)*SQ,h/2+s*(X-mcx+Z-mcz)*SQ],L=[],put=(X,Z,c,ic,t,lb='')=>{const[a,b]=sp(X,Z);a>-40&&b>-40&&a<w+40&&b<h+40&&L.push(`<i class="${c}" style="left:${a.toFixed(1)}px;top:${b.toFixed(1)}px" title="${t}"><svg class="ic"><use href="#i-${ic}"/></svg>${lb}</i>`)};
+  for(const[X,Z,t,d]of mPO)put(X,Z,'mpo'+(d?' sd':''),MPI[t][0],MPI[t][1]+(d?', searched':''));
+  put(-21,-20,'mpo kp','castle','Greywatch Keep','<b>Greywatch Keep</b>');
+  const p=P.position,fx=sin(P.rotation.y),fz=cos(P.rotation.y),[a,b]=sp(p.x,p.z);
+  L.push(`<i class="mme" style="left:${a.toFixed(1)}px;top:${b.toFixed(1)}px;--a:${atan2(fx-fz,-fx-fz).toFixed(3)}rad" title="You are here"><svg viewBox="-12 -12 24 24"><path d="M0-11 8 9 0 4.6-8 9z"/></svg></i>`);
+  $('mk').innerHTML=L.join('')},
+ // paint the queued tiles, about 10ms a frame, while the map is open
+ mLoop=()=>{if(ov!=5)return;if(mPQ.length){const t0=performance.now(),ax=mAT.getContext('2d'),[i0,j0]=mAB;while(mPQ.length&&performance.now()-t0<10){const[i,j]=mPQ.pop();ax.putImageData(mTile(i,j),(i-i0)*16,(j-j0)*16)}mDraw()}mRaf=requestAnimationFrame(mLoop)},
+ mapOpen=()=>{const p=P.position,d=hypot(p.x,p.z)|0;mcx=p.x;mcz=p.z;mBuild();mPOI();const n=mPO.length,f=mPO.filter(q=>q[3]).length;
+  $('mpd').innerHTML=(d<45?'You are home at <b>Greywatch Keep</b>':`Greywatch Keep is <b>${d} m</b> away`)+(n?` · <b>${n}</b> place${n>1?'s':''} found, <b>${f}</b> searched`:'');
+  $('mph2').textContent=gpOn?'Stick to look around · LB, RB to zoom · Y finds you':mob?'Drag to look around':'Drag to look around · scroll to zoom · M closes';
+  mDraw();cancelAnimationFrame(mRaf);mRaf=requestAnimationFrame(mLoop)},
+ // look (rx, ry) metres right and down the map; zoom by f about a point on it (from its top left; its middle if none), which stays put
+ mLook=(rx,ry)=>{mcx+=(rx+ry)*SQ;mcz+=(ry-rx)*SQ;mDraw()},
+ mZ=(f,sx,sy)=>{const v=$('mv'),w=v.clientWidth,h=v.clientHeight,s=min(w,h)/mSp,n=cl(mSp*f,250,2400),q=1-n/mSp;mSp=n;mLook(((sx??w/2)-w/2)/s*q,((sy??h/2)-h/2)/s*q)},
+ mMe=()=>{mcx=P.position.x;mcz=P.position.z;mDraw()};
+{const v=$('mv');v.onpointerdown=e=>{if(e.button||e.target.closest('button'))return;mDg=[e.clientX,e.clientY];v.setPointerCapture(e.pointerId);v.classList.add('dg')};
+ v.onpointermove=e=>{if(!mDg)return;const s=min(v.clientWidth,v.clientHeight)/mSp;mLook((mDg[0]-e.clientX)/s,(mDg[1]-e.clientY)/s);mDg=[e.clientX,e.clientY]};
+ v.onpointerup=v.onpointercancel=()=>{mDg=null;v.classList.remove('dg')};
+ v.addEventListener('wheel',e=>{mWA+=e.deltaY;if(abs(mWA)<40)return;const r=v.getBoundingClientRect();mZ(mWA>0?1.25:.8,e.clientX-r.left,e.clientY-r.top);mWA=0},{passive:true})}
+addEventListener('resize',()=>ov==5&&mDraw());
 // the cottage menu: a swatch row per choice, the chosen one ringed and named; picks show on the cottage at once and are saved
 const czHx=c=>'#'+c.toString(16).padStart(6,'0'),czTc=c=>.299*(c>>16)+.587*(c>>8&255)+.114*(c&255)>140?'#2a1a0c':'#f8f1dc',
 czSw=c=>Array.isArray(c)?c.length>2?`conic-gradient(${c.map((v,i)=>`${czHx(v)} ${i/c.length*360}deg ${(i+1)/c.length*360}deg`).join(',')})`:`radial-gradient(circle,${czHx(c[1])} 0 34%,${czHx(c[0])} 38%)`:czHx(c),
@@ -2541,7 +2817,7 @@ rcs=it=>it?`--rc:${RCO(it.r)};--rg:${it.r>1?RCO(it.r)+'66':'transparent'}`:'',
 eqBtn=s=>{const it=EQ[s];return`<button class="eq${it?'':' em'}${qSel==s?' on':''}" data-q="${s}" style="${rcs(it)}" aria-label="${SLN[s]}: ${it?escH(it.n)+', '+RAR[it.r][0]+', '+gTxt(it):'empty'}"><span class="fr">${IC(SLI[s])}${it?`<i>${it.il}</i>`:''}</span><span class="tx"><small>${SLN[s]}</small><b>${it?escH(it.n):'Empty'}</b><em>${it?gTxt(it):'Find one in the wilds'}</em></span></button>`},
 // a piece in the pack as a tile (a: data-i picks it in the inventory, data-e wears it from the character's slot); ▲ marks an upgrade
 tile=(it,i,a)=>{const w=EQ[it.s],up=!w||it.v>w.v;return`<button class="it${a=='i'&&iSel==i?' on':''}" data-${a}="${i}" style="${rcs(it)}" title="${escH(it.n)}" aria-label="${escH(it.n)}, ${RAR[it.r][0]} ${SLN[it.s].toLowerCase()}, ${gTxt(it)}${up?', an upgrade':''}">${IC(SLI[it.s])}<i>${it.il}</i>${up?'<u aria-hidden="true">▲</u>':''}</button>`},
-statBar=()=>[['crown','Level',LV],['heart','Hearts',bMax()],['sword','Attack',+bDmg().toFixed(1)],['boot','Speed','+'+Math.round((eqv('b')+.05*L.boots)*100)+'%'],['shield','Block',Math.round(eqv('s')*100)+'%'],['ring','Heal on kill',Math.round(eqv('c')*100)+'%'],['coin','Gold',W|0]].map(([i,n,v])=>`<div class="sx">${IC(i)}<b>${v}</b><small>${n}</small></div>`).join('')
+statBar=()=>[['crown','Level',LV],['heart','Hearts',bMax()],['sword','Attack',+bDmg().toFixed(1)],['boot','Speed','+'+Math.round((eqv('b')+.05*skr('fleet'))*100)+'%'],['shield','Block',Math.round(eqv('s')*100)+'%'],['ring','Heal on kill',Math.round(eqv('c')*100)+'%'],['coin','Gold',W|0]].map(([i,n,v])=>`<div class="sx">${IC(i)}<b>${v}</b><small>${n}</small></div>`).join('')
  +`<div class="sx"><span class="xpb" role="img" aria-label="Experience ${XP} of ${xpN(LV)}"><i style="width:${min(100,XP/xpN(LV)*100)}%"></i></span><small>${XP} / ${xpN(LV)} experience</small></div>`,
 // a piece's card, as a tooltip: its name in its quality's colour, what it is and its item level, what it does, how it compares with cur
 itCard=(it,cur)=>`<h4 style="color:${RCO(it.r)}">${escH(it.n)}</h4><p class="rk"><span>${RAR[it.r][0]} ${SLN[it.s].toLowerCase()}</span><span>Item level ${it.il}</span></p><p class="sg">${gTxt(it)}</p>${cur&&cur!==it?`<p class="cp">Worn: <b style="color:${RCO(cur.r)}">${escH(cur.n)}</b> (${gTxt(cur)}). This one is ${cmpTxt(it,cur)}.</p>`:''}<p class="pr3">${IC('coin')} Sells for ${sellP(it)}</p>`,
@@ -2551,7 +2827,7 @@ heroMenu=()=>{const t=czTab;$('cmh').textContent=FARM||'Your knight';[['cmtc',0]
   d.innerHTML=`<span class="fr big" style="${rcs(it)}">${IC(SLI[qSel])}</span><div class="ivd">${it?itCard(it):`<h4>No ${SLN[qSel].toLowerCase()} worn</h4><p class="rk">Anything for this slot in your pack is listed alongside, to put on.</p>`}<div class="bt">${it?`<button data-u="${qSel}">Take off</button>`:''}<button data-x>Back</button></div></div><div class="cdp"><small>${c.length?`From your pack (${c.length}): click to wear`:`No ${SLN[qSel].toLowerCase()} in your pack`}</small><div class="ivg sm">${c.join('')}</div></div>`;return}
  if(t==1){const it=BAG[iSel];
   $('ivh').innerHTML=`<b>Pack</b><span>${BAG.length} / ${BGM}</span><span class="sp"></span><span class="gd">${IC('coin')} ${W|0}</span><button data-k${BAG.length>1?'':' disabled'}>Sort</button><button data-j${BAG.some(b=>!b.r)?'':' disabled'}>Sell commons</button>`;
-  $('ivc').innerHTML=`<button class="it" data-p${POT&&bHP<bMax()?'':' disabled'} aria-label="Drink a healing draught (${POT} carried)">${IC('potion')}<i>${POT}</i></button><p><b>Healing draught</b> ×${POT}<br>${POT?(bHP<bMax()?'Drink one here for three hearts back, or with Q in the field.':'You are at full health.'):'Buy them at the armoury.'}</p>`;
+  $('ivc').innerHTML=`<button class="it" data-p${POT&&bHP<bMax()?'':' disabled'} aria-label="Drink a healing draught (${POT} carried)">${IC('potion')}<i>${POT}</i></button><p><b>Healing draught</b> ×${POT}<br>${POT?(bHP<bMax()?'Drink one here for three hearts back, or with Q in the field.':'You are at full health.'):'Buy them with gold on the skills page (K).'}</p>`;
   $('ivg').innerHTML=Array.from({length:BGM},(_,i)=>BAG[i]?tile(BAG[i],i,'i'):'<span class="it em"></span>').join('');
   $('ivd').innerHTML=it?itCard(it,EQ[it.s])+`<div class="bt"><button class="pr" data-e="${iSel}">${EQ[it.s]?'Wear instead':'Wear'}</button><button data-s="${iSel}">Sell for ${sellP(it)}</button></div>`:'<p class="rk">Pick a piece to see what it does and how it compares with what you wear. What foes drop and chests hold ends up here.</p>';return}
  $('cmi').textContent='Bounties are posted at Greywatch Keep. Finish one out in the wilds, then come home to the muster ring to claim the reward.';$('cmw').innerHTML=`Bounties claimed: <b>${QN}</b>`;
@@ -2563,7 +2839,7 @@ czF={x:0,y:0,w:1,h:1},czFit=()=>{const W0=innerWidth,H0=innerHeight,set=(l,t,r,b
  // the character: the window between the slot columns; the inventory and the quests: what the docked panel leaves clear beside (or above) it
  if(czTab==0){const r=$('cdw').getBoundingClientRect();r.width>40&&r.height>40?set(r.left,r.top,r.right,r.bottom):set(0,0,W0,H0)}
  else{const r=$(czTab==1?'inv':'qst').getBoundingClientRect();r.left>W0*.3?set(0,r.top,r.left,H0):set(0,0,W0,max(r.top,H0*.3))}};
-let ov=0,czTab=0,qSel=null,iSel=-1,ttl=0,lsg=0,rmof=0;const sho=o=>{if(!run)return;ov=o;pz=o>0;$('mu').hidden=o!=1;$('pm').hidden=o!=2;$('cm').hidden=o!=3;$('tu').hidden=o!=4;document.body.classList.toggle('cz',o==3);o==1&&menu();o==3&&(heroMenu(),czFit());if(o==2){$('pl').innerHTML=`Level <b>${LV}</b> · <b>${W|0}</b> gold · day <b>${dy}</b><br>${bGear()}`;$('prn').textContent='Drawn with '+(GPU?'WebGPU':'WebGL 2 (fallback)')}for(const k in K)K[k]=0},// M or the pause menu: the music on or off (the band fades out); every other sound plays regardless, and the choice is remembered
+let ov=0,czTab=0,qSel=null,iSel=-1,ttl=0,lsg=0,rmof=0;const sho=o=>{if(!run)return;ov=o;pz=o>0;$('mu').hidden=o!=1;$('pm').hidden=o!=2;$('cm').hidden=o!=3;$('tu').hidden=o!=4;$('mp').hidden=o!=5;document.body.classList.toggle('cz',o==3);o==1&&menu();o==5&&mapOpen();o==3&&(heroMenu(),czFit());if(o==2){$('pl').innerHTML=`Level <b>${LV}</b> · <b>${W|0}</b> gold · day <b>${dy}</b><br>${bGear()}`;$('prn').textContent='Drawn with '+(GPU?'WebGPU':'WebGL 2 (fallback)')}for(const k in K)K[k]=0},// N or the pause menu: the music on or off (the band fades out); every other sound plays regardless, and the choice is remembered
 tgm=()=>{mof=!mof;$('ps').textContent='Music: '+(mof?'off':'on');try{localStorage.setItem(SK+'-music',mof?1:0)}catch(e){}},
 t32=()=>{U.ret.value=(U.ret.value+1)%RETN.length;$('p32').textContent='Retro look: '+RETN[U.ret.value]},
 // the pad's rumble on or off (remembered); switching it on gives a nudge so you feel what it is
@@ -2572,9 +2848,9 @@ tgr=()=>{rmof=!rmof;$('prm').textContent='Controller rumble: '+(rmof?'off':'on')
 // default (focused, and what Esc or B does) and the erasing button is red. Resolves true only for that button. With o.v (a picture,
 // for a find) the dialog turns friendly instead: o.c names the other button, the action is green and takes the focus
 ask=(t,m,ok,o={})=>new Promise(r=>{const d=$('al'),v=$('alv');$('alt').textContent=t;$('alm').innerHTML=m;$('alo').textContent=ok;$('alc').textContent=o.c||'Cancel';$('alo').className=o.v?'pr':'dg';v.hidden=!o.v;v.innerHTML=o.v||'';d.classList.toggle('fi',!!o.v);d.returnValue='';d.onclose=()=>r(d.returnValue=='ok');d.showModal();o.v&&$('alo').focus()}),
-nfM=(lv,w,d)=>`<b>${escH(FARM||'Your knight')}</b> starts again at level 1 on day 1${d>1?` (from day ${d})`:''}: the <b>${w|0}</b> gold, the gear and the pack, the bounties and the armoury's work are all lost. Chests already opened stay opened.`,
+nfM=(lv,w,d)=>`<b>${escH(FARM||'Your knight')}</b> starts again at level 1 on day 1${d>1?` (from day ${d})`:''}: the <b>${w|0}</b> gold, the gear and the pack, the bounties and the skills learned are all lost. Chests already opened stay opened.`,
 tfr=()=>{fcap=fcap?0:1;$('pfr').textContent='Frame rate: '+(fcap?'60':'max');try{localStorage.setItem(SK+'-fps',fcap?'60':'max')}catch(e){}},
-fresh=()=>{EQ.w=EQ.s=EQ.h=EQ.a=EQ.b=EQ.c=null;BAG.length=0;W=0;LV=1;XP=0;POT=1;QN=0;QST=null;qT=2;dy=1;dT=0;for(const k in L)L[k]=0;bHP=bMax();wlfClr();foeClr();for(const q of LOOT)q.on=0;P.position.set(2,0,3);apply();hrt();sv();sho(0)};
+fresh=()=>{EQ.w=EQ.s=EQ.h=EQ.a=EQ.b=EQ.c=null;BAG.length=0;W=0;LV=1;XP=0;POT=1;QN=0;QST=null;qT=2;dy=1;dT=0;for(const k in SKL)delete SKL[k];SP=1;dsT=dsC=wardT=0;bHP=bMax();wlfClr();foeClr();for(const q of LOOT)q.on=0;P.position.set(2,0,3);apply();hrt();sv();sho(0)};
 $('bf').onclick=()=>sho(ov==1?0:1);$('bp').onclick=()=>sho(2);$('bx').onclick=$('rs').onclick=()=>sho(0);$('po').onclick=()=>sho(1);$('bk').onclick=()=>hero(0);$('bc').onclick=()=>hero(1);$('cmx').onclick=()=>sho(0);$('cmtc').onclick=$('cmti').onclick=$('cmts').onclick=e=>{const t={cmtc:0,cmti:1,cmts:2}[e.currentTarget.id];if(t==czTab)return;czTab=t;qSel=null;iSel=-1;heroMenu();czFit()};
 // the hero screens' buttons: q picks a slot on the doll (x puts it back), u takes a piece off, e wears one from the pack, i picks one in the
 // inventory, s sells it, k sorts the pack (rarest first, then by slot), j sells every common piece, p drinks a draught
@@ -2588,7 +2864,7 @@ $('cm').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled||b.id==
  else if(d.k!=null){BAG.sort((a,b)=>b.r-a.r||'wshabc'.indexOf(a.s)-'wshabc'.indexOf(b.s)||b.v-a.v);iSel=-1;sfx.dab()}
  else if(d.j!=null){let g=0,n=0;for(let i=BAG.length-1;i>=0;i--)if(!BAG[i].r){g+=sellP(BAG[i]);n++;BAG.splice(i,1)}if(n){W+=g;iSel=-1;sfx.coin();toast(`${n} common piece${n>1?'s':''} sold for <b>${g}</b> gold.`,'','coin');sv()}}
  else if(d.p!=null)drink(1);
- heroMenu();czFit();document.body.classList.contains('pd')&&gpF($('cm'))};$('ps').onclick=tgm;$('p32').onclick=t32;$('pfr').onclick=tfr;$('cb').onclick=swing;$('qb').onclick=()=>drink();$('cb').querySelector('small').textContent=mob?'Strike':'Space';$('mu').onclick=$('pm').onclick=e=>e.target.classList.contains('ov')&&sho(0);
+ heroMenu();czFit();document.body.classList.contains('pd')&&gpF($('cm'))};$('ps').onclick=tgm;$('p32').onclick=t32;$('pfr').onclick=tfr;$('cb').onclick=swing;$('qb').onclick=()=>drink();$('cb').querySelector('small').textContent=mob?'Strike':'Space';$('mu').onclick=$('pm').onclick=$('mp').onclick=e=>e.target.classList.contains('ov')&&sho(0);$('bmp').onclick=()=>sho(5);$('mpx').onclick=()=>sho(0);$('mzi').onclick=()=>mZ(1/1.5);$('mzo').onclick=()=>mZ(1.5);$('mzc').onclick=mMe;
 $('alc').onclick=()=>$('al').close();$('alo').onclick=()=>$('al').close('ok');$('prm').onclick=tgr;
 // the scroll edge: a list that runs past its panel fades out at whichever end has more to see, under the pinned header or above the foot
 for(const e of document.querySelectorAll('.sc')){const f=()=>{e.classList.toggle('et',e.scrollTop>2);e.classList.toggle('eb',e.scrollTop+e.clientHeight<e.scrollHeight-2)};e.addEventListener('scroll',f,{passive:true});new ResizeObserver(f).observe(e);new MutationObserver(f).observe(e,{childList:true,subtree:true})}
@@ -2619,10 +2895,10 @@ const tuS=(kb,tc,pd)=>[kb,tc,pd][gpOn?2:mob?1:0],
  tuF=f=>`<figure class="tfig"><div class="tfi">${tuI(f)}${(f.pins||[]).map(([x,y,d])=>`<i class="pin" style="left:${x}%;top:${y}%;width:${d}%"></i>`).join('')}</div><figcaption>${f.cap}</figcaption></figure>`,
  TUP=()=>[
  {ic:'shield',t:'Welcome, Sir Knight',lead:'Shadow lies over the realm. Ride out from Greywatch Keep, put its beasts and brigands to the sword, break open the chests of the old kings, and come home richer and stronger.',
-  cards:[['scroll','Take a bounty','A bounty is posted at the keep: slay so many foes, break open chests or scout far afield. Finish it, then come back to the muster ring to claim the reward.'],['dawn','Fifteen minutes of day','A day lasts <b>15 minutes</b>, and so does the night. Nobody sleeps: the night is played out in the open, and it is more dangerous.'],['coin','Gold and glory','Foes drop gold and gear. Spend the gold in the armoury, and wear the best of the gear.']]},
+  cards:[['scroll','Take a bounty','A bounty is posted at the keep: slay so many foes, break open chests or scout far afield. Finish it, then come back to the muster ring to claim the reward.'],['dawn','Fifteen minutes of day','A day lasts <b>15 minutes</b>, and so does the night. Nobody sleeps: the night is played out in the open, and it is more dangerous.'],['coin','Gold and glory','Foes drop gold and gear. Wear the best of the gear, spend gold on draughts, and each level\'s skill point on the skill tree.']]},
  {ic:'boot',t:'Ride the realm',lead:tuS('Hold <b>W A S D</b> or the arrow keys to walk, and scroll the wheel to zoom in and out.','<b>Drag</b> anywhere on the screen to walk. A little stick appears under your finger and the knight goes the way you push it.','Push the <b>left stick</b>, or press the D-pad, to walk. The <b>right stick</b> zooms in and out.'),
-  cards:[['castle','Home is the keep','The gilt arrow under the clock points back to Greywatch Keep and tells you how far it is. No foe follows you inside the ring of braziers, and wounds close quickly there.'],['fair','The weather turns','Sun, wind, rain and fog drift over the hills, by night as by day. In fog, foes close in unseen.']],
-  keys:[tuK(tuS(tuC(['KeyW','W'],['KeyA','A'],['KeyS','S'],['KeyD','D']),'<kbd>Drag</kbd>',gpG('ls')),'Walk',tuS('or the arrow keys','anywhere on the screen','or the D-pad')),tuS(tuK('<kbd>Scroll</kbd>','Zoom','in and out'),'',tuK(gpG('rs'),'Zoom','right stick'))]},
+  cards:[['castle','Home is the keep',tuS('Press <b>M</b> for the map','Tap the map button','Press the '+GB.vw+' button for the map')+': it shows where you are, how far it is to Greywatch Keep and the places you have found. No foe follows you inside the ring of braziers, and wounds close quickly there.'],['fair','The weather turns','Sun, wind, rain and fog drift over the hills, by night as by day. In fog, foes close in unseen.']],
+  keys:[tuK(tuS(tuC(['KeyW','W'],['KeyA','A'],['KeyS','S'],['KeyD','D']),'<kbd>Drag</kbd>',gpG('ls')),'Walk',tuS('or the arrow keys','anywhere on the screen','or the D-pad')),tuS(tuK('<kbd>Scroll</kbd>','Zoom','in and out'),'',tuK(gpG('rs'),'Zoom','right stick')),tuK(tuS(tuC(['KeyM','M']),tuB('map'),gpG('vw')),'Map','where you are')]},
  {ic:'sword',t:'Draw your sword',lead:'<b>Strike</b> to cut in an arc in front of you: every foe within the blade\'s reach takes the blow. A tempered blade reaches further.',
   cards:[['wolf','Watch for the tell','A wolf crouches before it bites; a brigand or a skeleton raises its blade. Step back, then strike while it recovers.'],['heart','Hearts and draughts','A blow costs a heart or more. Drink a healing draught for three back, or rest inside the muster ring. If you fall, you wake at the keep\'s gate, a little poorer.'],['chest','Chests and gates','A stroke of the sword breaks a treasure chest open and swings a field gate wide.']],
   keys:[tuK(tuS(tuC(['Space','Space',1]),tuB('sword'),gpG('a')),'Strike',tuS('with your sword','the sword button','with your sword')),tuK(tuS(tuC(['KeyQ','Q']),tuB('potion'),gpG('b')),'Drink a draught',tuS('three hearts back','the red flask','three hearts back'))]},
@@ -2631,10 +2907,10 @@ const tuS=(kb,tc,pd)=>[kb,tc,pd][gpOn?2:mob?1:0],
   keys:[tuK(tuS(tuC(['KeyC','C']),tuB('helm'),gpG('x')),'Character','what you wear'),tuK(tuS(tuC(['KeyI','I']),tuB('bag'),gpG('x')),'Inventory',tuS('your pack','your pack','then RB'))]},
  {ic:'moon',t:'When night falls',lead:'At nightfall the wolves hunt in bigger packs, with dire wolves among them, and the dead rise out of the ground and walk until dawn.',
   cards:[['skull','The risen dead','Skeletons claw their way up near you after dark. At sunrise any still standing crumble to dust.'],['wolf','Dire wolves','Bigger and darker than the grey wolves, they bite for two hearts, but they carry better loot.'],['castle','A beacon home','The keep\'s windows and the braziers round the muster ring burn all night: steer home by them.']]},
- {ic:'anvil',t:'The armoury',lead:'Open the armoury whenever you like. The day waits while you browse.',
-  cards:[['sword','The smith','Temper your blade, rivet more plates onto your harness and buy riding boots for speed.'],['potion','Healing draughts','Carry up to five, at 25 gold each.'],['hound','A warhound','The best friend a knight can have: he runs at your side and goes for any foe that comes near you.']],
-  keys:[tuK(tuS(tuC(['KeyF','F']),tuB('anvil'),gpG('y')),'Armoury'),tuK(tuS(tuC(['KeyC','C']),tuB('helm'),gpG('x')),'Character'),tuK(tuS(tuC(['Escape','Esc']),tuB('pause'),gpG('st')),'Pause')],
-  note:tuS('<b>M</b> switches the music and <b>R</b> the retro look.','The pause menu has the music and the retro look.','The pause menu has the music and the retro look.')+' The game saves as you go, and you can read this again from the pause menu.'}],
+ {ic:'skill',t:'Skills',lead:'Every level brings a skill point to spend on the skill tree: three branches, Attack, Mobility and Magic, each growing from its root to a keystone. A skill opens the ones that grow from it.',
+  cards:[['sword','Attack','A tempered blade, keen and long-reaching; heavy blows and a cleaving arc; and at the top, the executioner\'s stroke.'],['dash','Mobility','Speed and quick hands; a dash nothing can touch; second wind and evasion; and the windrunner, whose dash cuts through foes.'],['rune','Magic','Hearts, blood rites and a spirit hound; arcane bursts from the blade and a holy ward; and the avatar of light.']],
+  keys:[tuK(tuS(tuC(['KeyK','K']),tuB('skill'),gpG('y')),'Skills'),tuK(tuS(tuC(['ShiftLeft','Shift',1]),tuB('dash'),'RB'),'Dash','once learned'),tuK(tuS(tuC(['KeyC','C']),tuB('helm'),gpG('x')),'Character'),tuK(tuS(tuC(['Escape','Esc']),tuB('pause'),gpG('st')),'Pause')],
+  note:tuS('<b>N</b> switches the music and <b>R</b> the retro look.','The pause menu has the music and the retro look.','The pause menu has the music and the retro look.')+' The game saves as you go, and you can read this again from the pause menu.'}],
  tuR=()=>{const pg=TUP(),n=pg.length,p=pg[tuP];tuMax=max(tuMax,tuP);
   $('tut').textContent=p.t;$('tus').textContent=`Step ${tuP+1} of ${n}`;$('tum').innerHTML=IC(p.ic);
   $('tpg').innerHTML=(p.fig?`<div class="tlf"><p class="tl">${p.lead}</p>${tuF(p.fig)}</div>`:`<p class="tl">${p.lead}</p>`)+(p.keys?`<div class="tks">${p.keys.join('')}</div>`:'')+(p.cards?`<div class="tcs">${p.cards.map(([i,h,t,m])=>`<div class="cd"><i>${IC(i)}</i><div><h3>${h}</h3><p>${t}</p></div>${m?`<span class="cdi">${tuI(m)}</span>`:''}</div>`).join('')}</div>`:'')+(p.note?`<p class="tnt">${p.note}</p>`:'');
@@ -2664,7 +2940,7 @@ const tuS=(kb,tc,pd)=>[kb,tc,pd][gpOn?2:mob?1:0],
 $('htp').onclick=()=>tuOpen(-1);$('phw').onclick=()=>tuOpen(2);$('tux').onclick=tuClose;$('tun').onclick=()=>tuGo(1);$('tub2').onclick=()=>tuGo(-1);
 $('tup').onclick=e=>{const b=e.target.closest('button');if(!b)return;tuP=+b.dataset.pip;tuR();$('tun').focus()};
 addEventListener('keyup',e=>{tuOn&&tuUp(e)});
-onkeydown=e=>{if(tuOn){tuKey(e);return}if(lsg){if(!e.metaKey&&!e.ctrlKey&&!e.altKey&&e.target.id!='htp'&&(e.code=='Enter'||e.code=='NumpadEnter'||e.code=='Space')){e.preventDefault();startGo()}return}if(ttl){if(!e.metaKey&&!e.ctrlKey&&!e.altKey){e.preventDefault();ttGo()}return}if($('al').open||e.target.closest?.('input'))return;const c=e.code;K[c]=1;if(c=='Space'||c.startsWith('Arrow')){e.preventDefault();document.activeElement?.blur?.()}if(e.repeat)return;c=='Space'&&swing();c=='KeyQ'&&drink();c=='KeyF'&&sho(ov==1?0:1);c=='KeyC'&&hero(0);c=='KeyI'&&hero(1);c=='KeyJ'&&hero(2);(c=='Escape'||c=='KeyP')&&sho(ov?0:2);c=='KeyM'&&tgm();c=='KeyR'&&t32()};onkeyup=e=>K[e.code]=0;
+onkeydown=e=>{if(tuOn){tuKey(e);return}if(lsg){if(!e.metaKey&&!e.ctrlKey&&!e.altKey&&e.target.id!='htp'&&(e.code=='Enter'||e.code=='NumpadEnter'||e.code=='Space')){e.preventDefault();startGo()}return}if(ttl){if(!e.metaKey&&!e.ctrlKey&&!e.altKey){e.preventDefault();ttGo()}return}if($('al').open||e.target.closest?.('input'))return;const c=e.code;K[c]=1;if(c=='Space'||c.startsWith('Arrow')){e.preventDefault();document.activeElement?.blur?.()}if(e.repeat)return;c=='Space'&&swing();c=='KeyQ'&&drink();(c=='KeyK'||c=='KeyF')&&sho(ov==1?0:1);(c=='ShiftLeft'||c=='ShiftRight')&&dash();c=='KeyC'&&hero(0);c=='KeyI'&&hero(1);c=='KeyJ'&&hero(2);(c=='Escape'||c=='KeyP')&&sho(ov?0:2);c=='KeyM'&&sho(ov==5?0:5);c=='KeyN'&&tgm();c=='KeyR'&&t32()};onkeyup=e=>K[e.code]=0;
 // leaving the window (another app, another tab) pauses, so the day never runs down while the player is away
 onblur=()=>{for(const k in K)K[k]=0;run&&!ov&&sho(2)};
 addEventListener('wheel',e=>{if(!pz)ZMt=cl(ZMt+e.deltaY*.04,38,100)},{passive:true});
@@ -2673,21 +2949,21 @@ renderer.domElement.addEventListener('touchstart',e=>{if(jid!==null||ov)return;c
 addEventListener('touchmove',e=>{for(const t of e.changedTouches)if(t.identifier===jid){let dx=t.clientX-j0x,dy2=t.clientY-j0y;const l=hypot(dx,dy2),m=l>50?50/l:1;dx*=m;dy2*=m;jx=dx/50;jy=dy2/50;jk.style.transform=`translate(${dx}px,${dy2}px)`}},{passive:true});addEventListener('touchend',je);addEventListener('touchcancel',je);
 // the crook button swings the moment a finger lands on it: phones never turn a tap into a click while another finger is down on the
 // walk stick, so onclick alone did nothing mid-walk. preventDefault drops the click a lone tap would still send after this.
-$('cb').addEventListener('touchstart',e=>{e.preventDefault();swing()},{passive:false});$('qb').addEventListener('touchstart',e=>{e.preventDefault();drink()},{passive:false});
-// ---- a gamepad (standard mapping), polled each frame: the left stick or d-pad walks, A strikes, B drinks a draught, Y opens the armoury,
+$('cb').addEventListener('touchstart',e=>{e.preventDefault();swing()},{passive:false});$('qb').addEventListener('touchstart',e=>{e.preventDefault();drink()},{passive:false});$('dsb').addEventListener('touchstart',e=>{e.preventDefault();dash()},{passive:false});$('dsb').onclick=()=>dash();
+// ---- a gamepad (standard mapping), polled each frame: the left stick or d-pad walks, A strikes, B drinks a draught, RB dashes, Y opens the skill tree,
 // X the gear and quests, Start pauses and the right stick zooms. In the menus and on the title the d-pad or stick moves between buttons,
 // A presses, B backs out and LB/RB turn the gear panel's tabs. Button names follow the pad (A/B/X/Y or the PlayStation shapes) ----
-const GPX={p:'x',a:'A',b:'B',x:'X',y:'Y',st:'Menu'},GPS={p:'p',a:'Cross',b:'Circle',x:'Square',y:'Triangle',st:'Options'};let GB=GPX,gpOn=0,gpP=[],gpD='',gpT=0;
+const GPX={p:'x',a:'A',b:'B',x:'X',y:'Y',st:'Menu',vw:'View'},GPS={p:'p',a:'Cross',b:'Circle',x:'Square',y:'Triangle',st:'Options',vw:'Create'};let GB=GPX,gpOn=0,gpP=[],gpD='',gpT=0;
 const gpGet=()=>{for(const g of navigator.getGamepads?.()||[])if(g&&g.connected)return g;return null},
 gpG=k=>`<svg class="gg" role="img" aria-label="${k=='ls'?'Left stick':k=='rs'?'Right stick':GB[k]+(k=='st'?'':' button')}"><use href="#g-${k[1]=='s'?k:GB.p+k}"/></svg>`,
 // the title's start prompt and the night's skip hint name what the player is holding
 inP=()=>{$('ttp').textContent=gpOn?'Press any button to start':mob?'Tap anywhere to start':'Press any key to start'},
 gpUI=()=>{const g=gpGet();gpOn=!!g;GB=g&&/054c|playstation|dualsense|dualshock/i.test(g.id)?GPS:GPX;document.body.classList.toggle('gp',gpOn);gpOn||document.body.classList.remove('pd');
  $('cb').querySelector('small').innerHTML=gpOn?gpG('a'):mob?'Strike':'Space';inP();
- for(const e of document.querySelectorAll('.kp'))e.innerHTML=`<span>${gpG('ls')}walk</span><span>${gpG('a')}strike</span><span>${gpG('b')}draught</span><span>${gpG('y')}armoury</span><span>${gpG('x')}character</span><span>${gpG('st')}pause</span><span>${gpG('rs')}zoom</span>`;for(const e of document.querySelectorAll('.cg.pad'))e.innerHTML=[['ls','Walk','right stick zooms'],['a','Strike','with your sword'],['b','Draught','three hearts back'],['y','Armoury','spend your gold'],['x','Character','LB, RB: inventory'],['st','Pause','the menu button']].map(([k,n,h])=>`<div class="ci"><span class="kc">${gpG(k)}</span><b>${n}</b><small>${h}</small></div>`).join('');tuOn&&tuR()},
+ for(const e of document.querySelectorAll('.kp'))e.innerHTML=`<span>${gpG('ls')}walk</span><span>${gpG('a')}strike</span><span>${gpG('b')}draught</span><span>${gpG('y')}skills</span><span>${gpG('x')}character</span><span>${gpG('vw')}map</span><span>${gpG('st')}pause</span><span>${gpG('rs')}zoom</span>`;for(const e of document.querySelectorAll('.cg.pad'))e.innerHTML=[['ls','Walk','right stick zooms'],['a','Strike','with your sword'],['b','Draught','three hearts back'],['y','Skills','spend your points'],['x','Character','LB, RB: inventory'],['st','Pause',GB.vw+' opens the map']].map(([k,n,h])=>`<div class="ci"><span class="kc">${gpG(k)}</span><b>${n}</b><small>${h}</small></div>`).join('');tuOn&&tuR()},
 // the stick's dead zone, rescaled so the walk still starts from a standstill
 gpDz=(x,y)=>{const l=hypot(x,y);if(l<.2)return[0,0];const k=min(1,(l-.2)/.75)/l;return[x*k,y*k]},
-gpBox=()=>$('al').open?$('al'):tuOn?$('tu'):!run?$('st'):ov==1?$('mu'):ov==2?$('pm'):ov==3?$('cm'):null,
+gpBox=()=>$('al').open?$('al'):tuOn?$('tu'):!run?$('st'):ov==1?$('mu'):ov==2?$('pm'):ov==3?$('cm'):ov==5?$('mp'):null,
 gpC=b=>[...b.querySelectorAll('button:not(:disabled):not([data-pip]),input')].filter(e=>e.getClientRects().length),
 // a menu opened from the pad lands on its first button (past the close cross)
 gpF=b=>{document.body.classList.add('pd');const c=gpC(b);(c.find(e=>!e.matches('.b.sm'))||c[0])?.focus()},
@@ -2711,7 +2987,9 @@ gpPoll=dt=>{const g=gpGet();gx=gy=0;if(!g){gpP=[];return}const gq=gpP,B=g.button
  if(lsg&&!tuOn){any&&startGo();return}
  if(ttl&&!tuOn){any&&ttGo();return}
  if(run&&!ov){gx=lx+px;gy=ly+py;const[,ry]=gpDz(0,g.axes[3]||0);ry&&(ZMt=cl(ZMt+ry*50*dt,38,100));
-  if(hit(0)){const c0=swC;swing();swC>c0&&gpRum(g)}hit(1)&&drink();hit(3)&&gpO(1);hit(2)&&(czTab=0,qSel=null,iSel=-1,gpO(3));hit(9)&&gpO(2);return}
+  if(hit(0)){const c0=swC;swing();swC>c0&&gpRum(g)}hit(1)&&drink();hit(5)&&dash();hit(3)&&gpO(1);hit(2)&&(czTab=0,qSel=null,iSel=-1,gpO(3));hit(9)&&gpO(2);hit(8)&&gpO(5);return}
+ // the map: the stick or D-pad looks around, LB and RB zoom, Y finds the knight
+ if(ov==5&&!tuOn&&!$('al').open){const mx=lx+px,my=ly+py;(mx||my)&&mLook(mx*dt*mSp*.5,my*dt*mSp*.5);hit(4)&&mZ(1.5);hit(5)&&mZ(1/1.5);hit(3)&&mMe();(hit(1)||hit(8)||hit(9))&&gpO(0);return}
  // menus and the title: a held direction repeats after a beat
  const nx=px||(abs(lx)>.5&&abs(lx)>=abs(ly)?Math.sign(lx):0),ny=nx?0:py||(abs(ly)>.5?Math.sign(ly):0),d=nx||ny?nx+','+ny:'';
  if(d!=gpD){gpD=d;gpT=.4;d&&gpMv(nx,ny)}else if(d&&(gpT-=dt)<0){gpT=.13;gpMv(nx,ny)}
@@ -2840,10 +3118,12 @@ function loop(){if(dead)return;const now=performance.now();if(fcap&&now-last<10.
   U.dt.value=lv?dt:0;camU(dt);vwU();cull();if((ht-=dt)<0){ht=.2;if(run){hud();amb(.2)}else MU&&MU.tick(mof||lsg?0:1)}renderer.compute(GL[0].cs);renderer.compute(GL[1].cs);GSW.a.value.w=0;CMP.render()}
  catch(e){dead=1;console.error(e);fail('The game stopped unexpectedly','Your quest is saved as you play, so reloading picks up close to where you left off.')}}
 $('go').onclick=()=>{if(!FARM){FARM=$('fn').value.trim().replace(/\s+/g,' ')||'Sir Aldric';try{localStorage.setItem(SK+'-name',FARM)}catch(e){}}AC||aud();
- if(sd){W=sd.W||0;for(const k in L)L[k]=sd.L?.[k]|0;LV=sd.LV||1;XP=sd.XP||0;POT=sd.POT??1;dy=sd.dy||1;QN=sd.QN|0;QST=sd.Q||null;sd.G&&Object.assign(EQ,sd.G);(sd.B||[]).forEach(it=>BAG.push(it));bHP=bMax()}
- $('st').hidden=true;$('hud').hidden=$('tb').hidden=$('hc').hidden=$('cb').hidden=$('qb').hidden=false;run=1;wxN=wxDur(wxI);apply();hrt();hud();
+ if(sd){W=sd.W||0;LV=sd.LV||1;XP=sd.XP||0;POT=sd.POT??1;dy=sd.dy||1;QN=sd.QN|0;QST=sd.Q||null;sd.G&&Object.assign(EQ,sd.G);(sd.B||[]).forEach(it=>BAG.push(it));
+  if(sd.K)Object.assign(SKL,sd.K);else if(sd.L){const m={sword:['blade',3],armor:['vit',3],boots:['fleet',3],dog:['hound',1]};for(const k in m)sd.L[k]&&(SKL[m[k][0]]=min(m[k][1],sd.L[k]))}
+  SP=sd.SP??max(0,LV-skSpent());bHP=bMax()}
+ $('st').hidden=true;$('hud').hidden=$('tb').hidden=$('cb').hidden=$('qb').hidden=false;run=1;xpR(-10,-10,150);wxN=wxDur(wxI);apply();hrt();hud();
  if(sd)toast(`Welcome back, <b>${escH(FARM)}</b>. The realm has need of you.`,'g','shield');else{const t=tuNew||!tuSeen;tuNew=0;t?tuOpen(0,intro):intro()}};
-$('ng').onclick=async()=>{if(!await ask('Start a new quest?',nfM(sd.LV||1,sd.W||0,sd.dy||1),'Erase and start over'))return;sd=null;try{localStorage.removeItem(SK)}catch(e){}tuNew=1;$('go').onclick()};
+$('ng').onclick=async()=>{if(!await ask('Start a new quest?',nfM(sd.LV||1,sd.W||0,sd.dy||1),'Erase and start over'))return;sd=null;try{localStorage.removeItem(SK)}catch(e){}XPL.clear();tuNew=1;$('go').onclick()};
 const stage=async(k,t)=>{ldp(k,t);await new Promise(r=>setTimeout(r,30))};
 (async()=>{try{await stage(3,'Forging the knight…');
  DGM.geometry=dogG();WIM.geometry=wolfG(DGM.geometry);PLM.geometry=manG();armTint();

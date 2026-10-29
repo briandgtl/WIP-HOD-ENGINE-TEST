@@ -296,9 +296,18 @@ composer. The frame is capped at 60 fps by default (`fcap`; the loop returns ear
 ## 11. Audio (all synthesised, Web Audio)
 
 - SFX are built from noise buffers and oscillators: crook whoosh shaped by the stroke speed, boot-in-puddle splash, gate latch/creak/knock, a trunk's inharmonic chime and shimmer chord, sheep baas, wolf howls, rain.
-- **Music:** a procedural **Celtic folk quartet** (wooden flute, breathy whistle, Karplus-Strong harp, bodhran), new tune every cycle (AABB, 8-bar parts, D major/mixolydian, 6/8 jig). It is
-  explicitly **"played back like a 32-bit console"**: harp notes are 22 kHz samples pitched by playback rate, the band is quantised to 11 bits, and it plays into a dark hall reverb that updates at 22 kHz. The audio
-  already follows the same console idea as the retro filter. On iOS the audio session follows the silent switch and mixes with the player's own music.
+- **Music** (`mkMusic`, API `MU.tick(level)` / `MU.jingle()`): **gothic darkwave**, a dark 80s synth band with medieval undertones
+  (Quest replaced the sheep game's Celtic folk quartet). A new piece each time, in D minor (harmonic minor's A major and a Phrygian
+  E flat for the cadences), 84-96 bpm: intro (church bell `bl`, organ open-fifth drone `og`, monks' choir in organum `cr` through a
+  formant bank, lute `pl` picking chords), A (shawm tune `sw`, half-time beat), B (synth lead `ld` with the shawm an octave under, full
+  beat with a gated snare and tom fill), A, a break (lute alone with tremolo over drone and choir), B, two held bars. Under it: a saw bass
+  `bs` and detuned-saw pads `pd` pumping under the kick (`pump`), a pulse arpeggio `ar` into a dotted-eighth echo, and strings, a string
+  machine's chorused section (`SB`): a cello `cel` on the roots throughout, violins `str` from the verse's fifth bar, in tremolo with
+  the tune doubled in the last chorus. The find's jingle runs up D minor to a Picardy D major with a bell. Still **"played back like a
+  32-bit console"**: the lute is 22 kHz Karplus-Strong samples pitched by playback rate, the band is quantised to 11 bits, and it plays
+  into a dark hall reverb that updates at 22 kHz. It rests from dusk to dawn as before. Level and CPU were matched to the old quartet by
+  offline rendering (about 0.03 RMS, about 0.09 of real time on a desktop). On iOS the audio session follows the silent switch and mixes
+  with the player's own music. **N** (not M, which is now the map) or the pause menu switches it.
 - Audio starts only after a user gesture (the title's Start button), per browser autoplay rules.
 
 ---
@@ -382,7 +391,7 @@ post chain are untouched; wolves reuse the collie's sculpt and rig so they sit i
 
 ## 17. Quest: the game as it now is
 
-`ENGTEST.html` (about 2,700 lines, 395 KB) is now **Quest**, a fantasy RPG / adventure / looter. The engine (sections 1-8, 10-14) is
+`ENGTEST.html` (about 3,150 lines, 460 KB) is now **Quest**, a fantasy RPG / adventure / looter. The engine (sections 1-8, 10-14) is
 unchanged in kind; what follows is the gameplay layer and the content that replaced the sheep game. Save key `quest-1` (plus `-name`,
 `-music`, `-fps`, `-rumble`, `-tutorial`). **The 32-bit retro look is on from the first frame** (`U.ret` starts at 1; R still cycles it).
 
@@ -405,8 +414,13 @@ unchanged in kind; what follows is the gameplay layer and the content that repla
   brightness by rarity; it writes zero velocity) over a small glinting disc (`PKM`). Rarities `RAR`: Common, Uncommon, Rare, Epic,
   Legendary. Gear (`roll`, `GEA`): slots w sword (attack), a armour (hearts), b boots (speed), c charm (heart on a kill), scaled by the
   level it dropped at. Worn in `EQ`, the rest in the pack `BAG` (12). Gold is `W`.
-- **Progress**: `LV`/`XP` (`xpN`, `xpG`), the armoury `UP` (sword temper, plate harness, riding boots, warhound, healing draughts
-  `POT`, drunk with Q / B / the red flask: `drink`). The collie is the **warhound**: it runs down any foe near the knight.
+- **Progress**: `LV`/`XP` (`xpN`, `xpG`); each level gives a skill point (`SP`) for the **skill tree** (K or F, Y on a pad: `#mu`,
+  `menu()`), which replaced the armoury. Three branches in `SKT` (Attack: blade, crit, reach, heavy, cleave, the keystone execute;
+  Mobility: fleet, quick, dash, windrunner, evade, runner; Magic: vitality, blood, the warhound, arcane burst, ward, the avatar keystone),
+  drawn as an SVG tree on a 1000x640 field, each node needing the one before it. `SKL` holds the ranks (read with `skr(k)`, never `sk`,
+  which is a local in `mvP` and `poseStaff`), saved as `K` with `SP`; respec from the panel's head. Dash is Shift / RB / the dash button.
+  Healing draughts (`POT`) are bought in the skill panel's Supplies, drunk with Q / B / the red flask (`drink`). The collie is the
+  **warhound** (the Magic skill): it runs down any foe near the knight.
 - **Bounties** (`QK`, `QST`, `qstU`): one at a time, posted at the keep (slay wolves / brigands / the risen dead, open chests, scout far);
   claimed back at the muster ring. Tracker `#qt`.
 - **Chests** (`FIND`, `chestOpen`, `fndPop`): gold plus a piece of gear a grade up, shown in the find popup with its own 3D model
@@ -425,4 +439,12 @@ unchanged in kind; what follows is the gameplay layer and the content that repla
 - **Landmarks** (`LMK`, `poiPut` t 4 and 5): watchtowers (whole with a slate cone, or ruined) from 200 m out, and rare fortresses on a
   rock plinth from 380 m out, each with a chest. A fortress is wider than its field, so `fort(i,j)` / `nf` keep the neighbouring fields'
   walls, hedges, trees and ground cover off it. The older places (farmsteads, graveyards, ruined cottages) are laid out exactly as before.
+- **The map** (M, the HUD's map button, View / Create on a pad: `#mp`, `ov` 5, `mapOpen`): the country you have seen, painted like an
+  old chart and turned to match the camera (up the screen is up the map). Explored ground is kept in 32 m cells (`XPL`, numeric keys
+  `xk(i,j)`, saved as `X`, cleared for a new quest), revealed within 80 m of the knight (`xpR`, from `hud()`); each cell is painted once
+  into a 16 px tile (`mTile`: 2 m a pixel from `H`, water by depth, inked shore, hill shading from the screen's top left, 5 m contours),
+  a few a beat while riding (`mIdle`) and the rest nearest first while the map is open (`mLoop`). The unseen edge fades through a
+  one-pixel-a-cell mask (`mMK`). Markers: Greywatch Keep, places to search from `poiT(i,j)` (the same draw the chunk's field loop uses,
+  dimmed once their chest is opened), and the knight's heading. Drag or the stick to look, wheel / buttons / LB-RB to zoom. The old gilt
+  compass arrow under the HUD badge is gone; the map's header gives the distance home. On phones the top buttons stack down the right edge.
 - **Primer** (`TUP`): six pages of cards and keys; `tutorial/*.jpg` are the sheep game's screenshots and are no longer used.
