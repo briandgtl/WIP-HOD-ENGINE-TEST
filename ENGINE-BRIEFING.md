@@ -166,7 +166,7 @@ crisp. Tone mapping is **AgX**, applied inside the chain (`renderOutput` in the 
   specular. Vertex colours carry the base colour. Detail comes from procedural bump (`bumpN`, 3D value noise `nz3`) rather than texture maps.
 - **Flat facets vs smooth:** props and legacy models call `computeVertexNormals` (smooth, facet-free); **trees, logs, stumps, the shepherd,
   the collie and the sheep are deliberately flat-shaded low-poly** (`flatN()` takes the true triangle normal from screen derivatives). This crisp
-  faceting is a core part of the character and tree look.
+  faceting is a core part of the tree look. **The characters are now voxel models instead** (section 18): flat square faces, one colour each.
 
 ### 5.4 How models are made (there is no art pipeline, only code)
 - **Simple props:** three primitives (`B` box, `Cy` cylinder, `Sp` sphere, lathe/extrude) merged by `mg([[geometry, colour], ...])` into one
@@ -230,6 +230,7 @@ Facts that matter when you build on it:
 
 ## 7. Characters and animation
 
+- **Update:** every character is now a **voxel model** (section 18). The rigs, IK and dye system described here still pose and colour them; only the meshes changed.
 - **No skeletal clips.** Characters are SDF sculpts with **bone weights baked per vertex** (`aJ` hip/knee/shoulder/elbow weights, `aH` head), posed **in the vertex shader (TSL)**
   by procedural rigs. The shepherd's gait is computed (stride-matched hip swing, knee fold, ankle roll, waist lean, spring-driven free arm and coat skirt, breathing and weight shift when idle). The
   walking staff plants ahead each stride; the crook swing is a scripted sweep (wind-up, eased sweep, follow-through) with **two-bone IK** putting the hand on the grip; there is a swing-trail ribbon.
@@ -331,7 +332,8 @@ These are the choices visible in the code and in the user's repeated feedback du
 1. **Stylised-natural, not realistic:** soft cel lighting with wrap and translucency, strong rim, warm key and cool fill, painterly split-tone, a slightly desaturated-then-boosted colour curve; heavy use of
    vegetation motion (wind sway, trampled grass, swaying leaf cards).
 2. **Miniature / diorama framing:** high three-quarter camera, tilt-shift blur at the top and bottom of frame, haze that swallows the far edge, a vignette. The world feels like a lit tabletop model.
-3. **Faceted low-poly for things that move or stand out** (player, animals, trees, logs, stumps): each facet one flat colour with baked AO in the creases and crisp colour regions; **smooth shading for architecture and props.**
+3. **Faceted low-poly for things that stand out** (trees, logs, stumps): each facet one flat colour with baked AO in the creases and crisp colour regions; **smooth shading for architecture and props.**
+   The characters (knight, hound, wolves, brigands, skeletons) went further, to **voxel art** (section 18).
 4. **Silhouette and colour-region clarity over texture detail:** surface richness comes from procedural bump, vertex colour, painted-on patches (fly-agaric warts, lichen, lime-wash) and *instanced cards*, not image textures.
 5. **Authored through observation:** nearly every object is described in a comment from its real-world reference (named tree species, drystone wall courses and coping, a famine cottage's gables, high crosses, church
    bellcotes, heritage paint names, Aran jumper and tweed cap "dressed like the paintings"). The user checked results against reference photos and corrected drift.
@@ -373,7 +375,7 @@ These are the choices visible in the code and in the user's repeated feedback du
 ## 16. Combat layer added on top (first test)
 
 Everything below lives in one block headed `// ---- wolves: the first enemy ...` just above `// ---- the shepherd ----`, plus a few one-line hooks. The renderer, grass, camera and
-post chain are untouched; wolves reuse the collie's sculpt and rig so they sit in the same look.
+post chain are untouched; wolves reuse the collie's model and rig so they sit in the same look (both are voxel models now, section 18).
 
 - **Wolves** (`WLF`, pool of `WMX = 8`): one `InstancedMesh` (`WIM`) of `wolfG(DGM.geometry)`, posed by `dogRig` fed from per-instance attributes `aWT` (x, y, z, heading) and `aWU`
   (scale, gait amplitude, gait phase, lunge). AI in `wlfAI`: 0 prowl, 1 hunt, 2 wind-up (0.5 s tell), 3 bite (dash, 1.5 m mouth check), 4 run off, 5 stagger, 6 dying. They spawn 40-58 m out
@@ -400,15 +402,16 @@ unchanged in kind; what follows is the gameplay layer and the content that repla
   shadow light `SD` swings to the full moon (opposite the sun, kept 20 degrees up) once the sun is well down (`mw`), and `U.ngt` (the same
   weight) cools the sky's glow, draws stars and turns the sun disc into a moon. `NF2` is night-ness for lamps and exposure. `dayU` does the
   dusk howls and nightfall; `dawn()` starts the next day. The HUD dial turns a full circle per cycle (`clk`).
-- **The knight** (`manG`): the shepherd's rig and joints, re-sculpted: a bascinet with plume and aventail, plate (material 6, tinted
-  live through `SHU.boots` by `armTint` from the worn armour's rarity), a crimson surcoat and navy cape (material 4, the old coat skirt
-  swing), mail (5), gilt and leather trim (7, never tinted). The crook is a longsword (`staff`, its blade `BLM` glows in the sword's
-  rarity colour from Rare up); `poseStaff` holds it point-forward and the swing (`swA`, `SWD .66`) cuts level. `swordSweep` lands the blow.
+- **The knight** (`manG`): the shepherd's rig and joints, rebuilt in voxels (section 18): a great helm with a crimson crest and a pixel
+  face in its opening, plate (material 6, tinted live through `SHU.boots` by `armTint` from the worn armour's rarity), a crimson tabard
+  and navy cloak (material 4, the old coat skirt swing), mail (5), gilt and leather trim (7, never tinted). The crook is a longsword
+  (`staff`, built of boxes, its blade `BLM` glows in the sword's rarity colour from Rare up); `poseStaff` holds it point-forward and the
+  swing (`swA`, `SWD .66`) cuts level. `swordSweep` lands the blow.
 - **Home**: Greywatch Keep in the cottage's frame (`cot`, gate at local `KX = -1.2`, so the old yard and path masks still fit): ashlar
   hall, slate roof (`SLM`), coned towers, banners, torches (`LGS`, `LGS2`), lit windows (`WGM`). The pen is the **muster ring**
   (`mkPen`): stone pillars with braziers (`BZF`, lit with `LT`), a safe zone where foes break off and wounds heal fast.
 - **Foes**: wolves (`WLF`) plus **dire wolves** by night (`big`: 1.75 scale, two-heart bites). Humanoids (`HUM`, `foeU`/`foeAI`/
-  `foePose`): rigid puppets hinged at hips and shoulders (no skinning), material `HMM` (key `foe`); **brigands** (k 0) by day and night,
+  `foePose`): rigid voxel puppets hinged at hips and shoulders (no skinning, `FGEO`), material `HMM` (key `foe`); **brigands** (k 0) by day and night,
   **skeletons** (k 1) only by night, rising from the ground and crumbling at dawn. Same state machine as the wolves, with a raised-blade tell.
 - **Loot** (`LOOT`, `lootU`): every drop stands under a **beam of light** (`LBM`, additive, colour per instance in `aC`, height and
   brightness by rarity; it writes zero velocity) over a small glinting disc (`PKM`). Rarities `RAR`: Common, Uncommon, Rare, Epic,
@@ -448,3 +451,44 @@ unchanged in kind; what follows is the gameplay layer and the content that repla
   dimmed once their chest is opened), and the knight's heading. Drag or the stick to look, wheel / buttons / LB-RB to zoom. The old gilt
   compass arrow under the HUD badge is gone; the map's header gives the distance home. On phones the top buttons stack down the right edge.
 - **Primer** (`TUP`): six pages of cards and keys; `tutorial/*.jpg` are the sheep game's screenshots and are no longer used.
+
+---
+
+## 18. Voxel characters (the low-poly retro 3D look)
+
+Every character is a **voxel model**: the knight and his cloak, the shield, the warhound and the wolves, the brigands and the skeletons.
+The aim is the look of voxel-inspired / PS1-style blocky figures: chunky cubic geometry, a low-resolution "pixel texture" that is perfectly
+crisp, flat lighting per face, stepped outlines. There are still no textures: each cell's colour *is* the texel.
+
+- **`VXM(v)`** (just above the collie, in `// ---- voxel art`) is a sparse grid of cells `v` on a side (all characters use **1/16 m**, so
+  the knight is about 52 cells tall and every model shares one pixel scale). Models are authored straight in cells with chained calls:
+  `box` / `mbox` (half-open ranges `[x0,x1)`; `mbox` adds the mirror across x = 0, and every model's centre line is a cell boundary so the
+  two sides match), `ell`, `cut` / `mcut`, `paint` / `mpaint` (recolour cells already there, optionally their material) and `spr` (a pixel
+  picture as rows of characters on one layer of cells: the knight's face, the brigand's eyes, the skeleton's teeth). A cell is
+  `[colour, material, bone]`; later fills paint over earlier ones.
+- **`geo(opt)`** meshes it: one square (four corners of its own, the face's normal) for every cell face that looks on an empty cell. The
+  cell's colour takes `opt.pat` (pixel patterns: mail in a checker, a weave in cloth rows, streaks in hair), a per-cell grain from a hash
+  (`opt.sh`, default 7%) and a step of darkening per occupied cell beside the one the face looks into (`opt.ao`). With `opt.rig` each
+  corner gets the knight's bone weights (`aJ`, `aH`) and the **mean material** (`aM`) of the cells round it, the same in every face that
+  shares the corner, so the vertex-shader rig moves a corner one way wherever it appears and joints fold without opening. `opt.dye` /
+  `opt.dyeC` bake the knight material's colour attributes (`aCa`, `aCb`, `aD0`, `aD1`, `aDc`), so `PLMm`, `manCol`, `armTint` and the hair
+  dye work unchanged. The result is indexed and keeps `userData.cvn` set (never smooth its normals).
+- **The knight** stays on the old frame: rig joints, `IK_S/E/G` and the shield hangers are where they were. His legs stand two cells apart
+  and his arms two cells out from the plate, so each limb is one block that swings whole; where a limb meets the body (thigh to belt,
+  pauldron to shoulder, gorget to helm) the shared corners take both bones and fold like a hinge. `manRig` was simplified to match:
+  `hipW = aJ.x` (no centre-line fade, nothing is fused at the crotch) and `knW = aJ.y` (a hinge at the knee joint instead of a bending band).
+  **Keep a one-cell gap** between parts that must move apart (limbs and body, the tabard skirt and the thighs): touching cells share
+  corners, so their weights blend. The cloak (`PLC`) is a separate voxel mesh; the old 3D sphere eyes (`eyes`, `eyeM`) are gone, the eyes are
+  pixels on the face.
+- **The hound** (`dogG(dark, white, eyes)`) is laid out on `dogRig`'s joints (legs two cells square under (±.125, .4375) and (±.125, -.375),
+  the head forward of z .6 and above y 1.16, the tail behind z -.6); its eyes are cells with material 3.5 (glossy, like the nose).
+  **Wolves** call `dogG` with two greys and amber eyes (`wolfG()`), so the grey ramp, grain and AO are baked properly rather than remapped.
+- **Foes** (`FGEO`): each piece (body on the hips, arms from the shoulders, the right holding its blade, legs from the hips) is its own
+  `VXM`, rigid as before; the skeleton's burning eyes (`EYG`) sit in its hollow sockets.
+- **Shield**: a heater outline (`SHIN`) filled in cells: the crimson field with a raised gold cross (`VC`), and a one-cell rim plus a
+  backing plate a cell behind in `SHRM`, which now uses vertex colours as a grain multiplied by the rarity colour.
+- **Cost:** about 6.4k triangles for the knight plus 2.2k for the cloak, 2.9k for the hound or a wolf, about 5k for a brigand or skeleton,
+  all built in a few milliseconds at load. The per-cell grain makes greedy face merging pointless; it was not done.
+- **Lighting is unchanged:** the characters keep the cel model (`cel:1`), so each flat face takes one tone. The world's shadow map is still
+  PCF soft (section 5.3). If a harder, more rigid shadow is wanted for the full retro look, `renderer.shadowMap.type` is set once at line
+  ~1122 (`BasicShadowMap` would affect every shadow in the world, not only the characters').

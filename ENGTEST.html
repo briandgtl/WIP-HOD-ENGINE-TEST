@@ -1178,8 +1178,8 @@ const WM=new BotwMat({transparent:true,roughness:.07,metalness:0},{key:'water',t
  WM.normalNode=cameraViewMatrix.mul(vec4(WN,0)).xyz.normalize();WM.emissiveNode=mix(U.hor,U.zen,Rf.y.max(0).pow(.5)).add(glowT(Rf.dot(U.sd).max(0))).mul(fr).mul(fm.oneMinus()).mul(U.sv.mul(.6).add(.4))}
 const wat=new THREE.Mesh(new THREE.PlaneGeometry(1400,1400).rotateX(-PI/2),WM);wat.geometry.computeVertexNormals();wat.position.y=WL;wat.receiveShadow=true;sc.add(wat);
 
-// ---- geometry helpers (every model ends in computeVertexNormals for smooth, facet-free shading; the shepherd and the flock are
-// in flat low-poly facets instead, SCULPT's opt.lp) ----
+// ---- geometry helpers (every model ends in computeVertexNormals for smooth, facet-free shading; trees and ground cover are in flat
+// low-poly facets instead, SCULPT's opt.lp, and the characters are voxel models, VXM) ----
 const cvn=g=>{if(!g.userData.cvn){g.computeVertexNormals();g.userData.cvn=1}return g},
 weld=g=>{const p=g.attributes.position,cA=g.attributes.color,M=new Map(),P=[],C=[],I=[];for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),k=Math.round(x*1e4)+','+Math.round(y*1e4)+','+Math.round(z*1e4);let j=M.get(k);if(j===undefined){j=P.length/3;M.set(k,j);P.push(x,y,z);cA&&C.push(cA.getX(i),cA.getY(i),cA.getZ(i))}I.push(j)}const r=new THREE.BufferGeometry();r.setAttribute('position',new THREE.Float32BufferAttribute(P,3));cA&&r.setAttribute('color',new THREE.Float32BufferAttribute(C,3));r.setIndex(I);return cvn(r)},
 lumpy=(d,a)=>{const g=new THREE.IcosahedronGeometry(1,d),p=g.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),k=1+a*sin(x*7.1+1)*sin(y*6.3+2)*sin(z*5.7+3);p.setXYZ(i,x*k,y*k,z*k)}return weld(g)},
@@ -2347,7 +2347,7 @@ const LMK=(()=>{const mot=(g,x,y,z)=>{g.translate(x,y,z);const p=g.attributes.po
  flag(cs,0,21.3,-4,3,2.2,0x9c1f24);bnr(cs,0,17.5,1.06,2.8,9);for(const[x,y]of[[-3,12],[3,12],[-3,7],[3,7]])cs.push([B(.6,1.6,.2).translate(x,y,1.02),0x1c2028]);
  return{tw:mg(tw),tr:mg(tr),cs:mg(cs),col}})();
 
-// ---- characters: SDF-sculpted, skinned in TSL (positions + normals) and cel shaded ----
+// ---- characters: voxel models (VXM, below), skinned in TSL (positions + normals) and cel shaded ----
 const rotV=(ax,v,c,s)=>ax==0?vec3(v.x,v.y.mul(c).sub(v.z.mul(s)),v.y.mul(s).add(v.z.mul(c))):ax==1?vec3(v.x.mul(c).add(v.z.mul(s)),v.y,v.z.mul(c).sub(v.x.mul(s))):vec3(v.x.mul(c).sub(v.y.mul(s)),v.x.mul(s).add(v.y.mul(c)),v.z),
 rigCore=build=>{const p=positionGeometry.toVar(),n=normalGeometry.toVar(),rot=(ax,o,a)=>{const c=Cos(a).toVar(),s=Sin(a).toVar();p.assign(rotV(ax,p.sub(o),c,s).add(o));n.assign(rotV(ax,n,c,s))};build(p,rot);return{p,n}},
 // fresh: three's motion-vector pass can't see a pose made in the vertex shader (it reprojects the rest pose), so TRAA smeared swinging
@@ -2356,12 +2356,48 @@ rigCore=build=>{const p=positionGeometry.toVar(),n=normalGeometry.toVar(),rot=(a
 // them out, since their AO would otherwise show its per-frame noise
 NOHIST=vec2(8),
 rig=(m,name,build,fresh)=>{const vN=varyingProperty('vec3','vRig'+name),cur=Fn(()=>{const r=rigCore(build);vN.assign(r.n);return r.p})();
- m.rigCur=m.positionNode=cur;if(fresh)m.mrtNode=mrt({velocity:NOHIST});return transformNormalToView(vN).normalize()},
-EYEM={},eyeM=(c,f)=>EYEM[c+'.'+!!f]||(EYEM[c+'.'+!!f]=new BotwMat({color:c,roughness:.12,flatShading:!!f},{key:'eye',cel:1,celW:.05,spec:1.4,rim:.15})),GLINT=new THREE.MeshBasicNodeMaterial({color:0xffffff}),
-// lp: low poly, half the segments and flat facets, for the shepherd
-eyes=(parent,x,y,z,r,iris,lp)=>[1,-1].forEach(s=>{const E=(r,a,b)=>Sp(r,lp?a/2:a,lp?b/2:b),M=c=>eyeM(c,lp);part(E(r,18,12).scale(1,.92,.72),M(0xf1ece2),s*x,y,z,parent);part(E(r*.78,16,10),M(iris),s*x,y,z+r*.3,parent);part(E(r*.4,12,8),M(0x0d0b0a),s*x,y,z+r*.56,parent);part(E(r*.16,8,6),GLINT,s*x+r*.22,y+r*.26,z+r*.78,parent).castShadow=false});
+ m.rigCur=m.positionNode=cur;if(fresh)m.mrtNode=mrt({velocity:NOHIST});return transformNormalToView(vN).normalize()};
 
-// the collie: deep chest, tucked waist, white ruff and blaze, tipped ears, white socks, plumed tail
+// ---- voxel art: every character (the knight, the hound and the wolves, the brigands and the risen dead) is a voxel model, in the low-poly
+// retro 3D of the late 32-bit consoles and the games that look back to them: a grid of cells v on a side (1/16: the knight stands some 52
+// cells tall), each of one colour, whose faces that look on an empty cell are drawn as flat squares. So every face is one crisp pixel of the
+// model's "texture" (no filtering, no blend between neighbours, no smoothing), lit flat by its own plane, and every edge and outline is
+// stepped. VXM(v) is the grid, authored straight in cells: box fills the half-open range [x0,x1) x [y0,y1) x [z0,z1) (a later fill paints
+// over an earlier one), mbox fills a range and its mirror across x = 0 (a model's centre line is a cell boundary, so its two sides match
+// cell for cell), ell fills the cells whose middles lie in an ellipsoid, cut and mcut empty cells, paint and mpaint recolour the cells
+// already there (and set their material, if one is given), spr lays a pixel picture on one layer of cells (rows of characters, the top row
+// first, each looked up in a palette of [colour, material]). A cell is [colour, material, bone (SCULPT's ids), i, j, l]
+const VXM=v=>{const M=new Map(),K=(i,j,l)=>((i+512)*1024+j+512)*1024+l+512,rng=(x0,y0,z0,x1,y1,z1,f)=>{for(let i=x0;i<x1;i++)for(let j=y0;j<y1;j++)for(let l=z0;l<z1;l++)f(i,j,l)},
+ o={get:(i,j,l)=>M.get(K(i,j,l)),set:(i,j,l,c,m=0,b=0)=>(M.set(K(i,j,l),[c,m,b,i,j,l]),o),
+  box:(x0,y0,z0,x1,y1,z1,c,m,b)=>(rng(x0,y0,z0,x1,y1,z1,(i,j,l)=>o.set(i,j,l,c,m,b)),o),mbox:(x0,y0,z0,x1,y1,z1,c,m,b)=>o.box(x0,y0,z0,x1,y1,z1,c,m,b).box(-x1,y0,z0,-x0,y1,z1,c,m,b),
+  cut:(x0,y0,z0,x1,y1,z1)=>(rng(x0,y0,z0,x1,y1,z1,(i,j,l)=>M.delete(K(i,j,l))),o),mcut:(x0,y0,z0,x1,y1,z1)=>o.cut(x0,y0,z0,x1,y1,z1).cut(-x1,y0,z0,-x0,y1,z1),
+  paint:(x0,y0,z0,x1,y1,z1,c,m)=>(rng(x0,y0,z0,x1,y1,z1,(i,j,l)=>{const q=o.get(i,j,l);q&&(q[0]=c,m!=null&&(q[1]=m))}),o),mpaint:(x0,y0,z0,x1,y1,z1,c,m)=>o.paint(x0,y0,z0,x1,y1,z1,c,m).paint(-x1,y0,z0,-x0,y1,z1,c,m),
+  ell:(cx,cy,cz,rx,ry,rz,c,m,b)=>(rng(floor(cx-rx),floor(cy-ry),floor(cz-rz),Math.ceil(cx+rx),Math.ceil(cy+ry),Math.ceil(cz+rz),(i,j,l)=>((i+.5-cx)/rx)**2+((j+.5-cy)/ry)**2+((l+.5-cz)/rz)**2<=1&&o.set(i,j,l,c,m,b)),o),
+  spr:(x0,y0,l,rows,pal)=>(rows.forEach((r,n)=>[...r].forEach((ch,k)=>{const p=pal[ch],q=p&&o.get(x0+k,y0+rows.length-1-n,l);q&&(q[0]=p[0],p[1]!=null&&(q[1]=p[1]))})),o),
+  // the mesh: each face of a cell that looks on an empty one, a square of four corners of its own with the face's normal. A cell's colour
+  // takes pat(colour, material, i, j, l) (a material's pixel pattern: mail's rings, cloth's weave) and a grain from a hash of the cell (sh);
+  // each face is darkened a step for every cell standing beside the one it looks into (ao: a face down in a crease gets less light). With
+  // rig every corner takes the bones of the cells round it (aJ hip, knee, shoulder, elbow and aH head, the weights SCULPT bakes) and their
+  // mean material (aM, which manRig reads), the same in every face that shares the corner, so the rig moves it one way wherever it appears
+  // and the model can't open at a joint; without rig aM is the face's own. dye (and dyeC) bake the knight's colour attributes: aCa/aCb (one
+  // colour, no crisp edge between two), a weight per dyed material (aD0, aD1) and the dyeC material's colour (aDc)
+  geo:(opt={})=>{const sh=opt.sh??.07,ao=opt.ao??.08,DY=opt.dye,rig=opt.rig,A={position:[],normal:[],color:[],aM:[]},I=[],CW=new Map(),
+    cw=(a,b,c)=>{const k=K(a,b,c);let r=CW.get(k);if(r)return r;const w=[0,0,0,0,0,0,0];let n=0,mm=0;
+     for(let x=a-1;x<=a;x++)for(let y=b-1;y<=b;y++)for(let z=c-1;z<=c;z++){const q=o.get(x,y,z);q&&(w[q[2]]++,mm+=q[1],n++)}
+     r=[(w[1]+w[2])/n,w[2]/n,(w[3]+w[4])/n,w[4]/n,(w[5]+w[6]*.5)/n,mm/n];CW.set(k,r);return r};
+   rig&&(A.aJ=[],A.aH=[]);DY&&(A.aCa=[],A.aCb=[],A.aD0=[],A.aD1=[],A.aDc=[]);
+   for(const[c,m,b,i,j,l]of M.values()){C2.setHex(c);opt.pat&&opt.pat(C2,m,i,j,l);C2.multiplyScalar(1+(h3(i+.37,j+.11,l+.53)-.5)*2*sh);const dy=DY?DY.indexOf(m):-1;
+    for(let a=0;a<3;a++)for(const s of[1,-1]){const d=[i,j,l];d[a]+=s;if(o.get(...d))continue;
+     // u x w = a, so the corners taken (0,0) (1,0) (1,1) (0,1) in u, w wind counter-clockwise seen from +a
+     const u=(a+1)%3,w=(a+2)%3,n0=A.position.length/3,g=[i,j,l];let k=0;for(const t of[1,-1])for(const e of[u,w]){d[e]+=t;k+=!!o.get(...d);d[e]-=t}
+     C1.copy(C2).multiplyScalar(1-ao*k);s>0&&g[a]++;
+     for(const[p,r]of[[0,0],[1,0],[1,1],[0,1]]){const q=g.slice();q[u]+=p;q[w]+=r;A.position.push(q[0]*v,q[1]*v,q[2]*v);A.normal.push(a==0?s:0,a==1?s:0,a==2?s:0);A.color.push(C1.r,C1.g,C1.b);
+      const W=rig&&cw(...q);A.aM.push(rig?W[5]:m);rig&&(A.aJ.push(W[0],W[1],W[2],W[3]),A.aH.push(W[4]));
+      if(DY){A.aCa.push(C1.r,C1.g,C1.b,1);A.aCb.push(C1.r,C1.g,C1.b);for(let x=0;x<4;x++){A.aD0.push(+(dy==x));A.aD1.push(+(dy==x+4))}m==opt.dyeC?A.aDc.push(C1.r,C1.g,C1.b):A.aDc.push(0,0,0)}}
+     s>0?I.push(n0,n0+1,n0+2,n0,n0+2,n0+3):I.push(n0,n0+2,n0+1,n0,n0+3,n0+2)}}
+   const r=new THREE.BufferGeometry(),Z={position:3,normal:3,color:3,aM:1,aJ:4,aH:1,aCa:4,aCb:3,aD0:4,aD1:4,aDc:3};for(const k in A)r.setAttribute(k,new THREE.Float32BufferAttribute(A[k],Z[k]));
+   r.setIndex(new THREE.BufferAttribute(Uint32Array.from(I),1));r.userData.cvn=1;return r}};return o};
+
 const DK=0x17171a,DW=0xf1efe9,DNO=0x121111,DU={dl:uniform(new THREE.Vector4()),dt:uniform(0),dh:uniform(new THREE.Vector2())},dhd=new THREE.Group(),FUR=smoothstep(.4,.8,aM).mul(ss1(1.2,1.6,aM)),NOSE=smoothstep(2.6,2.9,aM),
 dogRig=(p,rot,Q=DU)=>{const sx=sign(p.x).toVar(),fr=step(0,p.z).toVar(),lz=mix(float(-.38),float(.43),fr),ang=select(fr.greaterThan(0),select(sx.greaterThan(0),Q.dl.x,Q.dl.y),select(sx.greaterThan(0),Q.dl.z,Q.dl.w)).toVar(),
  leg=ss1(.88,1.02,p.y).mul(ss1(.12,.2,p.xz.sub(vec2(sx.mul(mix(float(.13),float(.12),fr)),lz)).length())).toVar();
@@ -2372,18 +2408,21 @@ dogRig=(p,rot,Q=DU)=>{const sx=sign(p.x).toVar(),fr=step(0,p.z).toVar(),lz=mix(f
 DGMm=new BotwMat({vertexColors:true,roughness:.8},{key:'dog',cel:1,celW:FUR.mul(.05).add(.035),wrap:FUR.mul(.3),trans:FUR.mul(.1),spec:NOSE.mul(.9).add(.03),rim:.5});
 DGMm.normalNode=rig(DGMm,'Dog',dogRig,1);DGMm.roughnessNode=mix(float(.35),float(.95),FUR);
 const DGM=new THREE.Mesh(new THREE.BufferGeometry(),DGMm),
-dogG=()=>SCULPT([[EL([0,.98,.26],[.215,.285,.35]),DK,0,1],[RC([0,1,.04],[0,.98,-.34],.2,.18),DK,.1,1],[EL([0,.98,-.4],[.215,.21,.21]),DK,.08,1],[RC([0,1.08,.46],[0,1.27,.66],.17,.135),DK,.08,1],[EL([0,1.13,.57],[.245,.24,.2]),DK,.08,1],[EL([0,.86,.5],[.14,.17,.11]),DK,.07,1],[EL([0,1.02,.62],[.19,.2,.12]),DK,.09,1],[EL([0,.72,.02],[.13,.07,.3]),DK,.08,1],
- [EL([0,1.38,.74],[.182,.158,.165]),DK,.06,1],...[1,-1].map(s=>[EL([s*.1,1.33,.78],[.1,.08,.09]),DK,.06,1]),[RC([0,1.345,.86],[0,1.3,.99],.098,.072),DK,.05,0],[EL([0,1.305,1.015],[.04,.031,.03]),DNO,.015,3],[EL([0,1.255,.94],[.066,.026,.066]),DK,.02,0],
- ...[1,-1].map(s=>[EL([s*.105,1.55,.68],[.058,.1,.024],[.2,0,-s*.5]),DK,.03,1]),...[1,-1].map(s=>[EL([s*.152,1.625,.71],[.047,.036,.021],[.9,0,-s*.5]),DK,.015,1]),
- ...[1,-1].flatMap(s=>{const x=s*.12;return[[RC([x,.92,.42],[x,.46,.45],.072,.056),DK,.06,1],[RC([x,.46,.45],[x,.1,.44],.05,.045),DK,.02,0],[EL([x,.045,.48],[.055,.045,.075]),DK,.02,0],[EL([x,.7,.39],[.05,.12,.05]),DK,.04,1]]}),
- ...[1,-1].flatMap(s=>{const x=s*.13;return[[RC([x,.98,-.38],[x,.62,-.29],.12,.078),DK,.06,1],[EL([x,.76,-.47],[.1,.15,.1]),DK,.06,1],[RC([x,.62,-.29],[x,.36,-.44],.065,.05),DK,.03,1],[RC([x,.36,-.44],[x,.08,-.4],.047,.044),DK,.02,0],[EL([x,.045,-.37],[.055,.045,.075]),DK,.02,0]]}),
- [RC([0,1,-.56],[0,.86,-.73],.085,.08),DK,.04,1],[RC([0,.86,-.73],[0,.66,-.83],.08,.072),DK,.02,1],[RC([0,.66,-.83],[0,.52,-.87],.072,.06),DK,.02,1],[EL([0,.47,-.88],[.065,.085,.065]),DK,.02,1]],
- [[TOR([0,1.17,.58],.18,.1),DW,.015],[EL([0,.9,.52],[.13,.22,.12]),DW,.015],[EL([0,1.45,.86],[.03,.14,.1]),DW,.012],[RC([0,1.355,.87],[0,1.3,.985],.105,.082),DW,.012],[(x,y,z)=>z>0?y-.4:y-.3,DW,.015],[EL([0,.45,-.9],[.08,.1,.08]),DW,.012],[EL([0,1.27,.965],[.062,.008,.07]),0x1a1a1a,.006],[EL([0,1.315,1.015],[.04,.031,.03]),DNO,.004,3]],
- [-.44,-.02,-1.02,.44,1.84,1.25],100,(x,y,z,d)=>d-(vn3(x*6,y*6,z*6)-.5)*.05-(vn3(x*13,y*13,z*13)-.5)*.03-(vn3(x*26,y*26,z*26)-.5)*.01,{layer:.012,ao:.9});
-DGM.castShadow=DGM.receiveShadow=true;dog.add(DGM,dhd);DGM.frustumCulled=false;dhd.position.set(0,1.24,.58);eyes(dhd,.078,.18,.27,.03,0x5a3a1c);
+// the collie in voxels (VXM): a deep chest and a long back, a square head with a snout and a black nose, ears that stand with tipped points,
+// a low plumed tail; white at the ruff and chest, the muzzle and a blaze up the brow, the socks and the tail's tip; eyes a cell each (material
+// 3.5, glossy as the nose is). Laid out on dogRig's joints: legs two cells square under (±.125, .4375) and (±.125, -.375), the head forward
+// of z .6 and above y 1.16, the tail behind z -.6. dogG(dark, white, eyes) also makes the wolves (wolfG), in greys with amber eyes
+dogG=(K=DK,W=DW,E=0x4a2c14)=>{const o=VXM(1/16);
+ o.box(-3,13,-8,3,20,8,K,1).box(-3,11,1,3,13,8,K,1).box(-2,16,8,2,22,11,K,1).box(-3,19,9,3,25,15,K,1).box(-2,19,15,2,22,18,K,1).mbox(1,25,11,3,27,13,K,1).mbox(2,27,11,3,28,12,K,1)
+  .mbox(1,0,6,3,13,8,K,1).mbox(1,0,8,3,1,9,K,1).mbox(1,7,-8,3,14,-5,K,1).mbox(1,0,-7,3,7,-5,K,1).mbox(1,0,-5,3,1,-4,K,1)
+  .box(-1,14,-10,1,17,-8,K,1).box(-2,11,-12,2,15,-10,K,1).box(-1,8,-13,1,12,-11,K,1).box(-1,6,-14,1,9,-12,W,1)
+  .paint(-3,11,5,3,20,8,W).paint(-2,16,8,2,20,11,W).paint(-2,19,15,2,22,18,W).paint(-1,22,14,1,25,15,W).mpaint(1,0,-8,3,4,9,W)
+  .box(-1,20,18,1,22,19,DNO,3).paint(-2,19,17,2,20,18,K).mpaint(1,23,14,2,24,15,E,3.5);
+ return o.geo()};
+DGM.castShadow=DGM.receiveShadow=true;dog.add(DGM,dhd);DGM.frustumCulled=false;dhd.position.set(0,1.24,.58);
 
-// the knight: ~6.8 heads tall, in plate over mail: an open bascinet with a crimson plume, a crimson surcoat with a gold cross over the
-// breastplate, a navy cape from the shoulders, mail legs under cuisses and greaves, gauntlets and sabatons; bones baked into aJ/aH
+// the knight: a voxel figure (manG), about five heads tall under a great helm with a crimson crest, in plate over mail, a crimson tabard
+// with a gold cross over the breastplate, a navy cloak from the shoulders; bones baked into aJ/aH
 const P=new THREE.Group(),pb=new THREE.Group(),tg=new THREE.Group(),hd=new THREE.Group(),
 SKN=0xd8a383,SKN2=0xd88c79,LIP=0xb87565,HAIR=0x5a3a22,BRD=0x5e3c22,COAT=0x9c1f24,CAPE=0x1f2c55,GLD=0xd2a23c,PLUME=0xb3262c,MUS=0x80868e,TRS=0x6c727a,WEL=0xa8b0ba,WEL2=0x7b838e,SOLE=0x2a2622,LTH=0x4a3020,CAP=0x2b4a31,
 PU={lg:uniform(new THREE.Vector4()),el:uniform(new THREE.Vector2()),ar:uniform(new THREE.Vector4()),hd:uniform(new THREE.Vector2()),tw:uniform(0),sp:uniform(new THREE.Vector4()),ft:uniform(new THREE.Vector2()),sk:uniform(new THREE.Vector2())},
@@ -2395,15 +2434,12 @@ SHU={top:uniform(new THREE.Color(COAT)),cap:uniform(new THREE.Color(CAP)),polo:u
 // brows, moustache, sideburns and beard, with thin bands of coat, trouser and welly dye inside it
 DW0=attribute('aD0','vec4'),DW1=attribute('aD1','vec4'),KN=DW0.x,TWd=DW0.y,TRz=DW0.z,WBt=DW0.w,HRm=DW1.x,CAPm=DW1.y,
 manRig=(p,rot,Q=PU)=>{const aJ=attribute('aJ','vec4'),hW=attribute('aH','float'),sx=sign(p.x).toVar(),ps=sx.greaterThan(0),
- // the hip swing fades out toward the centre line only up in the crotch, where the two trouser legs are fused and would tear apart;
- // below it the trousers (5) and wellies (6) swing whole. Faded all the way down, each leg's inner side (|x| < .1) stayed put while
- // the outer side swung, so the legs sheared into a smear between the feet. The knight's mail (5), plate (6) and the gilt rims round
- // his greaves' tops (trim, 7) all swing whole: cut off at 6.5, the rims and the plate blended into them (aM 6.4-6.9) were left
- // behind on each leg's inner side and the boots smeared at every stride
- hipW=aJ.x.mul(Max(smoothstep(.02,.1,p.x.abs()),ss1(1.15,1.3,p.y).mul(smoothstep(4.6,4.9,aM)).mul(ss1(7.1,7.5,aM)))).toVar(),
- // the knee bends by height, over a band about as tall as the kneecap: the baked shin weight fades in from mid-thigh to mid-shin, and
- // at a jogging fold (~2 rad) that bent the whole leg like a hose and ballooned the knee
- knW=ss1(.72,.9,p.y).mul(aJ.x).toVar();
+ // each leg swings whole from the hip: the voxel knight's legs stand two cells apart, so nothing is fused at the crotch (the sculpted
+ // knight's were, and the swing had to fade out toward the centre line up there); the corners where a thigh meets the belt take half
+ hipW=aJ.x.toVar(),
+ // the knee is a hinge between two blocks: the baked shin weight is whole on the shin's cells and half on the corners of the joint
+ // between them and the thigh's, so the leg folds there rather than bending through a band like a hose
+ knW=aJ.y.toVar();
  // ankle (the boot's foot rolls: toes down pushing off, up on landing), then knee, then the coat skirt swinging from the waist, then hip
  rot(0,vec3(0,.16,.04),select(ps,Q.ft.x,Q.ft.y).mul(aJ.y).mul(ss1(.2,.3,p.y)));rot(0,vec3(0,.8,.03),select(ps,Q.lg.z,Q.lg.w).mul(knW));
  const skW=smoothstep(3.6,3.9,aM).mul(ss1(4.1,4.4,aM)).mul(ss1(1.1,1.62,p.y)).toVar();rot(0,vec3(0,1.62,0),Q.sk.x.mul(skW));rot(2,vec3(0,1.62,0),Q.sk.y.mul(skW));
@@ -2432,111 +2468,67 @@ PLMm=new BotwMat({vertexColors:true,roughness:.8},{key:'man',cel:1,hiW:.14,celW:
 {rig(PLMm,'Man',manRig,1);PLMm.normalNode=flatN();
  PLMm.roughnessNode=mix(mix(mix(float(.58),float(.92),Max(Max(KN,TWd),Max(HRm,CAPm))),float(.42),TRz),float(.2),WBt)}
 const PLM=new THREE.Mesh(new THREE.BufferGeometry(),PLMm),
-// primitives: [sdf, colour, blend, material(0 skin 3 knit 4 cloth: the surcoat and the cape, which swing below the waist 5 mail 6 plate
-// 7 trim: gilt, leather and the plume 8 hair), bone(0 torso 1 thigh 2 shin 3 upper arm 4 forearm 5 head 6 neck)]
-// Built on the shepherd's frame (the rig's joints sit where his were), armed from head to foot. Plate (6) is the glossy metal the
-// armour's rarity tints (SHU.boots, armTint); trim (7) keeps its own colour through every tint. The surcoat's skirt is the old coat's
-// flared solid, opened at the front and cut flat at the hem, so the legs show through and it picks up a little of each hip's swing; the
-// cape is a thin shell down the back, widening as it falls, that swings with the skirt below the waist
-manG=()=>{const o={bones:1,layer:.01,ao:.9,wk:15,smooth:2,crisp:1,dye:[3,4,5,6,8,9],dyeC:8},
- // lo(n): each piece in low-poly facets, decimated to about n triangles (SCULPT's opt.lp), some 1,400 for the whole knight
- lo=n=>({...o,lp:n}),
- // the gilt cross on the surcoat and the cape: a 2D cross (stem centred at height c) laid on whatever surface it crosses
- crs=(x,y,c)=>min(max(abs(x)-.068,abs(y-c)-.29),max(abs(x)-.22,abs(y-c-.1)-.064)),
- // plate is cut from boxes with small edge radii (RBs) and domes cut level, so it reads as hammered plates with edges rather than blown-up
- // blobs; FAC hammers the helm's dome into eight facets
- RBs=(c,h,r=0,e)=>{const m=e?new THREE.Matrix4().makeRotationFromEuler(new THREE.Euler(...e)).invert().elements:0,f=(x,y,z)=>{let X=x-c[0],Y=y-c[1],Z=z-c[2];if(m){const a=m[0]*X+m[4]*Y+m[8]*Z,b=m[1]*X+m[5]*Y+m[9]*Z;Z=m[2]*X+m[6]*Y+m[10]*Z;X=a;Y=b}
-  const qx=abs(X)-h[0]+r,qy=abs(Y)-h[1]+r,qz=abs(Z)-h[2]+r;return hypot(max(qx,0),max(qy,0),max(qz,0))+min(max(qx,qy,qz),0)-r},R0=hypot(h[0],h[1],h[2]);f.bb=[c[0]-R0,c[1]-R0,c[2]-R0,c[0]+R0,c[1]+R0,c[2]+R0];return f},
- FAC=(x,z,R)=>{const g=Math.round(Math.atan2(z,x)/(PI/4))*(PI/4);return x*cos(g)+z*sin(g)-R},
- HDM=EL([0,2.975,-.025],[.262,.255,.278]),PDL=EL([.44,2.37,-.005],[.19,.15,.19]),PDR=EL([-.44,2.37,-.005],[.19,.15,.19]),
- // the head: skin only, its face showing through the helm's open front
- head=SCULPT([
-  [RC([0,2.44,-.02],[0,2.66,.01],.1,.095),SKN,0,0,6],
-  [EL([0,2.88,-.01],[.225,.245,.235]),SKN,.08,0,5],[EL([0,2.76,.04],[.185,.165,.19]),SKN,.1,0,5],...[1,-1].map(s=>[EL([s*.105,2.81,.15],[.07,.055,.06]),SKN,.06,0,5]),
-  [EL([0,2.935,.165],[.16,.04,.06]),SKN,.05,0,5],[RC([0,2.9,.21],[0,2.845,.245],.028,.04),SKN,.025,0,5],[EL([0,2.835,.25],[.058,.056,.052]),SKN2,.025,0,5],
-  ...[1,-1].map(s=>[EL([s*.228,2.85,-.01],[.036,.072,.052],[0,s*.2,0]),SKN,.03,0,5]),
-  ...[1,-1].map(s=>[EL([s*.078,2.88,.212],[.042,.028,.03]),SKN,-.016,0,5]),...[1,-1].map(s=>[EL([s*.078,2.897,.215],[.037,.012,.022],[0,0,-s*.1]),SKN,.005,0,5])],
-  [[EL([0,2.745,.225],[.045,.012,.024]),LIP,.008],...[1,-1].map(s=>[EL([s*.105,2.81,.17],[.05,.035,.04]),SKN2,.02]),...[1,-1].map(s=>[EL([s*.018,2.8,.28],[.009,.006,.012]),0x5a3a30,.004])],
-  [-.3,2.38,-.32,.3,3.14,.36],mob?46:54,null,lo(190)),
- // the helm: an open-faced bascinet, its dome hammered in eight facets, its crown drawn up to a low point, cheeks closed and the face cut out
- // of its front, a nasal over the brow and a gilt band round it; a crimson plume cut as one swept blade off the crown, the mail aventail over the nape
- helm=SCULPT([[(x,y,z)=>max(HDM(x,y,z),FAC(x,z+.025,.248)),WEL,0,6,5],[CONE([0,3.1,-.035],.2,.17),WEL,.02,6,5],[TOR([0,2.985,-.02],.262,.018),GLD,.004,7,5],
-  [EL([0,2.8,.2],[.168,.2,.2]),WEL,-.008,6,5],[(x,y,z)=>y-2.73,WEL,-.006,6,5],[RBs([0,2.94,.255],[.018,.075,.014],.006),WEL,.004,6,5],
-  [RBs([0,3.27,-.2],[.022,.06,.22],.015,[.4,0,0]),PLUME,.01,7,5],[RBs([0,2.6,-.06],[.23,.09,.2],.06),TRS,.02,5,6]],
-  [],[-.32,2.44,-.56,.32,3.42,.34],mob?50:60,null,lo(150)),
- // the beard, cut short: a full jaw with a slight point at the chin and a moustache, a notch left at the mouth for the lips
- beard=SCULPT([[EL([0,2.705,.1],[.205,.13,.175]),BRD,0,8,5],[EL([0,2.64,.19],[.11,.075,.085]),BRD,.06,8,5],
-  [EL([0,2.772,.228],[.088,.024,.042]),BRD,.03,8,5],...[1,-1].map(s=>[EL([s*.07,2.755,.215],[.03,.03,.03]),BRD,.02,8,5]),
-  [EL([0,2.747,.25],[.048,.013,.06]),BRD,-.01,8,5]],
-  [],[-.26,2.55,-.05,.26,2.93,.33],mob?38:46,(x,y,z,d)=>d-(vn3(x*38,y*38,z*38)-.5)*.014,lo(60)),
- // the brows: two small tufts standing proud of the brow ridge, under the helm's band
- brows=SCULPT([1,-1].map(s=>[EL([s*.078,2.957,.212],[.055,.016,.028],[0,0,-s*.16]),HAIR,0,8,5]),[],[-.15,2.925,.17,.15,2.99,.26],mob?32:40,null,lo(14)),
- // gauntlets in plates: a flared cuff with a gilt rim, the plated back of the hand, the fingers' lames in one block, the thumb
- hands=SCULPT([...[1,-1].map(s=>[RBs([s*.532,1.635,.035],[.078,.055,.082],.012),WEL,0,6,4]),...[1,-1].map(s=>[RBs([s*.54,1.515,.05],[.052,.072,.066],.018),WEL,.015,6,4]),
-  ...[1,-1].map(s=>[RBs([s*.546,1.405,.075],[.044,.05,.054],.014,[.25,0,0]),WEL2,.01,6,4]),...[1,-1].map(s=>[RBs([s*.502,1.5,.1],[.024,.042,.024],.01,[.3,0,s*.3]),WEL2,.008,6,4]),
-  ...[1,-1].map(s=>[TOR([s*.532,1.69,.035],.078,.014),GLD,.004,7,4])],
-  [],[-.64,1.25,-.07,.64,1.78,.19],70,null,lo(90)),
- // the gorget: a plate collar round the neck, cut square
- gorget=SCULPT([[RBs([0,2.47,-.01],[.15,.075,.14],.035),WEL2,0,6,6]],[],[-.18,2.3,-.18,.18,2.62,.19],40,null,lo(30)),
- // mail chausses (soft: the one part still rounded), plate cuisses squared over the front of the thighs and diamond cops on the knees
- legs=SCULPT([[RBs([0,1.5,0],[.22,.13,.16],.07),TRS,0,5,0],...[1,-1].map(s=>[RC([s*.13,1.5,0],[s*.14,.84,.02],.108,.092),TRS,.05,5,1]),
-  ...[1,-1].map(s=>[RC([s*.142,.84,.02],[s*.15,.5,.01],.088,.08),TRS,.04,5,2]),
-  ...[1,-1].map(s=>[RBs([s*.142,1.2,.065],[.1,.2,.065],.025,[.06,0,0]),WEL,.008,6,1]),...[1,-1].map(s=>[RBs([s*.145,.83,.1],[.06,.06,.04],.012,[0,0,.785]),WEL2,.006,6,2])],
-  [],[-.32,.3,-.26,.32,1.7,.28],80,null,lo(170)),
- // greaves squared at the shin with a gilt rim, pointed sabatons and dark soles
- boots=SCULPT([...[1,-1].map(s=>[RBs([s*.15,.4,.005],[.082,.24,.085],.03),WEL,0,6,2]),...[1,-1].map(s=>[TOR([s*.15,.63,.005],.09,.014),GLD,.004,7,2]),
-  ...[1,-1].map(s=>[RBs([s*.15,.085,.11],[.072,.06,.17],.022),WEL,.015,6,2]),...[1,-1].map(s=>[RBs([s*.15,.022,.09],[.078,.022,.2],.008),SOLE,.006,6,2])],
-  [],[-.3,-.02,-.16,.3,.68,.36],40,null,lo(120)),
- // the body: breast- and backplate squared off over a narrower plackart, layered pauldrons (a dome cut level over two lames), rerebraces,
- // couters turned to a point and vambraces, all as flat plates; over them the crimson tabard, a panel front and back from the collar to
- // mid-thigh with sharp hems, open at the sides so the plate shows, the gilt cross on its front; the belt and its buckle. The weight-only
- // thighs let the tabard's skirt take a little of each leg's swing
- armour=SCULPT([
-  [RBs([0,2.04,0],[.27,.32,.18],.07),WEL,0,6,0],[RBs([0,1.72,.005],[.22,.11,.155],.045),WEL2,.03,6,0],
-  ...[1,-1].map(s=>[(x,y,z)=>max((s>0?PDL:PDR)(x,y,z),2.27-y),WEL,.01,6,3]),
-  ...[1,-1].map(s=>[RBs([s*.475,2.235,-.005],[.15,.024,.15],.008,[0,0,-s*.42]),WEL2,.004,6,3]),...[1,-1].map(s=>[RBs([s*.49,2.17,-.005],[.13,.022,.13],.008,[0,0,-s*.55]),WEL2,.004,6,3]),
-  ...[1,-1].map(s=>[RBs([s*.476,2.08,-.012],[.068,.13,.072],.022,[0,0,-s*.12]),WEL,.01,6,3]),
-  ...[1,-1].map(s=>[RBs([s*.506,1.955,-.035],[.062,.062,.062],.012,[.785,0,0]),WEL2,.006,6,4]),
-  ...[1,-1].map(s=>[RBs([s*.522,1.8,.005],[.064,.13,.066],.02,[0,0,-s*.08]),WEL,.008,6,4]),
-  [(x,y,z)=>max(abs(z-.2)-.024,abs(x)-.215,y-2.36,1.56-y),COAT,.006,4,0],[(x,y,z)=>max(abs(z+.2)-.024,abs(x)-.215,y-2.36,1.56-y),COAT,.006,4,0],
-  [(x,y,z)=>{const t=cl((1.56-y)/.54,0,1);return max(abs(z-.165-.05*t)-.022,abs(x)-.19-.05*t,y-1.6,1.02-y)},COAT,.004,4,0],
-  [(x,y,z)=>{const t=cl((1.56-y)/.54,0,1);return max(abs(z+.165+.05*t)-.022,abs(x)-.19-.05*t,y-1.6,1.02-y)},COAT,.004,4,0],
-  [TOR([0,1.58,0],.245,.03),LTH,.006,7,0],[RBs([0,1.58,.27],[.045,.04,.018],.008),GLD,.004,7,0],
-  ...[1,-1].map(s=>[RC([s*.135,1.5,0],[s*.145,.82,.02],.125,.11),COAT,0,4,1,'w'])],
-  [[(x,y,z)=>max(crs(x,y,1.94),-z),GLD,.004]],
-  [-.68,.62,-.52,.68,2.64,.46],mob?84:96,null,lo(680)),
- // the cloak: a cut panel hung from behind the shoulders, widening and falling back as it drops, in sharp pleats that deepen toward the
- // hem, the gilt cross on its back. Its own mesh (PLC), shown only while a cloak is worn (armTint)
- cloak=SCULPT([[(x,y,z)=>{const t=cl((2.42-y)/1.44,0,1),p=abs(((x*4.6+.5)%1+1)%1-.5)*2,zc=-.25-.17*t-.05*t*p;return max(abs(z-zc)-.026,abs(x)-.3-.17*t,y-2.42,.92+.1*abs(x)-y)},CAPE,0,4,0]],
-  [[(x,y,z)=>max(crs(x,y,2.02),z+.26),GLD,.004]],[-.52,.86,-.62,.52,2.46,-.12],mob?72:84,null,lo(140));
- return[ilv(mergeSG([head,helm,beard,brows,hands,gorget,legs,boots,armour]),['aM','aJ','aH','aCa','aCb','aD0','aD1','aDc']),ilv(mergeSG([cloak]),['aM','aJ','aH','aCa','aCb','aD0','aD1','aDc'])]},
+// the knight in voxels (VXM, 1/16 cells), each cell with a bone (0 body 1 thigh 2 shin 3 upper arm 4 forearm 5 head 6 neck) and a material
+// (0 skin 4 cloth: the tabard and the cloak, which swing below the waist 5 mail 6 plate: the metal the armour's rarity tints, SHU.boots and
+// armTint 7 trim: gilt, leather and the crest, never tinted 8 hair). Toy-like in proportion, as the voxel figures he is drawn after are:
+// about five heads tall under a great square helm, on the old frame, so the rig's joints, the sword's grip and the shield's hangers sit
+// where they did. The legs stand two cells apart and the arms two cells out from the plate, so each limb moves whole; where a limb meets
+// the body (the thighs under the belt, the pauldrons on the shoulders, the neck) the corners take both bones and fold like a hinge.
+// Returns the body and the cloak (PLC), each one geometry with the attributes the knight's material reads
+manG=()=>{const o=VXM(1/16),c=VXM(1/16),
+ // pixel patterns: mail in a checker of rings, a weave in the cloth's rows, streaks in the hair and beard
+ pat=(C,m,i,j,l)=>m==5?(i+j+l&1)&&C.multiplyScalar(.8):m==4?(j&1)&&C.multiplyScalar(.92):m==8&&(i*3+j*5+l*7)%4==0&&C.multiplyScalar(.8),
+ opt={rig:1,dye:[3,4,5,6,8,9],dyeC:8,pat},KS=['aM','aJ','aH','aCa','aCb','aD0','aD1','aDc'];
+ // the legs (the knee between rows 12 and 13: the thigh above, the shin below): pointed sabatons on dark soles, greaves with a gilt rim at
+ // the top, darker knee cops standing a cell proud, mail thighs whose fronts are plate (the cuisses)
+ o.mbox(1,0,-2,5,2,4,WEL,6,2).mbox(2,0,4,4,1,5,WEL,6,2).mpaint(1,0,-2,5,1,5,SOLE).mbox(1,2,-2,5,13,2,WEL,6,2).mpaint(1,10,-2,5,11,2,GLD,7).mbox(1,11,-2,5,13,3,WEL2,6,2)
+  .mbox(1,13,-2,5,24,2,TRS,5,1).mpaint(1,14,1,5,23,2,WEL,6)
+ // the body: a leather belt with a gilt buckle, the breastplate (darker below, the plackart, where it shows at the sides), and the crimson
+ // tabard front and back, open at the sides, its skirt hanging to mid-thigh a cell clear of the legs, a gilt hem and a gilt cross on the breast
+  .box(-5,24,-3,5,26,4,LTH,7,0).box(-1,24,4,1,26,5,GLD,7,0).box(-5,26,-3,5,37,3,WEL,6,0).box(-5,26,-3,5,29,3,WEL2,6,0)
+  .box(-4,15,3,4,24,4,COAT,4,0).box(-4,15,-4,4,24,-3,COAT,4,0).box(-4,26,3,4,36,4,COAT,4,0).box(-4,26,-4,4,36,-3,COAT,4,0)
+  .paint(-4,15,-4,4,16,4,GLD).paint(-1,27,3,1,35,4,GLD).paint(-3,31,3,3,33,4,GLD)
+ // the arms (the elbow between rows 30 and 31): rerebraces, darker couters, vambraces with a flared cuff under a gilt rim, gauntleted fists a
+ // cell forward round the sword's grip; on each shoulder a pauldron of three stepped plates, which joins the arm to the body
+  .mbox(7,31,-1,10,37,2,WEL,6,3).mbox(7,25,-1,10,31,2,WEL,6,4).mpaint(7,30,-1,10,32,2,WEL2).mbox(6,25,-2,11,27,3,WEL,6,4).mpaint(6,26,-2,11,27,3,GLD,7).mbox(7,21,-1,10,25,3,WEL2,6,4)
+  .mbox(5,34,-3,11,37,3,WEL,6,3).mbox(6,37,-2,10,38,2,WEL,6,3).mbox(6,33,-2,11,34,2,WEL2,6,3)
+ // the gorget, a plate collar (the neck), and a mail aventail over the nape
+  .box(-3,37,-3,3,40,3,WEL2,6,6).box(-5,38,-5,5,40,-2,TRS,5,5)
+ // the head: a great helm ten cells a side, its upright edges and the rim of its crown cut back (eight-sided, as the old bascinet was
+ // hammered), a gilt band and a crimson crest from brow to nape. The face shows through a square opening in its front, a cell back, drawn
+ // on the skin in pixels: brows, eyes, a nose standing out into the opening, a moustache and a short beard that spills out below the helm
+  .box(-5,40,-5,5,50,5,WEL,6,5).box(-4,40,-4,4,48,4,SKN,0,5).mcut(4,40,-5,5,50,-4).mcut(4,40,4,5,50,5).cut(-5,49,-5,5,50,-4).cut(-5,49,4,5,50,5).mcut(4,49,-5,5,50,5)
+  .cut(-4,40,4,4,46,5).paint(-5,47,-5,5,48,5,GLD,7).box(-1,50,-5,1,52,4,PLUME,7,5).box(-1,52,-3,1,53,2,PLUME,7,5).box(-1,46,-6,1,50,-5,PLUME,7,5)
+  .spr(-4,40,3,['sbbssbbs','ssessess','ssississ','skssssks','shhhhhhs','hhhmmhhh'],{s:[SKN,0],k:[SKN2,0],b:[HAIR,8],e:[0x1b1716,0],i:[0x4f6a78,0],h:[BRD,8],m:[LIP,0]})
+  .box(-1,42,4,1,43,5,SKN,0,5).box(-3,39,1,3,40,4,BRD,8,5);
+ // the cloak (PLC, shown only while one is worn): a panel a cell thick hung from behind the shoulders, a cell wider each side every eight
+ // rows down and falling back a cell every seven, every other column pleated a cell further back and a shade darker, a gilt cross on its back
+ for(let j=15;j<38;j++){const t=37-j,h=5+floor(t/8),z=-5-floor(t/7);for(let i=-h;i<h;i++){const p=t>5&&i&1;c.set(i,j,z-p,p?0x1a2549:CAPE,4,0)}}
+ c.paint(-1,25,-12,1,34,-4,GLD).paint(-3,29,-12,3,31,-4,GLD);
+ return[ilv(o.geo(opt),KS),ilv(c.geo(opt),KS)]},
 // the named float attributes packed into one interleaved vertex buffer. WebGPU allows 8 vertex buffers a draw by default, and the
 // shepherd's baked data (material, bones, head weight, two colour sets, dye weights and hair colour) as a buffer each, with
 // position and normal, came to ten: his pipeline was refused and he went unseen
 ilv=(g,ks)=>{const n=g.attributes.position.count,sz=ks.map(k=>g.attributes[k].itemSize),st=sz.reduce((a,b)=>a+b),a=new Float32Array(n*st),ib=new THREE.InterleavedBuffer(a,st);let o=0;
- ks.forEach((k,j)=>{const src=g.attributes[k].array,m=sz[j];for(let i=0;i<n;i++)for(let c=0;c<m;c++)a[i*st+o+c]=src[i*m+c];g.setAttribute(k,new THREE.InterleavedBufferAttribute(ib,m,o));o+=m});return g},
-// several sculpts into one geometry (same attribute set), so a layered model is still one skinned mesh and one draw
-mergeSG=gs=>{const out=new THREE.BufferGeometry();let nv=0,ni=0;for(const g of gs){nv+=g.attributes.position.count;ni+=g.index.count}
- for(const k in gs[0].attributes){const it=gs[0].attributes[k].itemSize,a=new Float32Array(nv*it);let q=0;for(const g of gs){a.set(g.attributes[k].array,q);q+=g.attributes[k].array.length}out.setAttribute(k,new THREE.BufferAttribute(a,it))}
- const I=new Uint32Array(ni);let io=0,vo=0;for(const g of gs){const src=g.index.array;for(let i=0;i<src.length;i++)I[io+i]=src[i]+vo;io+=src.length;vo+=g.attributes.position.count}
- out.setIndex(new THREE.BufferAttribute(I,1));out.userData.cvn=1;return out};
+ ks.forEach((k,j)=>{const src=g.attributes[k].array,m=sz[j];for(let i=0;i<n;i++)for(let c=0;c<m;c++)a[i*st+o+c]=src[i*m+c];g.setAttribute(k,new THREE.InterleavedBufferAttribute(ib,m,o));o+=m});return g};
 const PLC=new THREE.Mesh(new THREE.BufferGeometry(),PLMm);P.add(pb);pb.add(PLM,PLC,tg);PLM.frustumCulled=PLC.frustumCulled=false;PLC.castShadow=PLC.receiveShadow=true;tg.add(hd);sc.add(P);P.position.set(2,0,3);PLM.castShadow=PLM.receiveShadow=true;tg.position.y=1.6;tg.rotation.order='YXZ';hd.position.y=1.02;
-eyes(hd,.078,.26,.2,.024,0x4f6a78,1);
-// the sword: its pommel is local (0,0,0), the blade along +y, its flat facing local x; posed every frame by poseStaff(). A gilt pommel
-// and cross-guard and a leather grip in one piece, and the blade a diamond-section mesh of its own in flat facets (BLM), so it can take
-// on the glow of the weapon's rarity (armTint)
+// the sword: its pommel is local (0,0,0), the blade along +y, its flat facing local x; posed every frame by poseStaff(). Blocks, as the
+// knight is: a gilt pommel and cross-guard with squared quillons turned up at the ends and a leather grip in one piece, and the blade a
+// flat slab with a stepped block for its point, a mesh of its own (BLM), so it can take on the glow of the weapon's rarity (armTint)
 const BLM=mt(0xd9dee6,{flatShading:true,roughness:.22},{key:'blade',spec:1.4,rim:.45}),
- staff=part(mg([[Sp(.062,8,6).scale(1,1.1,1).translate(0,.02,0),GLD],[Cy(.034,.03,.32,6).translate(0,.22,0),LTH],[B(.46,.055,.085).translate(0,.4,0),GLD],[Sp(.05,6,4).translate(.23,.4,0),GLD],[Sp(.05,6,4).translate(-.23,.4,0),GLD]]),VC,0,0,0,tg);
-part(new THREE.CylinderGeometry(.008,.064,1.42,4,1).rotateY(PI/4).scale(1,1,.32).translate(0,1.14,0),BLM,0,0,0,staff);
+ staff=part(mg([[B(.1,.1,.1).translate(0,.03,0),GLD],[B(.0625,.3,.0625).translate(0,.23,0),LTH],[B(.44,.0625,.1).translate(0,.41,0),GLD],...[1,-1].map(s=>[B(.0625,.125,.1).translate(s*.25,.44,0),GLD])]),VC,0,0,0,tg);
+part(mg([[B(.125,1.35,.04).translate(0,1.115,0),0xffffff],[B(.0625,.0625,.04).translate(0,1.82,0),0xffffff]]),BLM,0,0,0,staff);
 // the shield on his left forearm when one is worn (armTint shows it): hung from the shoulder and the elbow as manRig bends that arm (PU.ar.x
 // then ar.y about the shoulder, el.x about the elbow), on tg so the spine carries it as it does the sword, its face turned a little forward.
-// A heater shield in the surcoat's crimson with the gold cross, its rim (SHRM) in the finish of the shield's rarity
-const SHS=new THREE.Group(),SHE=new THREE.Group(),SHG=new THREE.Group(),SHRM=mt(0xa8b0ba,{flatShading:true,roughness:.3},{key:'shrim',spec:1.2}),
- SHP=new THREE.Shape([[-.27,.3],[.27,.3],[.28,0],[.18,-.26],[0,-.44],[-.18,-.26],[-.28,0]].map(a=>new THREE.Vector2(...a)));
+// A heater shield in voxels (1/16 cells, the face a cell thick and its edges stepped): the tabard's crimson field with a gold cross standing
+// a cell proud of it, and round it a rim a cell wide with a plate a cell behind, in the finish of the shield's rarity (SHRM's colour times the
+// cells' grain). SHIN is the heater's outline in its own plane (u across, y up); x is out of its face
+const SHS=new THREE.Group(),SHE=new THREE.Group(),SHG=new THREE.Group(),SHRM=mt(0xa8b0ba,{vertexColors:true,flatShading:true,roughness:.3},{key:'shrim',spec:1.2}),
+ SHIN=(u,y)=>y<.3&&y>-.44&&abs(u)<(y>0?.275:y>-.26?.28+y*.385:y+.44);
 SHS.rotation.order='ZXY';SHS.position.set(.44,.75,0);SHE.position.set(0,-.39,-.02);SHG.position.set(.2,-.2,.05);SHG.rotation.y=-.6;SHG.visible=false;tg.add(SHS);SHS.add(SHE);SHE.add(SHG);
-part(new THREE.ExtrudeGeometry(SHP,{depth:.04,bevelEnabled:false}).rotateY(PI/2),mt(COAT,{flatShading:true},{key:'shfield'}),0,0,0,SHG);
-part(mg([[B(.012,.56,.08).translate(.046,-.04,0),GLD],[B(.012,.08,.42).translate(.046,.12,0),GLD]]),VC,0,0,0,SHG);
-part(new THREE.ExtrudeGeometry(SHP,{depth:.03,bevelEnabled:false}).scale(1.12,1.12,1).rotateY(PI/2).translate(-.025,0,0),SHRM,0,0,0,SHG);
+{const f=VXM(1/16),r=VXM(1/16),IN=(j,l)=>SHIN((l+.5)/16,(j+.5)/16);
+ for(let j=-9;j<7;j++)for(let l=-7;l<7;l++){if(IN(j,l))f.set(0,j,l,COAT,4);else if([-1,0,1].some(a=>[-1,0,1].some(b=>IN(j+a,l+b))))r.set(0,j,l,0xffffff);(IN(j,l)||r.get(0,j,l))&&r.set(-1,j,l,0xffffff)}
+ f.box(1,-5,-1,2,4,1,GLD,7).box(1,1,-3,2,3,3,GLD,7);part(f.geo(),VC,0,0,0,SHG);part(r.geo({sh:.05}),SHRM,0,0,0,SHG)}
 
 
 
@@ -2997,7 +2989,7 @@ function dawn(){dT-=CYC;dy++;hw=0;bHP=bMax();hrt();toast(`Day ${dy}. Dawn breaks
 // The collie's sculpt in wolf grey (its nose keeps its own colour) with amber eyes merged in, a size up, one instance per wolf. It is posed by
 // the collie's own rig (dogRig) but fed from per-instance attributes, the way the flock is: aWT = x, y, z, heading; aWU = scale, gait
 // amplitude, gait phase, lunge (head down and tail stiff as it bites). WMX records come from a fixed pool, so a fight never allocates
-const WMX=8,WHP=3,WLC=[0x4a4743,0xa59f94].map(h=>new THREE.Color(h)),
+const WMX=8,WHP=3,WLC=[0x4a4743,0xa59f94],
 wolfRig=(p,rot)=>{const aT=attribute('aWT','vec4'),aU=attribute('aWU','vec4'),A=Sin(aU.z).mul(.85).mul(aU.y).toVar();
  dogRig(p,rot,{dl:vec4(A,A.negate(),A.negate(),A),dt:Sin(U.t.mul(8).add(aU.z)).mul(.15).add(aU.w.mul(.4)),dh:vec2(Sin(U.t.mul(.7).add(aU.z)).mul(.3).mul(float(1).sub(aU.y)),aU.w.mul(.55).add(aU.y.mul(.14)))});
  p.mulAssign(aU.x);rot(1,vec3(0),aT.w);p.addAssign(aT.xyz)},
@@ -3006,15 +2998,8 @@ WA={T:new THREE.InstancedBufferAttribute(new Float32Array(WMX*4),4).setUsage(THR
 WIM=new THREE.InstancedMesh(new THREE.BufferGeometry(),WMATm,WMX);
 WMATm.normalNode=rig(WMATm,'Wolf',wolfRig,1);WMATm.roughnessNode=mix(float(.45),float(.95),FUR);
 WIM.instanceColor=new THREE.InstancedBufferAttribute(new Float32Array(WMX*3).fill(1),3);WIM.castShadow=WIM.receiveShadow=true;WIM.frustumCulled=false;WIM.count=0;WIM.visible=false;sc.add(WIM);
-// the collie's colours map onto two wolf greys by how pale each vertex is (nose and the new eyes, aM > 2.5, are left alone)
-const wolfG=src=>{const c=src.attributes.color,m=src.attributes.aM,n=c.count,k=new THREE.Color(0x17171a),d=new THREE.Color(0xf1efe9),a=new THREE.Color(),
- eg=[1,-1].map(s=>new THREE.SphereGeometry(.04,8,6).translate(s*.082,1.425,.86)),ne=eg[0].attributes.position.count,
- P3=new Float32Array((n+ne*2)*3),N3=new Float32Array((n+ne*2)*3),C3=new Float32Array((n+ne*2)*3),M1=new Float32Array(n+ne*2),I=Array.from(src.index.array);
- P3.set(src.attributes.position.array);N3.set(src.attributes.normal.array);C3.set(c.array);M1.set(m.array);
- for(let i=0;i<n;i++){if(m.getX(i)>2.5)continue;a.copy(WLC[0]).lerp(WLC[1],cl((c.getX(i)-k.r)/(d.r-k.r),0,1));C3[i*3]=a.r;C3[i*3+1]=a.g;C3[i*3+2]=a.b}
- eg.forEach((e,j)=>{const o=n+j*ne;P3.set(e.attributes.position.array,o*3);N3.set(e.attributes.normal.array,o*3);for(let i=0;i<ne;i++){C3.set([.9,.5,.08],(o+i)*3);M1[o+i]=3}for(const x of e.index.array)I.push(x+o)});
- const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(P3,3));g.setAttribute('normal',new THREE.BufferAttribute(N3,3));g.setAttribute('color',new THREE.BufferAttribute(C3,3));g.setAttribute('aM',new THREE.BufferAttribute(M1,1));g.setIndex(I);
- g.setAttribute('aWT',WA.T);g.setAttribute('aWU',WA.U);return g};
+// a wolf is the collie's voxel model in two greys, with amber eyes
+const wolfG=()=>{const g=dogG(WLC[0],WLC[1],0xf0a830);g.setAttribute('aWT',WA.T);g.setAttribute('aWU',WA.U);return g};
 // loot lies on the ground as a small glinting disc of its colour (gold for coins, red for a herb, the rarity's for gear), over the bloom,
 // turning; basic material, so the light and cel model leave it alone. A beam of light stands over it (LBM, below).
 // Like the shepherd it writes a fixed motion vector, since its matrices change every frame
@@ -3163,29 +3148,36 @@ function wlfU(dt){if(!run){WIM.visible&&wlfClr();foeClr();return}hrt();if(pz)ret
   {const b=w.big?.42:1;WIM.setColorAt(w.i,C1.setRGB(b+w.fl*2.4,b*.95+w.fl*.9,b+w.fl*.9))}}
  WIM.count=top;WIM.visible=top>0;WA.T.needsUpdate=WA.U.needsUpdate=WIM.instanceColor.needsUpdate=true;foeU(dt,p,safe);lootU(dt)}
 // ---- the brigands and the risen dead: humanoid foes built as a console's were, rigid pieces hinged at the hips and shoulders (no skin),
-// in flat facets like the knight and as tall as he is. A pool of HMX, five of each kind, each with meshes of its own made once:
+// in voxels like the knight and as tall as he is. A pool of HMX, five of each kind, each with meshes of its own made once:
 // brigands (leather jerkin, green hood, a scarf over the face, a short sword) by day and by night; skeletons (bone, a battered helm, a
 // rusted blade, eyes like coals) only by night, clawing up out of the ground, and crumbling to dust at dawn. The AI is the wolves'
 // (foeAI): prowl, close in, a raised blade as the tell, the cut, and a beat to recover ----
 const HMX=10,HMM=new BotwMat({vertexColors:true,roughness:.8,flatShading:true},{key:'foe',cel:1,celW:.05,rim:.45}),
-EYM=new THREE.MeshBasicNodeMaterial({fog:false}),EYG=mg([[B(.065,.05,.03).translate(-.09,0,0),0xffffff],[B(.065,.05,.03).translate(.09,0,0),0xffffff]]),
-// k: 0 a brigand, 1 a skeleton. The body hangs from the hips (torso, head, hood or skull), the arms from the shoulders (the right holding
-// its blade forward of the fist) and the legs from the hips
-FGEO=[0,1].map(k=>{const sk=k==1,BN=0xd9d0b4,BD=0x5e5648,
- body=mg(sk?[[Cy(.26,.2,.72,7).scale(1,1,.72).translate(0,.45,0),BN],[B(.07,.8,.07).translate(0,.4,-.14),BD],...[.22,.38,.54,.7].map(y=>[B(.58-y*.25,.05,.38).translate(0,y,.02),BD]),[B(.44,.2,.26).translate(0,.02,0),BN],
-   [Sp(.24,7,5).scale(.95,1,1.05).translate(0,1.3,.02),BN],[B(.075,.075,.04).translate(-.09,1.32,.24),0x14100c],[B(.075,.075,.04).translate(.09,1.32,.24),0x14100c],[B(.2,.09,.16).translate(0,1.12,.1),BN],[new THREE.SphereGeometry(.27,7,4,0,TAU,0,PI/2).translate(0,1.37,0),0x4a4038]]
-  :[[Cy(.33,.27,.9,6).scale(1,1,.7).translate(0,.45,0),0x6b4a2e],[Cy(.3,.3,.1,6).scale(1,1,.72).translate(0,.04,0),0x2a1e14],[B(.08,.08,.04).translate(0,.04,.22),0xc9a043],[Cy(.36,.42,.26,6).scale(1,1,.8).translate(0,.86,0),0x3e5a2a],
-   [Sp(.23,7,5).translate(0,1.33,.05),0xc89276],[Sp(.29,7,5).scale(1,1.08,1).translate(0,1.37,-.06),0x3e5a2a],[B(.42,.13,.3).translate(0,1.2,.08),0x6e2620],[B(.06,.05,.03).translate(-.08,1.37,.27),0x1a1410],[B(.06,.05,.03).translate(.08,1.37,.27),0x1a1410]]),
- arm=mg(sk?[[Cy(.05,.045,.5,5).translate(0,-.25,0),BN],[Cy(.045,.04,.46,5).translate(0,-.74,0),BN],[Sp(.07,5,4).translate(0,-.98,.02),BN]]
-  :[[Cy(.1,.09,.5,6).translate(0,-.25,0),0x5a3d26],[Cy(.09,.075,.46,6).translate(0,-.72,0),0x5a3d26],[Sp(.085,6,4).translate(0,-.97,.02),0xc89276]]),
- blade=mg(sk?[[B(.07,.02,.9).translate(0,-.98,.5),0x8a6a4a],[B(.26,.05,.05).translate(0,-.98,.06),0x4a4038]]
-  :[[B(.07,.02,.95).translate(0,-.98,.52),0xc4cad2],[B(.28,.05,.06).translate(0,-.98,.06),0x6b4a2e],[Cy(.03,.03,.16,5).rotateX(PI/2).translate(0,-.98,-.04),0x2a1e14]]),
- leg=mg(sk?[[Cy(.06,.05,.72,5).translate(0,-.36,0),BN],[Cy(.05,.045,.66,5).translate(0,-1.04,0),BN],[B(.14,.08,.26).translate(0,-1.43,.06),BN]]
-  :[[Cy(.13,.11,.72,6).translate(0,-.36,0),0x4a3a2a],[Cy(.11,.09,.66,6).translate(0,-1.04,0),0x4a3a2a],[B(.2,.16,.36).translate(0,-1.4,.05),0x2a1e14]]);
- return{body,arm,armR:mg([[arm.clone(),null],[blade,null]]),leg}}),
+EYM=new THREE.MeshBasicNodeMaterial({fog:false}),EYG=mg([[B(.0625,.0625,.02).translate(-.125,0,0),0xffffff],[B(.0625,.0625,.02).translate(.125,0,0),0xffffff]]),
+// k: 0 a brigand, 1 a skeleton, in voxels (VXM, 1/16 cells, each piece rigid). The body stands on the hips (torso and head, hood or skull),
+// the arms hang from the shoulders (the right holding its blade forward from the fist) and the legs from the hips. A brigand: a leather
+// jerkin laced up the front over a belt, a green hood and cowl with its tail down his back, a red scarf over the lower face, sleeves with
+// dark bracers, trousers and boots, a short sword. A skeleton: ribs in rings round the spine, a skull with hollow sockets (where its eyes
+// burn, EYG), a gap-toothed jaw, a dented iron cap spotted with rust, claws, and a notched, rusted blade
+FGEO=[0,1].map(k=>{const sk=k==1,BN=0xd9d0b4,BD=0x5e5648,HL=0x14100c,G=0x3e5a2a,V=()=>VXM(1/16),body=V(),leg=V(),
+ arm=o=>sk?o.box(-1,-13,-1,1,0,1,BN).box(-1,-7,-2,1,-5,1,BN).box(-2,-17,-2,2,-13,2,BN).cut(-1,-17,-2,0,-15,2).cut(1,-17,-2,2,-15,2)
+  :o.box(-2,-13,-2,2,0,2,0x5a3d26).paint(-2,-12,-2,2,-9,2,0x3e2a18).box(-2,-17,-2,2,-13,2,0xc89276),
+ aR=sk?arm(V()).box(-1,-16,2,1,-15,15,0x8a6a4a).cut(-1,-16,7,0,-15,8).cut(0,-16,11,1,-15,12).box(-3,-16,2,3,-14,3,0x4a4038)
+  :arm(V()).box(-1,-16,3,1,-15,17,0xc4cad2).box(-3,-16,2,3,-14,3,0x6b4a2e).box(-1,-16,-3,1,-14,-2,0x2a1e14);
+ if(sk){body.box(-4,0,-2,4,3,2,BN).box(-1,0,-3,1,14,-1,BD).box(-6,13,-2,6,14,1,BN).box(-1,13,-1,1,15,1,BD).box(-1,4,2,1,13,3,BN);
+  for(const y of[4,6,8,10,12])body.box(-5,y,-3,5,y+1,3,BN).cut(-4,y,-2,4,y+1,2);
+  body.box(-4,15,-4,4,22,4,BN).box(-3,14,-3,3,15,3,BN).cut(-3,18,3,-1,20,4).cut(1,18,3,3,20,4).paint(-3,18,2,-1,20,3,HL).paint(1,18,2,3,20,3,HL).paint(-1,16,3,1,17,4,HL)
+   .spr(-3,15,3,['tdtdtd'],{t:[0xefe8d4],d:[HL]}).box(-5,21,-5,5,24,5,0x4a4038).box(-6,21,-6,6,22,6,0x4a4038).cut(3,23,4,5,24,5).cut(-6,21,-6,-4,22,-4)
+   .paint(-5,22,4,-3,23,5,0x6b4a30).paint(2,23,-5,4,24,-4,0x6b4a30).paint(5,21,0,6,22,3,0x6b4a30);
+  leg.box(-1,-12,-1,1,0,1,BN).box(-1,-13,-2,1,-11,1,BN).box(-1,-22,-1,1,-13,1,BN).box(-2,-24,-2,2,-22,3,BN)}
+ else{body.box(-5,0,-3,5,13,3,0x6b4a2e).paint(-5,0,-3,5,2,3,0x2a1e14).box(-1,0,3,1,2,4,0xc9a043).paint(-1,3,2,1,12,3,0x4a3220).paint(-1,5,2,1,6,3,0x8a6a48).paint(-1,8,2,1,9,3,0x8a6a48).paint(-1,11,2,1,12,3,0x8a6a48)
+   .box(-6,11,-4,6,14,4,G).box(-5,14,-5,5,24,5,G).box(-4,14,-4,4,22,4,0xc89276).cut(-3,15,4,3,21,5).box(-4,14,4,4,17,5,0x6e2620).paint(-3,15,3,3,17,4,0x6e2620)
+   .spr(-3,17,3,['bbssbb','sesses','ssssss','ssssss'],{s:[0xc89276],b:[0x3a2a1a],e:[0x1a1410]}).box(-2,24,-4,2,25,1,G).box(-1,17,-6,1,24,-5,G);
+  leg.box(-2,-18,-2,2,0,2,0x4a3a2a).box(-2,-24,-2,2,-18,2,0x2a1e14).box(-2,-24,2,2,-22,3,0x2a1e14).paint(-2,-19,-2,2,-18,2,0x3e2e20)}
+ const so={sh:sk?.09:.07};return{body:body.geo(so),arm:arm(V()).geo(so),armR:aR.geo(so),leg:leg.geo(so)}}),
 HUM=Array.from({length:HMX},(_,i)=>{const k=i<5?0:1,G=FGEO[k],g=new THREE.Group(),b=new THREE.Group(),mk=(geo,par,x,y,z)=>{const q=new THREE.Group(),o=new THREE.Mesh(geo,HMM);o.castShadow=o.receiveShadow=true;q.position.set(x,y,z);q.add(o);par.add(q);return q};
  g.rotation.order='YXZ';b.position.y=1.5;g.add(b);mk(G.body,b,0,0,0);const aL=mk(G.arm,b,.42,.82,0),aR=mk(G.armR,b,-.42,.82,0),lL=mk(G.leg,g,.16,1.5,0),lR=mk(G.leg,g,-.16,1.5,0);
- if(k){const e=new THREE.Mesh(EYG,EYM);e.position.set(0,1.32,.245);b.add(e)}
+ if(k){const e=new THREE.Mesh(EYG,EYM);e.position.set(0,1.1875,.2);b.add(e)}
  g.visible=false;sc.add(g);return{i,k,g,b,aL,aR,lL,lR,on:0,x:0,y:0,z:0,ry:0,hp:0,st:0,t:0,kx:0,kz:0,ph:0,am:0,cd:0,tx:0,tz:0,hb:0,up:1,tw:0,zp:new Float32Array(8),zs:new Float32Array(8),zk:-1,zt:0}}),
 sfxF={shout:k=>k?[0,1,2,3].forEach(i=>snd(900+R()*700,.03,'square',.018,500,0,i*.05)):snd(240,.28,'sawtooth',.04,180),hurt:k=>k?[0,1,2].forEach(i=>snd(1300+R()*900,.025,'square',.02,800,0,i*.03)):snd(300,.18,'sawtooth',.05,160),
  die:k=>k?[0,1,2,3,4,5,6].forEach(i=>snd(700+R()*1600,.04,'square',.02,400,0,i*.05)):snd(260,.5,'sawtooth',.05,70),rise:()=>snd(70,.9,'sine',.12,45)},
@@ -3906,7 +3898,7 @@ $('go').onclick=()=>{if(!FARM){FARM=$('fn').value.trim().replace(/\s+/g,' ')||'S
 $('ng').onclick=async()=>{if(!await ask('Start a new quest?',nfM(sd.LV||1,sd.W||0,sd.dy||1),'Erase and start over'))return;sd=null;try{localStorage.removeItem(SK)}catch(e){}XPL.clear();tuNew=1;$('go').onclick()};
 const stage=async(k,t)=>{ldp(k,t);await new Promise(r=>setTimeout(r,30))};
 (async()=>{try{await stage(3,'Forging the knight…');
- DGM.geometry=dogG();WIM.geometry=wolfG(DGM.geometry);{const g=manG();PLM.geometry=g[0];PLC.geometry=g[1]}armTint();
+ DGM.geometry=dogG();WIM.geometry=wolfG();{const g=manG();PLM.geometry=g[0];PLC.geometry=g[1]}armTint();
  await stage(4,'Laying out the realm…');for(let i=-1;i<2;i++)for(let j=-1;j<2;j++)mkC(i,j);
  if(sd)dT=min(sd.dT||0,CYC-30);apply();wxU(.001);snU(.001);camU(1);poseStaff(0,0,1.9);buildPost();
  // pre-warm every render pipeline before the first frame: show normally-hidden objects for the compile pass
