@@ -1178,8 +1178,8 @@ const WM=new BotwMat({transparent:true,roughness:.07,metalness:0},{key:'water',t
  WM.normalNode=cameraViewMatrix.mul(vec4(WN,0)).xyz.normalize();WM.emissiveNode=mix(U.hor,U.zen,Rf.y.max(0).pow(.5)).add(glowT(Rf.dot(U.sd).max(0))).mul(fr).mul(fm.oneMinus()).mul(U.sv.mul(.6).add(.4))}
 const wat=new THREE.Mesh(new THREE.PlaneGeometry(1400,1400).rotateX(-PI/2),WM);wat.geometry.computeVertexNormals();wat.position.y=WL;wat.receiveShadow=true;sc.add(wat);
 
-// ---- geometry helpers (every model ends in computeVertexNormals for smooth, facet-free shading; the shepherd and the flock are
-// in flat low-poly facets instead, SCULPT's opt.lp) ----
+// ---- geometry helpers (every model ends in computeVertexNormals for smooth, facet-free shading; trees and ground cover are in flat
+// low-poly facets instead, SCULPT's opt.lp, and the characters are voxel models, VXS) ----
 const cvn=g=>{if(!g.userData.cvn){g.computeVertexNormals();g.userData.cvn=1}return g},
 weld=g=>{const p=g.attributes.position,cA=g.attributes.color,M=new Map(),P=[],C=[],I=[];for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),k=Math.round(x*1e4)+','+Math.round(y*1e4)+','+Math.round(z*1e4);let j=M.get(k);if(j===undefined){j=P.length/3;M.set(k,j);P.push(x,y,z);cA&&C.push(cA.getX(i),cA.getY(i),cA.getZ(i))}I.push(j)}const r=new THREE.BufferGeometry();r.setAttribute('position',new THREE.Float32BufferAttribute(P,3));cA&&r.setAttribute('color',new THREE.Float32BufferAttribute(C,3));r.setIndex(I);return cvn(r)},
 lumpy=(d,a)=>{const g=new THREE.IcosahedronGeometry(1,d),p=g.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),k=1+a*sin(x*7.1+1)*sin(y*6.3+2)*sin(z*5.7+3);p.setXYZ(i,x*k,y*k,z*k)}return weld(g)},
