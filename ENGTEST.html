@@ -587,6 +587,24 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
 #al .cpb b{font:600 15px var(--pxf);color:#fff}#al .cpb small{font-size:12px;opacity:.85}#al .cpb em{font:400 11px var(--pxf);font-style:normal;color:var(--rc)}
 #al .cpb.on{border-color:var(--rc);background:#2a2420}#al .cpb:focus-visible{outline:2px solid #f2c14e;outline-offset:1px}
 @media (max-width:620px){#al .cpk{grid-template-columns:1fr 1fr}}
+/* the hero's making (crChar): a pixel portrait beside the choices, in the alert dialog widened */
+#al.cc{width:min(580px,100%)}
+#al .ccw{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;text-align:left;margin-top:4px}
+#al .ccp{display:grid;place-items:center;padding:10px;border:6px solid transparent;border-image:var(--pf-gold) 3/6px stretch;background:radial-gradient(#3a2c26,#140f0e 75%) padding-box}
+#al .ccp canvas{position:static;inset:auto;width:160px;height:200px;image-rendering:pixelated;display:block}
+#al .ccc{display:grid;gap:11px;min-width:0}
+#al .ccl{display:grid;gap:5px;font:400 12px var(--pxf);letter-spacing:.1em;text-transform:uppercase;color:#d9a94c}
+#al .ccl i{font-style:normal;letter-spacing:.02em;text-transform:none;color:var(--ink2)}
+#al .ccn{padding:6px 10px;border:6px solid transparent;border-image:var(--pf-gold) 3/6px stretch;background:#150d0c padding-box;color:#f0e2c8;font:400 18px var(--pxf);letter-spacing:0;text-transform:none;width:100%;box-sizing:border-box}
+#al .ccn:focus{outline:2px solid #f2c14e;outline-offset:1px}#al .ccn::placeholder{color:#6f5f52}
+#al .ccx{display:flex;gap:6px}
+#al .ccx button{flex:1;padding:7px 0;border:2px solid #3a3430;background:#1c1918;color:var(--ink,#f4f1ea);font:600 14px var(--pxf);cursor:pointer;letter-spacing:.04em;text-transform:none}
+#al .ccx button.on{border-color:#f2c14e;background:#2a2420;color:#fff}
+#al .ccs{display:flex;flex-wrap:wrap;gap:5px}
+#al .ccs button{width:26px;height:26px;padding:0;border:2px solid #1a1412;background:var(--sw);cursor:pointer;box-shadow:inset 0 -3px 0 rgba(0,0,0,.25),inset 0 2px 0 rgba(255,255,255,.18)}
+#al .ccs button.on{outline:2px solid #f2c14e;outline-offset:1px}
+#al .ccx button:focus-visible,#al .ccs button:focus-visible{outline:2px solid #fff;outline-offset:1px}
+@media (max-width:520px){#al .ccw{grid-template-columns:1fr}#al .ccp{justify-self:center}#al .ccp canvas{width:120px;height:150px}}
 #abw{position:fixed;left:50%;translate:-50% 0;bottom:calc(124px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:12px}
 #hud[hidden]~#abw,body.cz #abw{display:none}
 #rsb{display:grid;gap:5px;width:96px}
@@ -910,7 +928,7 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
 <div id="ts" role="log" aria-live="polite"></div>
 <div id="mp" class="ov" role="dialog" aria-modal="true" aria-labelledby="mph" hidden><div class="pn"><div class="r"><h2 id="mph">Map of the Realm</h2><p id="mpd" class="mpd"></p><button class="b sm" id="mpx" aria-label="Close the map"><svg class="ic"><use href="#i-close"/></svg></button></div>
 <div class="mv" id="mv"><canvas id="mcv" aria-hidden="true"></canvas><div class="mk" id="mk"></div><svg class="mcr" viewBox="-50 -50 100 100" aria-hidden="true"><g transform="rotate(45)"><circle r="31" fill="rgba(246,232,196,.55)" stroke="#5a3d1c" stroke-width="1.2"/><circle r="24.5" fill="none" stroke="#5a3d1c" stroke-width=".8" stroke-dasharray="1.5 2.5"/><path d="M0-36 5.5-5.5 0 0z" fill="#8e1619"/><path d="M0-36-5.5-5.5 0 0z" fill="#5a0c0f"/><path d="M0 36 5.5 5.5 0 0z" fill="#5a3d1c"/><path d="M0 36-5.5 5.5 0 0z" fill="#3b2a18"/><path d="M-36 0-5.5-5.5 0 0zM36 0 5.5 5.5 0 0z" fill="#7a5a34"/><path d="M-36 0-5.5 5.5 0 0zM36 0 5.5-5.5 0 0z" fill="#a8845a"/><text y="-39" text-anchor="middle" font-family="'Pixelify Sans',ui-monospace,monospace" font-size="12" font-weight="700" fill="#5a0c0f">N</text></g></svg>
-<div class="mzb"><button class="b sm" id="mzi" aria-label="Zoom in"><svg class="ic"><path d="M12 5.5v13M5.5 12h13"/></svg></button><button class="b sm" id="mzo" aria-label="Zoom out"><svg class="ic"><path d="M5.5 12h13"/></svg></button><button class="b sm" id="mzc" aria-label="Find your knight"><svg class="ic"><use href="#i-aim"/></svg></button><button class="b sm" id="mzr" aria-label="See the whole realm"><svg class="ic"><use href="#i-map"/></svg></button></div></div>
+<div class="mzb"><button class="b sm" id="mzi" aria-label="Zoom in"><svg class="ic"><path d="M12 5.5v13M5.5 12h13"/></svg></button><button class="b sm" id="mzo" aria-label="Zoom out"><svg class="ic"><path d="M5.5 12h13"/></svg></button><button class="b sm" id="mzc" aria-label="Find your Hero"><svg class="ic"><use href="#i-aim"/></svg></button><button class="b sm" id="mzr" aria-label="See the whole realm"><svg class="ic"><use href="#i-map"/></svg></button></div></div>
 <div class="mlg"><span><svg class="ic"><use href="#i-castle"/></svg>Keep, fortress</span><span><svg class="ic"><use href="#i-tower"/></svg>Watchtower</span><span><svg class="ic"><use href="#i-cottage"/></svg>Farmstead, cottage</span><span><svg class="ic"><use href="#i-grave"/></svg>Graveyard</span><span><svg class="ic" style="color:#5fb6ff"><use href="#i-cottage"/></svg>Friendly town</span><span><svg class="ic" style="color:#ff5a4a"><use href="#i-skull"/></svg>Enemy site</span><span><svg class="ic" style="color:#66e070"><use href="#i-fence"/></svg>Land to buy</span><span><svg class="ic" style="color:#c58bff"><use href="#i-tower"/></svg>Mage tower</span><span class="sd"><svg class="ic"><use href="#i-chest"/></svg>Dimmed once searched</span><small id="mph2"></small></div></div></div>
 <div id="cm" role="dialog" aria-modal="true" aria-labelledby="cmh" hidden><div class="hx"><div class="pn sm"><h2 id="cmh">Sir Aldric</h2><div class="czt" role="tablist" aria-label="Character, inventory, skills or quests"><button role="tab" id="cmtc" aria-selected="true">Character</button><button role="tab" id="cmti" aria-selected="false">Inventory</button><button role="tab" id="cmtk" aria-selected="false">Skills</button><button role="tab" id="cmts" aria-selected="false">Quests</button></div><button class="b sm" id="cmx" aria-label="Close"><svg class="ic"><use href="#i-close"/></svg></button></div></div>
 <section id="chr" aria-label="Character"><div class="dl" id="dlL"></div><div id="cdw" aria-hidden="true"><svg class="pi" width="120" height="174"><use href="#px-doll"/></svg></div><div class="dl" id="dlR"></div><div class="dl" id="dlB"></div><div id="chb"><div id="hsx" class="pn sm"></div><div id="cdt" class="pn sm" hidden></div></div></section>
@@ -918,7 +936,7 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
 <section id="qst" aria-label="Quests" hidden><div class="pn"><p id="cmi"></p><p id="cmw"></p><div id="cmo"></div></div></section>
 <section id="skl" aria-label="Skills" hidden><div class="pn"><div class="skw"><div id="ml" class="skh"></div><div class="skt"><div class="stree" id="ug"></div></div><div id="ski" class="ski"></div></div></div></section></div>
 <div id="pm" class="ov" role="dialog" aria-modal="true" aria-labelledby="pmh" hidden><div class="pn"><h2 id="pmh">Paused</h2><div class="gdv" aria-hidden="true"><i></i><svg class="pi" width="22" height="22"><use href="#px-cross"/></svg><i></i></div><div class="pb"><button id="rs" class="pr">Resume</button><button id="po">Skills</button><button id="phw">How to play</button><button id="ps">Music: on</button><button id="p32">Retro look: off</button><button id="pfr">Frame rate: 60</button><button id="prm" hidden>Controller rumble: on</button><i class="sep" aria-hidden="true"></i><button id="nf" class="dg">Start a new quest</button></div><div class="ks"><span><kbd>WASD</kbd>walk</span><span><kbd>Space</kbd>strike</span><span><kbd>Q</kbd>draught</span><span><kbd>K</kbd>skills</span><span><kbd>1-5</kbd>skills</span><span><kbd>C</kbd>character</span><span><kbd>I</kbd>inventory</span><span><kbd>J</kbd>quests</span><span><kbd>Esc</kbd>pause</span><span><kbd>M</kbd>map</span><span><kbd>N</kbd>music</span><span><kbd>R</kbd>retro look</span></div><div class="ks tp"><span><kbd>Drag</kbd>walk</span><span><svg class="ic" aria-hidden="true"><use href="#i-sword"/></svg>strike</span><span><svg class="ic" aria-hidden="true"><use href="#i-skill"/></svg>skills</span><span><svg class="ic" aria-hidden="true"><use href="#i-helm"/></svg>character</span><span><svg class="ic" aria-hidden="true"><use href="#i-bag"/></svg>inventory</span><span><svg class="ic" aria-hidden="true"><use href="#i-map"/></svg>map</span></div><div class="ks kp"></div><small class="rn" id="prn"></small></div></div>
-<div id="st"><div class="pn"><h1>Quest</h1><div class="gdv" aria-hidden="true"><i></i><svg class="pi" width="22" height="22"><use href="#px-cross"/></svg><i></i></div><p class="sub">Shadow lies over the realm. Take up your sword, hunt the beasts of the wilds and the dead that rise by night, and win gold and glory for the crown.</p><div id="ld" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="Sounding the horn"><div id="lbt" aria-hidden="true"><div id="lbg"><div id="lbf"></div></div><div id="lbb"><i><svg class="ic"><use href="#i-shield"/></svg></i></div></div><span id="lds">Sounding the horn…</span></div><button id="sg" hidden>Start</button><label id="fnw" hidden>Name your knight<input id="fn" maxlength="24" placeholder="Sir Aldric" autocomplete="off" spellcheck="false"></label><button id="go" hidden>Begin</button><button id="ng" class="lk" hidden>Start a new quest instead</button><section class="ct" aria-label="Controls"><h2 class="cth">Controls</h2><p class="cn">Connect a controller for controller input</p>
+<div id="st"><div class="pn"><h1>Quest</h1><div class="gdv" aria-hidden="true"><i></i><svg class="pi" width="22" height="22"><use href="#px-cross"/></svg><i></i></div><p class="sub">Shadow lies over the realm. Take up your sword, hunt the beasts of the wilds and the dead that rise by night, and win gold and glory for the crown.</p><div id="ld" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="Sounding the horn"><div id="lbt" aria-hidden="true"><div id="lbg"><div id="lbf"></div></div><div id="lbb"><i><svg class="ic"><use href="#i-shield"/></svg></i></div></div><span id="lds">Sounding the horn…</span></div><button id="sg" hidden>Start</button><label id="fnw" hidden>Name your Hero<input id="fn" maxlength="24" placeholder="Sir Aldric" autocomplete="off" spellcheck="false"></label><button id="go" hidden>Begin</button><button id="ng" class="lk" hidden>Start a new quest instead</button><section class="ct" aria-label="Controls"><h2 class="cth">Controls</h2><p class="cn">Connect a controller for controller input</p>
 <div class="cg kbc"><div class="ci"><span class="kc"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span><b>Walk</b><small>or the arrow keys</small></div><div class="ci"><span class="kc"><kbd class="wd">Space</kbd></span><b>Strike</b><small>Q drinks a draught</small></div><div class="ci"><span class="kc"><kbd>Scroll</kbd></span><b>Zoom</b><small>in and out</small></div><div class="ci"><span class="kc"><kbd>K</kbd><kbd>C</kbd><kbd>I</kbd></span><b>Hero</b><small>skills, character, pack</small></div><div class="ci"><span class="kc"><kbd>M</kbd></span><b>Map</b><small>where you are</small></div><div class="ci"><span class="kc"><kbd>Esc</kbd></span><b>Pause</b><small>N music, R retro</small></div></div>
 <div class="cg tch"><div class="ci"><span class="kc"><kbd>Drag</kbd></span><b>Walk</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-sword"/></svg></i></span><b>Strike</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-skill"/></svg></i></span><b>Skills</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-bag"/></svg></i></span><b>Inventory</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-map"/></svg></i></span><b>Map</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-pause"/></svg></i></span><b>Pause</b></div></div>
 <div class="cg pad"></div></section><button id="htp" class="lk">How to play</button></div><div id="tt" hidden><div id="tfd" aria-hidden="true"></div><h1>Quest</h1><p id="ttp">Press any button to start</p></div></div>
@@ -2724,7 +2742,26 @@ CLK={
    b:lkBT(0x5a3a8a,GLD,1),
    k:lkCL(0x2a2a6a,0x1e1e4a,GLD,[[-3,38],[2,34],[-1,29],[3,24],[-4,21]].map(([x,y])=>[HPX(x,x+1,y,y+1,-7.5,-6),GLD,0,7]))}}},
 // the knight's meshes built for his class, once each time it changes (manG takes a third of a second)
-clsLook=()=>{if(clsLook.c===CLS)return;clsLook.c=CLS;const g=manG(CPAL[CLS]||KCL);PLM.geometry.dispose();PLM.geometry=g.body;for(const k of ARMK){ARMM[k].geometry.dispose();ARMM[k].geometry=g[k]}},
+// ---- the hero's look, chosen when the hero is made (crChar) and kept in the save (A): LOOK.s 0 male 1 female, k skin (LKK: skin, its
+// shade, the cheeks, the mouth), e eyes (LKE), h hair (LKH). Skin and eyes are baked into the body's palette (lkPal), so a change rebuilds
+// him; the hair (and the brows) is the dyed material 8, so it only sets SHU.hair, the colour the shader puts in place of HAIR's at the
+// same brightness (the lighter streak stays a shade lighter)
+LKK=[['Fair',0xf0c8a8,0xe2ab94,0xeba79a,0xc07a6c],['Light',SKN,SKN2,0xdb9a86,0xa45a4c],['Olive',0xc08a60,0xae7452,0xc87c62,0x8e4c3e],
+ ['Tan',0xa8714a,0x94603c,0xb06650,0x7a4034],['Brown',0x7e5032,0x6a4128,0x8a4a32,0x5a2e24],['Deep',0x5a3622,0x4a2b1a,0x683424,0x3e1e18]],
+LKH=[['Brown',HAIR],['Black',0x1e1a1a],['Dark brown',0x3a2618],['Auburn',0x7a3420],['Ginger',0xb5561f],['Blonde',0xd8b46a],['Ash blonde',0xb8ae94],['Grey',0x8c8a88],['White',0xe6e2da]],
+LKE=[['Blue',0x2f6db0],['Green',0x3d8a4a],['Hazel',0x8a6a2e],['Brown',0x5a3a20],['Grey',0x7a8890],['Amber',0xc08a20],['Violet',0x7a4ab0]],
+lkFix=a=>({s:a?.s?1:0,k:LKK[a?.k]?a.k|0:1,e:LKE[a?.e]?a.e|0:0,h:LKH[a?.h]?a.h|0:0}),
+lkPal=(cl,L=LOOK)=>{const k=LKK[L.k]||LKK[1];return{...cl,skin:k[1],skin2:k[2],blush:k[3],mouth:k[4],eye:(LKE[L.e]||LKE[0])[1],fem:L.s?1:0}},
+// a woman's head (BOD with cl.fem): the hair long at the back and down the sides to the jaw, a lock framing each side of the face, lashes
+// flicked out at the eyes' corners and a fuller lower lip. Her ponytail is a mesh of its own (fmT, PTM), shown only bareheaded (armTint)
+fmB=(b,cl)=>{if(!cl.fem)return b;const M=CELM;return[b[0],
+ [...b[1],[HPX(-5.5,5.5,43.5,45.5,-5.5,-2.5),cl.hair,0,8],...M(s=>[[HPXS(s,4.5,5.5,43.5,48.5,-5.5,5.5),cl.hair,0,8],[HPXS(s,4,4.5,45,54,5,5.5),cl.hair,0,8],
+  [HPXS(s,3.5,4,51.5,52.5,5,5.5),cl.lid,0,0]]),[HPX(-.5,.5,45.5,46,5,5.5),cl.mouth,0,0]]]},
+// the ponytail (head bone): a broad knot at the back of the head tied with a dark band, the tail hanging from it in two steps, narrowing,
+// with the lighter streak down it
+fmT=cl=>{const C=CEL;return[[[C(-2,2,47,53,-7,-6,1),cl.hair,0,8,5],[C(-2,2,40,46,-8,-7,1),cl.hair,0,8,5],[C(-1,1,33,39,-8,-8,1),cl.hair,0,8,5]],
+ [[HPX(-2.5,2.5,46,47,-8.5,-5.5),0x2a1a12,0,7],[HPX(-.5,.5,33,52,-8.5,-8),cl.hairHi,0,8]]]},
+clsLook=()=>{SHU.hair.value.setHex((LKH[LOOK.h]||LKH[0])[1]);const key=CLS+'|'+LOOK.s+'.'+LOOK.k+'.'+LOOK.e;if(clsLook.c===key)return;clsLook.c=key;const g=manG(lkPal(CPAL[CLS]||KCL));PLM.geometry.dispose();PLM.geometry=g.body;for(const k of ARMK){ARMM[k].geometry.dispose();ARMM[k].geometry=g[k]}PTM.geometry.dispose();PTM.geometry=g.pt||new THREE.BufferGeometry();PTM.visible=!!g.pt&&!EQ.h},
 // a ranged weapon in his hand (RPS, from poseStaff): at rest a bow is carried upright at his side, a crossbow and a wand level, a staff
 // upright like a walking staff; in the shot (sk) the bow or crossbow is held out before his chest at full reach, the staff thrust out and
 // up, the wand pointed
@@ -2736,7 +2773,7 @@ RPS=(sk,su=0)=>{const t=EQ.w?.t;if(t=='hm2'){if(sk<=0)return;const e1=ssm(0,swUA
  else if(t=='stf'){stD.lerp(T1.set(-.3,1,.12).normalize(),.85*(1-sk)).normalize();if(sk>0){stG.lerp(T1.set(-.36,1.75,.62),sk);stD.lerp(T2.set(.02,.55,1).normalize(),sk).normalize()}}
  else if(t=='wnd'&&sk>0){stG.lerp(T1.set(-.3,1.85,.68),sk);stD.lerp(T2.set(.02,.2,1).normalize(),sk).normalize()}},
 manG=(cl=KCL)=>{const o={...FIG,bones:1,wk:60,crisp:1,dye:[3,4,5,6,8,9],dyeC:8,grain:.04,tex:(c,m,i,j)=>m==5&&(i+j)%2&&c.multiplyScalar(.84)},
- C=CEL,CS=CELS,M=CELM,LK=CLK[CLS]?.()||{},body=(b=>LK.bd?[[...b[0],...LK.bd[0]],[...b[1],...LK.bd[1]]]:b)(BOD(cl)),
+ C=CEL,CS=CELS,M=CELM,LK=CLK[CLS]?.()||{},body=(b=>LK.bd?[[...b[0],...LK.bd[0]],[...b[1],...LK.bd[1]]]:b)(fmB(BOD(cl),cl)),
  // the helm: an open-faced bascinet, a rounded shell round the head with the face cut out of its front and a guard under the chin, a
  // stepped crown, a nasal down between the eyes, a darker rim round the face and a gilt band over the brow with rivets in it, and a crimson
  // plume swept back with a lighter streak through it and a tuft on top
@@ -2772,6 +2809,7 @@ manG=(cl=KCL)=>{const o={...FIG,bones:1,wk:60,crisp:1,dye:[3,4,5,6,8,9],dyeC:8,g
    [HPX(-1.5,1.5,25.5,40.5,-7.5,-6),0x16203f],[HPX(-3,3,34.5,36.5,-7.5,-6),0x16203f],[HPX(-1,1,26,40,-7.5,-6),GLD,0,7],[HPX(-2.5,2.5,35,36,-7.5,-6),GLD,0,7]]],
  B0=VXS([body],[-.56,-.06,-.47,.56,2.9,.47],VXF,o),A=['aM','aJ','aH','aCa','aCb','aD0','aD1','aDc'],R={body:ilv(B0,A)};
  for(const[k,pc]of Object.entries({h,a,g,l,b,k:kc,...LK}))k!='bd'&&(R[k]=ilv(VXS([pc],[-.6,-.06,-.45,.6,3.6,.45],VXF,{...o,skip:B0.userData.occ}),A));
+ cl.fem&&(R.pt=ilv(VXS([fmT(cl)],[-.2,1.5,-.5,.2,2.8,-.25],VXF,{...o,skip:B0.userData.occ}),A));
  return R},
 // the named float attributes packed into one interleaved vertex buffer. WebGPU allows 8 vertex buffers a draw by default, and the
 // shepherd's baked data (material, bones, head weight, two colour sets, dye weights and hair colour) as a buffer each, with
@@ -2783,7 +2821,7 @@ mergeSG=gs=>{const out=new THREE.BufferGeometry();let nv=0,ni=0;for(const g of g
  for(const k in gs[0].attributes){const it=gs[0].attributes[k].itemSize,a=new Float32Array(nv*it);let q=0;for(const g of gs){a.set(g.attributes[k].array,q);q+=g.attributes[k].array.length}out.setAttribute(k,new THREE.BufferAttribute(a,it))}
  const I=new Uint32Array(ni);let io=0,vo=0;for(const g of gs){const src=g.index.array;for(let i=0;i<src.length;i++)I[io+i]=src[i]+vo;io+=src.length;vo+=g.attributes.position.count}
  out.setIndex(new THREE.BufferAttribute(I,1));out.userData.cvn=1;return out};
-const ARMM={};P.add(pb);pb.add(PLM,tg);PLM.frustumCulled=false;for(const k of ARMK){const m=ARMM[k]=new THREE.Mesh(new THREE.BufferGeometry(),PLMm);m.frustumCulled=false;m.castShadow=m.receiveShadow=true;pb.add(m)}tg.add(hd);sc.add(P);P.position.set(2,0,3);PLM.castShadow=PLM.receiveShadow=true;tg.position.y=1.45;tg.rotation.order='YXZ';hd.position.y=.75;
+let LOOK=lkFix();const ARMM={},PTM=new THREE.Mesh(new THREE.BufferGeometry(),PLMm);PTM.frustumCulled=false;PTM.castShadow=PTM.receiveShadow=true;PTM.visible=false;pb.add(PTM);P.add(pb);pb.add(PLM,tg);PLM.frustumCulled=false;for(const k of ARMK){const m=ARMM[k]=new THREE.Mesh(new THREE.BufferGeometry(),PLMm);m.frustumCulled=false;m.castShadow=m.receiveShadow=true;pb.add(m)}tg.add(hd);sc.add(P);P.position.set(2,0,3);PLM.castShadow=PLM.receiveShadow=true;tg.position.y=1.45;tg.rotation.order='YXZ';hd.position.y=.75;
 // the sword: its pommel is local (0,0,0), the blade along +y, its flat facing local x; posed every frame by poseStaff(). A gilt pommel
 // and cross-guard and a leather grip in one piece, in blocks as the knight is, and the blade a flat bar stepping in to its point, a mesh of
 // its own (BLM), so it can take on the glow of the weapon's rarity (armTint). Sized to his hand: 1.4 long, the grip's middle (where his
@@ -2799,10 +2837,10 @@ const WPV={sw1:[staff.children[0]],sw2:[part(mg([[B(.12,1.05,.03).translate(0,.9
  AXHM=part(mg([[B(.08,.08,.08).translate(0,.04,0),GLD],[B(.05,.26,.05).translate(0,.21,0),LTH]]),VC,0,0,0,staff),SWHG=staff.geometry,AXHG=AXHM.geometry,
  wpLook=()=>{const t=WPV[EQ.w?.t]?EQ.w.t:CL().kw;OHG.parent||SHE.add(OHG);for(const k in WPV)for(const m of WPV[k])m.visible=k==t;staff.geometry=SWK[t]?SWHG:AXHG;for(const k in OHW)OHW[k].visible=k==t;BOWA.visible=false};
 AXHM.visible=false;
-// the other classes' weapons: the paladin's war hammer and holy greatsword, the necro-knight's scythe and runeblades, the ranger's longbow
+// the other classes' weapons: the paladin's war hammer (its head 1.2x the size it was drawn at, round the head's middle; the haft 1.2x long, the extra below, its gilt ring moved down with the butt) and holy greatsword, the necro-knight's scythe and runeblades, the ranger's longbow
 // and crossbow, the rogue's daggers and claws, the mage's staff and wand (its gem the blade's glowing material). A pair puts its twin in
 // the off hand (OHW, on the forearm where a shield hangs). SWK: the kinds with a sword's hilt
-Object.assign(WPV,{hm2:[part(mg([[B(.06,1.05,.06).translate(0,.72,0),LTH],[B(.08,.06,.08).translate(0,.3,0),GLD]]),VC,0,0,0,staff),part(mg([[B(.38,.26,.26).translate(0,1.3,0),0],[B(.08,.3,.3).translate(.21,1.3,0),0],[B(.08,.3,.3).translate(-.21,1.3,0),0]]),BLM,0,0,0,staff)],
+Object.assign(WPV,{hm2:[part(mg([[B(.06,1.26,.06).translate(0,.615,0),LTH],[B(.08,.06,.08).translate(0,.09,0),GLD]]),VC,0,0,0,staff),part(mg([[B(.456,.312,.312).translate(0,1.3,0),0],[B(.096,.36,.36).translate(.252,1.3,0),0],[B(.096,.36,.36).translate(-.252,1.3,0),0]]),BLM,0,0,0,staff)],
  pw2:[part(mg([[B(.13,1.05,.03).translate(0,.92,0),0],[B(.09,.12,.03).translate(0,1.5,0),0],[B(.04,.09,.03).translate(0,1.6,0),0]]),BLM,0,0,0,staff),part(mg([[B(.4,.06,.1).translate(0,.4,0),GLD]]),VC,0,0,0,staff)],
  sc2:[part(mg([[B(.06,1.5,.06).translate(0,.78,0),LTH],[B(.08,.07,.08).translate(0,1.53,0),GLD]]),VC,0,0,0,staff),part(mg([[B(1,.16,.035).translate(-.5,1.5,0),0],[B(.3,.06,.035).translate(-.15,1.39,0),0],[B(.24,.13,.035).translate(-1.1,1.43,0),0],[B(.16,.1,.035).translate(-1.26,1.32,0),0],[B(.09,.08,.035).translate(-1.34,1.21,0),0]]),BLM,0,0,0,staff)],
  rb1:[part(mg([[B(.07,.6,.025).translate(0,.68,0),0],[B(.045,.08,.025).translate(0,1.02,0),0]]),BLM,0,0,0,staff)],
@@ -3188,7 +3226,7 @@ const CL=()=>CLD[CLS],skS=()=>{SKT=SKTC[CLS];SKS=SKT.flatMap(b=>b[4].map(s=>[b,s
   CPS[CLS](s,E);
   for(const k in SCAP)k in s&&(s[k]=min(SCAP[k],s[k]));s.eva=min(C.ac==1?.5:.35,s.eva);s.blk=shOn(E)?max(0,s.blk):0;s.dr=min(SCAP.dr,s.arm/(s.arm+AK(LV)));
   E!==EQ&&(SKX=b0);return s},
-CLR={},DYN={},MSX={},CHK={},CDM={},CCB={},CFB={},CLL={},CKL={},CHT={},CHU={},CDG={},CEV={},CHP={},CTK={},CSW={},CBL={},BSH={},
+CLR={},DYN={},MSX={},CSA={},CHK={},CDM={},CCB={},CFB={},CLL={},CKL={},CHT={},CHU={},CDG={},CEV={},CHP={},CTK={},CSW={},CBL={},BSH={},
  CPS={war:s=>{s.atk+=.75*skr('tb');s.hst+=.04*skr('rc');s.blk-=.03*skr('rc');s.fer+=.08*skr('sp');s.ms+=.04*skr('ff');s.eva+=.03*skr('ff');s.hp+=12*skr('ih');s.arc+=.5*skr('ih');
   skr('tb')>=5&&(s.atk*=1.1);s.arm*=1.05}},
  stv=()=>{const k=DYN[CLS]?.()||'';if(hxD||!HX||k!==hxK){hxK=k;HX=hxC();hxD=0}return HX},
@@ -3288,8 +3326,8 @@ Object.assign(SKTC,{
   skT('mob','Crusader','#ffcc1a','dash',[
    ['pcm','boot','Crusader\'s March',5,'+4% Move Speed a rank.'],
    ['ppj','wind','Pursuit of Justice',5,'+3% Move Speed a rank more while a foe is within 15 metres.'],
-   ['psc','dash','Steed Charge',5,'Active, key 1 or Shift: ride a spectral warhorse for 2.5 seconds, 80% faster, trampling foes for 60% Attack and 15% more a rank. Every 12 seconds.'],
-   ['pbf','sun','Blinding Flash',5,'Dismounting blinds the foes within 5 metres, stunned for 0.4 seconds and 0.2 more a rank.'],
+   ['psc','hammer','Hammer of Light',5,'Active, key 1 or Shift: for 8 seconds every swing bursts with holy light where it lands, 40% Attack and 12% more a rank to every foe within 4.5 metres. Every 12 seconds.'],
+   ['pbf','sun','Blinding Flash',5,'Calling down the Hammer of Light blinds the foes within 5 metres, stunned for 0.4 seconds and 0.2 more a rank.'],
    ['poh','hammer','Orbiting Hammers',5,'On the move, two holy hammers circle you, striking foes for 25% Attack and 8% more a rank.'],
    ['ppc','castle','Phalanx Charge',1,'Active, key 5: a line of spectral crusaders charges out ahead, 200% Attack to every foe they reach, stunning them for 1.5 seconds. 35 Conviction, every 20 seconds.']]),
   skT('mag','Templar','#4fb3ff','sun',[
@@ -3388,7 +3426,7 @@ Object.assign(ACT,{pal:[['psc',12,0],['pcs',15,0],['phg',9,15],['phw',16,40],['p
  rog:[['rst',8,20],['raf',10,30],['rfk',8,35],['rdm',20,50],['rdb',18,60],['rpb',30,50]],
  rgr:[['gtv',8,0],['ghk',10,20],['glr',9,30],['gra',20,60],['gpb',22,50],['gat',35,60]],
  mag:[['mbk',7,15],['mfn',12,25],['mgs',6,20],['mme',18,60],['mcd',30,50],['mbz',35,70]]});
-MUT.push(['wrath','pal','of Wrath','Hammer of Wrath falls a second time.'],['steed','pal','of the Charger','Steed Charge lasts twice as long.'],['cons','pal','of the Sanctum','Consecration moves with you.'],
+MUT.push(['wrath','pal','of Wrath','Hammer of Wrath falls a second time.'],['steed','pal','of the Dawn','Hammer of Light lasts twice as long.'],['cons','pal','of the Sanctum','Consecration moves with you.'],
  ['orb','pal','of the Orbit','Orbiting Hammers are four.'],['phal','pal','of the Phalanx','Phalanx Charge stuns for 3 seconds and heals you 10%.'],['arch','pal','of the Seraph','Archangel\'s Smite bolts leap to two more foes.'],
  ['guil','nec','of the Guillotine','Sanguine Guillotine costs no Health and executes below 40%.'],['grip','nec','of the Iron Grip','Death Grip seizes every foe ahead within reach.'],['legion','nec','of the Legion','Raise Skeletal Vanguard raises four.'],
  ['corpse','nec','of Rot','Corpse Explosion leaves Blight on all it strikes.'],['golem','nec','of the Ossuary','The Bone Golem stays for 40 seconds.'],['wraith','nec','of the Wild Hunt','A kill with Wraith Cavalry makes it ready again.'],
@@ -3406,24 +3444,32 @@ Object.assign(CCD,{rst:()=>mut('step')?.5:1,gtv:()=>mut('vault')?.5:1,mbk:()=>mu
  ahead=d=>{const p=P_(),fy=P.rotation.y;return[p.x+sin(fy)*d,p.z+cos(fy)*d]},
  later=(t,fn)=>zonAdd(0,0,0,t,0,null,{out:fn}),
  shoot=(k,dx,dz,sp,life,dm,o,op)=>{const p=P_();return pjFire(k,p.x+dx*.8,p.y+1.45,p.z+dz*.8,dx,dz,sp,life,dm,o,op)};
- let stT=0,swE=0,swHl=-1,aaT=0,aaQ=0,soS=0,soT=0,shT=0,siT=0,wcN=0,smT=0,stpT=0,pbT=0,rdT=0,bsT=0,fcMv=0,pbgT=0,pbgQ=0,atT=0,atQ=0,tdT=0,psT=0,wd0=0,gcQ=0,bgQ=0;
- Object.assign(CLR,{pal:()=>{stT=aaT=0;orbN=0},nec:()=>{soS=soT=shT=siT=0;orbN=0},rog:()=>{smT=stpT=pbT=0},rgr:()=>{rdT=bsT=pbgT=atT=0},mag:()=>{tdT=psT=0}});
+ let hlT=0,swE=0,swHl=-1,aaT=0,aaQ=0,soS=0,soT=0,shT=0,siT=0,wcN=0,smT=0,stpT=0,pbT=0,rdT=0,bsT=0,fcMv=0,pbgT=0,pbgQ=0,atT=0,atQ=0,tdT=0,psT=0,wd0=0,gcQ=0,bgQ=0;
+ Object.assign(CLR,{pal:()=>{hlT=aaT=0;orbN=0},nec:()=>{soS=soT=shT=siT=0;orbN=0},rog:()=>{smT=stpT=pbT=0},rgr:()=>{rdT=bsT=pbgT=atT=0},mag:()=>{tdT=psT=0}});
  // ---------------- the Paladin ----------------
  CPS.pal=s=>{s.ll+=.02;s.atk+=.75*skr('pmi');s.fer+=.03*skr('pmi');s.hst+=.04*skr('pzm');s.ms+=.04*skr('pcm');s.arc+=.75*skr('pbw');s.wrd+=15*skr('pbw');s.atk*=1+.02*skr('php');
   inZ('cons')&&(s.arm*=1.15);if(aaT>0){s.cdr+=.2;s.wrd*=1.5}};
  DYN.pal=()=>(inZ('cons')?1:0)+''+(aaT>0?1:0);
- MSX.pal=()=>(stT>0?1.8:1)*(skr('ppj')&&nearest(15)?1+.03*skr('ppj'):1);
+ MSX.pal=()=>(skr('ppj')&&nearest(15)?1+.03*skr('ppj'):1);
+ // Hammer of Light's burst: where the blow lands (the hammer's 1.9m ahead, the greatsword's 1.5m), holy damage to every foe within 4.5m,
+ // on top of the blow itself, with a flash, a rising ring of gold and a bell
+ const hlV=new THREE.Vector3();
+ CSA.pal=(p,fx,fz)=>{if(hlT<=0)return;const d=EQ.w?.t=='hm2'?1.9:1.5,x=p.x+fx*d,z=p.z+fz*d,y=Hm(x,z),dm=stv().atk*(.4+.12*skr('psc'));
+  for(const f of near(4.5,x,z))fHit(f,dm,{el:1,kb:.8});
+  for(let i=0;i<30;i++){const a=i/30*TAU;emit(x+cos(a)*2.2,y+.2,z+sin(a)*2.2,1,0xffe08a,1.2,2.6,.6,-1,.42)}
+  emit(x,y+.3,z,26,0xfff6c0,4,7,.5,2,.5);emit(x,y+.1,z,16,0xffd060,7,1.2,.5,4,.4);snd(784,.5,'triangle',.06,1568);snd(98,.4,'sine',.18,49)};
  CSW.pal=()=>{const r=skr('pci'),o={m:swE?1+.15*r:1};swE=0;if(r&&swN%3==0){o.st=.3+.1*r;swE=1}return o};
  CHK.pal=(f,dm,cr)=>{const s=stv();skr('prt')&&swHl!=swN&&(swHl=swN,heal(bMax()*.01*skr('prt')));cr&&skr('pib')&&markF(f,.04*skr('pib'),6);
   s.hol&&R()<s.hol&&f.hp>0&&(fHit(f,s.arc*.5,{raw:1,el:1,dot:1}),emit(f.x,f.y+2.5,f.z,10,0xffe08a,2,4,.5,0,.35))};
- CTK.pal=(dt,s)=>{const p=P_();if(stT>0){stT-=dt;R()<.7&&emit(p.x+(R()-.5),p.y+.3,p.z+(R()-.5),1,0xffe08a,1,1,.5,0,.4);
-   for(const f of near(2.2))if(!(f.tp>tm)){f.tp=tm+.5;fHit(f,s.atk*(.6+.15*skr('psc')),{kb:2.2})}
-   if(stT<=0&&skr('pbf')){for(const f of near(5))stunF(f,.4+.2*skr('pbf'));aoeR(1.5,0xfff6c0,30,1.2,6);snd(1400,.3,'triangle',.05,700)}}
+ CTK.pal=(dt,s)=>{const p=P_();if(hlT>0){hlT-=dt;R()<.7&&(staff.localToWorld(hlV.set(0,1.3,0)),emit(hlV.x+(R()-.5)*.35,hlV.y+(R()-.5)*.3,hlV.z+(R()-.5)*.35,1,0xffe08a,.5,.9,.55,-.5,.32))}
   orbN=skr('poh')&&pvel>1.5?(mut('orb')?4:2):0;orbHit=f=>fHit(f,stv().atk*(.25+.08*skr('poh')),{kb:.6,el:1});
   if(aaT>0){aaT-=dt;R()<.8&&emit(p.x-sin(P.rotation.y)*.5+(R()-.5)*1.6,p.y+1.8+R(),p.z-cos(P.rotation.y)*.5,1,0xfff1c0,.6,.4,.6,0,.35);
    if((aaQ-=dt)<=0){aaQ=1;const t=nearest(16);t&&pjFire('hol',p.x,p.y+3,p.z,0,0,0,1.2,s.arc*.8,{el:1},{hom:t,sp:24,fn:(f,q)=>{fHit(f,q.dm,{el:1});if(mut('arch'))near(7,f.x,f.z).filter(o=>o!==f).slice(0,2).forEach(o=>fHit(o,q.dm*.6,{el:1}))}})}}};
  Object.assign(ACF,{
-  psc:()=>{stT=mut('steed')?5:2.5;snd(180,.5,'sawtooth',.04,90);aoeR(1,0xffe08a,20,.4,4)},
+  // Hammer of Light: the weapon takes the light for 8 seconds (16 of the Dawn), each swing then bursting where it lands (CSA.pal); Blinding
+  // Flash stuns round him as it is called down
+  psc:()=>{hlT=mut('steed')?16:8;snd(523,.6,'triangle',.05,1046);snd(262,.4,'sine',.12,523);aoeR(1,0xffe08a,26,1.8,4);
+   if(skr('pbf')){for(const f of near(5))stunF(f,.4+.2*skr('pbf'));aoeR(1.5,0xfff6c0,30,1.2,6);snd(1400,.3,'triangle',.05,700)}},
   pcs:()=>{const p=P_();zonAdd(p.x,p.z,5,6,0xffe08a,f=>fHit(f,stv().arc*(.4+.1*skr('pcs'))*.5,{el:1,dot:1}),{k:'cons',fol:mut('cons')});snd(392,.8,'triangle',.05,523)},
   phg:()=>{const s=stv();for(const f of near(5))fHit(f,s.arc*(1.2+.25*skr('phg')),{kb:2,el:1});aoeR(1.2,0xffe08a,36,.3,8);snd(90,.5,'sine',.25,45)},
   phw:()=>{const t=aimF(12)[2],[x,z]=t?[t.x,t.z]:ahead(6),fall=(x,z)=>pjFire('hol',x,Hm(x,z)+11,z,0,0,0,1,0,{},{vy:-30,g:.001,nh:1,end:()=>{const s=stv();
@@ -3568,7 +3614,7 @@ $('ski').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return
 $('ml').onclick=async e=>{const b=e.target.closest('[data-rs]');if(!b||b.disabled)return;const n=skSpent(),g=rsP();if(!n||W<g)return;
  if(!await ask('Unlearn every skill?',`All <b>${n}</b> point${n>1?'s':''} come back to spend again, for <b>${g}</b> gold.`,'Unlearn all'))return;W-=g;SP+=n;for(const q in SKL)delete SKL[q];apply();bHP=min(bHP,bMax());hrt();sfx.coin();menu();hud();sv()};
 function apply(){hxD=1;abK='';dog.visible=false;clsLook();farmCol();fen||mkPen();armTint()}
-const SK='quest-1',sv=()=>{try{localStorage.setItem(SK,JSON.stringify({W,K:SKL,SP,LV,XP,POT,dy,dT,G:EQ,B:BAG,Q:QST,QN,F:[...SHF],X:[...XPL],C:CLS,M:MAT,V:2}))}catch(e){}};let sd=null;try{sd=JSON.parse(localStorage.getItem(SK))}catch(e){}
+const SK='quest-1',sv=()=>{try{localStorage.setItem(SK,JSON.stringify({W,K:SKL,SP,LV,XP,POT,dy,dT,G:EQ,B:BAG,Q:QST,QN,F:[...SHF],X:[...XPL],C:CLS,A:LOOK,M:MAT,V:2}))}catch(e){}};let sd=null;try{sd=JSON.parse(localStorage.getItem(SK))}catch(e){}
 // ---- treasure: iron-bound chests at deserted farmsteads, in graveyards and ruins and at the foot of old towers (FIND, fndU), each opened
 // once for good (SHF keeps their keys, saved with the quest); a chest holds gold and a piece of gear rolled a grade above the field's ----
 const SHF=new Set(),FND=[],XPL=new Set();try{const s=JSON.parse(localStorage.getItem(SK));(s?.F||[]).forEach(k=>SHF.add(k));(s?.X||[]).forEach(k=>XPL.add(k))}catch(e){}
@@ -3811,7 +3857,7 @@ gamble=()=>{const g=gamP();if(W<g||BAG.length>=BGM)return;W-=g;const cap=LV>=41?
  BAG.push(it);(r>=3?sfx.find:sfx.coin)();toast(`The Gambler's bundle holds <b style="color:${RCO(it.r)}">${escH(it.n)}</b>${eqW(it)?`: ${cmpTxt(it)} than yours`:''}.`,r>=3?'g':'','bag');sv()},
 // the knight's look follows his kit: the plate takes on the worn armour's finish (bright steel, then greened, blued, purpled and gilt with
 // rarity), and from Rare up the blade glows in the weapon's rarity colour. His numbers are totalled afresh (hxD)
-armTint=()=>{hxD=1;wpLook();const a=EQ.a,w=EQ.w,s=EQ.s;SHG.visible=shOn();for(const k of ARMK)ARMM[k].visible=!!EQ[k];s&&SHRM.color.setHex([0xa8b0ba,0x9fb5a6,0x8fa6c8,0xa898c0,0xd8b65a][s.r]);SHU.boots.value.setHex(a?(CL().tn||[0xa8b0ba,0x9fb5a6,0x8fa6c8,0xa898c0,0xd8b65a])[a.r]:WEL);BLM.emissive.setHex(w&&w.r>1?RAR[w.r][1]:0);BLM.emissiveIntensity=w?[0,0,.45,.75,1.1][w.r]:0},
+armTint=()=>{hxD=1;wpLook();const a=EQ.a,w=EQ.w,s=EQ.s;SHG.visible=shOn();for(const k of ARMK)ARMM[k].visible=!!EQ[k];PTM.visible=!!(LOOK.s&&PTM.geometry.attributes.position)&&!EQ.h;s&&SHRM.color.setHex([0xa8b0ba,0x9fb5a6,0x8fa6c8,0xa898c0,0xd8b65a][s.r]);SHU.boots.value.setHex(a?(CL().tn||[0xa8b0ba,0x9fb5a6,0x8fa6c8,0xa898c0,0xd8b65a])[a.r]:WEL);BLM.emissive.setHex(w&&w.r>1?RAR[w.r][1]:0);BLM.emissiveIntensity=w?[0,0,.45,.75,1.1][w.r]:0},
 // experience: kills, chests and bounties, up to level 50. Each level heals him, raises his base numbers (stv) and gives a skill point; at
 // 11, 21, 31 and 41 a rarer grade of gear begins to drop
 xpG=n=>{if(LV>=LVM)return;XP+=n;const p=P.position;dmgNum(p.x+.8,p.y+3.4,p.z,'+'+n+' xp','x');while(LV<LVM&&XP>=xpN(LV)){XP-=xpN(LV);LV++;hxD=1;bHP=bMax();hrt();dmgNum(p.x,p.y+4.4,p.z,'Level '+LV,'l');SP++,toast(`You reach level <b>${LV}</b>: a skill point to spend${mob?'':' (K)'}.`,'g','skill');sfx.find();emit(p.x,p.y+1.5,p.z,30,0xffe08a,3,5,1.2,2,.5);
@@ -4161,10 +4207,10 @@ wetStep=sd=>{const p=P.position,fy=P.rotation.y,o=sd?.16:-.16,x=p.x+cos(fy)*o+si
 // the blow lands mid-stroke on every foe in the arc (wlfSwing, foeSwing); a chest in the same reach is broken open (chestOpen), and a shut
 // gate within a few metres swung open
 swordSweep=()=>{const p=P.position,fy=P.rotation.y,fx=sin(fy),fz=cos(fy),r=swR(),inR=(x,z)=>{const dx=x-p.x,dz=z-p.z,d=hypot(dx,dz);return d<=r+.4&&(d<=1.5||(dx*fx+dz*fz)/d>=arcT())};
- for(const f of FND)!f.got&&inR(f.x,f.z)&&chestOpen(f);gtSwing(p.x,p.z,fx,fz,r+1);swN++;swF=CSW[CLS]?.()||{m:1};CL().rng?BSH[CLS]():EQ.w?.t=='hm2'?hSlam(p,fx,fz):(wlfSwing(p,fx,fz),foeSwing(p,fx,fz))};
-// the war hammer comes down on the ground 1.9m ahead: every foe within 2.3m of where it lands takes the blow, with a ring of dust and a thud
-const hSlam=(p,fx,fz)=>{const x=p.x+fx*1.9,z=p.z+fz*1.9,y=Hm(x,z),dm=bDmg();let n=0;for(const f of near(2.3,x,z)){wHit(f,dm);n++}
- for(let i=0;i<22;i++){const a=i/22*TAU;emit(x+cos(a)*.9,y+.15,z+sin(a)*.9,1,0xc8b48a,3.5,1.6,.45,6,.4)}emit(x,y+.2,z,14,0xffe08a,2,3,.4,6,.3);
+ for(const f of FND)!f.got&&inR(f.x,f.z)&&chestOpen(f);gtSwing(p.x,p.z,fx,fz,r+1);swN++;swF=CSW[CLS]?.()||{m:1};CL().rng?BSH[CLS]():EQ.w?.t=='hm2'?hSlam(p,fx,fz):(wlfSwing(p,fx,fz),foeSwing(p,fx,fz));CSA[CLS]?.(p,fx,fz)};
+// the war hammer comes down on the ground 1.9m ahead: every foe within 2.76m of where it lands takes the blow, with a ring of dust and a thud
+const hSlam=(p,fx,fz)=>{const x=p.x+fx*1.9,z=p.z+fz*1.9,y=Hm(x,z),dm=bDmg();let n=0;for(const f of near(2.76,x,z)){wHit(f,dm);n++}
+ for(let i=0;i<22;i++){const a=i/22*TAU;emit(x+cos(a)*1.08,y+.15,z+sin(a)*1.08,1,0xc8b48a,3.5,1.6,.45,6,.4)}emit(x,y+.2,z,14,0xffe08a,2,3,.4,6,.3);
  snd(70,.35,'sine',.32,35);snd(140,.12,'square',.05,60);n&&sfxW.hit()};
 // the swing trail: a ribbon the blade sweeps through the air, from just past the guard out to its point. Each frame of the
 // stroke adds a slice at the staff's pose; slices fade out over swTL seconds, clear toward the shaft and narrowing as they age, so the
@@ -4483,7 +4529,7 @@ statBar=()=>stRows()
 itCard=(it,cur)=>`<h4 style="color:${RCO(it.r)}">${escH(it.n)}${it.up?` +${it.up}`:''}</h4><p class="rk"><span>${RAR[it.r][0]} ${itKind(it).toLowerCase()}</span><span>Item level ${it.il}</span></p>${gLn(it).map(([t,k])=>`<p class="sg${k?' a'+k:''}">${t}</p>`).join('')}${canUse(it)?'':`<p class="cp">A ${CL().n} cannot wield this.</p>`}${it.s=='s'&&wp2()?'<p class="cp">No use while you wield a two-handed weapon.</p>':''}${cur&&cur!==it?`<p class="cp">Worn: <b style="color:${RCO(cur.r)}">${escH(cur.n)}</b>. This one is ${cmpTxt(it)}.</p>`:''}<p class="pr3">${IC('coin')} Sells for ${sellP(it)}</p>`,
 // the blacksmith's button on a piece's card: the next temper and its price, while it has one to take
 smB=(it,a)=>{if(!smOk(it))return'';const[g,m]=smC(it);return`<button ${a}${W>=g&&MAT>=m?'':' disabled'}>Temper +${(it.up|0)+1} · ${g} gold, ${m} scrap</button>`},
-heroMenu=()=>{const t=czTab;$('cmh').textContent=FARM||'Your knight';[['cmtc',0],['cmti',1],['cmtk',2],['cmts',3]].forEach(([id,k])=>$(id).setAttribute('aria-selected',t==k));$('chr').hidden=t!=0;$('inv').hidden=t!=1;$('skl').hidden=t!=2;$('qst').hidden=t!=3;$('cm').classList.toggle('sk',t==2);SP>0?$('cmtk').dataset.n=SP:$('cmtk').removeAttribute('data-n');
+heroMenu=()=>{const t=czTab;$('cmh').textContent=FARM||'Your Hero';[['cmtc',0],['cmti',1],['cmtk',2],['cmts',3]].forEach(([id,k])=>$(id).setAttribute('aria-selected',t==k));$('chr').hidden=t!=0;$('inv').hidden=t!=1;$('skl').hidden=t!=2;$('qst').hidden=t!=3;$('cm').classList.toggle('sk',t==2);SP>0?$('cmtk').dataset.n=SP:$('cmtk').removeAttribute('data-n');
  if(t==0){$('dlL').innerHTML=EQL.map(eqBtn).join('');$('dlR').innerHTML=EQR.map(eqBtn).join('');$('dlB').innerHTML=EQB.map(eqBtn).join('');const d=$('cdt'),h=$('hsx');d.hidden=!qSel;h.hidden=!!qSel;
   if(!qSel){h.innerHTML=statBar();return}const it=EQ[qSel],c=[];BAG.forEach((b,i)=>b.s==slT(qSel)&&c.push(tile(b,i,'e')));
   d.innerHTML=`<span class="fr big" style="${rcs(it)}">${IC(SLI[qSel])}</span><div class="ivd">${it?itCard(it):`<h4>No ${SLN[qSel].toLowerCase()} worn</h4><p class="rk">Anything for this slot in your pack is listed alongside, to put on.</p>`}<div class="bt">${it?`<button data-u="${qSel}">Take off</button>`+smB(it,`data-mq="${qSel}"`):''}<button data-x>Back</button></div></div><div class="cdp"><small>${c.length?`From your pack (${c.length}): click to wear`:`No ${SLN[qSel].toLowerCase()} in your pack`}</small><div class="ivg sm">${c.join('')}</div></div>`;return}
@@ -4515,8 +4561,52 @@ pickCls=()=>new Promise(r=>{const d=$('al'),c0=$('alc'),m=$('alm');let c=CLS;$('
  $('alo').textContent='Begin';$('alo').className='pr';c0.hidden=true;
  m.onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;c=b.dataset.c;for(const q of m.querySelectorAll('.cpb'))q.classList.toggle('on',q===b)};m.ondblclick=e=>e.target.closest('[data-c]')&&d.close('ok');
  d.onclose=()=>{c0.hidden=false;m.onclick=m.ondblclick=null;r(c)};d.returnValue='';d.showModal();m.querySelector('.cpb.on').focus()}),
+// the hero's portrait for the making screen, drawn from the same layout as his voxel head (BOD, in half cells, seen from the front):
+// the class's tunic at the shoulders, the face, eyes, brows, cheeks and mouth, the hair in the chosen colour with its lighter streak, and
+// a woman's longer hair and lashes; an ink line round it all. One art pixel is a half cell
+lkDraw=(cv,L,cls)=>{const cl=lkPal(CPAL[cls]||KCL,L),x=cv.getContext('2d'),W=40,H=50,hx=n=>'#'+n.toString(16).padStart(6,'0'),hc=(LKH[L.h]||LKH[0])[1],
+  hs=(()=>{const lm=h=>((h>>16&255)*.2126+(h>>8&255)*.7152+(h&255)*.0722),k=lm(cl.hairHi)/lm(HAIR);return((min(255,(hc>>16&255)*k)|0)<<16)|((min(255,(hc>>8&255)*k)|0)<<8)|(min(255,(hc&255)*k)|0)})(),
+  F=(xa,xb,ya,yb,c)=>{x.fillStyle=hx(c);x.fillRect((xa+10)*2,(58-yb)*2,(xb-xa)*2,(yb-ya)*2)},FS=(s,xa,xb,ya,yb,c)=>s>0?F(xa,xb,ya,yb,c):F(-xb,-xa,ya,yb,c),M=f=>{f(1);f(-1)};
+ cv.width=W;cv.height=H;x.clearRect(0,0,W,H);
+ M(s=>FS(s,5.5,9.5,33,42.5,cl.tun));F(-4.5,4.5,33,42.5,cl.tun);M(s=>{FS(s,4,4.5,33,42.5,cl.tun2);FS(s,5.5,9.5,42,42.5,cl.trim)});
+ F(-2.5,2.5,41.5,43.5,cl.skin);F(-1.5,1.5,41.5,42.5,cl.skin);F(-1,1,41,41.5,cl.skin);F(-.5,.5,40.5,41,cl.skin);
+ F(-5.5,5.5,43.5,56.5,cl.skin);
+ F(-5.5,5.5,54.5,56.5,hc);M(s=>FS(s,4.5,5.5,L.s?43.5:48.5,56.5,hc));F(-4.5,-2.5,53.5,54.5,hc);F(-2,0,54,54.5,hc);F(.5,2.5,53.5,54.5,hc);F(3,4.5,54,54.5,hc);
+ F(-3,1.5,56,56.5,hs);F(-3.5,-2,55,55.5,hs);
+ M(s=>{FS(s,1.5,2,49.5,51.5,cl.white);FS(s,2,3.5,49.5,51.5,cl.eye);FS(s,2.5,3,49.5,50.5,cl.pupil);FS(s,3,3.5,51,51.5,cl.white);FS(s,1.5,3.5,51.5,52,cl.lid);
+  FS(s,1.5,3.5,52.5,53,hc);FS(s,3,4,47.5,48,cl.blush);L.s&&(FS(s,4,4.5,45,54,hc),FS(s,3.5,4,51.5,52.5,cl.lid))});
+ F(-.5,.5,47.5,48.5,cl.skin2);F(-1,1,46,46.5,cl.mouth);L.s&&F(-.5,.5,45.5,46,cl.mouth);
+ // the head's rounded corners, then the ink line: every clear pixel beside a filled one
+ for(const[a,b]of[[-5.5,56],[5,56],[-5.5,43.5],[5,43.5]])x.clearRect((a+10)*2,(58-b-.5)*2,1,1);
+ const im=x.getImageData(0,0,W,H),d=im.data,o=new Uint8Array(W*H);for(let i=0;i<W*H;i++)o[i]=d[i*4+3]>0;
+ for(let j=0;j<H;j++)for(let i=0;i<W;i++){const q=j*W+i;if(o[q])continue;if((i&&o[q-1])||(i<W-1&&o[q+1])||(j&&o[q-W])||(j<H-1&&o[q+W])){d[q*4]=18;d[q*4+1]=12;d[q*4+2]=10;d[q*4+3]=255}}
+ // a little light from the upper left: the right half of each filled run a shade down
+ for(let j=0;j<H;j++)for(let i=W/2;i<W;i++){const q=j*W+i;if(o[q])for(let c=0;c<3;c++)d[q*4+c]*=.9}
+ x.putImageData(im,0,0)},
+// the making of the hero, after the class is chosen: name, man or woman, skin, hair and eyes, the portrait following each choice.
+// Resolves true on Begin (LOOK and FARM set, the name remembered), false on Back or Esc (the class picker opens again)
+crChar=()=>new Promise(r=>{const d=$('al'),m=$('alm'),c0=$('alc'),L={...LOOK},sw=(k,a)=>a.map(([n,c],i)=>`<button data-${k}="${i}" style="--sw:#${c.toString(16).padStart(6,'0')}" aria-label="${n}" title="${n}"></button>`).join(''),
+  dn=s=>s?'Dame Aldra':'Sir Aldric';
+ $('alt').textContent='Make your Hero';$('alv').hidden=true;d.classList.remove('fi');d.classList.add('cc');
+ m.innerHTML=`<span class="ccw"><span class="ccp"><canvas aria-hidden="true"></canvas></span><span class="ccc">
+  <label class="ccl">Name<input class="ccn" maxlength="24" autocomplete="off" spellcheck="false"></label>
+  <span class="ccl"><span>Sex</span><span class="ccx"><button data-s="0">Male</button><button data-s="1">Female</button></span></span>
+  <span class="ccl"><span>Skin <i data-n="k"></i></span><span class="ccs">${sw('k',LKK)}</span></span>
+  <span class="ccl"><span>Hair <i data-n="h"></i></span><span class="ccs">${sw('h',LKH)}</span></span>
+  <span class="ccl"><span>Eyes <i data-n="e"></i></span><span class="ccs">${sw('e',LKE)}</span></span></span></span>`;
+ const cv=m.querySelector('canvas'),nm=m.querySelector('.ccn'),T={k:LKK,h:LKH,e:LKE},
+  up=()=>{for(const b of m.querySelectorAll('[data-s],[data-k],[data-h],[data-e]')){const[k,v]=Object.entries(b.dataset)[0];b.classList.toggle('on',L[k]==+v);b.setAttribute('aria-pressed',L[k]==+v)}
+   for(const i of m.querySelectorAll('[data-n]'))i.textContent='· '+T[i.dataset.n][L[i.dataset.n]][0];nm.placeholder=dn(L.s);lkDraw(cv,L,CLS)};
+ nm.value=FARM||'';c0.textContent='Back';$('alo').textContent='Begin';$('alo').className='pr';
+ m.onclick=e=>{const b=e.target.closest('button');if(!b)return;const[k,v]=Object.entries(b.dataset)[0]||[];if(k in L){L[k]=+v;up();sfx.dab?.()}};
+ nm.onkeydown=e=>{if(e.key=='Enter'){e.preventDefault();d.close('ok')}};
+ d.onclose=()=>{d.classList.remove('cc');c0.textContent='Cancel';m.onclick=null;const ok=d.returnValue=='ok';
+  if(ok){Object.assign(LOOK,lkFix(L));FARM=nm.value.trim().replace(/\s+/g,' ')||dn(L.s);try{localStorage.setItem(SK+'-name',FARM)}catch(e){}}r(ok)};
+ up();d.returnValue='';d.showModal();m.querySelector('[data-s].on').focus()}),
+// a new hero: the class, then the making; Back from the making returns to the class
+newHero=async()=>{for(;;){CLS=await pickCls();skS();if(await crChar())return}},
 ask=(t,m,ok,o={})=>new Promise(r=>{const d=$('al'),v=$('alv');$('alt').textContent=t;$('alm').innerHTML=m;$('alo').textContent=ok;$('alc').textContent=o.c||'Cancel';$('alo').className=o.v?'pr':'dg';v.hidden=!o.v;v.innerHTML=o.v||'';d.classList.toggle('fi',!!o.v);d.returnValue='';d.onclose=()=>r(d.returnValue=='ok');d.showModal();o.v&&$('alo').focus()}),
-nfM=(lv,w,d)=>`<b>${escH(FARM||'Your knight')}</b> starts again at level 1 on day 1${d>1?` (from day ${d})`:''}: the <b>${w|0}</b> gold, the gear and the pack, the bounties and the skills learned are all lost. Chests already opened stay opened.`,
+nfM=(lv,w,d)=>`<b>${escH(FARM||'Your Hero')}</b> starts again at level 1 on day 1${d>1?` (from day ${d})`:''}: the <b>${w|0}</b> gold, the gear and the pack, the bounties and the skills learned are all lost. Chests already opened stay opened.`,
 tfr=()=>{fcap=fcap?0:1;$('pfr').textContent='Frame rate: '+(fcap?'60':'max');try{localStorage.setItem(SK+'-fps',fcap?'60':'max')}catch(e){}},
 fresh=()=>{for(const k in EQ)EQ[k]=null;kit();BAG.length=0;W=0;LV=1;XP=0;POT=1;QN=0;QST=null;qT=2;dy=1;dT=0;for(const k in SKL)delete SKL[k];SP=1;dsT=dsC=wardT=0;MAT=0;rgV=wdV=gaT=lpT=bnT=avT=mmS=0;BNR.visible=false;ZON.length=0;alyClr();CLR[CLS]?.();for(const k in acCD)acCD[k]=0;hxD=1;bHP=bMax();wlfClr();foeClr();for(const q of LOOT)q.on=0;P.position.set(2,0,3);apply();hrt();sv();sho(0)};
 $('bf').onclick=()=>hero(2);$('bp').onclick=()=>sho(2);$('rs').onclick=()=>sho(0);$('po').onclick=()=>hero(2);$('bk').onclick=()=>hero(0);$('bc').onclick=()=>hero(1);$('cmx').onclick=()=>sho(0);$('cmtc').onclick=$('cmti').onclick=$('cmts').onclick=$('cmtk').onclick=e=>{const t={cmtc:0,cmti:1,cmtk:2,cmts:3}[e.currentTarget.id];if(t==czTab)return;czTab=t;qSel=null;iSel=-1;heroMenu();czFit()};
@@ -4538,7 +4628,7 @@ $('cm').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled||b.id==
 $('alc').onclick=()=>$('al').close();$('alo').onclick=()=>$('al').close('ok');$('prm').onclick=tgr;
 // the scroll edge: a list that runs past its panel fades out at whichever end has more to see, under the pinned header or above the foot
 for(const e of document.querySelectorAll('.sc')){const f=()=>{e.classList.toggle('et',e.scrollTop>2);e.classList.toggle('eb',e.scrollTop+e.clientHeight<e.scrollHeight-2)};e.addEventListener('scroll',f,{passive:true});new ResizeObserver(f).observe(e);new MutationObserver(f).observe(e,{childList:true,subtree:true})}
-$('nf').onclick=async()=>{if(await ask('Start a new quest?',nfM(LV,W,dy),'Erase and start over')){CLS=await pickCls();skS();fresh();tuOpen(0,()=>intro('A fresh start. The realm awaits its knight.','shield'))}};document.addEventListener('visibilitychange',()=>{AC&&(document.hidden?AC.suspend():AC.resume());document.hidden&&run&&!ov&&sho(2)});
+$('nf').onclick=async()=>{if(await ask('Start a new quest?',nfM(LV,W,dy),'Erase and start over')){await newHero();fresh();tuOpen(0,()=>intro('A fresh start. The realm awaits its Hero.','shield'))}};document.addEventListener('visibilitychange',()=>{AC&&(document.hidden?AC.suspend():AC.resume());document.hidden&&run&&!ov&&sho(2)});
 // ---- the title's flyover. Once Start is pressed the title tours the realm: for each zone the camera comes up out of black and makes one
 // long, low, slow pass over it, then goes dark and cuts to the next. The knight and the hound are
 // hidden and parked under the camera, since the streaming follows him and builds the land the view is heading into; any key ends the
@@ -4566,7 +4656,7 @@ const flyAt=(S,u)=>{const g=S.g,h=g[2],dx=sin(h),dz=cos(h),s=(u-.5)*FLL,w=sin(u*
 // the start gate (lsg): once everything is loaded the card offers Start, and the title shows (with its music) only after it is pressed. A
 // browser won't start sound before a click, key press or tap, so the press is what wakes it; until then the music is held at nothing
 // even where the browser would have let it play
-const showTitle=()=>{$('tt').hidden=false;ttl=1;flyBegin()},startGo=()=>{if(!lsg)return;lsg=0;musGo=1;AC||aud();wake();$('sg').hidden=true;$('go').hidden=false;if(sd){$('go').textContent='Continue your quest';$('ng').hidden=false}FARM||($('fnw').hidden=false);$('fn').onkeydown=e=>{if(e.key=='Enter'){e.stopPropagation();$('go').click()}};
+const showTitle=()=>{$('tt').hidden=false;ttl=1;flyBegin()},startGo=()=>{if(!lsg)return;lsg=0;musGo=1;AC||aud();wake();$('sg').hidden=true;$('go').hidden=false;if(sd){$('go').textContent='Continue your quest';$('ng').hidden=false}$('fn').onkeydown=e=>{if(e.key=='Enter'){e.stopPropagation();$('go').click()}};
  inP();$('st').firstElementChild.hidden=true;renderer.domElement.style.opacity='';
  // no saved flock (and the primer not already read this visit): the page-by-page primer opens now, over the hills, and the title follows it
  if(!sd&&!tuDone)tuOpen(-1,showTitle,'Continue');else showTitle()};$('sg').onclick=startGo;
@@ -4587,9 +4677,9 @@ const tuS=(kb,tc,pd)=>[kb,tc,pd][gpOn?2:mob?1:0],
  tuI=m=>`<img src="${tuU(m.s)}" width="${m.w}" height="${m.h}" alt="${m.alt}" decoding="async" draggable="false">`,
  tuF=f=>`<figure class="tfig"><div class="tfi">${tuI(f)}${(f.pins||[]).map(([x,y,d])=>`<i class="pin" style="left:${x}%;top:${y}%;width:${d}%"></i>`).join('')}</div><figcaption>${f.cap}</figcaption></figure>`,
  TUP=()=>[
- {ic:'shield',t:'Welcome, Sir Knight',lead:'Shadow lies over the realm. Ride out from Greywatch Keep, put its beasts and brigands to the sword, break open the chests of the old kings, and come home richer and stronger.',
+ {ic:'shield',t:'Welcome, Hero',lead:'Shadow lies over the realm. Ride out from Greywatch Keep, put its beasts and brigands to the sword, break open the chests of the old kings, and come home richer and stronger.',
   cards:[['scroll','Take a bounty','A bounty is posted at the keep: slay so many foes, break open chests or scout far afield. Finish it, then come back to the muster ring to claim the reward.'],['dawn','Fifteen minutes of day','A day lasts <b>15 minutes</b>, and so does the night. Nobody sleeps: the night is played out in the open, and it is more dangerous.'],['coin','Gold and glory','Foes drop gold and gear. Wear the best of the gear, spend gold on draughts, and each level\'s skill point on the skill tree.']]},
- {ic:'boot',t:'Ride the realm',lead:tuS('Hold <b>W A S D</b> or the arrow keys to walk, and scroll the wheel to zoom in and out.','<b>Drag</b> anywhere on the screen to walk. A little stick appears under your finger and the knight goes the way you push it.','Push the <b>left stick</b>, or press the D-pad, to walk. The <b>right stick</b> zooms in and out.'),
+ {ic:'boot',t:'Ride the realm',lead:tuS('Hold <b>W A S D</b> or the arrow keys to walk, and scroll the wheel to zoom in and out.','<b>Drag</b> anywhere on the screen to walk. A little stick appears under your finger and your Hero goes the way you push it.','Push the <b>left stick</b>, or press the D-pad, to walk. The <b>right stick</b> zooms in and out.'),
   cards:[['castle','Home is the keep',tuS('Press <b>M</b> for the map','Tap the map button','Press the '+GB.vw+' button for the map')+': it shows where you are, how far it is to Greywatch Keep and the places you have found. No foe follows you inside the ring of braziers, and wounds close quickly there.'],['fair','The weather turns','Sun, wind, rain and fog drift over the hills, by night as by day. In fog, foes close in unseen.']],
   keys:[tuK(tuS(tuC(['KeyW','W'],['KeyA','A'],['KeyS','S'],['KeyD','D']),'<kbd>Drag</kbd>',gpG('ls')),'Walk',tuS('or the arrow keys','anywhere on the screen','or the D-pad')),tuS(tuK('<kbd>Scroll</kbd>','Zoom','in and out'),'',tuK(gpG('rs'),'Zoom','right stick')),tuK(tuS(tuC(['KeyM','M']),tuB('map'),gpG('vw')),'Map','where you are')]},
  {ic:'sword',t:'Draw your sword',lead:'<b>Strike</b> to cut in an arc in front of you: every foe within the blade\'s reach takes the blow. A tempered blade reaches further.',
@@ -4810,9 +4900,9 @@ function loop(){if(dead)return;const now=performance.now();if(fcap&&now-last<10.
  try{gpPoll(dt);if(lv){tm+=dt;U.t.value=tm;wxU(dt);snU(dt);if(run){mvP(dt);fndU(dt);gtU(dt);if(!pz){qstU(dt);if((svT-=dt)<0){svT=15;sv()}dayU(dt)}cbU()}wlfU(dt);wv(dt);stream()}
   U.dt.value=lv?dt:0;camU(dt);vwU();cull();if((ht-=dt)<0){ht=.2;if(run){hud();amb(.2)}else MU&&MU.tick(mof||!musGo?0:1)}renderer.compute(GL[0].cs);renderer.compute(GL[1].cs);GSW.a.value.w=0;CMP.render()}
  catch(e){dead=1;console.error(e);fail('The game stopped unexpectedly','Your quest is saved as you play, so reloading picks up close to where you left off.')}}
-$('go').onclick=()=>{if(!sd&&!clsOk){pickCls().then(c=>{CLS=c;skS();clsOk=1;$('go').onclick()});return}clsOk=0;if(!FARM){FARM=$('fn').value.trim().replace(/\s+/g,' ')||'Sir Aldric';try{localStorage.setItem(SK+'-name',FARM)}catch(e){}}AC||aud();
+$('go').onclick=()=>{if(!sd&&!clsOk){newHero().then(()=>{clsOk=1;$('go').onclick()});return}clsOk=0;if(!FARM){FARM=$('fn').value.trim().replace(/\s+/g,' ')||'Sir Aldric';try{localStorage.setItem(SK+'-name',FARM)}catch(e){}}AC||aud();
  if(sd){W=sd.W||0;LV=sd.LV||1;XP=sd.XP||0;POT=sd.POT??1;dy=sd.dy||1;QN=sd.QN|0;QST=sd.Q||null;sd.G&&Object.assign(EQ,sd.G);(sd.B||[]).forEach(it=>BAG.push(it));if(EQ.c){EQ.c.s='n';EQ.n=EQ.n||EQ.c}delete EQ.c;for(const it of BAG)it.s=='c'&&(it.s='n');
-  CLS=CLD[sd.C]?sd.C:'war';skS();MAT=sd.M|0;LV=min(LV,LVM);for(const k in EQ)EQ[k]=migIt(EQ[k]);for(let i=0;i<BAG.length;i++)BAG[i]=migIt(BAG[i]);clsWpn();
+  CLS=CLD[sd.C]?sd.C:'war';LOOK=lkFix(sd.A);skS();MAT=sd.M|0;LV=min(LV,LVM);for(const k in EQ)EQ[k]=migIt(EQ[k]);for(let i=0;i<BAG.length;i++)BAG[i]=migIt(BAG[i]);clsWpn();
   if(sd.K)Object.assign(SKL,sd.K);else if(sd.L){const m={sword:['blade',3],armor:['vit',3],boots:['fleet',3],dog:['hound',1]};for(const k in m)sd.L[k]&&(SKL[m[k][0]]=min(m[k][1],sd.L[k]))}
   if(Object.keys(SKL).some(k=>!skG(k))){for(const k in SKL)delete SKL[k];sd.SP=null;setTimeout(()=>toast('The skill trees have been redrawn: every point you had is yours to spend again.','g','skill'),2600)}
   SP=sd.SP??max(0,LV-skSpent());hxD=1;bHP=bMax()}else{kit();hxD=1;bHP=bMax()}
@@ -4820,8 +4910,8 @@ $('go').onclick=()=>{if(!sd&&!clsOk){pickCls().then(c=>{CLS=c;skS();clsOk=1;$('g
  if(sd)toast(`Welcome back, <b>${escH(FARM)}</b>. The realm has need of you.`,'g','shield');else{const t=tuNew||!tuSeen;tuNew=0;t?tuOpen(0,intro):intro()}};
 $('ng').onclick=async()=>{if(!await ask('Start a new quest?',nfM(sd.LV||1,sd.W||0,sd.dy||1),'Erase and start over'))return;sd=null;try{localStorage.removeItem(SK)}catch(e){}XPL.clear();tuNew=1;$('go').onclick()};
 const stage=async(k,t)=>{ldp(k,t);await new Promise(r=>setTimeout(r,30))};
-(async()=>{try{await stage(3,'Forging the knight…');
- DGM.geometry=dogG();WIM.geometry=wolfG(DGM.geometry);clsLook();armTint();
+(async()=>{try{await stage(3,'Forging the Hero…');
+ DGM.geometry=dogG();WIM.geometry=wolfG(DGM.geometry);sd&&(LOOK=lkFix(sd.A));clsLook();armTint();
  await stage(4,'Laying out the realm…');for(let i=-1;i<2;i++)for(let j=-1;j<2;j++)mkC(i,j);
  if(sd)dT=min(sd.dT||0,CYC-30);apply();wxU(.001);snU(.001);camU(1);poseStaff(0,0,1.9);buildPost();
  // pre-warm every render pipeline before the first frame: show normally-hidden objects for the compile pass
