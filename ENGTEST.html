@@ -2776,8 +2776,7 @@ clsLook=()=>{SHU.hair.value.setHex((LKH[LOOK.h]||LKH[0])[1]);const key=CLS+'|'+L
 // a ranged weapon in his hand (RPS, from poseStaff): at rest a bow is carried upright at his side, a crossbow and a wand level, a staff
 // upright like a walking staff; in the shot (sk) the bow or crossbow is held out before his chest at full reach, the staff thrust out and
 // up, the wand pointed
-RPS=(sk,su=0)=>{const t=EQ.w?.t;if(t=='hm2'){if(sk<=0)return;const e1=ssm(0,swUA,su),e2=ssm(swUA,.45,su),k=sk*e1;stG.lerp(T1.set(-.25,2.75,-.05).lerp(T2.set(-.2,.55,.75),e2),k);
-  stD.lerp(T2.set(0,.6,-1).lerp(T1.set(0,-1,.6),e2).normalize(),k).normalize()}
+RPS=(sk,su=0)=>{const t=EQ.w?.t;if(t=='hm2'){hmPose(sk,su);return}
  else if(t=='sc2')stD.lerp(T1.set(-.12,1,.22).normalize(),.9*(1-sk)).normalize();
  else if(t=='bow'||t=='xbw'){const bw=t=='bow';BOWA.visible=bw&&sk>.35;stD.lerp(T1.set(.12,bw?1:-.1,bw?.25:1).normalize(),1-sk).normalize();
   if(sk>0){stG.lerp(T1.set(.05,1.75,.45),sk);stD.lerp(T2.set(.05,bw?1:-.05,bw?.12:1).normalize(),sk).normalize()}}
@@ -2848,10 +2847,12 @@ const WPV={sw1:[staff.children[0]],sw2:[part(mg([[B(.12,1.05,.03).translate(0,.9
  AXHM=part(mg([[B(.08,.08,.08).translate(0,.04,0),GLD],[B(.05,.26,.05).translate(0,.21,0),LTH]]),VC,0,0,0,staff),SWHG=staff.geometry,AXHG=AXHM.geometry,
  wpLook=()=>{const t=WPV[EQ.w?.t]?EQ.w.t:CL().kw;OHG.parent||SHE.add(OHG);for(const k in WPV)for(const m of WPV[k])m.visible=k==t;staff.geometry=SWK[t]?SWHG:AXHG;for(const k in OHW)OHW[k].visible=k==t;BOWA.visible=false};
 AXHM.visible=false;
-// the other classes' weapons: the paladin's war hammer (its head 1.2x the size it was drawn at, round the head's middle; the haft 1.2x long, the extra below, its gilt ring moved down with the butt) and holy greatsword, the necro-knight's scythe and runeblades, the ranger's longbow
+// the other classes' weapons: the paladin's war hammer (enlarged: its head 1.2x then 1.25x the size it was drawn at; the haft 1.2x, 1.25x and 1.2x again long, from the butt, its head HMH up it) and holy greatsword, the necro-knight's scythe and runeblades, the ranger's longbow
 // and crossbow, the rogue's daggers and claws, the mage's staff and wand (its gem the blade's glowing material). A pair puts its twin in
 // the off hand (OHW, on the forearm where a shield hangs). SWK: the kinds with a sword's hilt
-Object.assign(WPV,{hm2:[part(mg([[B(.06,1.26,.06).translate(0,.615,0),LTH],[B(.08,.06,.08).translate(0,.09,0),GLD]]),VC,0,0,0,staff),part(mg([[B(.456,.312,.312).translate(0,1.3,0),0],[B(.096,.36,.36).translate(.252,1.3,0),0],[B(.096,.36,.36).translate(-.252,1.3,0),0]]),BLM,0,0,0,staff)],
+// HMH: how far up the war hammer's haft its head sits; hmY: the shoulders' turn while it is held, hmW: how far it is in both hands (hmPose)
+const HMH=1.945;let hmY=0,hmW=1;
+Object.assign(WPV,{hm2:[part(mg([[B(.06,1.89,.06).translate(0,.93,0),LTH],[B(.08,.06,.08).translate(0,.116,0),GLD]]),VC,0,0,0,staff),part(mg([[B(.57,.39,.39).translate(0,HMH,0),0],[B(.12,.45,.45).translate(.315,HMH,0),0],[B(.12,.45,.45).translate(-.315,HMH,0),0]]),BLM,0,0,0,staff)],
  pw2:[part(mg([[B(.13,1.05,.03).translate(0,.92,0),0],[B(.09,.12,.03).translate(0,1.5,0),0],[B(.04,.09,.03).translate(0,1.6,0),0]]),BLM,0,0,0,staff),part(mg([[B(.4,.06,.1).translate(0,.4,0),GLD]]),VC,0,0,0,staff)],
  sc2:[part(mg([[B(.06,1.5,.06).translate(0,.78,0),LTH],[B(.08,.07,.08).translate(0,1.53,0),GLD]]),VC,0,0,0,staff),part(mg([[B(1,.16,.035).translate(-.5,1.5,0),0],[B(.3,.06,.035).translate(-.15,1.39,0),0],[B(.24,.13,.035).translate(-1.1,1.43,0),0],[B(.16,.1,.035).translate(-1.26,1.32,0),0],[B(.09,.08,.035).translate(-1.34,1.21,0),0]]),BLM,0,0,0,staff)],
  rb1:[part(mg([[B(.07,.6,.025).translate(0,.68,0),0],[B(.045,.08,.025).translate(0,1.02,0),0]]),BLM,0,0,0,staff)],
@@ -3472,7 +3473,7 @@ Object.assign(CCD,{rst:()=>mut('step')?.5:1,gtv:()=>mut('vault')?.5:1,mbk:()=>mu
  CSW.pal=()=>{const r=skr('pci'),o={m:swE?1+.15*r:1};swE=0;if(r&&swN%3==0){o.st=.3+.1*r;swE=1}return o};
  CHK.pal=(f,dm,cr)=>{const s=stv();skr('prt')&&swHl!=swN&&(swHl=swN,heal(bMax()*.01*skr('prt')));cr&&skr('pib')&&markF(f,.04*skr('pib'),6);
   s.hol&&R()<s.hol&&f.hp>0&&(fHit(f,s.arc*.5,{raw:1,el:1,dot:1}),emit(f.x,f.y+2.5,f.z,10,0xffe08a,2,4,.5,0,.35))};
- CTK.pal=(dt,s)=>{const p=P_();if(hlT>0){hlT-=dt;R()<.7&&(staff.localToWorld(hlV.set(0,1.3,0)),emit(hlV.x+(R()-.5)*.35,hlV.y+(R()-.5)*.3,hlV.z+(R()-.5)*.35,1,0xffe08a,.5,.9,.55,-.5,.32))}
+ CTK.pal=(dt,s)=>{const p=P_();if(hlT>0){hlT-=dt;R()<.7&&(staff.localToWorld(hlV.set(0,EQ.w?.t=='hm2'?HMH:1.3,0)),emit(hlV.x+(R()-.5)*.35,hlV.y+(R()-.5)*.3,hlV.z+(R()-.5)*.35,1,0xffe08a,.5,.9,.55,-.5,.32))}
   orbN=skr('poh')&&pvel>1.5?(mut('orb')?4:2):0;orbHit=f=>fHit(f,stv().atk*(.25+.08*skr('poh')),{kb:.6,el:1});
   if(aaT>0){aaT-=dt;R()<.8&&emit(p.x-sin(P.rotation.y)*.5+(R()-.5)*1.6,p.y+1.8+R(),p.z-cos(P.rotation.y)*.5,1,0xfff1c0,.6,.4,.6,0,.35);
    if((aaQ-=dt)<=0){aaQ=1;const t=nearest(16);t&&pjFire('hol',p.x,p.y+3,p.z,0,0,0,1.2,s.arc*.8,{el:1},{hom:t,sp:24,fn:(f,q)=>{fHit(f,q.dm,{el:1});if(mut('arch'))near(7,f.x,f.z).filter(o=>o!==f).slice(0,2).forEach(o=>fHit(o,q.dm*.6,{el:1}))}})}}};
@@ -4178,30 +4179,60 @@ function foeU(dt,p,safe){const nt=dT>=DAY,hol=rlz(p.x,p.z)==3,camp=RLP.some(q=>q
 const ANKLE=.25,wdep=(x,z)=>WL-Hm(x,z),wade=(p,bx,bz)=>{const lim=max(ANKLE,wdep(bx,bz));for(let i=0;i<4;i++){const d=wdep(p.x,p.z)-lim;if(d<=0)return;const gx=(wdep(p.x+.2,p.z)-wdep(p.x-.2,p.z))*2.5,gz=(wdep(p.x,p.z+.2)-wdep(p.x,p.z-.2))*2.5,g2=gx*gx+gz*gz;if(g2<1e-6)break;p.x-=gx*d/g2;p.z-=gz*d/g2}if(wdep(p.x,p.z)>lim+.005){p.x=bx;p.z=bz}};
 // ---- the sword in his right hand, solved onto the grip with two-bone IK (shoulder X/Z + elbow), so the hilt always sits in his fist ----
 const stQ=new THREE.Quaternion(),stQi=new THREE.Quaternion(),stE=new THREE.Euler(),T16=V(0,1.45,0),stB=V(),stG=V(),stD=V(),stX=V(),stZ=V(),stF=V(0,0,1),stM=new THREE.Matrix4(),stA=V(),stH=V(),stR=V(),stDn=V(0,-1,0),IK_S=V(-.375,2.1,0),IK_E=V(0,1.7,-.02),IK_G=V(-.375,1.15,-.025),IK_R=IK_G.distanceTo(IK_S),
-armIK=T=>{const S=IK_S,d=cl(T.distanceTo(S),.3,IK_R*.995),y0=IK_G.y-IK_E.y,z0=IK_G.z-IK_E.z;let lo=-2.7,hi=0,th=0,hy=0,hz=0;
+armIK=(T,m,yw=0)=>{m&&(T.x=-T.x);const S=IK_S,d=cl(T.distanceTo(S),.3,IK_R*.995),y0=IK_G.y-IK_E.y,z0=IK_G.z-IK_E.z;let lo=-2.7,hi=0,th=0,hy=0,hz=0;
  for(let i=0;i<20;i++){th=(lo+hi)/2;const c=cos(th),s=sin(th);hy=IK_E.y+y0*c-z0*s;hz=IK_E.z+y0*s+z0*c;if(hypot(IK_G.x-S.x,hy-S.y,hz-S.z)>d)hi=th;else lo=th}
- const ax=IK_G.x-S.x,ay=hy-S.y,az=hz-S.z;stA.subVectors(T,S).setLength(hypot(ax,ay,az));
+ // yw turns the arm about the upright at the shoulder before it is raised (the rig's aw), so the elbow points out and the forearm comes
+ // in across the front instead of the whole arm swinging in through the chest and head
+ const ax0=IK_G.x-S.x,ay=hy-S.y,az0=hz-S.z,ax=ax0*cos(yw)+az0*sin(yw),az=az0*cos(yw)-ax0*sin(yw);stA.subVectors(T,S).setLength(hypot(ax,ay,az));
  const Rr=hypot(ay,az),f=atan2(az,ay),as=Math.asin(cl(stA.z/Rr,-1,1)),b1=wa(as-f),b2=wa(PI-as-f),be=abs(b1)<abs(b2)?b1:b2,cb=cos(be),sb=sin(be),py=ay*cb-az*sb,pz=ay*sb+az*cb,ga=wa(atan2(stA.y,stA.x)-atan2(py,ax)),cg=cos(ga),sg=sin(ga);
- PU.el.value.y=th;PU.ar.value.z=be;PU.ar.value.w=ga;stH.set(S.x+ax*cg-py*sg,S.y+ax*sg+py*cg,S.z+pz)},
+ // m: the left arm, solved as the right one's mirror (x flipped): the pitch is the same, the roll turns the other way
+ if(m){PU.el.value.x=th;PU.ar.value.x=be;PU.ar.value.y=-ga;PU.aw.value.x=-yw;return}
+ PU.el.value.y=th;PU.ar.value.z=be;PU.ar.value.w=ga;yw&&(PU.aw.value.y=yw);stH.set(S.x+ax*cg-py*sg,S.y+ax*sg+py*cg,S.z+pz)},
 XA=V(1,0,0),YA=V(0,1,0),ZA=V(0,0,1),RGo=V(-.375,2.1,0),RGe=V(0,1.7,-.02),
 rgT=(v,ax,c,a)=>v.sub(c).applyAxisAngle(ax,a).add(c),
 rgR=k=>{const A=PU.ar.value,E=PU.el.value;A.z+=(-.84-A.z)*k;A.w+=(-.38-A.w)*k;E.y+=(-1.1-E.y)*k;PU.aw.value.y=1.2*k;
  rgT(rgT(rgT(rgT(stA.set(-.375,1.15,-.025),XA,RGe,E.y),YA,RGo,PU.aw.value.y),XA,RGo,A.z),ZA,RGo,A.w);stH.lerp(stA,k)},
+// the war hammer, two-handed: both hands about a third of the way up the haft, the right (stG) HMG up it and the left HMS below (poseStaff).
+// At rest it is held out before him, hands at the chest, the head up and forward past his left shoulder. The stroke is an overhead slam:
+// on the wind-up both hands lift it up before his face, a little to his right, till it stands high over his helm; then it comes over and
+// down in front, the haft turning through upright (HMa: its angle in the plane of the swing, 0 up, + forward), and he leans into it and
+// sinks at the knees (hmL, hmK) so the head comes to rest on the ground, the haft leant across him (HMx: its sideways lean at rest
+// and at the blow) so its long butt goes by his right side rather than into his chest. HMy turns both shoulders (the rig's aw, as the bow's draw does) so
+// the elbows stand out and the forearms come in across the front. The poses were searched against the game's own rig, frame by frame, to
+// keep the arms and hands out of the head and torso (with their thickness), the hammer out of the head, helm and torso, and both hands on
+// the haft within the arms' reach. The grip and the haft's heading (stD) blend from the carry to the stroke by sk
+HMG=.715,HMS=-.2,HMo=V(.375,2.1,0),HMc=[-.15,.15,.45],HMr=V(.161,1.696,.718),HMt=V(-.252,2.483,.627),HMi=V(.022,1.291,1.108),HMa=[.29,.082,2.459],HMy=[2.127,2.2,1.467],HMb=[.145,.326],HMx=[.06,.5],
+hmPose=(sk,su)=>{const e1=ssm(0,swUA,su),e2=ssm(swUA,.45,su),a=HMa[0]+(HMa[1]-HMa[0])*e1+(HMa[2]-HMa[1])*e2,yw=HMy[0]+(HMy[1]-HMy[0])*e1+(HMy[2]-HMy[1])*e2,
+  // on the move (pw) he carries it in his right hand alone, down at his side, its head up by his shoulder and its butt by his thigh, swaying
+  // with his stride; the left hand lets go (hmW, poseStaff) and his free arm swings. Standing, or once he strikes, both hands take it again
+  // (HMc: the arc it is carried round, out, up and forward, as it goes from both hands to one, which keeps its butt off his hip and thigh)
+  w=pw*(1-sk);hmW=1-w;
+ stG.copy(HMr);stD.set(HMx[0],cos(HMa[0]),sin(HMa[0])).normalize();
+ if(w>0){const k=sin(PI*w);stG.lerp(T1.set(-.5,1.16+.02*sin(ph*2),.14+.1*sin(ph-.4)),w);stG.x+=HMc[0]*k;stG.y+=HMc[1]*k;stG.z+=HMc[2]*k;stD.lerp(T2.set(-.3,1,.55+.12*sin(ph-.4)).normalize(),w).normalize()}
+ hmY=HMy[0]*hmW;if(sk<=0)return;hmY=(HMy[0]+(yw-HMy[0])*sk)*hmW;
+ T1.copy(HMr).lerp(HMt,e1).lerp(HMi,e2);T1.z+=HMb[0]*sin(PI*e1)+HMb[1]*sin(PI*e2);stG.lerp(T1,sk);stD.lerp(T2.set(HMx[0]*(1-e1)+HMx[1]*e2,cos(a),sin(a)).normalize(),sk).normalize()},
 poseStaff=(w,rn,L,su=0,sk=0,a=0)=>{const q=sin(ph);
  // at rest the sword hangs in his hand, point forward and low; walking it sways with the stride, jogging it rides a little higher. The grip
  // (stG) sits a hand's width up from the pommel (gl), and the blade runs on from it along stD
  const th=.23-.3*sin(ph-.4),tj=.2-.42*sin(ph-.45),zw=.85*sin(th),zj=.76*sin(tj);
  stG.set(-.45,1.2+sin(tm*1.3)*.008,.2).lerp(T1.set(-.46,2.1-.85*cos(th),zw),w).lerp(T2.set(-.43,2.1-.76*cos(tj),zj),rn);
- stD.set(.08,-.5,1).lerp(T1.set(.06,-.42+.5*(zw-.2),1),w).lerp(T2.set(.18,-.1+.4*(zj-.18),1),rn).normalize();const gl=.2;
+ stD.set(.08,-.5,1).lerp(T1.set(.06,-.42+.5*(zw-.2),1),w).lerp(T2.set(.18,-.1+.4*(zj-.18),1),rn).normalize();const gl=EQ.w?.t=='hm2'?HMG:.2;
  // swinging, he cuts with his whole arm: the hand rides an arc at nearly full reach from the shoulder (out to his right on the wind-up,
  // through in front, across on the follow-through), raised a little on the wind-up, and the blade sweeps flat and level in front of him
  if(sk>0){const b=.55*a-.15,el=swEl,rr=IK_R*swRf;
   stG.lerp(T1.set(IK_S.x+rr*sin(b)*cos(el),IK_S.y-rr*sin(el),IK_S.z+rr*cos(b)*cos(el)),sk);stD.lerp(T2.set(sin(a),swTl,cos(a)).normalize(),sk).normalize()}
  (CL().rng||EQ.w?.t=='hm2'||EQ.w?.t=='sc2')&&RPS(sk,su);stB.copy(stG).addScaledVector(stD,-gl);
  // the arm is solved before the spine bends it, so aim it at the grip with the spine's lean/rock undone, then bring the hand it reaches back
- stQ.setFromEuler(stE.set(SPp_,0,SPr_));stQi.copy(stQ).invert();armIK(T1.copy(stG).sub(T16).applyQuaternion(stQi).add(T16));CL().rng&&sk>0&&(EQ.w?.t=='bow'||EQ.w?.t=='xbw')&&rgR(sk);stH.sub(T16).applyQuaternion(stQ).add(T16);
+ stQ.setFromEuler(stE.set(SPp_,0,SPr_));stQi.copy(stQ).invert();armIK(T1.copy(stG).sub(T16).applyQuaternion(stQi).add(T16),0,EQ.w?.t=='hm2'?hmY:0);CL().rng&&sk>0&&(EQ.w?.t=='bow'||EQ.w?.t=='xbw')&&rgR(sk);stH.sub(T16).applyQuaternion(stQ).add(T16);
  stB.copy(stH).addScaledVector(stD,-gl);   // re-seat the staff on the hand the arm actually reaches
- EQ.w?.t=='bow'?stR.set(0,0,1):stR.set(0,1,0).lerp(T1.set(cos(a),0,-sin(a)),sk);stX.copy(stR).addScaledVector(stD,-stR.dot(stD)).normalize();stZ.crossVectors(stX,stD);stM.makeBasis(stX,stD,stZ);staff.quaternion.setFromRotationMatrix(stM).premultiply(stQi);staff.position.copy(stB).sub(T16).applyQuaternion(stQi)};
+ // the war hammer is two-handed: the left hand takes the haft HMS below the right, solved as the right arm is
+ // (on the move it is in his right hand alone: the left hand goes where its own swing puts it, and moves back onto the haft by hmW; the
+ // hand is blended, not the arm's angles, which carried the forearm in through his chest on the way, and it goes round, out to his left
+ // and forward, rather than straight across his front)
+ if(EQ.w?.t=='hm2'&&hmW>0){const A=PU.ar.value,E=PU.el.value;
+  if(hmW<1)rgT(rgT(rgT(stR.set(.375,1.15,-.025),XA,RGe,E.x),XA,HMo,A.x),ZA,HMo,A.y);
+  T2.copy(stB).addScaledVector(stD,gl+HMS).sub(T16).applyQuaternion(stQi).add(T16);if(hmW<1){const k=sin(PI*(1-hmW));T2.lerp(stR,1-hmW);T2.x+=.3*k;T2.z+=.2*k}armIK(T2,1,hmY)}
+ EQ.w?.t=='bow'?stR.set(0,0,1):EQ.w?.t=='hm2'?stR.set(0,-stD.z,stD.y):stR.set(0,1,0).lerp(T1.set(cos(a),0,-sin(a)),sk);stX.copy(stR).addScaledVector(stD,-stR.dot(stD)).normalize();stZ.crossVectors(stX,stD);stM.makeBasis(stX,stD,stZ);staff.quaternion.setFromRotationMatrix(stM).premultiply(stQi);staff.position.copy(stB).sub(T16).applyQuaternion(stQi)};
 const K={},CO=V(1,1.25,1).normalize(),LK=V(0,4,0),tv=V(),SHC=V(),lp=(a,b)=>a+(b-a)*RN;let RN=0,cvx=0,cvz=0,LNx=0,LNv=0,LSx=0,LSv=0,ASx=0,ASv=0,SPp=0,SPr=0,SKx=0,SKv=0,SKr=0,SKrv=0,ZM=63,ZMt=63,ptn=0,SPp_=0,SPr_=0,ph=0,pw=0,dgT=null,dgB=0,dsp=0,dph=0,jx=0,jy=0,gx=0,gy=0,jid=null,j0x=0,j0y=0;
 // ---- the sword stroke (Space / the sword button): a level right-to-left cut; mid-stroke every foe in the arc in front of him within the
 // blade's reach, or right at his feet, takes the blow ----
@@ -4220,8 +4251,10 @@ wetStep=sd=>{const p=P.position,fy=P.rotation.y,o=sd?.16:-.16,x=p.x+cos(fy)*o+si
 swordSweep=()=>{const p=P.position,fy=P.rotation.y,fx=sin(fy),fz=cos(fy),r=swR(),inR=(x,z)=>{const dx=x-p.x,dz=z-p.z,d=hypot(dx,dz);return d<=r+.4&&(d<=1.5||(dx*fx+dz*fz)/d>=arcT())};
  for(const f of FND)!f.got&&inR(f.x,f.z)&&chestOpen(f);gtSwing(p.x,p.z,fx,fz,r+1);swN++;swF=CSW[CLS]?.()||{m:1};CL().rng?BSH[CLS]():EQ.w?.t=='hm2'?hSlam(p,fx,fz):(wlfSwing(p,fx,fz),foeSwing(p,fx,fz));CSA[CLS]?.(p,fx,fz)};
 // the war hammer comes down on the ground 1.9m ahead: every foe within 2.76m of where it lands takes the blow, with a ring of dust and a thud
-const hSlam=(p,fx,fz)=>{const x=p.x+fx*1.9,z=p.z+fz*1.9,y=Hm(x,z),dm=bDmg();let n=0;for(const f of near(2.76,x,z)){wHit(f,dm);n++}
- for(let i=0;i<22;i++){const a=i/22*TAU;emit(x+cos(a)*1.08,y+.15,z+sin(a)*1.08,1,0xc8b48a,3.5,1.6,.45,6,.4)}emit(x,y+.2,z,14,0xffe08a,2,3,.4,6,.3);
+const hSlam=(p,fx,fz)=>{const x=p.x+fx*1.9,z=p.z+fz*1.9,dm=bDmg();let n=0;for(const f of near(2.76,x,z)){wHit(f,dm);n++}
+ // the dust rises where the head comes down (it lands nearer than the blow's 1.9m, the hero's reach being short)
+ staff.localToWorld(T3.set(0,HMH,0));const hx=T3.x,hz=T3.z,y=Hm(hx,hz);
+ for(let i=0;i<22;i++){const a=i/22*TAU;emit(hx+cos(a)*1.08,y+.15,hz+sin(a)*1.08,1,0xc8b48a,3.5,1.6,.45,6,.4)}emit(hx,y+.2,hz,14,0xffe08a,2,3,.4,6,.3);
  snd(70,.35,'sine',.32,35);snd(140,.12,'square',.05,60);n&&sfxW.hit()};
 // the swing trail: a ribbon the blade sweeps through the air, from just past the guard out to its point. Each frame of the
 // stroke adds a slice at the staff's pose; slices fade out over swTL seconds, clear toward the shaft and narrowing as they age, so the
@@ -4252,10 +4285,10 @@ function mvP(dt){let mx=(K.KeyD||K.ArrowRight?1:0)-(K.KeyA||K.ArrowLeft?1:0)+jx+
  dsC-=dt;if(dsT>0){dsT-=dt;const s=21*dt,fy=P.rotation.y,cx=p.x,cz=p.z;sweep(p,sin(fy)*s,cos(fy)*s,.45,2.4);wade(p,cx,cz);cliffStop(p,cx,cz);p.y=max(Hm(p.x,p.z),WL-1.2);R()<.6&&emit(p.x,p.y+.2,p.z,1,0xd9cdb0,1.5,.8,.4,4,.3);
   if(skL('br'))for(const f of near(2.4,p.x,p.z))f.dn!=dsN&&(f.dn=dsN,brHit(f));dsT<=0&&skr('wr')&&ACF.spin()}
  const sp=min(hypot(cvx,cvz),hypot(p.x-bx,p.z-bz)/max(dt,1e-4)),rn0=cl((sp-3.5)/3,0,1);RN+=(rn0-RN)*min(1,dt*4);const rn=RN;pvel=sp;ph+=sp/lp(1.3,1.7)*PI*dt;{const st=Math.floor(ph/PI);if(st!=pSt){pSt=st;sp>.8&&wetStep(st&1)}}pw+=(min(sp/3.5,1)-pw)*min(1,dt*6);const w=pw,q=sin(ph),c=cos(ph);
- let su=0,sk=0,sa=0,aE=0,aC=0,aL=0,aW=0;
+ let su=0,sk=0,sa=0,aE=0,aC=0,aL=0,aW=0,hmL=0,hmK=0;
  // aE: the stroke is on; aC: the coil (weight back); aL: the lunge (weight carried through onto the front foot); aW: his chest's twist,
  // a beat ahead of the blade so the body turns into the blow and the arm whips after it
- if(swT>=0){swT+=dt*swS;su=min(swT/SWD,1);sk=sm(0,.18,su)*(1-sm(.62,1,su));sa=swA(su);aE=sm(0,.16,su)*(1-sm(.74,1,su));aC=ssm(0,swUA,su)*(1-ssm(swUA,swUS,su));aL=ssm(swUA,swUS,su)*(1-ssm(swUS+.1,1,su));aW=.5*sk*swA(min(1,su+.06));if(CL().rng){aW*=.15;aC*=.3;aL*=.3}else if(EQ.w?.t=='hm2')aW*=.1;
+ if(swT>=0){swT+=dt*swS;su=min(swT/SWD,1);sk=sm(0,.18,su)*(1-sm(.62,1,su));sa=swA(su);aE=sm(0,.16,su)*(1-sm(.74,1,su));aC=ssm(0,swUA,su)*(1-ssm(swUA,swUS,su));aL=ssm(swUA,swUS,su)*(1-ssm(swUS+.1,1,su));aW=.5*sk*swA(min(1,su+.06));if(CL().rng){aW*=.15;aC*=.3;aL*=.3}else if(EQ.w?.t=='hm2'){aW*=.1;const e1=ssm(0,swUA,su),e2=ssm(swUA,.45,su);hmL=(.14*e1*(1-e2)+.45*e2)*sk;hmK=1.1*e2*sk*(1-.75*w)}
   swRf=.64+.32*ssm(.12,swUS-.08,su)-.04*ssm(swUS,.72,su);swEl=.22+.3*ssm(swUA,swUS-.05,su)-.1*ssm(swUS,.74,su);swTl=-.12+.5*aC;
   if(!swH&&su>swUA-.03){swH=1;sfx.swish()}if(swH==1&&(EQ.w?.t=='hm2'?su>.44:sa>-.9)){swH=2;swordSweep()}
   // the stroke brushes the grass: the wedge swept since last frame (heading swP -> fy+sa, which includes the torso twist the staff
@@ -4271,18 +4304,17 @@ function mvP(dt){let mx=(K.KeyD||K.ArrowRight?1:0)-(K.KeyA||K.ArrowLeft?1:0)+jx+
  // the stroke's stance: standing, his weight drops onto the back (right) foot on the coil and is carried over the front (left) one in the
 // cut, the feet staying planted (each hip swings back as the pelvis goes forward, each knee bend is taken up by a fold at the hip); at a
 // run only a trace of it
- const at=aE*(1-.75*w),dS=at*(-.1*aC+.3*aL),kf=at*(.08+.5*aL+.1*aC),kr=at*(.1+.35*aC+.15*aL),hf=dS/.73-kf/2.1,hr=dS/.73-kr/2.1;
+ const at=aE*(1-.75*w),dS=at*(-.1*aC+.3*aL),kf=at*(.08+.5*aL+.1*aC)+hmK,kr=at*(.1+.35*aC+.15*aL)+hmK,hf=dS/.73-kf/2.1,hr=dS/.73-kr/2.1;
  PU.lg.value.set(q*hA-hb+hf,-q*hA-hb+hr,kL*kS+kb+kl*stL+ib*max(0,ws)*.07+kf,kR*kS+kb+kl*stR+ib*max(0,-ws)*.07+kr);
  PU.ft.value.set((lp(.3,.45)*max(0,q)-.22*max(0,-q)*(1-kL))*w-at*.12*aC,(lp(.3,.45)*max(0,-q)-.22*max(0,q)*(1-kR))*w+at*.45*aL);
  ASv+=(-sin(ph-.4)*aA+ib*sin(tm*.8+.5)*.035-ASx)*150*dt;ASv*=Math.exp(-15*dt);ASx+=ASv*dt;
  PU.ar.value.set(ASx-.5*aC+.6*aL,.03+.03*w+ib*.015*br+.4*aL,q*aA*.4,-.03);PU.el.value.set(-.18+lp(-.22,-1.2)*w+min(0,ASx)*.35-ib*.04*br-.3*aC,-.3+lp(-.1,-.6)*w);
- if(EQ.w?.t=='hm2'&&sk>0){const A=PU.ar.value,E=PU.el.value,ax=-2.6+1.7*ssm(swUA,.45,su);A.x+=(ax-A.x)*sk;A.y+=(.25-A.y)*sk;E.x+=(-.6-E.x)*sk}
  PU.aw.value.set(0,0);if(CL().rng&&sk>0){const b2=EQ.w?.t=='bow'||EQ.w?.t=='xbw',A=PU.ar.value,E=PU.el.value;A.x+=((b2?-.84:-1.15)-A.x)*sk;A.y+=((b2?.38:.15)-A.y)*sk;E.x+=((b2?-1.1:-.3)-E.x)*sk;b2&&(PU.aw.value.x=-1.2*sk)}
  // coat skirt: trails back with speed and flicks with each footfall; overshoots forward when he pulls up
  SKv+=((.16*w*lp(.5,1)+.05*abs(q)*w*rn+.3*aL-.12*aC)-SKx)*70*dt;SKv*=Math.exp(-8*dt);SKx+=SKv*dt;SKrv+=(.05*q*w-SKr)*70*dt;SKrv*=Math.exp(-8*dt);SKr+=SKrv*dt;PU.sk.value.set(SKx,SKr);
  SPp+=(ln*.7+ib*.012*(br+1)-SPp)*min(1,dt*7);SPr+=(-q*.05*(1-rn*.5)*w+ib*ws*.03-SPr)*min(1,dt*7);
  // the spine as drawn: its lean and rock plus the change of pace's, the coil and the lunge
- const SPe=SPp+LNx*.6-.14*aC+.3*aL,SRe=SPr+LSx*.6+.1*aC-.12*aL,tpn=cl(ptn,-1,1);SPp_=SPe;SPr_=SRe;
+ const SPe=SPp+LNx*.6-.14*aC+.3*aL+hmL,SRe=SPr+LSx*.6+.1*aC-.12*aL,tpn=cl(ptn,-1,1);SPp_=SPe;SPr_=SRe;
  PU.sp.value.set(0,SPe,SRe,0);PU.tw.value=tw+aW+tpn*.16*(.3+.7*w);tg.rotation.set(SPe,PU.tw.value,SRe);
  pb.position.set(q*.03*w*(1-rn)+ws*.022*ib,(lp(-.027,.06)*abs(q)+lp(.027,-.012))*w-ib*.008*abs(ws)+(sqrt(.2689+.264*cos((kf+kr)/2))-.73)-.15*abs(LNx),dS);pb.rotation.set(ln*.3+LNx*.4,0,-tpn*.2*w+LSx*.4);pb.scale.y=1+br*.005*ib;
  PU.hd.value.set(sin(tm*.6)*.35*ib+tpn*.35*w-tw*.9-aW*.8,-(ln*.3+SPe)*.8+sin(ph*2)*.02*w-ib*.02*br+.1*aL);hd.rotation.set(PU.hd.value.y,PU.hd.value.x,0);poseStaff(w,rn,SL,su,sk,sa);swTrail(CL().rng?0:su);SHS.rotation.set(PU.ar.value.x,PU.aw.value.x,PU.ar.value.y);SHE.rotation.x=PU.el.value.x}
