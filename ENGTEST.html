@@ -607,6 +607,16 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
 @media (max-width:520px){#al .ccw{grid-template-columns:1fr}#al .ccp{justify-self:center}#al .ccp canvas{width:120px;height:150px}}
 #abw{position:fixed;left:50%;translate:-50% 0;bottom:calc(124px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:12px}
 #hud[hidden]~#abw,body.cz #abw{display:none}
+/* the attack button on a touch screen (body.mob): a big pixel slot under the right thumb, above the skills and the toolbar, tapped (or held,
+   for a bow's volley) to strike; its dark shade drains away as the stroke recovers, as the toolbar's sword slot's does. That small slot
+   is hidden there, this one standing in for it; a connected pad hides it again */
+#atk{display:none;position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(196px + env(safe-area-inset-bottom,0px));width:96px;height:96px;
+ place-items:center;padding:0;border:9px solid transparent;border-image:var(--pf-slot) 3/9px stretch;cursor:pointer;touch-action:none;
+ background:linear-gradient(rgba(0,0,0,.62) calc((1 - var(--c,1))*100%),transparent 0) padding-box,#2e2e33 padding-box;color:#f4f1ea}
+#atk:active{filter:brightness(1.35)}
+body.mob #hud:not([hidden])~#atk{display:grid}body.cz #atk,body.gp #atk{display:none!important}
+body.mob #tb #cb{display:none}
+@media (orientation:landscape){#atk{right:calc(24px + 4vw + env(safe-area-inset-right,0px));bottom:auto;top:50%;translate:0 -50%}}
 #rsb{display:grid;gap:5px;width:96px}
 #hrg,#hwd{display:block;height:8px;background:#141416;box-shadow:0 0 0 2px #0b0b0c}#hwd[hidden]{display:none}
 #hrg>i,#hwd>i{display:block;height:100%;width:0;transition:width .2s steps(6,end)}
@@ -925,6 +935,7 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
 <div class="tg tgr"><button class="sl" id="qb" hidden aria-label="Drink a healing draught"><svg class="pi" width="18" height="22" aria-hidden="true"><use href="#px-potion"/></svg><small>Q</small><b id="qbn">0</b></button><button class="sl" id="bmp" title="Map (M)" aria-label="Open the map"><svg class="pi" width="30" height="20" aria-hidden="true"><use href="#px-map"/></svg><small>M</small></button><button class="sl" id="bc" title="Inventory (I)" aria-label="Open your inventory"><svg class="pi" width="30" height="24" aria-hidden="true"><use href="#px-bag"/></svg><small>I</small></button><div class="gw" title="Gold"><svg class="pi" width="18" height="18" aria-hidden="true"><use href="#px-coin"/></svg><b id="wl">0</b></div><div class="bar" id="hm" title="Experience toward the next level"><span class="lv">LV <b id="fc">1</b></span><div id="hf"></div></div></div>
 </div>
 <div id="abw"><div id="rsb"><i id="hwd" hidden title="Ward"><i></i></i><i id="hrg" title="Rage"><i></i></i></div><span id="abr" role="group" aria-label="Skills"></span></div>
+<button id="atk" aria-label="Strike"><svg class="pi" width="57" height="57" aria-hidden="true"><use href="#px-sword"/></svg></button>
 <div id="ts" role="log" aria-live="polite"></div>
 <div id="mp" class="ov" role="dialog" aria-modal="true" aria-labelledby="mph" hidden><div class="pn"><div class="r"><h2 id="mph">Map of the Realm</h2><p id="mpd" class="mpd"></p><button class="b sm" id="mpx" aria-label="Close the map"><svg class="ic"><use href="#i-close"/></svg></button></div>
 <div class="mv" id="mv"><canvas id="mcv" aria-hidden="true"></canvas><div class="mk" id="mk"></div><svg class="mcr" viewBox="-50 -50 100 100" aria-hidden="true"><g transform="rotate(45)"><circle r="31" fill="rgba(246,232,196,.55)" stroke="#5a3d1c" stroke-width="1.2"/><circle r="24.5" fill="none" stroke="#5a3d1c" stroke-width=".8" stroke-dasharray="1.5 2.5"/><path d="M0-36 5.5-5.5 0 0z" fill="#8e1619"/><path d="M0-36-5.5-5.5 0 0z" fill="#5a0c0f"/><path d="M0 36 5.5 5.5 0 0z" fill="#5a3d1c"/><path d="M0 36-5.5 5.5 0 0z" fill="#3b2a18"/><path d="M-36 0-5.5-5.5 0 0zM36 0 5.5 5.5 0 0z" fill="#7a5a34"/><path d="M-36 0-5.5 5.5 0 0zM36 0 5.5-5.5 0 0z" fill="#a8845a"/><text y="-39" text-anchor="middle" font-family="'Pixelify Sans',ui-monospace,monospace" font-size="12" font-weight="700" fill="#5a0c0f">N</text></g></svg>
@@ -4326,7 +4337,7 @@ let mmSt=0,mmNt=0,mmNg=0,mmPh=.5;
 const clk=()=>{const a=-90+360*dT/CYC;mmNg=dT>=DAY?1:0;mmSt=(mmNg?a-180:a)*PI/180;mmNt=sm(DAY-40,DAY+60,dT)*(1-sm(CYC-60,CYC,dT));mmPh=((dy-1)/8+.5)%1};
 // the crook button's ring refills every frame rather than with the 5Hz hud, so it sweeps round smoothly instead of in four jumps;
 // the style is only written while the ring is moving
-let cbV=-1;const cbE=$('cb'),cbU=()=>{const v=Math.round((1-max(swC,0)/swCD())*1e3)/1e3;if(v!=cbV){cbV=v;cbE.style.setProperty('--c',v)}};
+let cbV=-1;const cbE=$('cb'),cbU=()=>{const v=Math.round((1-max(swC,0)/swCD())*1e3)/1e3;if(v!=cbV){cbV=v;cbE.style.setProperty('--c',v);$('atk').style.setProperty('--c',v)}};
 let hudK='';function hud(){$('fc').textContent=LV;$('wl').textContent=W|0;$('qbn').textContent=POT;$('qb').disabled=!POT;$('spb').hidden=!SP;$('spb').textContent=SP;abU();
  const nt=dT>=DAY,mn=Math.ceil((nt?CYC-dT:DAY-dT)/60),wi=nt&&wxI<2?'moon':WXD[wxI][1],k=wi+wxI+'/'+dy+'/'+mn+nt+mmZ;
  $('hf').style.width=min(100,XP/xpN(LV)*100)+'%';xpR(P.position.x,P.position.z);mIdle();wcFlush(60,3);
@@ -4732,7 +4743,7 @@ renderer.domElement.addEventListener('touchstart',e=>{if(jid!==null||ov)return;c
 addEventListener('touchmove',e=>{for(const t of e.changedTouches)if(t.identifier===jid){let dx=t.clientX-j0x,dy2=t.clientY-j0y;const l=hypot(dx,dy2),m=l>50?50/l:1;dx*=m;dy2*=m;jx=dx/50;jy=dy2/50;jk.style.transform=`translate(${dx}px,${dy2}px)`}},{passive:true});addEventListener('touchend',je);addEventListener('touchcancel',je);
 // the crook button swings the moment a finger lands on it: phones never turn a tap into a click while another finger is down on the
 // walk stick, so onclick alone did nothing mid-walk. preventDefault drops the click a lone tap would still send after this.
-$('cb').addEventListener('touchstart',e=>{e.preventDefault();cbH=1;swing()},{passive:false});for(const ev of ['touchend','touchcancel','mouseup','mouseleave'])$('cb').addEventListener(ev,()=>cbH=0);$('cb').addEventListener('mousedown',()=>cbH=1);$('qb').addEventListener('touchstart',e=>{e.preventDefault();drink()},{passive:false});$('abr').addEventListener('touchstart',e=>{const b=e.target.closest('[data-a]');if(!b)return;e.preventDefault();acUse(+b.dataset.a)},{passive:false});$('abr').onclick=e=>{const b=e.target.closest('[data-a]');b&&acUse(+b.dataset.a)};
+$('cb').addEventListener('touchstart',e=>{e.preventDefault();cbH=1;swing()},{passive:false});for(const ev of ['touchend','touchcancel','mouseup','mouseleave'])$('cb').addEventListener(ev,()=>cbH=0);$('cb').addEventListener('mousedown',()=>cbH=1);$('atk').addEventListener('touchstart',e=>{e.preventDefault();cbH=1;swing()},{passive:false});for(const ev of ['touchend','touchcancel','mouseup','mouseleave'])$('atk').addEventListener(ev,()=>cbH=0);$('atk').addEventListener('mousedown',()=>cbH=1);$('atk').onclick=swing;$('qb').addEventListener('touchstart',e=>{e.preventDefault();drink()},{passive:false});$('abr').addEventListener('touchstart',e=>{const b=e.target.closest('[data-a]');if(!b)return;e.preventDefault();acUse(+b.dataset.a)},{passive:false});$('abr').onclick=e=>{const b=e.target.closest('[data-a]');b&&acUse(+b.dataset.a)};
 // ---- a gamepad (standard mapping), polled each frame: the left stick or d-pad walks, A strikes, B drinks a draught, RB dashes, Y opens the skill tree,
 // X the gear and quests, Start pauses and the right stick zooms. In the menus and on the title the d-pad or stick moves between buttons,
 // A presses, B backs out and LB/RB turn the gear panel's tabs. Button names follow the pad (A/B/X/Y or the PlayStation shapes) ----
