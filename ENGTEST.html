@@ -892,6 +892,16 @@ body.mob #tb #cb{display:none}
 #qt>div{display:grid;justify-items:end;gap:4px}
 #qt.m{gap:10px}#qt.m b{font-size:18px}#qt.m small{font-size:14px}
 #qt .ok b{color:#9af0b8}
+/* the class picker with the classes' emblems: the dialog wider, each class a card with its emblem in a dark slot ringed in its colour,
+   glowing when picked */
+#al.cp{width:min(660px,100%)}
+#al.cp .cpb{justify-items:center;text-align:center;padding:12px 10px 12px;box-shadow:inset 0 4px 0 var(--rc)}
+#al .cpe{width:66px;height:66px;display:grid;place-items:center;margin:2px 0 6px;background:radial-gradient(circle,#2e2624,#141010 70%);box-shadow:inset 0 0 0 2px #0b0706,inset 0 0 0 4px var(--rc),inset 0 0 0 6px #0b0706}
+#al .cpe img{display:block;width:54px;height:54px;image-rendering:pixelated}
+#al .cpb.on .cpe{box-shadow:inset 0 0 0 2px #0b0706,inset 0 0 0 4px var(--rc),inset 0 0 0 6px #0b0706,0 0 14px var(--rc)}
+#al .cpb.on .cpe img{animation:cpeb 1.2s steps(2,end) infinite}
+@keyframes cpeb{50%{translate:0 -2px}}
+@media (max-width:620px){#al .cpe{width:48px;height:48px}#al .cpe img{width:36px;height:36px}}
 </style>
 <script type="importmap">
 {"imports":{
@@ -4388,12 +4398,19 @@ wetStep=sd=>{const p=P.position,fy=P.rotation.y,o=sd?.16:-.16,x=p.x+cos(fy)*o+si
 // gate within a few metres swung open
 swordSweep=()=>{const p=P.position,fy=P.rotation.y,fx=sin(fy),fz=cos(fy),r=swR(),inR=(x,z)=>{const dx=x-p.x,dz=z-p.z,d=hypot(dx,dz);return d<=r+.4&&(d<=1.5||(dx*fx+dz*fz)/d>=arcT())};
  for(const f of FND)!f.got&&inR(f.x,f.z)&&chestOpen(f);gtSwing(p.x,p.z,fx,fz,r+1);swN++;swF=CSW[CLS]?.()||{m:1};CL().rng?BSH[CLS]():EQ.w?.t=='hm2'?hSlam(p,fx,fz):(wlfSwing(p,fx,fz),foeSwing(p,fx,fz));CSA[CLS]?.(p,fx,fz)};
+// the war hammer's thud as its head meets the ground: a deep body falling from 110 to 40 Hz with a triangle an octave up (so a phone's
+// small speaker still carries it), the crunch of earth (low-passed noise closing down), a short bright crack at the moment of contact,
+// and two soft ticks of dirt falling back. Each a little different in pitch
+const hThud=()=>{if(!AC)return;const t=AC.currentTime,k=.92+R()*.16,
+  tone=(ty,f0,f1,v,d)=>{const o=AC.createOscillator(),g=AC.createGain();o.type=ty;o.frequency.setValueAtTime(f0*k,t);o.frequency.exponentialRampToValueAtTime(f1*k,t+d);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.004);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);pan(g,0);o.start(t);o.stop(t+d+.02)},
+  nz=(ty,f0,f1,q,v,dl,d)=>{if(!NB)return;const s=AC.createBufferSource(),b=AC.createBiquadFilter(),g=AC.createGain();s.buffer=NB;b.type=ty;b.Q.value=q;b.frequency.setValueAtTime(f0*k,t+dl);b.frequency.exponentialRampToValueAtTime(f1*k,t+dl+d);g.gain.setValueAtTime(0,t+dl);g.gain.linearRampToValueAtTime(v,t+dl+.005);g.gain.exponentialRampToValueAtTime(.001,t+dl+d);s.connect(b).connect(g);pan(g,(R()-.5)*.3);s.start(t+dl,R()*1.5);s.stop(t+dl+d+.02)};
+ tone('sine',110,40,.6,.42);tone('triangle',220,70,.14,.22);nz('lowpass',900,170,.8,.5,0,.32);nz('bandpass',2600,1400,1.2,.1,0,.05);nz('bandpass',1800,1200,2,.05,.12,.05);nz('bandpass',2200,1500,2,.035,.2,.04)};
 // the war hammer comes down on the ground 1.9m ahead: every foe within 2.76m of where it lands takes the blow, with a ring of dust and a thud
 const hSlam=(p,fx,fz)=>{const x=p.x+fx*1.9,z=p.z+fz*1.9,dm=bDmg();let n=0;for(const f of near(2.76,x,z)){wHit(f,dm);n++}
  // the dust rises where the head comes down (it lands nearer than the blow's 1.9m, the hero's reach being short)
  staff.localToWorld(T3.set(0,HMH,0));const hx=T3.x,hz=T3.z,y=Hm(hx,hz);
  for(let i=0;i<22;i++){const a=i/22*TAU;emit(hx+cos(a)*1.08,y+.15,hz+sin(a)*1.08,1,0xc8b48a,3.5,1.6,.45,6,.4)}emit(hx,y+.2,hz,14,0xffe08a,2,3,.4,6,.3);
- snd(70,.35,'sine',.32,35);snd(140,.12,'square',.05,60);n&&sfxW.hit()};
+ hThud();n&&sfxW.hit()};
 // the swing trail: a ribbon the blade sweeps through the air, from just past the guard out to its point. Each frame of the
 // stroke adds a slice at the staff's pose; slices fade out over swTL seconds, clear toward the shaft and narrowing as they age, so the
 // stroke leaves one clean crescent that thins away from its tail
@@ -4738,11 +4755,27 @@ tgr=()=>{rmof=!rmof;$('prm').textContent='Controller rumble: '+(rmof?'off':'on')
 // an alert for a choice that can't be undone: the title asks it, the message says exactly what goes and what stays, Cancel is the
 // default (focused, and what Esc or B does) and the erasing button is red. Resolves true only for that button. With o.v (a picture,
 // for a find) the dialog turns friendly instead: o.c names the other button, the action is green and takes the focus
-pickCls=()=>new Promise(r=>{const d=$('al'),c0=$('alc'),m=$('alm');let c=CLS;$('alt').textContent='Choose your class';$('alv').hidden=true;d.classList.remove('fi');
- m.innerHTML='<span class="cpk">'+Object.entries(CLD).map(([k,C])=>`<button class="cpb${k==c?' on':''}" data-c="${k}" style="--rc:${C.rc}"><b>${C.n}</b><small>${C.d}</small><em>${ACN[C.ac][0]} armour · ${C.rs}</em><em>${C.wn}</em></button>`).join('')+'</span>';
+// the classes' emblems for the picker, 16-pixel art: a plain sword, a war hammer haloed in gold, a ram-horned skull, two short
+// daggers side by side on a slant, a bow drawn with its arrow pointing past it, an upright staff with a glowing orb. Rows split by |; each letter a colour (r and its shades are the class's
+// own); an ink line is drawn round every filled pixel. emSrc(k) is the picture, made once (EMC)
+CEM={war:'.......w........|......wsS.......|......wsS.......|......wsS.......|......wsS.......|......wsS.......|......wsS.......|......wsS.......|......wsS.......|......wsS.......|...GgggggggG....|......RrR.......|......RrR.......|......RrR.......|......gGG.......|.......G........',
+ pal:'.......g........|..g....g....g...|...g.......g....|....wwwwwwww....|g..wwwwwwwwww..g|...wssssssssw...|...wssggggssw...|...wssssssssw...|....SSSSSSSS....|..g....dd....g..|.......dd.......|.......Dd.......|.......dd.......|.......Dd.......|......gGGg......|.......gg.......',
+ nec:'................|..pP........Pp..|.pP.PbbbbbbP.Pp.|.Pp.bbbbbbbb.pP.|.PpbbbbbbbbbbpP.|..PbbbbbbbbbbP..|..PbbppbbppbbP..|...bbpPbbpPbb...|...bbbbbbbbbb...|....bbbBBbbb....|.....bbbbbb.....|.....bBbBbB.....|.....bbbbbb.....|......B.B.B.....|................|................',
+ rog:'................|................|........w.......|.......wS.......|......wS........|.....ws.........|..gGwsS.....w...|...gGS.....wS...|..rRgG....wS....|..G......ws.....|......gGwsS.....|.......gGS......|......rRgG......|......G.........|................|................',
+ rgr:'.........d......|.........sd.....|........s.Dd....|.......s..Dd....|......s....Dd...|.....s.....Dd...|...rrr.....DdSs.|...dDdDdDdDdDdws|...rrr.....DdSS.|.....s.....Dd...|......s....Dd...|.......s..Dd....|........s.Dd....|.........sd.....|.........d......|................',
+ mag:'.............l..|..l...OOOO......|.....OooOOO.....|.....OoOOOO.....|....gOOOOOOg....|.....gOOOOg..l..|..l...GggG......|.......dD.......|.......dD...l...|.......dD.......|.......dD.......|.......dD.......|.......dD.......|.......dD.......|.......dD.......|.......gG.......'},EMC={},
+emSrc=k=>{if(EMC[k])return EMC[k];const A=CEM[k].split('|'),c=document.createElement('canvas'),x=c.getContext('2d'),N=18,rc=parseInt(CLD[k].rc.slice(1),16),
+  sh=(h,f)=>'#'+[16,8,0].map(b=>Math.min(255,Math.round((h>>b&255)*f)).toString(16).padStart(2,'0')).join(''),
+  P={w:'#e8ecf2',W:'#e8ecf2',s:'#9aa3b0',S:'#5d6470',g:'#f2c14e',G:'#a87a1e',d:'#8a5a2e',D:'#5a3a1e',b:'#e8e0c8',B:'#a89f88',p:'#c9a2ff',P:'#6a3ab0',v:'#7fd23a',f:'#e8e0c8',o:'#e8f4ff',r:sh(rc,1),O:sh(rc,1),R:sh(rc,.6),l:sh(rc,1.35)};
+ c.width=c.height=N;A.forEach((r,y)=>[...r].forEach((q,i)=>{if(q!='.'){x.fillStyle=P[q]||'#f0f';x.fillRect(i+1,y+1,1,1)}}));
+ const im=x.getImageData(0,0,N,N),d=im.data,o=new Uint8Array(N*N);for(let i=0;i<N*N;i++)o[i]=d[i*4+3]>0;
+ for(let j=0;j<N;j++)for(let i=0;i<N;i++){const q=j*N+i;if(!o[q]&&((i&&o[q-1])||(i<N-1&&o[q+1])||(j&&o[q-N])||(j<N-1&&o[q+N]))){d[q*4]=11;d[q*4+1]=7;d[q*4+2]=6;d[q*4+3]=255}}
+ x.putImageData(im,0,0);return EMC[k]=c.toDataURL()},
+pickCls=()=>new Promise(r=>{const d=$('al'),c0=$('alc'),m=$('alm');let c=CLS;$('alt').textContent='Choose your class';$('alv').hidden=true;d.classList.remove('fi');d.classList.add('cp');
+ m.innerHTML='<span class="cpk">'+Object.entries(CLD).map(([k,C])=>`<button class="cpb${k==c?' on':''}" data-c="${k}" style="--rc:${C.rc}"><i class="cpe"><img src="${emSrc(k)}" alt="" width="54" height="54"></i><b>${C.n}</b><small>${C.d}</small><em>${ACN[C.ac][0]} armour · ${C.rs}</em><em>${C.wn}</em></button>`).join('')+'</span>';
  $('alo').textContent='Begin';$('alo').className='pr';c0.hidden=true;
  m.onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;c=b.dataset.c;for(const q of m.querySelectorAll('.cpb'))q.classList.toggle('on',q===b)};m.ondblclick=e=>e.target.closest('[data-c]')&&d.close('ok');
- d.onclose=()=>{c0.hidden=false;m.onclick=m.ondblclick=null;r(c)};d.returnValue='';d.showModal();m.querySelector('.cpb.on').focus()}),
+ d.onclose=()=>{c0.hidden=false;d.classList.remove('cp');m.onclick=m.ondblclick=null;r(c)};d.returnValue='';d.showModal();m.querySelector('.cpb.on').focus()}),
 // the hero's portrait for the making screen, drawn from the same layout as his voxel head (BOD, in half cells, seen from the front):
 // the class's tunic at the shoulders, the face, eyes, brows, cheeks and mouth, the hair in the chosen colour with its lighter streak, and
 // a woman's longer hair and lashes; an ink line round it all. One art pixel is a half cell
