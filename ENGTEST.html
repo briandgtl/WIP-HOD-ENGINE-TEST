@@ -173,57 +173,6 @@ kbd{margin-right:6px;padding:1px 7px 2px;border-radius:4px;font:400 12px var(--p
 .sb .ic{width:17px;height:17px;margin:0;color:var(--gold3)}
 @media (max-width:560px){.cg,.cg.tch{grid-template-columns:repeat(2,minmax(0,1fr))}.cg.kbc>.ci:first-child,.cg.kbc>.ci:last-child{grid-column:1/-1}}
 @media (max-height:700px){.ci small{display:none}.ci{padding:6px 6px 5px;gap:2px}.kc{min-height:28px}}
-/* how to play: a paged primer on the menus' parchment. The medallion, title and close cross are pinned above the page and the dots and buttons
-   below it (as in the farm shop), so the panel keeps one size from page to page. Keycaps on it light while their key is held */
-#tu>.pn{width:min(680px,100%);height:min(740px,calc(100% - 8px));overflow:hidden;grid-template-rows:auto minmax(0,1fr) auto;gap:12px;padding:14px 22px 18px}
-#tu>.pn:focus{outline:0}
-.tuh{display:flex;align-items:center;gap:14px}
-.tuh>div{flex:1;display:grid;gap:1px;min-width:0}
-.tum{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;flex:none;color:var(--gold3);background:var(--stonetex),radial-gradient(circle at 34% 28%,#aca79a,#76726a 52%,#45413a);box-shadow:inset 0 0 0 2px #21160a,inset 0 0 0 4px var(--gold2),inset 0 0 0 5.5px #21160a,0 3px 8px rgba(40,22,4,.3)}
-.tum .ic{width:30px;height:30px;filter:drop-shadow(0 1px 0 #1c1208)}
-.tus{font:400 12.5px var(--pxf);letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
-#tut{font-size:29px;text-wrap:balance}
-.tpg{display:grid;gap:10px;align-content:start;animation:pin .26s cubic-bezier(.2,.8,.3,1)}
-.tl{font-size:17px;line-height:1.4;color:var(--ink2);text-wrap:pretty}
-.tl b,.tcs p b,.tnt b,.tk small b{font:400 1.04em var(--pxf);color:var(--ink)}
-.tcs{display:grid;gap:8px}
-.tks{display:flex;flex-wrap:wrap;justify-content:center;gap:9px}
-.tk{display:flex;align-items:center;gap:11px;padding:7px 13px 7px 11px;border-radius:5px;background:rgba(255,249,228,.5);border:1px solid rgba(112,74,30,.5);box-shadow:inset 0 0 0 3px rgba(255,250,235,.35)}
-.tk .kc{min-height:0}
-.tk .kn{display:grid;gap:1px}
-.tk b{font:400 15px var(--pxf);color:var(--ink)}
-.tk small{font-size:13px;color:var(--ink2);line-height:1.15}
-.tk kbd.on,.ci kbd.on{translate:0 2px;color:var(--ink);background:linear-gradient(#f5e1a4,#d9b057 55%,#b98a2e);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 0 0 1px #5d3c10,0 0 10px rgba(214,166,64,.8)}
-.tnt{padding:8px 12px;border-radius:5px;font-size:14.5px;line-height:1.35;color:var(--ink2);background:rgba(112,74,30,.1);border:1px dashed rgba(112,74,30,.45)}
-/* the pictures: a screenshot framed like a print on the parchment (a pale mat, a dark keyline), its caption beneath. A ring points at something to
-   look for; a card's preview sits at its right, and drops under its words on a narrow panel. Both are left out on a short screen */
-.tlf{display:grid;gap:12px}
-@media (min-width:640px){.tlf{grid-template-columns:minmax(0,.74fr) minmax(0,1.46fr);gap:16px;align-items:center}}
-.tfig{display:grid;gap:6px;margin:0}
-.tfi{position:relative;width:fit-content;max-width:100%;margin:0 auto;padding:4px;border-radius:6px;background:rgba(255,249,228,.55);border:1px solid rgba(112,74,30,.55);box-shadow:inset 0 0 0 2px rgba(255,250,235,.35),0 3px 8px rgba(40,22,4,.16)}
-.tfi img,.cdi img{display:block;width:100%;height:auto;background:#cbbb8c}
-.tfi img{width:auto;max-width:100%;border-radius:3px;outline:1px solid rgba(60,35,8,.6);outline-offset:-1px}
-.tfig figcaption{font-size:13.5px;line-height:1.3;color:var(--ink2);text-align:center;text-wrap:balance}
-.pin{position:absolute;translate:-50% -50%;aspect-ratio:1;border-radius:50%;border:2.5px solid var(--gold3);box-shadow:0 0 0 2px rgba(36,24,12,.72),0 0 12px 2px rgba(243,213,138,.7),inset 0 0 8px rgba(243,213,138,.35);pointer-events:none}
-.cdi{width:156px;flex:none;align-self:center;padding:3px;border-radius:5px;background:rgba(255,249,228,.55);border:1px solid rgba(112,74,30,.55);box-shadow:0 2px 5px rgba(40,22,4,.22)}
-.cdi img{border-radius:3px;outline:1px solid rgba(60,35,8,.55);outline-offset:-1px}
-#tu .cd{padding:8px 11px;gap:11px}
-#tu .cd>i{width:46px;height:46px}#tu .cd>i .ic{width:24px;height:24px}
-#tu .cd h3{font-size:15px}#tu .cd p{font-size:13px;line-height:1.3}
-.tuf{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.tup{display:flex;flex-wrap:wrap;gap:2px}
-.tup button{position:relative;width:24px;height:26px;display:grid;place-items:center}
-.tup button::before{content:'';width:15px;height:6px;border-radius:3px;background:rgba(92,60,20,.22);box-shadow:inset 0 1px 1px rgba(60,35,8,.35);transition:background .2s,width .2s}
-.tup button.dn::before{background:rgba(111,145,61,.5)}
-.tup button.on::before{background:var(--moss2);width:20px}
-.tup button::after{content:'';position:absolute;inset:-8px -2px}
-.pb.tn{display:flex;gap:10px}
-.pb.tn button{min-width:104px}
-.pb.tn button:disabled{color:var(--mut);background:rgba(120,90,40,.16);border-color:rgba(93,60,16,.3);box-shadow:none;cursor:default;translate:none}
-@media (max-width:560px){#tu>.pn{padding:12px 14px 14px;gap:9px}.tum{width:46px;height:46px}.tum .ic{width:25px;height:25px}#tut{font-size:23px}.tl{font-size:15.5px}.tcs{gap:7px}#tu .cd{padding:8px;gap:9px}#tu .cd>i{width:42px;height:42px}#tu .cd>i .ic{width:22px;height:22px}.tuf{flex-wrap:wrap;justify-content:center;gap:6px 12px}#tu .cd{flex-wrap:wrap}#tu .cd>div{flex:1 1 150px;min-width:0}.cdi{order:3;width:min(100%,184px);margin:2px auto 0}.tup{order:-1;flex:1 0 100%;justify-content:center;flex-wrap:nowrap}.pb.tn{flex:1}.pb.tn button{flex:1;min-width:0;padding-inline:12px}}
-@media (max-height:520px){.tfig,.cdi{display:none}#tu>.pn{height:calc(100% - 8px);gap:7px;padding:10px 16px 12px}.tum{display:none}#tut{font-size:22px}.tl{font-size:14.5px}.tcs{gap:6px}#tu .cd{padding:6px 9px;gap:9px}#tu .cd>i{width:36px;height:36px}#tu .cd>i .ic{width:19px;height:19px}#tu .cd p{font-size:12.5px}.tk{padding:5px 10px}.tnt{font-size:13px;padding:5px 9px}.tup button{width:19px}}
-@media (max-height:520px) and (min-width:560px){.tcs{grid-template-columns:repeat(2,minmax(0,1fr))}.tpg{gap:8px}}
-@media (pointer:coarse){.tup button{width:30px;height:40px}.tup button::after{inset:-2px 0}}
 /* the loading bar: a gilt fill in the parchment groove the happiness bar uses, a triskele medallion (the title divider's) riding its
    leading edge, and the step named beneath. Fill and medallion move on the same transform transition, which the browser runs off
    the main thread, so they keep gliding while the world is being built */
@@ -330,7 +279,7 @@ h1{font-weight:700;letter-spacing:.03em}h2{font-weight:600;letter-spacing:.03em}
 #tt h1{filter:drop-shadow(0 3px 16px rgba(0,0,0,.75)) drop-shadow(0 1px 1px #000)}
 .cth{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:var(--gold3);filter:none}
 /* crimson title bars on the menus, the primer and the pause card */
-.ov>.pn>.r:first-child,.tuh,#pm>.pn>h2{margin:-4px -6px 0;padding:6px 8px 6px 16px;border-radius:3px;background:var(--crim);border:1px solid #c9a27a;box-shadow:inset 0 1px 0 rgba(255,180,160,.25),inset 0 -10px 18px rgba(0,0,0,.35),0 3px 8px rgba(0,0,0,.5)}
+.ov>.pn>.r:first-child,#pm>.pn>h2{margin:-4px -6px 0;padding:6px 8px 6px 16px;border-radius:3px;background:var(--crim);border:1px solid #c9a27a;box-shadow:inset 0 1px 0 rgba(255,180,160,.25),inset 0 -10px 18px rgba(0,0,0,.35),0 3px 8px rgba(0,0,0,.5)}
 #pm>.pn>h2{padding:8px 12px;color:var(--gold3);filter:none;text-shadow:0 2px 0 rgba(0,0,0,.6)}
 /* buttons: charcoal bevel; crimson for the call to action; the destructive one dark with red letters */
 .pb button,#go,#sg{color:var(--ink);background:var(--char);border:1px solid #6e6262;letter-spacing:.06em;text-shadow:0 1px 0 #000;box-shadow:inset 0 1px 0 rgba(255,235,220,.16),inset 0 -2px 0 rgba(0,0,0,.4),0 0 0 1px #0d0a0a,0 4px 10px rgba(0,0,0,.5)}
@@ -338,7 +287,6 @@ h1{font-weight:700;letter-spacing:.03em}h2{font-weight:600;letter-spacing:.03em}
 .pb button:active,#go:active,#sg:active{box-shadow:inset 0 1px 0 rgba(255,235,220,.1),0 0 0 1px #0d0a0a}
 .pb .pr,#go,#sg,button.pr{color:#fbe9d6;background:var(--crim);border-color:#d04a3a;text-shadow:0 1px 0 #2a0606;box-shadow:inset 0 1px 0 rgba(255,170,150,.35),inset 0 -2px 0 rgba(0,0,0,.4),0 0 0 1px #1a0606,0 4px 10px rgba(0,0,0,.5)}
 .pb .dg{color:#ff9a86;background:linear-gradient(#2e2020,#1c1414);border-color:#8a2d1f}
-.pb.tn button:disabled{color:var(--mut);background:rgba(255,255,255,.04);border-color:#3e3434;box-shadow:none}
 /* cards, cells and notes: raised charcoal plates with a hairline */
 .cd,.ci,.tk{background:linear-gradient(#352c2b,#241e1e);border:1px solid #4d3f38;box-shadow:inset 0 1px 0 rgba(255,235,210,.06),0 2px 5px rgba(0,0,0,.4)}
 .tnt{color:var(--ink2);background:rgba(0,0,0,.28);border:1px dashed #6b5240}
@@ -350,7 +298,6 @@ h1{font-weight:700;letter-spacing:.03em}h2{font-weight:600;letter-spacing:.03em}
 .cd button{color:#fff1d6;background:var(--amb);border:1px solid #e0b060;text-shadow:0 1px 0 #2a1604;box-shadow:inset 0 1px 0 rgba(255,230,170,.35),0 2px 0 #1a0f04}
 .cd button:disabled{color:var(--mut);background:rgba(255,255,255,.04);border-color:#3e3434;box-shadow:none;text-shadow:none}
 .pp i{background:rgba(255,230,200,.1);box-shadow:inset 0 1px 1px rgba(0,0,0,.6)}.pp i.on{background:linear-gradient(#f0d2a6,#b07a24)}
-.tup button::before{background:rgba(255,230,200,.16);box-shadow:none}.tup button.dn::before{background:rgba(201,162,122,.45)}.tup button.on::before{background:var(--gold3)}
 .czt{background:rgba(0,0,0,.4);box-shadow:inset 0 0 0 1px #4d3f38}
 .czt button{color:var(--ink2);letter-spacing:.06em}
 .czt button[aria-selected="true"]{color:#fbe9d6;background:var(--crim);box-shadow:inset 0 0 0 1px #d04a3a,inset 0 1px 0 rgba(255,170,150,.3)}
@@ -804,6 +751,147 @@ body.mob #tb #cb{display:none}
 #cm #cdw{min-height:0}
 #cm #hsx{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 14px}#cm .sx small{font-size:14px}#cm .sx b{font-size:14px}
 @media (max-width:640px){#cm .fr{width:44px;height:44px}#cm .fr .ic{width:24px;height:24px}#cm .dl{gap:6px}#cm #hsx{grid-template-columns:1fr 1fr}}
+/* ---- how to play, in the pixel menus' dress: a stone-framed window like the Hero's, its title in gilt pixels over a pixel rule, a tab of
+   pixel icons for each page, bevelled plates for the cards and keys, and the pause card's plaque buttons. The icons are the menu icons
+   redrawn as 16-pixel sprites with an ink outline (pxSrc), shown at twice their size ---- */
+#tu.ov{background:rgba(4,3,3,.66)}
+#tu>.pn{width:min(760px,100%);height:min(664px,calc(100% - 8px));max-height:none;overflow:hidden;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;padding:12px 16px 14px;border:8px solid transparent;border-image:var(--pf-stone) 4/8px stretch;border-radius:0;color:#e4d6bc;background:var(--grain) padding-box,linear-gradient(#1f1b1a,#121010) padding-box;box-shadow:0 0 0 2px #000,0 18px 40px rgba(0,0,0,.65)}
+#tu>.pn:focus{outline:0}
+#tu .pxi,#bb .pxi{display:block;width:32px;height:32px;flex:none;background:center/100% 100% no-repeat;image-rendering:pixelated}
+#tu .tuh,#bb .tuh{display:flex;align-items:center;gap:12px;margin:0;padding:0 0 12px;border:0;border-radius:0;box-shadow:none;background:linear-gradient(#0b0706 2px,#c9983f 2px 4px,#0b0706 4px 6px) bottom/100% 6px no-repeat}
+#tu .tuh>div,#bb .tuh>div{flex:1;display:grid;gap:3px;min-width:0}
+#tu .tum,#bb .tum{width:48px;height:48px;flex:none;display:grid;place-items:center;border-radius:0;border:6px solid transparent;border-image:var(--pf-slot) 3/6px stretch;background:#2e2e33 padding-box;box-shadow:none}
+#tu .tus,#bb .tus{font:400 12px var(--pxf);letter-spacing:.16em;text-transform:uppercase;color:#9a8a70}
+#tu #tut{margin:0;font:700 26px/1.05 var(--pxf);letter-spacing:.03em;color:#f0cf7a;-webkit-text-fill-color:#f0cf7a;background:none;filter:none;text-shadow:0 2px 0 #000;text-wrap:balance}
+#tu #tux{width:34px;height:34px;flex:none;border-radius:0;color:#fff;background:#7a1414;box-shadow:inset 0 0 0 2px #0b0b0c,inset 3px 3px 0 #c03030,inset -3px -3px 0 #4a0808}
+#tu #tux .ic{width:18px;height:18px}#tu #tux:hover{filter:brightness(1.2)}
+#tu .tpg{display:grid;gap:10px;align-content:start;animation:tupg .24s steps(4,end)}
+@keyframes tupg{from{opacity:0;translate:0 8px}}
+#tu .tl,#bb .tl{margin:0;font:400 16px/1.45 var(--pxf);color:#d7c7aa;text-wrap:pretty}
+#tu .tl b,#tu .tnt b,#tu .cd p b{font-weight:600;color:#f0cf7a}
+/* a plate: dark, with a black keyline and a one-step bevel */
+#tu .cd,#tu .tk,#tu .tcc,#tu .tsg,#tu .tqw{border-radius:0;border:2px solid #0b0b0c;background:#1d1918;box-shadow:inset 2px 2px 0 #3a3430,inset -2px -2px 0 #110e0d}
+#tu .tcs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:8px}
+#tu .cd{display:flex;align-items:flex-start;gap:10px;padding:9px 10px}
+#tu .cd>i{width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:0;background:#2e2a28;box-shadow:inset 0 0 0 2px #0b0b0c,inset 4px 4px 0 #4a4440,inset -4px -4px 0 #1a1716}
+#tu .cd>div{display:grid;gap:3px;min-width:0}
+#tu .cd h3{margin:0;font:600 15px var(--pxf);color:#f0cf7a;text-shadow:0 2px 0 #000}
+#tu .cd p{margin:0;font:400 13.5px/1.35 var(--pxf);color:#bfae92}
+#tu .tks{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:6px}
+#tu .tk{display:flex;align-items:center;gap:10px;padding:6px 10px}
+#tu .tk .kc{display:flex;align-items:center;gap:3px;flex:none;min-height:0}
+#tu .tk .kn{display:grid;gap:1px;min-width:0}
+#tu .tk b{font:600 14px var(--pxf);color:#f0e2c8}
+#tu .tk small{font:400 12px var(--pxf);color:#9a8a70}
+#tu kbd{margin:0;padding:3px 7px 4px;border-radius:0;border:2px solid #0b0706;background:#3a3434;box-shadow:inset 2px 2px 0 #6a6060,inset -2px -2px 0 #1c1818;font:400 13px/1 var(--pxf);color:#f0e6d4}
+#tu kbd.wd{min-width:0;padding-inline:16px}
+#tu kbd.on{translate:0 2px;background:#8a6a30;color:#fff1cc;box-shadow:inset 2px 2px 0 #c9a050,inset -2px -2px 0 #4a3510}
+#tu .sb{width:34px;height:34px;border-radius:0;display:grid;place-items:center;background:#2e2a28;box-shadow:inset 0 0 0 2px #0b0b0c,inset 3px 3px 0 #4a4440,inset -3px -3px 0 #1a1716}
+#tu .sb .pxi{width:16px;height:16px}
+#tu .tnt{margin:0;padding:8px 10px;border-radius:0;border:2px dashed #5a4630;background:rgba(0,0,0,.3);font:400 13.5px/1.4 var(--pxf);color:#bfae92}
+#tu .tix{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:6px}
+#tu .tix button{display:flex;align-items:center;gap:10px;padding:5px 10px 5px 5px;text-align:left;border-radius:0;border:2px solid #0b0b0c;background:#171413;box-shadow:inset 2px 2px 0 #2e2826,inset -2px -2px 0 #0e0b0a}
+#tu .tix button:hover{background:#262019;filter:brightness(1.1)}
+#tu .tix button>i{width:34px;height:34px;flex:none;display:grid;place-items:center;background:#2e2a28;box-shadow:inset 0 0 0 2px #0b0b0c,inset 3px 3px 0 #4a4440,inset -3px -3px 0 #1a1716}
+#tu .tix button>i .pxi{width:16px;height:16px}
+#tu .tix b{display:block;font:600 14px var(--pxf);color:#f0e2c8}
+#tu .tix small{display:block;font:400 12px/1.25 var(--pxf);color:#9a8a70}
+#tu .tih{margin:2px 0 -2px;font:600 12px var(--pxf);letter-spacing:.16em;text-transform:uppercase;color:#d9a94c}
+#tu .tnt b.gup{color:#7fdc6a}#tu .tnt b.gdn{color:#ff7a66}
+#tu .tcs.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* the six classes, each in its own colour */
+#tu .tcl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#tu .tcc{display:grid;gap:5px;align-content:start;padding:9px 10px 10px 15px;box-shadow:inset 4px 0 0 var(--rc),inset 6px 2px 0 #3a3430,inset -2px -2px 0 #110e0d}
+#tu .tcc b{font:700 16px var(--pxf);color:var(--rc);text-shadow:0 2px 0 #000}
+#tu .tcc small{font:400 12.5px/1.3 var(--pxf);color:#cdbca2}
+#tu .tcc span{display:flex;flex-wrap:wrap;gap:4px}
+#tu .tcc span i{padding:2px 5px 3px;font:400 11px var(--pxf);font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:#a89880;background:#0e0c0b;border:1px solid #2e2824}
+#tu .tcc .tcr{display:flex;align-items:center;gap:7px;font:600 12.5px var(--pxf);color:var(--rc)}
+#tu .tcr::before{content:'';width:30px;height:6px;flex:none;background:linear-gradient(90deg,var(--rc) 70%,#2a2422 70%);box-shadow:0 0 0 2px #0b0b0c}
+#tu .tcc em{font:400 12px/1.25 var(--pxf);font-style:normal;color:#9a8a70}
+/* the attributes, in two lists */
+#tu .tst{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:start}
+#tu .tsg{padding:8px 11px 11px}
+#tu .tsg h3{margin:0 0 7px;font:600 13px var(--pxf);letter-spacing:.16em;text-transform:uppercase;color:#d9a94c}
+#tu .tsg dl{margin:0;display:grid;gap:7px}
+#tu .tsg dl>div{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:1px 8px}
+#tu .tsg dt{font:600 14px var(--pxf);color:#f0e2c8}
+#tu .tsg dd{grid-column:1/-1;margin:0;font:400 12.5px/1.3 var(--pxf);color:#a89880}
+#tu .tsg em{grid-row:1;grid-column:2;padding:1px 5px 2px;font:400 11px var(--pxf);font-style:normal;color:#d9a94c;border:1px solid #5a4630;background:#0e0c0b}
+/* the rarities, each with its beam of light */
+#tu .tqr{display:grid;gap:4px}
+#tu .tqw{display:grid;grid-template-columns:auto 104px 92px minmax(0,1fr);align-items:center;gap:2px 12px;padding:4px 12px}
+#tu .tqw>i{width:8px;height:20px;background:linear-gradient(90deg,var(--q) 2px,#fff 2px 6px,var(--q) 6px);box-shadow:0 0 0 2px #0b0b0c,0 0 14px var(--q)}
+#tu .tqw b{font:700 15px var(--pxf);color:var(--q);text-shadow:0 2px 0 #000}
+#tu .tqw span{font:400 12.5px var(--pxf);color:#cdbca2}
+#tu .tqw small{font:400 12.5px/1.3 var(--pxf);color:#a89880}
+/* the eleven slots */
+#tu .tgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(52px,1fr));gap:8px 5px}
+#tu .tgs>span{display:grid;justify-items:center;gap:5px;font:600 10.5px var(--pxf);letter-spacing:.05em;text-transform:uppercase;color:#9a8a70}
+#tu .tgs>span>i{width:44px;height:44px;display:grid;place-items:center;background:linear-gradient(#1d1a19,#0d0b0b);box-shadow:inset 0 0 0 2px #3e3834,inset 0 0 0 4px #000,0 0 0 2px #000}
+/* the foot: a tab for each page, then Back and Next */
+#tu .tuf,#bb .tuf{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;background:linear-gradient(#0b0706 2px,#7a5426 2px 4px,#0b0706 4px 6px) top/100% 6px no-repeat}
+#tu .tup{display:flex;flex-wrap:wrap;gap:3px}
+#tu .tup button{position:relative;width:38px;height:38px;display:grid;place-items:center;border-radius:0;border:0;background:#2e2a28;box-shadow:inset 0 0 0 2px #0b0b0c,inset 3px 3px 0 #4a4440,inset -3px -3px 0 #1a1716}
+#tu .tup button .pxi{width:32px;height:32px;opacity:.55}
+#tu .tup button.tv .pxi{opacity:.85}
+#tu .tup button.on{background:#5a4520;box-shadow:inset 0 0 0 2px #0b0b0c,inset 3px 3px 0 #8a6a30,inset -3px -3px 0 #3a2a10}
+#tu .tup button.on .pxi{opacity:1}
+#tu .tup button:hover{filter:brightness(1.2)}
+#tu .pb.tn,#bb .pb.tn{display:flex;gap:10px}
+#tu .pb.tn button,#bb .pb.tn button{min-width:124px;height:42px;min-height:42px;padding:0 12px;border-radius:0;border-style:solid;border-color:transparent;border-width:0 14px;border-image:var(--pb-char) 0 7 fill/0 14px stretch;background:none;box-shadow:none;color:#eadfca;font:400 15px var(--pxf);letter-spacing:.12em;text-transform:uppercase;text-shadow:0 2px 0 #000;white-space:nowrap}
+#tu .pb.tn .pr,#bb .pb.tn .pr{border-image-source:var(--pb-crim);color:#fff1dc}
+#tu .pb.tn button:hover,#bb .pb.tn button:hover{filter:brightness(1.28);translate:0 0}
+#tu .pb.tn button:active,#bb .pb.tn button:active{translate:0 2px;filter:brightness(.9)}
+#tu .pb.tn button:disabled,#bb .pb.tn button:disabled{opacity:.35;filter:none;cursor:default;translate:none}
+@media (max-width:640px){#tu>.pn{padding:10px 10px 12px;gap:8px}#tu .tum,#bb .tum{width:44px;height:44px}#tu #tut{font-size:21px}#tu .tl,#bb .tl{font-size:14.5px}
+ #tu .tcl{grid-template-columns:1fr 1fr}#tu .tst,#tu .tcs.c2{grid-template-columns:1fr}#tu .tgs{grid-template-columns:repeat(6,minmax(0,1fr))}#tu .tqw{grid-template-columns:auto minmax(0,1fr) auto;padding:6px 10px}#tu .tqw>i{grid-row:span 2}#tu .tqw small{grid-column:2/-1}
+ #tu .tuf,#bb .tuf{flex-wrap:wrap;justify-content:center;gap:8px}#tu .tup{order:-1;flex:1 0 100%;justify-content:center;flex-wrap:nowrap}#tu .tup button{width:34px;height:34px}#tu .tup button .pxi{width:16px;height:16px}
+ #tu .pb.tn,#bb .pb.tn{flex:1}#tu .pb.tn button,#bb .pb.tn button{flex:1;min-width:0}}
+@media (max-width:400px){#tu .tcl{grid-template-columns:1fr}}
+@media (max-height:560px){#tu .tum,#bb .tum{display:none}#tu .tuh,#bb .tuh{padding-bottom:8px}#tu #tut{font-size:20px}#tu .tl,#bb .tl{font-size:14px}#tu .tpg{gap:7px}#tu .cd{padding:6px 9px}#tu .cd>i{width:34px;height:34px}#tu .cd>i .pxi{width:16px;height:16px}}
+/* ---- the bounty board's window: the primer's stone frame, with the ten notices as pinned paper, two by two; one taken is pinned
+   with a progress bar, one done glows gold with its Claim, one paid is faded under a red PAID ---- */
+#bb.ov{background:rgba(4,3,3,.6)}
+#bb>.pn{width:min(860px,100%);max-height:calc(100% - 8px);overflow:hidden;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;padding:12px 16px 14px;border:8px solid transparent;border-image:var(--pf-stone) 4/8px stretch;border-radius:0;color:#e4d6bc;background:var(--grain) padding-box,linear-gradient(#1f1b1a,#121010) padding-box;box-shadow:0 0 0 2px #000,0 18px 40px rgba(0,0,0,.65)}
+#bb>.pn:focus{outline:0}
+#bb #bbt{margin:0;font:700 26px/1.05 var(--pxf);letter-spacing:.03em;color:#f0cf7a;-webkit-text-fill-color:#f0cf7a;background:none;filter:none;text-shadow:0 2px 0 #000}
+#bb #bbx{width:34px;height:34px;flex:none;border-radius:0;color:#fff;background:#7a1414;box-shadow:inset 0 0 0 2px #0b0b0c,inset 3px 3px 0 #c03030,inset -3px -3px 0 #4a0808}
+#bb #bbx .ic{width:18px;height:18px}#bb #bbx:hover{filter:brightness(1.2)}
+#bb .sc{gap:10px}
+#bb .tl b{font-weight:600;color:#f0cf7a}
+#bb .bbl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#bb .bbn{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 10px;color:#3a2410;background:#e2d2a6;border:2px solid #0b0706;box-shadow:inset 2px 2px 0 #f4e8c6,inset -2px -2px 0 #b8a272,0 3px 0 rgba(0,0,0,.45)}
+#bb .bbn>i{width:40px;height:40px;display:grid;place-items:center;background:#cdb985;box-shadow:inset 0 0 0 2px #6a4a24}
+#bb .bbn h3{margin:0;font:700 14.5px var(--pxf);color:#3a1e0a}
+#bb .bbq{margin-left:7px;padding:1px 5px 2px;vertical-align:2px;font:600 10px var(--pxf);letter-spacing:.12em;text-transform:uppercase;color:#fff3d0;background:#5a7a2a;border:1px solid #0b0706}
+#bb .bbq.q1{background:#2a5a8a}#bb .bbq.q2{background:#8a4a1a}#bb .bbq.q3{background:#8a1a1a}
+#bb .bbn p{margin:1px 0 0;font:400 12.5px/1.3 var(--pxf);color:#5a3a1a}
+#bb .bbn small{display:block;margin-top:3px;font:600 12px var(--pxf);color:#7a3a10}
+#bb .bbp{display:block;height:8px;margin-top:5px;background:#6a4a24;box-shadow:0 0 0 2px #0b0706}
+#bb .bbp>span{display:block;height:100%;background:linear-gradient(#f6c844 50%,#c98a1a 50%)}
+#bb .bbr{display:grid;justify-items:end;gap:6px}
+#bb .bbr em{display:flex;align-items:center;gap:4px;font:700 14px var(--pxf);font-style:normal;color:#6a3a08}
+#bb .bbr em .pxi{width:16px;height:16px}
+#bb .bbr button{min-width:76px;padding:6px 10px;border-radius:0;font:600 13px var(--pxf);letter-spacing:.08em;text-transform:uppercase;color:#f0e2c8;background:#3a3434;border:2px solid #0b0706;box-shadow:inset 2px 2px 0 #6a6060,inset -2px -2px 0 #1c1818}
+#bb .bbr button.pr{color:#fff1dc;background:#9a2020;box-shadow:inset 2px 2px 0 #d04040,inset -2px -2px 0 #5a0a0a}
+#bb .bbr button:hover{filter:brightness(1.2)}#bb .bbr button:disabled{opacity:.4;filter:none;cursor:default}
+#bb .bbs{font:600 12px var(--pxf);letter-spacing:.12em;text-transform:uppercase;color:#7a5a30}
+#bb .bbn.s1{background:#ead9a8;box-shadow:inset 2px 2px 0 #f8eccb,inset -2px -2px 0 #b8a272,0 0 0 2px #c98a1a,0 3px 0 rgba(0,0,0,.45)}
+#bb .bbn.s2{background:#f2dc98;box-shadow:inset 2px 2px 0 #fff1c0,inset -2px -2px 0 #c8a250,0 0 0 2px #f6c844,0 0 16px rgba(246,200,68,.55)}
+#bb .bbn.s3{filter:saturate(.3) brightness(.62)}
+#bb .bbn.s3::after{content:'PAID';position:absolute;right:14px;top:50%;translate:0 -50%;rotate:-12deg;padding:2px 8px;font:700 20px var(--pxf);letter-spacing:.14em;color:#c02020;border:3px solid #c02020;pointer-events:none}
+#bb .bbn.s3 .bbr{visibility:hidden}
+#bb .bbg{display:grid;gap:6px;min-width:0}
+#bb .bbg>span{display:flex;gap:4px}
+#bb .bbg>span i{width:16px;height:16px;background:#2e2a28;box-shadow:inset 0 0 0 2px #0b0b0c}
+#bb .bbg>span i.on{background:#f6c844;box-shadow:inset 0 0 0 2px #0b0b0c,inset 3px 3px 0 #fff3b0}
+#bb .bbg small{font:400 12.5px var(--pxf);color:#bfae92}#bb .bbg b{color:#f0cf7a;font-weight:600}
+@media (max-width:640px){#bb>.pn{padding:10px 10px 12px;gap:8px}#bb .bbl{grid-template-columns:1fr}#bb #bbt{font-size:21px}#bb .tuf{flex-wrap:wrap;justify-content:center}#bb .pb.tn{flex:1 0 100%}#bb .pb.tn button{flex:1}}
+/* the HUD's objective with more than one bounty in hand: each smaller */
+#qt>div{display:grid;justify-items:end;gap:4px}
+#qt.m{gap:10px}#qt.m b{font-size:18px}#qt.m small{font-size:14px}
+#qt .ok b{color:#9af0b8}
 </style>
 <script type="importmap">
 {"imports":{
@@ -927,7 +1015,7 @@ body.mob #tb #cb{display:none}
 </defs></svg>
 <div id="hud" hidden>
 <div id="sts"><div id="mm" role="img" aria-label="Day 1" title="Map (M)"><canvas id="mmc"></canvas><div id="mmb"><b id="di" title="Weather"><svg class="pi" width="18" height="18" aria-hidden="true"><use id="wiu" href="#px-fair"/></svg><span id="wq">Fair</span></b><b id="mmz"></b></div></div><div class="sr" id="szn" hidden><span id="zn"></span></div><div class="sr" id="sng" hidden><i class="si"><svg class="pi" width="26" height="22" aria-hidden="true"><use href="#px-skull"/></svg></i><span>The dead walk</span></div></div>
-<div id="trc"><div id="qt" aria-live="polite" hidden><b id="qtp"></b><small id="qtt"></small></div></div>
+<div id="trc"><div id="qt" aria-live="polite" hidden></div></div>
 </div><div id="bfx"></div>
 <div id="tb" hidden>
 <div class="tg tgl"><button id="bf" title="Skills (K)" aria-label="Open the skill tree"><svg class="pi" width="30" height="28" aria-hidden="true"><use href="#px-star"/></svg><small class="bd" id="spb" hidden></small></button><button class="sl" id="cb" hidden aria-label="Strike with your sword"><svg class="pi" width="30" height="30" aria-hidden="true"><use href="#px-sword"/></svg><small>Space</small></button><button class="sl" id="bk" title="Character (C)" aria-label="Open your character"><svg class="pi" width="30" height="24" aria-hidden="true"><use href="#px-helm"/></svg><small>C</small></button><button class="sl" id="bp" title="Pause (Esc)" aria-label="Pause the game"><svg class="pi" width="30" height="24" aria-hidden="true"><use href="#px-pause"/></svg><small>Esc</small></button><div class="bar" id="tdb" title="Daylight left"><i id="tdf"></i></div></div>
@@ -952,6 +1040,7 @@ body.mob #tb #cb{display:none}
 <div class="cg tch"><div class="ci"><span class="kc"><kbd>Drag</kbd></span><b>Walk</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-sword"/></svg></i></span><b>Strike</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-skill"/></svg></i></span><b>Skills</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-bag"/></svg></i></span><b>Inventory</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-map"/></svg></i></span><b>Map</b></div><div class="ci"><span class="kc"><i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-pause"/></svg></i></span><b>Pause</b></div></div>
 <div class="cg pad"></div></section><button id="htp" class="lk">How to play</button></div><div id="tt" hidden><div id="tfd" aria-hidden="true"></div><h1>Quest</h1><p id="ttp">Press any button to start</p></div></div>
 <div id="tu" class="ov" role="dialog" aria-modal="true" aria-labelledby="tut" hidden><div class="pn" tabindex="-1"><div class="tuh"><i class="tum" id="tum" aria-hidden="true"></i><div><small class="tus" id="tus"></small><h2 id="tut"></h2></div><button class="b sm" id="tux" aria-label="Close how to play"><svg class="ic"><use href="#i-close"/></svg></button></div><div class="sc" id="tuc"><div class="tpg" id="tpg" aria-live="polite"></div></div><div class="tuf"><div class="tup" id="tup" role="group" aria-label="Steps"></div><div class="pb tn"><button id="tub2">Back</button><button id="tun" class="pr">Next</button></div></div></div></div>
+<div id="bb" class="ov" role="dialog" aria-modal="true" aria-labelledby="bbt" hidden><div class="pn" tabindex="-1"><div class="tuh"><i class="tum" aria-hidden="true"><i class="pxi" data-i="scroll"></i></i><div><small class="tus">Greywatch Keep</small><h2 id="bbt">Bounty Board</h2></div><button class="b sm" id="bbx" aria-label="Close the bounty board"><svg class="ic"><use href="#i-close"/></svg></button></div><div class="sc" id="bbc"></div><div class="tuf" id="bbf"></div></div></div>
 <dialog id="al" class="pn" role="alertdialog" aria-labelledby="alt" aria-describedby="alm"><div id="alv" hidden></div><h2 id="alt"></h2><p id="alm"></p><div class="pb ab"><button id="alc" autofocus>Cancel</button><button id="alo" class="dg"></button></div></dialog>
 <div id="er" hidden></div>
 <div id="fd"></div>
@@ -2188,8 +2277,8 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
  for(const p of RLP){if(hypot(p.x-ox,p.z-oz)>p.r+CS*.8)continue;for(const q of rlParts(p)){if(abs(q.x-ox)>=CS/2||abs(q.z-oz)>=CS/2)continue;const y=Hm(q.x,q.z),m=new THREE.Mesh(q.g.clone(),VC);m.position.set(q.x,y,q.z);m.rotation.y=q.ry;m.castShadow=m.receiveShadow=true;G.add(m);
   if(q.c)cg.push(q.c[0]?B(q.c[0],4,q.c[1]).rotateY(q.ry).translate(q.x,y+1.5,q.z):Cy(q.c[2],q.c[2],8,10).translate(q.x,y+4,q.z))}}
  const cc=[];cg.length&&cc.push(mkCol(cg));wc.length&&cc.push(Object.assign(mkCol(wc),{wall:1}));for(const gr of gts)gr.tg||(gr.col=Object.assign(mkCol([gtBox(gr)]),{wall:1}),cc.push(gr.col));cc.length&&CCOL.set(k,cc);colList();sc.add(G);const rec={g:G,x:ox,z:oz,k,gc:GCP,itm};gcD=1;plD=1;CH.set(k,rec);CHL.push(rec)}
-const colList=()=>{COLS.length=0;COLS.push(FARMC,FENCEC);for(const c of CCOL.values())COLS.push(...c)};
-let FARMC=null,FENCEC=null;
+const colList=()=>{COLS.length=0;COLS.push(FARMC,FENCEC);BBC&&COLS.push(BBC);for(const c of CCOL.values())COLS.push(...c)};
+let FARMC=null,FENCEC=null,BBC=null;
 // ---- instance pools ----
 // A chunk's trees, hedges, walls, rocks and the rest used to be about thirty InstancedMeshes of its own with a few dozen instances
 // each: a draw call apiece (twice with the shadows), and three builds a node graph for every instanced mesh the first time it draws
@@ -2506,7 +2595,7 @@ function mkPen(){const r=penR(),n=12,ps=[],cg=[];
  for(let i=0;i<n;i++){const a=(i+.5)/n*TAU,x=cos(a)*r,z=sin(a)*r;if(abs(wa(a-GA))<.3||rlRoad(x,z)<RDH+.9)continue;ps.push([x,0,z,1,-a]);cg.push(Cy(.46,.46,2,8).translate(x,1,z))}
  fen=new THREE.Group();Object.assign(fen,{r,gx:cos(GA)*r,gz:sin(GA)*r});fen.add(IM(PG,VC,ps,1));
  for(const q of ps){const s=new THREE.Sprite(BZM);s.position.set(q[0],2.42,q[2]);s.scale.set(.7,1.1,1);s.visible=false;fen.add(s);BZF.push(s)}
- farm.add(fen);FENCEC&&FENCEC.g.dispose();FENCEC=mkCol(cg);colList();U.penR.value=r;U.gate.value.set(fen.gx,fen.gz)}
+ farm.add(fen);FENCEC&&FENCEC.g.dispose();FENCEC=mkCol(cg);colList();U.penR.value=r;U.gate.value.set(fen.gx,fen.gz);bbBuild()}
 
 // ---- landmarks out in the wilds: watchtowers (tw, whole under a slate cone with its pennant flying; tr, broken off at the top with its
 // stones tumbled round its foot) and, rarely, a fortress on its rock (cs): curtain walls with merlons, round corner towers under slate
@@ -3244,7 +3333,7 @@ CLR={},DYN={},MSX={},CSA={},CHK={},CDM={},CCB={},CFB={},CLL={},CKL={},CHT={},CHU
  stv=()=>{const k=DYN[CLS]?.()||'';if(hxD||!HX||k!==hxK){hxK=k;HX=hxC();hxD=0}return HX},
  // one number to weigh a set by, for "better" and "worse": what it hits for, times what it takes to bring down, rooted
  hxR=s=>{const o=(s.atk+.5*s.arc)*(1+s.cc*(.5+s.fer))*(1+s.hst)*(1+.3*s.aff+.4*s.bch+.4*s.shr),d=(s.hp+s.wrd)/(1-s.dr)/(1-.7*s.eva)/(1-.4*s.blk)*(1+2*s.ll);return Math.sqrt(o*d)*(1+.3*s.ms+.3*s.cdr)},
- POTM=5,potP=()=>Math.round(lvG(LV,[20,250,900,3000])),rsP=()=>35+LV*LV*5,penR=()=>9,swR=()=>3.4,
+ POTM=5,potP=()=>Math.round(lvG(LV,[20,250,900,3000])),rsP=()=>max(1,Math.floor(W*.4)),RSL=10,rsOk=()=>LV>=RSL&&W>=rsP(),penR=()=>9,swR=()=>3.4,
  // the arc a stroke sweeps: Reckless Cleave widens it rank by rank, until it goes nearly all round him
  crit=()=>stv().cc,kbM=()=>1,arcT=()=>.2-.18*skr('rc')-(EQ.w?.t=='sc2'?.12*skr('nrf'):0),
  // a new knight's kit: a common chest, legs and weapon for the class, rolled at level 1; the rest is found
@@ -3607,7 +3696,7 @@ const toast=(m,c='',ic='')=>{const d=document.createElement('div'),ts=$('ts');d.
 // the skill tree's page: the points to spend and the respec over the tree; the tree (the trunk, each branch's curves, lit where learned,
 // its name and points, its nodes); the picked skill's card with its Learn button, and the supplies, in the panel beside
 const ug=$('ug'),skCv=(x1,y1,x2,y2)=>`M${x1} ${y1}V${(y1+y2)/2}H${x2}V${y2}`;function menu(){const n=skSpent();skG(skSel)||(skSel=SKT[0][4][0][0]);
- $('ml').innerHTML=`<span class="spn"><b>${SP}</b>skill point${SP==1?'':'s'}</span><span class="spl">One comes with every level. Pick a skill to read it, then learn it.</span><button class="rsb" data-rs${n&&W>=rsP()?'':' disabled'}${n?'':' title="Nothing learned yet"'}>Unlearn all · ${IC('coin')} ${rsP()}</button>`;
+ $('ml').innerHTML=`<span class="spn"><b>${SP}</b>skill point${SP==1?'':'s'}</span><span class="spl">One comes with every level. Pick a skill to read it, then learn it.</span><button class="rsb" data-rs${n&&rsOk()?'':' disabled'}${!n?' title="Nothing learned yet"':LV<RSL?` title="Unlocks at level ${RSL}"`:W<rsP()?' title="You need gold to unlearn your skills"':''}>${LV<RSL?`Unlearn all · unlocks at level ${RSL}`:`Unlearn all · ${IC('coin')} ${rsP()}`}</button>`;
  let pa='',nd='',lb='';
  for(const[b,bn,c,,S]of SKT){const r0=S[0];pa+=`<path d="${skCv(500,640,r0[6],r0[7])}" style="--bc:${c}" stroke-width="${skL(r0[0])?10:7}" class="${skL(r0[0])?'on':''}"/>`;
   for(const s of S)for(const q of s[5]){const a=S.find(z=>z[0]==q);pa+=`<path d="${skCv(a[6],a[7],s[6],s[7])}" style="--bc:${c}" class="${skL(q)&&skL(s[0])?'on':''}"/>`}
@@ -3623,10 +3712,10 @@ const ug=$('ug'),skCv=(x1,y1,x2,y2)=>`M${x1} ${y1}V${(y1+y2)/2}H${x2}V${y2}`;fun
 const skLearn=k=>{const[,s]=skG(k);if(!skOpen(s)||skL(k)>=s[3]||SP<1)return;SP--;SKL[k]=skL(k)+1;const m0=bMax();apply();heal(bMax()-m0);sfx.find();toast(`<b>${s[2]}</b>${s[3]>1?`, rank ${skL(k)},`:''} learned.`,'g',s[1]);sv()};
 ug.onclick=e=>{const b=e.target.closest('[data-sk]');if(!b)return;const k=b.dataset.sk;skSel==k?skLearn(k):(skSel=k);menu();hud();$('ug').querySelector(`[data-sk="${k}"]`)?.focus()};
 $('ski').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(b.dataset.learn!=null)skLearn(skSel);else if(b.dataset.buy!=null){const pp=potP();if(W<pp||POT>=POTM)return;W-=pp;POT++;sfx.coin();toast('A healing draught, corked and ready.','g','potion');sv()}menu();hud()};
-$('ml').onclick=async e=>{const b=e.target.closest('[data-rs]');if(!b||b.disabled)return;const n=skSpent(),g=rsP();if(!n||W<g)return;
- if(!await ask('Unlearn every skill?',`All <b>${n}</b> point${n>1?'s':''} come back to spend again, for <b>${g}</b> gold.`,'Unlearn all'))return;W-=g;SP+=n;for(const q in SKL)delete SKL[q];apply();bHP=min(bHP,bMax());hrt();sfx.coin();menu();hud();sv()};
+$('ml').onclick=async e=>{const b=e.target.closest('[data-rs]');if(!b||b.disabled)return;const n=skSpent(),g=rsP();if(!n||!rsOk())return;
+ if(!await ask('Unlearn every skill?',`All <b>${n}</b> point${n>1?'s':''} come back to spend again, for <b>${g}</b> gold: two fifths of all the gold you carry.`,'Unlearn all'))return;W-=g;SP+=n;for(const q in SKL)delete SKL[q];apply();bHP=min(bHP,bMax());hrt();sfx.coin();menu();hud();sv()};
 function apply(){hxD=1;abK='';dog.visible=false;clsLook();farmCol();fen||mkPen();armTint()}
-const SK='quest-1',sv=()=>{try{localStorage.setItem(SK,JSON.stringify({W,K:SKL,SP,LV,XP,POT,dy,dT,G:EQ,B:BAG,Q:QST,QN,F:[...SHF],X:[...XPL],C:CLS,A:LOOK,M:MAT,V:2}))}catch(e){}};let sd=null;try{sd=JSON.parse(localStorage.getItem(SK))}catch(e){}
+const SK='quest-1',sv=()=>{try{localStorage.setItem(SK,JSON.stringify({W,K:SKL,SP,LV,XP,POT,dy,dT,G:EQ,B:BAG,BB,QN,F:[...SHF],X:[...XPL],C:CLS,A:LOOK,M:MAT,V:2}))}catch(e){}};let sd=null;try{sd=JSON.parse(localStorage.getItem(SK))}catch(e){}
 // ---- treasure: iron-bound chests at deserted farmsteads, in graveyards and ruins and at the foot of old towers (FIND, fndU), each opened
 // once for good (SHF keeps their keys, saved with the quest); a chest holds gold and a piece of gear rolled a grade above the field's ----
 const SHF=new Set(),FND=[],XPL=new Set();try{const s=JSON.parse(localStorage.getItem(SK));(s?.F||[]).forEach(k=>SHF.add(k));(s?.X||[]).forEach(k=>XPL.add(k))}catch(e){}
@@ -3868,33 +3957,82 @@ gamble=()=>{const g=gamP();if(W<g||BAG.length>=BGM)return;W-=g;const cap=LV>=41?
  const r=q<.1?(cap>=3?(cap==4&&R()<.35?4:3):cap):min(cap,(q<.55?0:q<.85?1:q<.97?2:3)+(rMax(LV)>0)),sl=CL().sh?'wshabnkgrl':'whabnkgrl',it=mkIt(sl[R()*sl.length|0],r,LV);
  BAG.push(it);(r>=3?sfx.find:sfx.coin)();toast(`The Gambler's bundle holds <b style="color:${RCO(it.r)}">${escH(it.n)}</b>${eqW(it)?`: ${cmpTxt(it)} than yours`:''}.`,r>=3?'g':'','bag');sv()},
 // the knight's look follows his kit: the plate takes on the worn armour's finish (bright steel, then greened, blued, purpled and gilt with
-// rarity), and from Rare up the blade glows in the weapon's rarity colour. His numbers are totalled afresh (hxD)
-armTint=()=>{hxD=1;wpLook();const a=EQ.a,w=EQ.w,s=EQ.s;SHG.visible=shOn();for(const k of ARMK)ARMM[k].visible=!!EQ[k];PTM.visible=!!(LOOK.s&&PTM.geometry.attributes.position)&&!EQ.h;s&&SHRM.color.setHex([0xa8b0ba,0x9fb5a6,0x8fa6c8,0xa898c0,0xd8b65a][s.r]);SHU.boots.value.setHex(a?(CL().tn||[0xa8b0ba,0x9fb5a6,0x8fa6c8,0xa898c0,0xd8b65a])[a.r]:WEL);BLM.emissive.setHex(w&&w.r>1?RAR[w.r][1]:0);BLM.emissiveIntensity=w?[0,0,.45,.75,1.1][w.r]:0},
+// rarity). The blade's rarity glow is off for now; to bring it back, set BLM.emissive and emissiveIntensity from w.r again:
+// BLM.emissive.setHex(w&&w.r>1?RAR[w.r][1]:0);BLM.emissiveIntensity=w?[0,0,.45,.75,1.1][w.r]:0. His numbers are totalled afresh (hxD)
+armTint=()=>{hxD=1;wpLook();const a=EQ.a,w=EQ.w,s=EQ.s;SHG.visible=shOn();for(const k of ARMK)ARMM[k].visible=!!EQ[k];PTM.visible=!!(LOOK.s&&PTM.geometry.attributes.position)&&!EQ.h;s&&SHRM.color.setHex([0xa8b0ba,0x9fb5a6,0x8fa6c8,0xa898c0,0xd8b65a][s.r]);SHU.boots.value.setHex(a?(CL().tn||[0xa8b0ba,0x9fb5a6,0x8fa6c8,0xa898c0,0xd8b65a])[a.r]:WEL);BLM.emissive.setHex(0);BLM.emissiveIntensity=0},
 // experience: kills, chests and bounties, up to level 50. Each level heals him, raises his base numbers (stv) and gives a skill point; at
 // 11, 21, 31 and 41 a rarer grade of gear begins to drop
 xpG=n=>{if(LV>=LVM)return;XP+=n;const p=P.position;dmgNum(p.x+.8,p.y+3.4,p.z,'+'+n+' xp','x');while(LV<LVM&&XP>=xpN(LV)){XP-=xpN(LV);LV++;hxD=1;bHP=bMax();hrt();dmgNum(p.x,p.y+4.4,p.z,'Level '+LV,'l');SP++,toast(`You reach level <b>${LV}</b>: a skill point to spend${mob?'':' (K)'}.`,'g','skill');sfx.find();emit(p.x,p.y+1.5,p.z,30,0xffe08a,3,5,1.2,2,.5);
  const nr=[11,21,31,41].indexOf(LV);nr>=0&&setTimeout(()=>toast(`<b style="color:${RCO(nr+1)}">${RAR[nr+1][0]}</b> gear can now be found.`,'g','chest'),900);LV>=LVM&&(XP=0)}},
-// ---- bounties: one at a time, posted at the keep. Slay so many of a kind (wolves, brigands, by night the risen dead), break open chests or
-// scout far out from home; then come back to the muster ring or the keep's gate to claim gold, experience and, for every other one, a
-// piece of gear a grade up. Each asks a little more than the last (QN, the number done) ----
+// ---- bounties, on the board before the keep's gate (bbBuild): ten are posted at a time (BB.L), and up to three may be taken at once. A
+// taken one counts its foes, chests or distance (qEv, qstU); done, it is brought back to the board and paid in gold and experience
+// (bbClaim). They run from easy to hard in four tiers (BBR): three that pay 25 gold, three 50, three 75 and a last one 100, each asking
+// more than the one before. Paying all ten gives 500 gold and drops a piece of gear at the board's foot, and ten more go up, a little harder (BB.s, the
+// boards cleared). A bounty: k its kind (QK), n how many, c how far along, t its title, q how hard, r its tier, g its gold, st 0 posted,
+// 1 taken, 2 done, 3 paid ----
 QK={wolf:{ic:'wolf',t:['Wolves at the Gate','The Grey Pack','Howls in the Dark'],d:n=>`Slay ${n} wolves in the wilds.`,v:'Wolves slain',n:q=>4+min(6,q)},
  foe:{ic:'sword',t:['Brigands on the Road','The Outlaws of the Moor','A Price on Their Heads'],d:n=>`Defeat ${n} brigands.`,v:'Brigands defeated',n:q=>3+min(5,q>>1)},
  dead:{ic:'skull',t:['The Restless Dead','Bones in the Barrow','Lay Them to Rest'],d:n=>`Destroy ${n} of the risen dead. They walk only by night.`,v:'Risen dead destroyed',n:q=>3+min(5,q>>1)},
  chest:{ic:'chest',t:['Treasure of the Old Kings','Lost Hoards','The Iron-Bound Chests'],d:n=>`Break open ${n} treasure chest${n>1?'s':''} in the ruins, farmsteads and graveyards of the realm.`,v:'Chests opened',n:q=>1+min(3,q>>2)},
  far:{ic:'castle',t:['The Far Beacon','Beyond the Hills','Scout the Marches'],d:n=>`Ride out ${n} metres from Greywatch Keep.`,v:'Furthest from the keep',n:q=>300+min(900,q*120)}},
-qNew=()=>{const ks=['wolf','foe','chest','far','wolf','foe'];QN>=2&&ks.push('dead','dead');const k=QN?ks[R()*ks.length|0]:'wolf',q=QK[k],n=q.n(QN);
- QST={k,n,c:0,done:0,t:q.t[R()*3|0],d:q.d(n),g:Math.round((30+n*(k=='far'?.12:k=='chest'?25:9))*(1+.15*min(QN,20))*lvG(LV,[1,12,50,160])),x:xpM((20+min(QN,20)*8)*(k=='chest'?1.5:1)),it:QN%2==1};
- toast(`A bounty is posted: <b>${QST.t}</b>. ${QST.d}`,'','scroll');sv()},
-qPr=()=>!QST?'':QST.done?'Done! Return to Greywatch Keep.':QST.k=='far'?`${QK.far.v}: ${QST.c|0} of ${QST.n}m`:`${QK[QST.k].v}: ${QST.c} of ${QST.n}`,
-qEv=(k,n=1)=>{if(!QST||QST.done||QST.k!=k)return;QST.c+=n;if(QST.c>=QST.n){QST.c=QST.n;QST.done=1;toast(`Bounty done: <b>${QST.t}</b>. Return to the keep for your reward.`,'g','scroll');sfx.coin();sv()}},
-qtU=()=>{const e=$('qt');e.hidden=!QST||$('hud').hidden;if(!QST)return;$('qtt').textContent=QST.t;$('qtp').textContent=qPr();e.classList.toggle('ok',!!QST.done)},
+// the tiers: [name, gold, the kinds drawn from, how hard each of its bounties is (q, which sets how many: bbCnt)]. The first tier asks
+// for a few wolves, one chest, a handful of brigands; the last, a big pack, a band of outlaws or the risen dead. A later board asks a
+// little more of each (two steps of q a board), for the same gold
+BBN=10,BBT=3,BBR=[['Easy',25,['wolf','chest','foe'],[0,1,2]],['Fair',50,['wolf','foe','far'],[4,5,6]],['Hard',75,['dead','chest','foe'],[8,9,10]],['Deadly',100,['dead','wolf','foe'],[14]]],
+// how many a board's bounty asks for at difficulty q: rising all the way through the tiers (QK's own counts level off, for the old bounty)
+bbCnt=(k,q)=>k=='far'?300+100*q:Math.round({wolf:4+.6*q,foe:3+.42*q,dead:3+.36*q,chest:1+.22*q}[k]),
+// a board: each tier's kinds shuffled (the last tier takes one of its three), each harder than the one before it, in order
+bbMk=s=>{const u={},L=[];BBR.forEach(([,g,ks,qs],r)=>{[...ks].sort(()=>R()-.5).slice(0,qs.length).forEach((k,i)=>{const q=min(20,qs[i]+s*2);u[k]=(u[k]|0)+1;L.push({k,n:bbCnt(k,q),c:0,t:QK[k].t[(u[k]+s-1)%3],q,r,g,st:0})})});return{s,L}},
+bbOk=b=>!!b&&Array.isArray(b.L)&&b.L.length==BBN&&b.L.every(q=>QK[q.k]),
+// what a bounty pays: its tier's gold, and experience by how hard it is, at his level when it is paid
+bbG=b=>b.g||BBR[b.r|0][1],bbX=b=>xpM((20+min(b.q,20)*8)*(b.k=='chest'?1.5:1)),
+bbPr=b=>b.st==2?'Done! Back to the board':b.k=='far'?`${QK.far.v}: ${b.c|0} of ${b.n}m`:`${QK[b.k].v}: ${b.c} of ${b.n}`,
+bbIn=()=>BB?BB.L.filter(b=>b.st==1).length:0,
+// is there anything for him at the board (one to be paid, or room for another)? The gold mark over it says so
+bbAt=()=>!!BB&&(BB.L.some(b=>b.st==2)||bbIn()<BBT&&BB.L.some(b=>!b.st)),
+qEv=(k,n=1)=>{if(!BB)return;for(const b of BB.L){if(b.st!=1||b.k!=k)continue;b.c+=n;if(b.c>=b.n){b.c=b.n;b.st=2;toast(`Bounty done: <b>${b.t}</b>. Bring it back to the bounty board for your gold.`,'g','scroll');sfx.coin();sv()}}},
+// the HUD's objective: what he has in hand, or the board
+qtU=()=>{const e=$('qt'),L=BB?BB.L.filter(b=>b.st==1||b.st==2):[];e.hidden=$('hud').hidden||!BB;if(e.hidden)return;
+ const h=L.length?L.map(b=>`<div${b.st==2?' class="ok"':''}><b>${bbPr(b)}</b><small>${escH(b.t)}</small></div>`).join(''):'<div><b>Bounty board</b><small>Take a bounty at the keep</small></div>';
+ if(h!=e._h){e._h=h;e.innerHTML=h;e.classList.toggle('m',L.length>1)}},
+bbTake=i=>{const b=BB.L[i];if(b.st||bbIn()>=BBT)return;b.st=1;b.c=0;sfx.dab?.();toast(`Bounty taken: <b>${b.t}</b>. ${QK[b.k].d(b.n)}`,'','scroll');qtU();sv();bbR()},
+bbClaim=i=>{const b=BB.L[i];if(b.st!=2)return;const g=bbG(b),x=bbX(b);b.st=3;W+=g;QN++;sfx.find();toast(`Bounty paid: <b>${g}</b> gold for ${escH(b.t)}.`,'g','coin');xpG(x);
+ if(BB.L.every(q=>q.st==3)){W+=500;const it=roll(1);lootPut(BBP.fx,BBP.fz,2,it.r,it);sfx.find();emit(BBP.fx,Hm(BBP.fx,BBP.fz)+1.5,BBP.fz,40,0xffd25a,4,6,1.4,2,.5);
+  toast('The board is cleared! <b>500</b> gold, and a reward lies at its foot.','g','crown');BB=bbMk(BB.s+1);setTimeout(()=>toast('Ten new bounties are posted on the board.','','scroll'),3000)}
+ hud();qtU();sv();bbR()},
+// the board's window: the ten notices, each with what it asks, what it pays and what can be done with it
+bbR=()=>{if(!BB)return;const tk=bbIn(),pd=BB.L.filter(b=>b.st==3).length;
+ $('bbc').innerHTML=`<p class="tl">Take up to <b>three</b> bounties at a time. Finish one out in the wilds, then bring it back here for its gold. Pay off all ten for <b>500 gold</b> and a piece of gear.</p><div class="bbl">${BB.L.map((b,i)=>{const q=QK[b.k];
+  return`<div class="bbn s${b.st}"><i>${PXI(q.ic,'#4a2e14')}</i><div class="bbd"><h3>${b.t}<span class="bbq q${b.r|0}">${BBR[b.r|0][0]}</span></h3><p>${q.d(b.n)}</p>${b.st==1?`<span class="bbp"><span style="width:${min(100,b.c/b.n*100).toFixed(1)}%"></span></span><small>${bbPr(b)}</small>`:''}</div>
+  <div class="bbr"><em>${PXI('coin','#8a5a10')}${bbG(b)}</em>${b.st==0?`<button data-bt="${i}"${tk>=BBT?' disabled title="You already hold three bounties"':''}>Take</button>`:b.st==1?'<span class="bbs">Taken</span>':b.st==2?`<button class="pr" data-bc="${i}">Claim</button>`:'<span class="bbs">Paid</span>'}</div></div>`}).join('')}</div>`;
+ $('bbf').innerHTML=`<div class="bbg"><span>${BB.L.map(b=>`<i class="${b.st==3?'on':''}"></i>`).join('')}</span><small>Board ${BB.s+1}: <b>${pd} of 10</b> paid. Clear it for <b>500 gold</b> and gear.</small></div><div class="pb tn"><button class="pr" id="bbd">Done</button></div>`;
+ pxFill($('bb'))},
 // a healing draught (Q, the red flask, B on a pad): a third of his Health back, if there's room for it
 drink=f=>{if(!f&&(!run||pz||bDead)||!POT||bHP>=bMax())return;POT--;const n=bMax()*.35;heal(n);const p=P.position;emit(p.x,p.y+1.4,p.z,16,0x8cf07a,2.2,3,.8,-1,.3);dmgNum(p.x,p.y+3,p.z,'+'+Math.round(n),'w');sfx.dab();hud();sv()};
-let QST=null,qT=2;
-// each frame of play: how far out he has come (for a scouting bounty), and the claim once he is home with it done; a new bounty is posted
-// a few seconds after the last one is claimed
-function qstU(dt){if(!QST){(qT-=dt)<=0&&qNew();return}const p=P.position;if(QST.k=='far'&&!QST.done){const d=hypot(p.x+21,p.z+20);d>QST.c&&(QST.c=d)>=QST.n&&qEv('far',0)}
- if(QST.done&&(hypot(p.x,p.z)<penR()+3||hypot(p.x+21,p.z+20)<12)){const it=QST.it&&roll(1);W+=QST.g;QN++;toast(`Bounty claimed: <b>${QST.g}</b> gold`+(it?` and the <b style="color:${RCO(it.r)}">${escH(it.n)}</b>`:'')+'!','g','coin');sfx.find();const x=QST.x;QST=null;qT=5;xpG(x);it&&(eqW(it)?bagAdd(it):equip(it));sv()}}
+let BB=null,bbArm=1;
+// each frame of play: how far out he has come (for a scouting bounty), the board's notices and its gold mark, and the board's window,
+// which opens when he walks up to it (and not again until he has stepped away)
+function qstU(dt){if(!BB)BB=bbMk(0);const p=P.position;
+ for(const b of BB.L)if(b.st==1&&b.k=='far'){const d=hypot(p.x+21,p.z+20);d>b.c&&(b.c=d)>=b.n&&qEv('far',0)}
+ if(!BBG)return;for(let i=0;i<BBN;i++)BBNM[i].visible=!BB.L[i].st;BBS.visible=bbAt();BBS.position.y=3.55+.12*sin(tm*3);
+ const d=hypot(p.x-BBP.fx,p.z-BBP.fz);if(d>4.5)bbArm=1;else if(d<2.4&&bbArm&&!ov&&!bDead&&!tuOn){bbArm=0;sho(6)}}
+// the bounty board: two posts, a planked board under a little red roof, a gilt plaque, and a paper notice with a wax seal for each bounty
+// still posted (BBNM); a gold mark bobs over it while there is something for him there (BBS). It stands beside the path just before the
+// keep's gate (BBL, in the keep's frame), facing the muster ring, and is solid (BBC)
+let BBG=null,BBS=null,BBP=null;const BBNM=[],BBL=[KX+3.6,8.6];
+function bbBuild(){if(BBG)return;let lx=BBL[0];for(const o of[0,.8,1.6,-7.2,-8])if(rdBox(...cw(BBL[0]+o,BBL[1]),PI/4,1.5,.5)){lx=BBL[0]+o;break}
+ const[x,z]=cw(lx,BBL[1]),y=Hm(x,z),[fx,fz]=cw(lx,BBL[1]+1.4);BBP={x,z,fx,fz};BBG=new THREE.Group();BBG.position.set(x,y,z);BBG.rotation.y=PI/4;sc.add(BBG);
+ const W1=0x5a4130,PL=0x8a6a43,RF=0x8c2a24;
+ part(mg([...[1.15,-1.15].map(px=>[B(.18,2.75,.18).translate(px,1.375,0),W1]),[B(2.3,1.45,.1).translate(0,1.6,0),PL],...[-.36,0,.36].map(dy=>[B(2.3,.03,.105).translate(0,1.6+dy,0),0x6e5233]),
+  [B(2.55,.12,.16).translate(0,2.38,0),W1],[B(2.55,.1,.16).translate(0,.86,0),W1],[B(1,.24,.04).translate(0,2.12,.07),GILT],
+  [B(2.9,.08,.62).rotateX(.5).translate(0,2.66,.24),RF],[B(2.9,.08,.62).rotateX(-.5).translate(0,2.66,-.24),RF],[B(2.95,.1,.1).translate(0,2.8,0),W1]]),VC,0,0,0,BBG);
+ for(let i=0;i<BBN;i++)BBNM.push(part(mg([[B(.34,.42,.02),0xe9dcb4],[B(.07,.07,.025).translate(0,.15,.005),0xa8231f]]),VC,-.92+(i%5)*.46,1.87-(i/5|0)*.54,.065,BBG,0,0,(R()-.5)*.12));
+ const c=document.createElement('canvas');c.width=8;c.height=16;const g=c.getContext('2d');g.fillStyle='#0b0706';g.fillRect(1,0,6,11);g.fillRect(1,12,6,4);g.fillStyle='#f6c844';g.fillRect(2,1,4,9);g.fillRect(2,13,4,2);g.fillStyle='#fff3b0';g.fillRect(2,1,2,8);
+ const tx=new THREE.CanvasTexture(c);tx.magFilter=tx.minFilter=THREE.NearestFilter;tx.colorSpace=THREE.SRGBColorSpace;
+ BBS=new THREE.Sprite(new THREE.SpriteNodeMaterial({map:tx,transparent:true,depthWrite:false,fog:false}));BBS.scale.set(.42,.84,1);BBS.position.set(0,3.55,0);BBG.add(BBS);
+ BBC=mkCol([B(2.6,2.8,.45).rotateY(PI/4).translate(x,y+1.4,z)]);colList()}
+$('bbx').onclick=()=>sho(0);$('bbf').onclick=e=>e.target.closest('#bbd')&&sho(0);
+$('bbc').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;b.dataset.bt!=null?bbTake(+b.dataset.bt):b.dataset.bc!=null&&bbClaim(+b.dataset.bc)};
 
 // health: the number in the shield beside the clock. A blow takes its share, then he is safe for a second (hiT); out of the fight (bRg) it
 // comes back, quickest inside the muster ring
@@ -4273,7 +4411,7 @@ const swTrail=su=>{if(su>swUA-.04&&su<.8){staff.updateWorldMatrix(true,false);co
 const cliffStop=(p,bx,bz)=>{const h0=Hm(bx,bz),st=(x,z)=>{const l=hypot(x-bx,z-bz);return l>1e-4&&abs(Hm(x,z)-h0)>l*1.7};
  if(!st(p.x,p.z))return;if(!st(p.x,bz))p.z=bz;else if(!st(bx,p.z))p.x=bx;else{p.x=bx;p.z=bz}};
 function mvP(dt){let mx=(K.KeyD||K.ArrowRight?1:0)-(K.KeyA||K.ArrowLeft?1:0)+jx+gx,my=(K.KeyS||K.ArrowDown?1:0)-(K.KeyW||K.ArrowUp?1:0)+jy+gy,l=hypot(mx,my);if(l>1){mx/=l;my/=l;l=1}if(ov||bDead||lpT>0)mx=my=l=0;
- const s=7.35*(1+stv().ms)*(gaT>0?.55:1)*(MSX[CLS]?.()||1),vx=(mx+my)*.7071,vz=(my-mx)*.7071,p=P.position;
+ const s=8.085*(1+stv().ms)*(gaT>0?.55:1)*(MSX[CLS]?.()||1),vx=(mx+my)*.7071,vz=(my-mx)*.7071,p=P.position;
  const dyw=l>.05?wa(atan2(vx,vz)-P.rotation.y):0;ptn+=(dyw-ptn)*min(1,dt*8);if(l>.05)P.rotation.y+=dyw*min(1,dt*9);
  // he has some weight: the pace asked for is taken up over about a twelfth of a second and let go of over a little less, not switched on and
  // off; the change of pace (af along his heading, al across it) leans his body, which settles on a spring
@@ -4582,8 +4720,9 @@ heroMenu=()=>{const t=czTab;$('cmh').textContent=FARM||'Your Hero';[['cmtc',0],[
   $('ivg').innerHTML=Array.from({length:BGM},(_,i)=>BAG[i]?tile(BAG[i],i,'i'):'<span class="it em"></span>').join('');
   $('ivd').innerHTML=it?itCard(it,eqW(it))+`<div class="bt"><button class="pr" data-e="${iSel}">${eqW(it)?'Wear instead':'Wear'}</button><button data-s="${iSel}">Sell for ${sellP(it)}</button><button data-v="${iSel}">Salvage · ${salvN(it)} scrap</button>${smB(it,`data-mi="${iSel}"`)}</div>`:'<p class="rk">Pick a piece to see what it does and how it compares with what you wear. What foes drop and chests hold ends up here.</p>';return}
  if(t==2){menu();return}
- $('cmi').textContent='Bounties are posted at Greywatch Keep. Finish one out in the wilds, then come home to the muster ring to claim the reward.';$('cmw').innerHTML=`Bounties claimed: <b>${QN}</b>`;
- $('cmo').innerHTML=QST?`<div class="cd"><i>${IC(QK[QST.k].ic)}</i><div><h3>${QST.t}</h3><p>${QST.d}</p><p><b>${qPr()}</b></p><p>Reward: <b>${QST.g}</b> gold, <b>${QST.x}</b> experience${QST.it?' and a piece of gear':''}.</p></div></div>`:'<p>The next bounty is being posted at the keep.</p>'},
+ $('cmi').textContent='Bounties are posted on the board before the keep\'s gate. Take up to three, finish them in the wilds, then bring each back to the board for its gold. Pay off all ten for 500 gold and a piece of gear.';
+ const bl=BB?BB.L.filter(b=>b.st==1||b.st==2):[];$('cmw').innerHTML=`Bounties paid: <b>${QN}</b>`+(BB?` · Board ${BB.s+1}: <b>${BB.L.filter(b=>b.st==3).length} of 10</b>`:'');
+ $('cmo').innerHTML=bl.length?bl.map(b=>`<div class="cd"><i>${IC(QK[b.k].ic)}</i><div><h3>${escH(b.t)}</h3><p>${QK[b.k].d(b.n)}</p><p><b>${bbPr(b)}</b></p><p>Reward: <b>${bbG(b)}</b> gold and <b>${bbX(b)}</b> experience.</p></div></div>`).join(''):'<p>You hold no bounty. Take one at the board before the keep\'s gate.</p>'},
 // a screen by its key (C, I, J; the toolbar's helm and bag): pressed again it closes
 hero=t=>{if(!run)return;if(ov==3&&czTab==t)return sho(0);czTab=t;qSel=null;iSel=-1;ov==3?(heroMenu(),czFit()):sho(3)},
 // the part of the screen the docked panel leaves clear, in NDC (centre x, y and width, height as fractions), for the camera to frame the knight in
@@ -4591,7 +4730,7 @@ czF={x:0,y:0,w:1,h:1},czFit=()=>{const W0=innerWidth,H0=innerHeight,set=(l,t,r,b
  // the character: the window between the slot columns; the inventory and the quests: what the docked panel leaves clear beside (or above) it
  if(czTab==0){const r=$('cdw').getBoundingClientRect();r.width>40&&r.height>40?set(r.left,r.top,r.right,r.bottom):set(0,0,W0,H0)}
  else{const r=$(['chr','inv','skl','qst'][czTab]).getBoundingClientRect();r.left>W0*.3?set(0,r.top,r.left,H0):set(0,0,W0,max(r.top,H0*.3))}};
-let clsOk=0,ov=0,czTab=0,qSel=null,iSel=-1,ttl=0,lsg=0,musGo=0,rmof=0;const sho=o=>{if(!run)return;if(o==1){czTab=2;qSel=null;iSel=-1;o=3}ov=o;pz=o>0;$('pm').hidden=o!=2;$('cm').hidden=o!=3;$('tu').hidden=o!=4;$('mp').hidden=o!=5;document.body.classList.toggle('cz',o==3);o==5&&mapOpen();o==3&&(heroMenu(),czFit());if(o==2){$('prn').textContent='Drawn with '+(GPU?'WebGPU':'WebGL 2 (fallback)')}for(const k in K)K[k]=0},// N or the pause menu: the music on or off (the band fades out); every other sound plays regardless, and the choice is remembered
+let clsOk=0,ov=0,czTab=0,qSel=null,iSel=-1,ttl=0,lsg=0,musGo=0,rmof=0;const sho=o=>{if(!run)return;if(o==1){czTab=2;qSel=null;iSel=-1;o=3}ov=o;pz=o>0;$('pm').hidden=o!=2;$('cm').hidden=o!=3;$('tu').hidden=o!=4;$('mp').hidden=o!=5;$('bb').hidden=o!=6;document.body.classList.toggle('cz',o==3);o==5&&mapOpen();o==6&&(bbR(),$('bb').firstElementChild.focus());o==3&&(heroMenu(),czFit());if(o==2){$('prn').textContent='Drawn with '+(GPU?'WebGPU':'WebGL 2 (fallback)')}for(const k in K)K[k]=0},// N or the pause menu: the music on or off (the band fades out); every other sound plays regardless, and the choice is remembered
 tgm=()=>{mof=!mof;$('ps').textContent='Music: '+(mof?'off':'on');try{localStorage.setItem(SK+'-music',mof?1:0)}catch(e){}},
 t32=()=>{U.ret.value=(U.ret.value+1)%RETN.length;$('p32').textContent='Retro look: '+RETN[U.ret.value]},
 // the pad's rumble on or off (remembered); switching it on gives a nudge so you feel what it is
@@ -4646,12 +4785,12 @@ crChar=()=>new Promise(r=>{const d=$('al'),m=$('alm'),c0=$('alc'),L={...LOOK},sw
  d.onclose=()=>{d.classList.remove('cc');c0.textContent='Cancel';m.onclick=null;const ok=d.returnValue=='ok';
   if(ok){Object.assign(LOOK,lkFix(L));FARM=nm.value.trim().replace(/\s+/g,' ')||dn(L.s);try{localStorage.setItem(SK+'-name',FARM)}catch(e){}}r(ok)};
  up();d.returnValue='';d.showModal();m.querySelector('[data-s].on').focus()}),
-// a new hero: the class, then the making; Back from the making returns to the class
-newHero=async()=>{for(;;){CLS=await pickCls();skS();if(await crChar())return}},
+// a new hero: how to play, then the class, then the making; Back from the making returns to the class
+newHero=async()=>{await new Promise(r=>tuOpen(run?2:-1,r,'Choose a class'));for(;;){CLS=await pickCls();skS();if(await crChar())return}},
 ask=(t,m,ok,o={})=>new Promise(r=>{const d=$('al'),v=$('alv');$('alt').textContent=t;$('alm').innerHTML=m;$('alo').textContent=ok;$('alc').textContent=o.c||'Cancel';$('alo').className=o.v?'pr':'dg';v.hidden=!o.v;v.innerHTML=o.v||'';d.classList.toggle('fi',!!o.v);d.returnValue='';d.onclose=()=>r(d.returnValue=='ok');d.showModal();o.v&&$('alo').focus()}),
 nfM=(lv,w,d)=>`<b>${escH(FARM||'Your Hero')}</b> starts again at level 1 on day 1${d>1?` (from day ${d})`:''}: the <b>${w|0}</b> gold, the gear and the pack, the bounties and the skills learned are all lost. Chests already opened stay opened.`,
 tfr=()=>{fcap=fcap?0:1;$('pfr').textContent='Frame rate: '+(fcap?'60':'max');try{localStorage.setItem(SK+'-fps',fcap?'60':'max')}catch(e){}},
-fresh=()=>{for(const k in EQ)EQ[k]=null;kit();BAG.length=0;W=0;LV=1;XP=0;POT=1;QN=0;QST=null;qT=2;dy=1;dT=0;for(const k in SKL)delete SKL[k];SP=1;dsT=dsC=wardT=0;MAT=0;rgV=wdV=gaT=lpT=bnT=avT=mmS=0;BNR.visible=false;ZON.length=0;alyClr();CLR[CLS]?.();for(const k in acCD)acCD[k]=0;hxD=1;bHP=bMax();wlfClr();foeClr();for(const q of LOOT)q.on=0;P.position.set(2,0,3);apply();hrt();sv();sho(0)};
+fresh=()=>{for(const k in EQ)EQ[k]=null;kit();BAG.length=0;W=0;LV=1;XP=0;POT=1;QN=0;BB=null;bbArm=1;dy=1;dT=0;for(const k in SKL)delete SKL[k];SP=1;dsT=dsC=wardT=0;MAT=0;rgV=wdV=gaT=lpT=bnT=avT=mmS=0;BNR.visible=false;ZON.length=0;alyClr();CLR[CLS]?.();for(const k in acCD)acCD[k]=0;hxD=1;bHP=bMax();wlfClr();foeClr();for(const q of LOOT)q.on=0;P.position.set(2,0,3);apply();hrt();sv();sho(0)};
 $('bf').onclick=()=>hero(2);$('bp').onclick=()=>sho(2);$('rs').onclick=()=>sho(0);$('po').onclick=()=>hero(2);$('bk').onclick=()=>hero(0);$('bc').onclick=()=>hero(1);$('cmx').onclick=()=>sho(0);$('cmtc').onclick=$('cmti').onclick=$('cmts').onclick=$('cmtk').onclick=e=>{const t={cmtc:0,cmti:1,cmtk:2,cmts:3}[e.currentTarget.id];if(t==czTab)return;czTab=t;qSel=null;iSel=-1;heroMenu();czFit()};
 // the hero screens' buttons: q picks a slot on the doll (x puts it back), u takes a piece off, e wears one from the pack, i picks one in the
 // inventory, s sells it, k sorts the pack (rarest first, then by slot), j sells every common piece, p drinks a draught
@@ -4671,7 +4810,7 @@ $('cm').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled||b.id==
 $('alc').onclick=()=>$('al').close();$('alo').onclick=()=>$('al').close('ok');$('prm').onclick=tgr;
 // the scroll edge: a list that runs past its panel fades out at whichever end has more to see, under the pinned header or above the foot
 for(const e of document.querySelectorAll('.sc')){const f=()=>{e.classList.toggle('et',e.scrollTop>2);e.classList.toggle('eb',e.scrollTop+e.clientHeight<e.scrollHeight-2)};e.addEventListener('scroll',f,{passive:true});new ResizeObserver(f).observe(e);new MutationObserver(f).observe(e,{childList:true,subtree:true})}
-$('nf').onclick=async()=>{if(await ask('Start a new quest?',nfM(LV,W,dy),'Erase and start over')){await newHero();fresh();tuOpen(0,()=>intro('A fresh start. The realm awaits its Hero.','shield'))}};document.addEventListener('visibilitychange',()=>{AC&&(document.hidden?AC.suspend():AC.resume());document.hidden&&run&&!ov&&sho(2)});
+$('nf').onclick=async()=>{if(await ask('Start a new quest?',nfM(LV,W,dy),'Erase and start over')){await newHero();fresh();intro('A fresh start. The realm awaits its Hero.','shield')}};document.addEventListener('visibilitychange',()=>{AC&&(document.hidden?AC.suspend():AC.resume());document.hidden&&run&&!ov&&sho(2)});
 // ---- the title's flyover. Once Start is pressed the title tours the realm: for each zone the camera comes up out of black and makes one
 // long, low, slow pass over it, then goes dark and cuts to the next. The knight and the hound are
 // hidden and parked under the camera, since the streaming follows him and builds the land the view is heading into; any key ends the
@@ -4701,53 +4840,84 @@ const flyAt=(S,u)=>{const g=S.g,h=g[2],dx=sin(h),dz=cos(h),s=(u-.5)*FLL,w=sin(u*
 // even where the browser would have let it play
 const showTitle=()=>{$('tt').hidden=false;ttl=1;flyBegin()},startGo=()=>{if(!lsg)return;lsg=0;musGo=1;AC||aud();wake();$('sg').hidden=true;$('go').hidden=false;if(sd){$('go').textContent='Continue your quest';$('ng').hidden=false}$('fn').onkeydown=e=>{if(e.key=='Enter'){e.stopPropagation();$('go').click()}};
  inP();$('st').firstElementChild.hidden=true;renderer.domElement.style.opacity='';
- // no saved flock (and the primer not already read this visit): the page-by-page primer opens now, over the hills, and the title follows it
- if(!sd&&!tuDone)tuOpen(-1,showTitle,'Continue');else showTitle()};$('sg').onclick=startGo;
+ showTitle()};$('sg').onclick=startGo;
 const ttGo=()=>{if(!ttl)return;ttl=0;flyEnd();$('tt').hidden=true;$('st').firstElementChild.hidden=false;if(FARM)$('go').focus();else $('fn').focus()};$('tt').onclick=ttGo;
-// ---- how to play: a paged primer on the menus' parchment. It opens by itself on a brand-new quest (once: the choice is remembered), from the pause
-// menu, and from the link on the start card (before the game is running). The world stays paused behind it, so the day waits. Its pages name the
-// controls for whatever the player is holding (keys, touch or pad), and on a keyboard the keycaps on them light while their key is down ----
-const TUK=SK+'-tutorial';let tuOn=0,tuP=0,tuMax=0,tuFrom=0,tuCb=null,tuSeen=0,tuNew=0,tuLb='',tuDone=0;try{tuSeen=+localStorage.getItem(TUK)||0}catch(e){}
+// ---- how to play: a paged primer in the pixel menus' dress. It opens before the class is chosen, every time a new Hero is made (its last
+// button leads on to the class; the cross skips it), from the pause menu, and from the link on the start card (before the game is running).
+// The world stays paused behind it. Its pages name the controls for whatever the player is holding (keys, touch or pad), and on a keyboard
+// the keycaps on them light while their key is down ----
+const TUK=SK+'-tutorial';let tuOn=0,tuP=0,tuMax=0,tuFrom=0,tuCb=null,tuLb='';
 const tuS=(kb,tc,pd)=>[kb,tc,pd][gpOn?2:mob?1:0],
- tuB=i=>`<i class="sb"><svg class="ic" aria-hidden="true"><use href="#i-${i}"/></svg></i>`,
+ // the menu icons (i-*) as pixel sprites: drawn 16 pixels square in one colour, the edge hardened, an ink outline round it; made once
+ // each (PXK) and set on every <i class="pxi" data-i="name" data-c="colour"> under a root by pxFill
+ PXK={},pxSrc=(n,c)=>PXK[n+c]||(PXK[n+c]=new Promise(r=>{const sy=document.getElementById('i-'+n),S=16,im=new Image();if(!sy)return r('');
+  im.onload=()=>{const cv=document.createElement('canvas');cv.width=cv.height=S;const x=cv.getContext('2d');x.drawImage(im,0,0,S,S);const D=x.getImageData(0,0,S,S),a=D.data,o=new Uint8Array(S*S);
+   for(let i=0;i<S*S;i++){o[i]=a[i*4+3]>90;a[i*4+3]=o[i]?255:0}
+   for(let j=0;j<S;j++)for(let i=0;i<S;i++){const q=j*S+i;if(!o[q]&&((i&&o[q-1])||(i<S-1&&o[q+1])||(j&&o[q-S])||(j<S-1&&o[q+S]))){a[q*4]=11;a[q*4+1]=7;a[q*4+2]=6;a[q*4+3]=255}}
+   x.putImageData(D,0,0);r(cv.toDataURL())};im.onerror=()=>r('');
+  im.src='data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.5 -1.5 27 27" width="${S}" height="${S}"><g fill="none" stroke="${c}" color="${c}" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round">${sy.innerHTML}</g></svg>`)})),
+ pxFill=e=>{for(const i of e.querySelectorAll('.pxi:not([data-ok])')){i.dataset.ok=1;pxSrc(i.dataset.i,i.dataset.c||'#f0cf7a').then(u=>{u&&(i.style.backgroundImage=`url(${u})`)})}},
+ PXI=(n,c)=>`<i class="pxi" data-i="${n}"${c?` data-c="${c}"`:''} aria-hidden="true"></i>`,
+ tuB=i=>`<i class="sb">${PXI(i)}</i>`,
  tuC=(...a)=>a.map(([c,t,w])=>`<kbd data-k="${c}"${w?' class="wd"':''}>${t}</kbd>`).join(''),
  tuK=(k,n,h='')=>`<div class="tk"><span class="kc">${k}</span><span class="kn"><b>${n}</b>${h?`<small>${h}</small>`:''}</span></div>`,
- // framed pictures for the primer's pages would go here (FG: a banner under a page's lead, IMG: a small one in a card, tutorial/*.jpg);
- // Quest has none yet, so its pages are cards and keys
- FG={},IMG={},
- // a picture's address: the tutorial/ folder beside this page, unless the offline build has embedded them (window.PICS, see tools/make-offline.py)
- tuU=s=>window.PICS?.[s]||`tutorial/${s}.jpg`,
- tuI=m=>`<img src="${tuU(m.s)}" width="${m.w}" height="${m.h}" alt="${m.alt}" decoding="async" draggable="false">`,
- tuF=f=>`<figure class="tfig"><div class="tfi">${tuI(f)}${(f.pins||[]).map(([x,y,d])=>`<i class="pin" style="left:${x}%;top:${y}%;width:${d}%"></i>`).join('')}</div><figcaption>${f.cap}</figcaption></figure>`,
+ // the attributes: [name, what it does, its cap]
+ TUA=[['Offence',[['Attack','The damage of every strike.'],['Arcana','The power of spells. A Mage\'s staff and wand give Arcana.'],['Critical Chance','The chance a blow lands as a critical hit.','60%'],
+   ['Ferocity','How much harder a critical hit lands.','+300%'],['Haste','How fast you attack.','50%'],['Cooldown Reduction','How soon your skills come back.','40%'],['Affliction','Bleeds, venom, burns and blight hurt more.']]],
+  ['Defence',[['Health','100, and 20 more each level. Lose it all and you fall.'],['Armor','Takes a share off every blow, if it keeps up with your level.','75%'],['Ward','Takes blows before your Health, and refills 3 seconds after a hit.'],
+   ['Block','The chance to take 40% less from a blow.','50%'],['Evasion','The chance to dodge a blow entirely. 35% at most outside leather.','50%'],['Life Leech','A share of the damage you deal heals you.','12%'],['Move Speed','How fast you walk.','+50%']]]],
+ // the rarities: [from level, what they carry]
+ TUR=[[1,'Their own stats only'],[11,'1 or 2 affixes'],[21,'2 or 3 affixes'],[31,'3 or 4 affixes, and may raise a skill a rank'],[41,'4 affixes, and a mutator that changes one of your skills']],
  TUP=()=>[
- {ic:'shield',t:'Welcome, Hero',lead:'Shadow lies over the realm. Ride out from Greywatch Keep, put its beasts and brigands to the sword, break open the chests of the old kings, and come home richer and stronger.',
-  cards:[['scroll','Take a bounty','A bounty is posted at the keep: slay so many foes, break open chests or scout far afield. Finish it, then come back to the muster ring to claim the reward.'],['dawn','Fifteen minutes of day','A day lasts <b>15 minutes</b>, and so does the night. Nobody sleeps: the night is played out in the open, and it is more dangerous.'],['coin','Gold and glory','Foes drop gold and gear. Wear the best of the gear, spend gold on draughts, and each level\'s skill point on the skill tree.']]},
- {ic:'boot',t:'Ride the realm',lead:tuS('Hold <b>W A S D</b> or the arrow keys to walk, and scroll the wheel to zoom in and out.','<b>Drag</b> anywhere on the screen to walk. A little stick appears under your finger and your Hero goes the way you push it.','Push the <b>left stick</b>, or press the D-pad, to walk. The <b>right stick</b> zooms in and out.'),
-  cards:[['castle','Home is the keep',tuS('Press <b>M</b> for the map','Tap the map button','Press the '+GB.vw+' button for the map')+': it shows where you are, how far it is to Greywatch Keep and the places you have found. No foe follows you inside the ring of braziers, and wounds close quickly there.'],['fair','The weather turns','Sun, wind, rain and fog drift over the hills, by night as by day. In fog, foes close in unseen.']],
-  keys:[tuK(tuS(tuC(['KeyW','W'],['KeyA','A'],['KeyS','S'],['KeyD','D']),'<kbd>Drag</kbd>',gpG('ls')),'Walk',tuS('or the arrow keys','anywhere on the screen','or the D-pad')),tuS(tuK('<kbd>Scroll</kbd>','Zoom','in and out'),'',tuK(gpG('rs'),'Zoom','right stick')),tuK(tuS(tuC(['KeyM','M']),tuB('map'),gpG('vw')),'Map','where you are')]},
- {ic:'sword',t:'Draw your sword',lead:'<b>Strike</b> to cut in an arc in front of you: every foe within the blade\'s reach takes the blow. A tempered blade reaches further.',
-  cards:[['wolf','Watch for the tell','A wolf crouches before it bites; a brigand or a skeleton raises its blade. Step back, then strike while it recovers.'],['heart','Health and draughts','Armor takes a share of every blow, a shield may block part of it and a Ward soaks it first. Drink a healing draught for a third of your Health, or rest inside the muster ring. If you fall, you wake at the keep\'s gate, a little poorer.'],['chest','Chests and gates','A stroke of the sword breaks a treasure chest open and swings a field gate wide.']],
-  keys:[tuK(tuS(tuC(['Space','Space',1]),tuB('sword'),gpG('a')),'Strike',tuS('with your sword','the sword button','with your sword')),tuK(tuS(tuC(['KeyQ','Q']),tuB('potion'),gpG('b')),'Drink a draught',tuS('a third of your Health','the red flask','a third of your Health'))]},
- {ic:'chest',t:'Loot',lead:'Fallen foes leave gold, healing herbs and gear, each under a beam of light. The beam\'s colour is its rarity: white, green, blue, purple and, rarest and tallest, orange.',
-  cards:[['bag','Your pack','Loot you aren\'t wearing goes in your pack. Open your inventory to compare a piece with what you wear, then wear it or sell it.'],['armor','Eleven slots','Every piece is made for your class and your level. Commons have their base stats only; uncommon gear begins to drop from level 11, rare from 21, epic from 31 and legendary, with its mutator, from 41.'],['crown','Grow stronger','Kills, chests and bounties earn experience, up to level 50. Each level raises your Attack, Arcana and Health. Spend gold with the Gambler and the Blacksmith in your inventory.']],
+ {ic:'shield',t:'Welcome, Hero',lead:'Shadow lies over the realm. Ride out from Greywatch Keep, cut down its beasts, brigands and risen dead, break open the old kings\' chests, and come home richer and stronger.',
+  cards:[['scroll','Bounties','Ten hang on the board before the keep. Take up to three, finish them in the wilds and bring each back for gold. Pay off all ten for 500 gold and gear.'],
+   ['moon','Day and night','A day lasts <b>15 minutes</b>, and so does the night. After dark the wolves hunt in bigger packs and the dead rise until dawn.'],
+   ['castle','Greywatch Keep','No foe follows you inside its ring of braziers, and wounds close quickly there. Fall in battle and you wake at its gate, a fifth of your gold lighter.']]},
+ {ic:'boot',t:'Controls',bl:'Walking, striking, skills and the menus.',lead:tuS('Walk with <b>W A S D</b> or the arrow keys, and zoom with the mouse wheel. Everything else is a key or two away.','<b>Drag</b> anywhere on the screen to walk: a stick appears under your finger. The buttons strike, drink and cast.','The <b>left stick</b> walks and the <b>right stick</b> zooms. Everything else is on the buttons.'),
+  keys:[tuK(tuS(tuC(['KeyW','W'],['KeyA','A'],['KeyS','S'],['KeyD','D']),'<kbd>Drag</kbd>',gpG('ls')),'Walk',tuS('or the arrow keys','anywhere on the screen','or the D-pad')),
+   tuK(tuS(tuC(['Space','Space',1]),tuB('sword'),gpG('a')),'Strike',tuS('hold to keep striking','the sword button','hold to keep striking')),
+   tuK(tuS(tuC(['KeyQ','Q']),tuB('potion'),gpG('b')),'Drink a draught','a third of your Health'),
+   tuK(tuS(tuC(['ShiftLeft','Shift'],['KeyE','E'],['Digit1','1-5']),tuB('dash'),'RB LB RT LT'),'Use a skill','once learned'),
+   tuK(tuS(tuC(['KeyC','C'],['KeyI','I'],['KeyJ','J']),tuB('helm'),gpG('x')),'Your Hero','gear, pack and quests'),
+   tuK(tuS(tuC(['KeyK','K']),tuB('skill'),gpG('y')),'Skills','the three trees'),
+   tuK(tuS(tuC(['KeyM','M']),tuB('map'),gpG('vw')),'Map','where you are'),
+   tuK(tuS(tuC(['Escape','Esc']),tuB('pause'),gpG('st')),'Pause','and the settings')],
+  note:tuS('<b>N</b> switches the music and <b>R</b> the retro look.','The pause menu has the music and the retro look.','The pause menu has the music and the retro look.')+' The game saves as you go.'},
+ {ic:'helm',t:'Six classes',bl:'What each one wears, wields and spends.',lead:'Your class decides your armour, your weapons, the resource your skills spend and your three skill trees. It stays with your Hero for the whole quest: a new quest can start another.',
+  html:`<div class="tcl">${Object.values(CLD).map(C=>`<div class="tcc" style="--rc:${C.rc}"><b>${C.n}</b><small>${C.d}</small><span><i>${ACN[C.ac][0]}</i><i>${C.rng?'Ranged':'Melee'}</i></span><span class="tcr">${C.rs}</span><em>${C.wn}</em></div>`).join('')}</div>`,
+  note:'<b>Plate</b> turns aside the most of every blow. <b>Leather</b> turns less, but lets you dodge more. <b>Cloth</b> turns least, and a Mage\'s Ward grows with Arcana instead.'},
+ {ic:'skill',t:'Skills',bl:'Three trees, and a point every level.',lead:'Every level brings a skill point, up to level 50. Spend them on your class\'s three trees, each growing from a root to a capstone: learning a skill opens the ones that grow from it.',
+  cards:[['sword','Attack tree','Your class\'s strikes, and what they leave in a foe.'],['dash','Mobility tree','Speed and evasion, and your movement skill on Shift.'],['rune','Magic tree','Arcana, Ward and spells, the first of them on E.'],
+   ['bolt','Your resource','The bar above your Health: Rage, Conviction, Essence, Energy, Focus or Mana, each filled its own way. Skills spend it; a few cost Health instead.']],
+  keys:[tuK(tuS(tuC(['KeyK','K']),tuB('skill'),gpG('y')),'Skills','learn and unlearn'),tuK(tuS(tuC(['ShiftLeft','Shift'],['KeyE','E'],['Digit1','1-5']),tuB('dash'),'RB LB RT LT'),'Use a skill','once learned')],
+  note:'Changed your mind? From level 10 you can unlearn every skill on the skills page, for 40% of all the gold you carry, so think before you do.'},
+ {ic:'heart',t:'Attributes',bl:'What every number on your Hero means.',lead:'Your Hero\'s numbers come from the level, the gear and the skills. Open your Hero to see them all; most stop at a cap.',
+  html:`<div class="tst">${TUA.map(([h,L])=>`<div class="tsg"><h3>${h}</h3><dl>${L.map(([n,d,c])=>`<div><dt>${n}</dt>${c?`<em>max ${c}</em>`:''}<dd>${d}</dd></div>`).join('')}</dl></div>`).join('')}</div>`,
+  note:'Weapons bring stats of their own as well, such as Bleed Chance, Armor Shred or Stun.'},
+ {ic:'chest',t:'Items and rarity',bl:'The five colours of loot, and affixes.',lead:'Fallen foes and chests leave gear under a beam of light. The beam\'s colour is the rarity, and rarer gear carries more affixes: extra stats on top of the piece\'s own.',
+  html:`<div class="tqr">${TUR.map(([l,t],r)=>`<div class="tqw" style="--q:${RCO(r)}"><i></i><b>${RAR[r][0]}</b><span>from level ${l}</span><small>${t}</small></div>`).join('')}</div>`,
+  cards:[['rune','Affixes','Extra stats rolled onto a piece, such as Critical Chance, Haste or Life Leech, from those that suit its slot.'],['skill','A skill\'s rank','An epic or legendary piece may raise one of your skills a rank above what you have learned.'],
+   ['crown','Mutators','A legendary\'s mutator reshapes one of your class\'s skills: a Paladin\'s Hammer of Light that lasts twice as long, say.']],
+  note:'Every piece is made for your class, at its level. Your inventory marks it <b class="gup">better</b> or <b class="gdn">worse</b> than what you wear.'},
+ {ic:'armor',t:'Gear',bl:'Eleven slots, your pack, weapons and shields.',lead:'Your Hero wears eleven pieces. A new find goes on at once if its slot is empty; otherwise it waits in your pack.',
+  html:`<div class="tgs">${Object.keys(SLN).map(k=>`<span><i>${PXI(SLI[k],'#c9b89a')}</i>${SLN[k]}</span>`).join('')}</div>`,
+  cards:[['bag','Your pack','Holds 30 pieces. Pick one to wear it, sell it for gold or salvage it for iron scrap.'],['sword','Weapons','Each class has its own. A two-handed weapon or a pair takes both hands: only a Warrior with a one-handed weapon carries a shield.'],
+   ['crown','Your look','Your armour takes on the finish of its rarity, from bright steel to gilt.']],
   keys:[tuK(tuS(tuC(['KeyC','C']),tuB('helm'),gpG('x')),'Character','what you wear'),tuK(tuS(tuC(['KeyI','I']),tuB('bag'),gpG('x')),'Inventory',tuS('your pack','your pack','then RB'))]},
- {ic:'moon',t:'When night falls',lead:'At nightfall the wolves hunt in bigger packs, with dire wolves among them, and the dead rise out of the ground and walk until dawn.',
-  cards:[['skull','The risen dead','Skeletons claw their way up near you after dark. At sunrise any still standing crumble to dust.'],['wolf','Dire wolves','Bigger and darker than the grey wolves, they bite twice as hard, but they carry better loot.'],['castle','A beacon home','The keep\'s windows and the braziers round the muster ring burn all night: steer home by them.']]},
- {ic:'skill',t:'Skills',lead:'Every level brings a skill point, 50 in all, for your class\'s three trees: Attack, Mobility and Magic, each growing from its root to a capstone. A skill opens the ones that grow from it.',
-  cards:[['sword','Attack','Your class\'s strikes and what they leave in a foe; at the top, its first capstone.'],['dash','Mobility','Speed and evasion, and the move on Shift (1); at the top, a second capstone.'],['rune','Magic','Arcana, Ward and spells, the first on E (2); at the top, the third capstone. Your class\'s resource, the bar above your health, pays for them.']],
-  keys:[tuK(tuS(tuC(['KeyK','K']),tuB('skill'),gpG('y')),'Skills'),tuK(tuS(tuC(['Digit1','1-5']),tuB('dash'),'RB LB RT LT'),'Use a skill','once learned'),tuK(tuS(tuC(['KeyC','C']),tuB('helm'),gpG('x')),'Character'),tuK(tuS(tuC(['Escape','Esc']),tuB('pause'),gpG('st')),'Pause')],
-  note:tuS('<b>N</b> switches the music and <b>R</b> the retro look.','The pause menu has the music and the retro look.','The pause menu has the music and the retro look.')+' The game saves as you go, and you can read this again from the pause menu.'}],
+ {ic:'coin',t:'Gold',bl:'Where it comes from and where it goes.',lead:'Every foe drops gold, more as you level and five times as much from the big ones. Bounties pay in gold, and selling gear brings in more. This is where it goes.',
+  cards:[['potion','Healing draughts','Each gives back a third of your Health. Buy them on the skills page; you can carry 5.'],['chest','The Gambler','An unknown piece of gear, for a price that rises with your level. One in ten comes up epic or better.'],
+   ['anvil','The Blacksmith','Tempers a piece\'s Attack or Armor by 10%, up to three times, for gold and iron scrap. Salvage what you don\'t need for scrap.'],['skill','Unlearning','From level 10, every skill point back to spend again, for 40% of all the gold you carry.']],
+  note:'The Gambler and the Blacksmith are in your inventory. Falling in battle costs a fifth of the gold you carry.'}],
  tuR=()=>{const pg=TUP(),n=pg.length,p=pg[tuP];tuMax=max(tuMax,tuP);
-  $('tut').textContent=p.t;$('tus').textContent=`Step ${tuP+1} of ${n}`;$('tum').innerHTML=IC(p.ic);
-  $('tpg').innerHTML=(p.fig?`<div class="tlf"><p class="tl">${p.lead}</p>${tuF(p.fig)}</div>`:`<p class="tl">${p.lead}</p>`)+(p.keys?`<div class="tks">${p.keys.join('')}</div>`:'')+(p.cards?`<div class="tcs">${p.cards.map(([i,h,t,m])=>`<div class="cd"><i>${IC(i)}</i><div><h3>${h}</h3><p>${t}</p></div>${m?`<span class="cdi">${tuI(m)}</span>`:''}</div>`).join('')}</div>`:'')+(p.note?`<p class="tnt">${p.note}</p>`:'');
-  $('tup').innerHTML=pg.map((q,i)=>`<button data-pip="${i}" class="${i==tuP?'on':i<=tuMax?'dn':''}" aria-label="Step ${i+1}: ${q.t}"${i==tuP?' aria-current="step"':''}></button>`).join('');
-  $('tub2').disabled=!tuP;$('tun').textContent=tuP==n-1?tuLb:'Next';$('tuc').scrollTop=0;
-  const nx=pg[tuP+1];nx&&[nx.fig,...(nx.cards||[]).map(c=>c[3])].forEach(m=>{m&&(new Image().src=tuU(m.s))})},
+  $('tut').textContent=p.t;$('tus').textContent=`Page ${tuP+1} of ${n}`;$('tum').innerHTML=PXI(p.ic);
+  $('tpg').innerHTML=`<p class="tl">${p.lead}</p>`+(p.html||'')+(p.keys?`<div class="tks">${p.keys.join('')}</div>`:'')+(p.cards?`<div class="tcs${p.cards.length==4?' c2':''}">${p.cards.map(([i,h,t])=>`<div class="cd"><i>${PXI(i)}</i><div><h3>${h}</h3><p>${t}</p></div></div>`).join('')}</div>`:'')+(tuP?'':`<p class="tih">In these pages</p><div class="tix">${pg.slice(1).map((q,i)=>`<button data-pip="${i+1}"><i>${PXI(q.ic)}</i><span><b>${q.t}</b><small>${q.bl}</small></span></button>`).join('')}</div>`)+(p.note?`<p class="tnt">${p.note}</p>`:'');
+  $('tup').innerHTML=pg.map((q,i)=>`<button data-pip="${i}" class="${i==tuP?'on':i<=tuMax?'tv':''}" aria-label="Page ${i+1}: ${q.t}" title="${q.t}"${i==tuP?' aria-current="step"':''}>${PXI(q.ic)}</button>`).join('');
+  $('tub2').disabled=!tuP;$('tun').textContent=tuP==n-1?tuLb:'Next';$('tuc').scrollTop=0;pxFill($('tu'))},
  tuGo=d=>{const n=TUP().length;if(d>0&&tuP>=n-1)return tuClose();tuP=cl(tuP+d,0,n-1);tuR()},
- tuOpen=(from=0,cb=null,lb='')=>{if(tuOn)return;tuFrom=from;tuCb=cb;tuLb=lb||(cb?'Ride out':'Done');tuP=tuMax=0;tuOn=1;tuR();if(run)sho(4);else $('tu').hidden=false;
+ tuOpen=(from=0,cb=null,lb='')=>{if(tuOn)return cb?.();tuFrom=from;tuCb=cb;tuLb=lb||(cb?'Ride out':'Done');tuP=tuMax=0;tuOn=1;tuR();$('tux').setAttribute('aria-label',cb?'Skip':'Close how to play');if(run)sho(4);else $('tu').hidden=false;
   // a pad lands on its button; a keyboard or mouse leaves the panel itself focused, so Space stays free for the crook's keycap
   document.body.classList.contains('pd')?$('tun').focus():$('tu').firstElementChild.focus()},
- tuClose=()=>{if(!tuOn)return;tuOn=0;tuSeen=tuDone=1;try{localStorage.setItem(TUK,1)}catch(e){}
+ tuClose=()=>{if(!tuOn)return;tuOn=0;try{localStorage.setItem(TUK,1)}catch(e){}
   if(run)sho(tuFrom==2?2:0);else{$('tu').hidden=true;(lsg?$('sg'):$('htp')).focus()}
   const cb=tuCb;tuCb=null;cb&&cb()},
  tuKey=e=>{const c=e.code,el=document.activeElement,onBtn=el&&el.tagName=='BUTTON'&&$('tu').contains(el)&&el.matches(':focus-visible');if(e.metaKey||e.ctrlKey||e.altKey)return;
@@ -4762,9 +4932,9 @@ const tuS=(kb,tc,pd)=>[kb,tc,pd][gpOn?2:mob?1:0],
   for(const k of $('tu').querySelectorAll(`kbd[data-k="${c}"]`))k.classList.add('on')},
  tuUp=e=>{if(e.code=='Space'){const a=document.activeElement;a&&a.tagName=='BUTTON'&&a.matches(':focus-visible')||e.preventDefault()}for(const k of $('tu').querySelectorAll(`kbd[data-k="${e.code}"]`))k.classList.remove('on')},
  // what a new knight hears at the start, after the primer (shown after Start for a first-timer, or here for a new quest): the usual opening hint, or one of the caller's (m, with its icon ic)
- intro=(m,ic)=>{toast(m||`Shadow lies over the realm. Strike with your sword ${gpOn?`(${gpG('a')})`:mob?'(the sword button)':'(<b>Space</b>)'}, and drink a draught ${gpOn?`(${gpG('b')})`:mob?'(the red flask)':'(<b>Q</b>)'} when you are hurt.`,'',ic||'shield');setTimeout(()=>toast(`Your first bounty is posted. ${gpOn?`${gpG('x')} shows your character, inventory and quests`:mob?'The helm and bag buttons show your character and inventory':'<b>C</b> shows your character, <b>I</b> your inventory, <b>J</b> your quests'}.`,'','scroll'),6000);setTimeout(()=>toast('A day lasts 15 minutes, and so does the night. The dead walk after dark.','','moon'),12000)};
+ intro=(m,ic)=>{toast(m||`Shadow lies over the realm. Strike with your sword ${gpOn?`(${gpG('a')})`:mob?'(the sword button)':'(<b>Space</b>)'}, and drink a draught ${gpOn?`(${gpG('b')})`:mob?'(the red flask)':'(<b>Q</b>)'} when you are hurt.`,'',ic||'shield');setTimeout(()=>toast(`Bounties hang on the board before the keep. ${gpOn?`${gpG('x')} shows your character, inventory and quests`:mob?'The helm and bag buttons show your character and inventory':'<b>C</b> shows your character, <b>I</b> your inventory, <b>J</b> your quests'}.`,'','scroll'),6000);setTimeout(()=>toast('A day lasts 15 minutes, and so does the night. The dead walk after dark.','','moon'),12000)};
 $('htp').onclick=()=>tuOpen(-1);$('phw').onclick=()=>tuOpen(2);$('tux').onclick=tuClose;$('tun').onclick=()=>tuGo(1);$('tub2').onclick=()=>tuGo(-1);
-$('tup').onclick=e=>{const b=e.target.closest('button');if(!b)return;tuP=+b.dataset.pip;tuR();$('tun').focus()};
+$('tup').onclick=$('tpg').onclick=e=>{const b=e.target.closest('[data-pip]');if(!b)return;tuP=+b.dataset.pip;tuR();$('tun').focus()};
 addEventListener('keyup',e=>{tuOn&&tuUp(e)});
 onkeydown=e=>{if(tuOn){tuKey(e);return}if(lsg){if(!e.metaKey&&!e.ctrlKey&&!e.altKey&&e.target.id!='htp'&&(e.code=='Enter'||e.code=='NumpadEnter'||e.code=='Space')){e.preventDefault();startGo()}return}if(ttl){if(!e.metaKey&&!e.ctrlKey&&!e.altKey){e.preventDefault();ttGo()}return}if($('al').open||e.target.closest?.('input'))return;const c=e.code;K[c]=1;if(c=='Space'||c.startsWith('Arrow')){e.preventDefault();document.activeElement?.blur?.()}if(e.repeat)return;c=='Space'&&swing();c=='KeyQ'&&drink();(c=='KeyK'||c=='KeyF')&&hero(2);(c=='ShiftLeft'||c=='ShiftRight')&&dash();c=='KeyE'&&acUse(1);/^Digit[1-6]$/.test(c)&&acUse(+c[5]-1);c=='KeyC'&&hero(0);c=='KeyI'&&hero(1);c=='KeyJ'&&hero(3);(c=='Escape'||c=='KeyP')&&sho(ov?0:2);c=='KeyM'&&sho(ov==5?0:5);c=='KeyN'&&tgm();c=='KeyR'&&t32()};onkeyup=e=>K[e.code]=0;
 // leaving the window (another app, another tab) pauses, so the day never runs down while the player is away
@@ -4789,7 +4959,7 @@ gpUI=()=>{const g=gpGet();gpOn=!!g;GB=g&&/054c|playstation|dualsense|dualshock/i
  for(const e of document.querySelectorAll('.kp'))e.innerHTML=`<span>${gpG('ls')}walk</span><span>${gpG('a')}strike</span><span>${gpG('b')}draught</span><span>${gpG('y')}skills</span><span>${gpG('x')}character</span><span>${gpG('vw')}map</span><span>${gpG('st')}pause</span><span>${gpG('rs')}zoom</span>`;for(const e of document.querySelectorAll('.cg.pad'))e.innerHTML=[['ls','Walk','right stick zooms'],['a','Strike','with your sword'],['b','Draught','a third of your Health'],['y','Skills','spend your points'],['x','Character','LB, RB: inventory'],['st','Pause',GB.vw+' opens the map']].map(([k,n,h])=>`<div class="ci"><span class="kc">${gpG(k)}</span><b>${n}</b><small>${h}</small></div>`).join('');tuOn&&tuR()},
 // the stick's dead zone, rescaled so the walk still starts from a standstill
 gpDz=(x,y)=>{const l=hypot(x,y);if(l<.2)return[0,0];const k=min(1,(l-.2)/.75)/l;return[x*k,y*k]},
-gpBox=()=>$('al').open?$('al'):tuOn?$('tu'):!run?$('st'):ov==2?$('pm'):ov==3?$('cm'):ov==5?$('mp'):null,
+gpBox=()=>$('al').open?$('al'):tuOn?$('tu'):!run?$('st'):ov==2?$('pm'):ov==3?$('cm'):ov==5?$('mp'):ov==6?$('bb'):null,
 gpC=b=>[...b.querySelectorAll('button:not(:disabled):not([data-pip]),input')].filter(e=>e.getClientRects().length),
 // a menu opened from the pad lands on its first button (past the close cross)
 gpF=b=>{document.body.classList.add('pd');const c=gpC(b);(c.find(e=>!e.matches('.b.sm'))||c[0])?.focus()},
@@ -4944,14 +5114,14 @@ function loop(){if(dead)return;const now=performance.now();if(fcap&&now-last<10.
   U.dt.value=lv?dt:0;camU(dt);vwU();cull();if((ht-=dt)<0){ht=.2;if(run){hud();amb(.2)}else MU&&MU.tick(mof||!musGo?0:1)}renderer.compute(GL[0].cs);renderer.compute(GL[1].cs);GSW.a.value.w=0;CMP.render()}
  catch(e){dead=1;console.error(e);fail('The game stopped unexpectedly','Your quest is saved as you play, so reloading picks up close to where you left off.')}}
 $('go').onclick=()=>{if(!sd&&!clsOk){newHero().then(()=>{clsOk=1;$('go').onclick()});return}clsOk=0;if(!FARM){FARM=$('fn').value.trim().replace(/\s+/g,' ')||'Sir Aldric';try{localStorage.setItem(SK+'-name',FARM)}catch(e){}}AC||aud();
- if(sd){W=sd.W||0;LV=sd.LV||1;XP=sd.XP||0;POT=sd.POT??1;dy=sd.dy||1;QN=sd.QN|0;QST=sd.Q||null;sd.G&&Object.assign(EQ,sd.G);(sd.B||[]).forEach(it=>BAG.push(it));if(EQ.c){EQ.c.s='n';EQ.n=EQ.n||EQ.c}delete EQ.c;for(const it of BAG)it.s=='c'&&(it.s='n');
+ if(sd){W=sd.W||0;LV=sd.LV||1;XP=sd.XP||0;POT=sd.POT??1;dy=sd.dy||1;QN=sd.QN|0;BB=bbOk(sd.BB)?sd.BB:null;sd.G&&Object.assign(EQ,sd.G);(sd.B||[]).forEach(it=>BAG.push(it));if(EQ.c){EQ.c.s='n';EQ.n=EQ.n||EQ.c}delete EQ.c;for(const it of BAG)it.s=='c'&&(it.s='n');
   CLS=CLD[sd.C]?sd.C:'war';LOOK=lkFix(sd.A);skS();MAT=sd.M|0;LV=min(LV,LVM);for(const k in EQ)EQ[k]=migIt(EQ[k]);for(let i=0;i<BAG.length;i++)BAG[i]=migIt(BAG[i]);clsWpn();
   if(sd.K)Object.assign(SKL,sd.K);else if(sd.L){const m={sword:['blade',3],armor:['vit',3],boots:['fleet',3],dog:['hound',1]};for(const k in m)sd.L[k]&&(SKL[m[k][0]]=min(m[k][1],sd.L[k]))}
   if(Object.keys(SKL).some(k=>!skG(k))){for(const k in SKL)delete SKL[k];sd.SP=null;setTimeout(()=>toast('The skill trees have been redrawn: every point you had is yours to spend again.','g','skill'),2600)}
   SP=sd.SP??max(0,LV-skSpent());hxD=1;bHP=bMax()}else{kit();hxD=1;bHP=bMax()}
  $('st').hidden=true;$('hud').hidden=$('tb').hidden=$('cb').hidden=$('qb').hidden=false;run=1;xpR(-10,-10,150);wxN=wxDur(wxI);apply();hrt();hud();
- if(sd)toast(`Welcome back, <b>${escH(FARM)}</b>. The realm has need of you.`,'g','shield');else{const t=tuNew||!tuSeen;tuNew=0;t?tuOpen(0,intro):intro()}};
-$('ng').onclick=async()=>{if(!await ask('Start a new quest?',nfM(sd.LV||1,sd.W||0,sd.dy||1),'Erase and start over'))return;sd=null;try{localStorage.removeItem(SK)}catch(e){}XPL.clear();tuNew=1;$('go').onclick()};
+ if(sd)toast(`Welcome back, <b>${escH(FARM)}</b>. The realm has need of you.`,'g','shield');else intro()};
+$('ng').onclick=async()=>{if(!await ask('Start a new quest?',nfM(sd.LV||1,sd.W||0,sd.dy||1),'Erase and start over'))return;sd=null;try{localStorage.removeItem(SK)}catch(e){}XPL.clear();$('go').onclick()};
 const stage=async(k,t)=>{ldp(k,t);await new Promise(r=>setTimeout(r,30))};
 (async()=>{try{await stage(3,'Forging the Hero…');
  DGM.geometry=dogG();WIM.geometry=wolfG(DGM.geometry);sd&&(LOOK=lkFix(sd.A));clsLook();armTint();

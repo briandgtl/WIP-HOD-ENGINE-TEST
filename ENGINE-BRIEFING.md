@@ -531,7 +531,7 @@ and 17 (hearts, `bDmg` = 1 + crook level, `roll` by a flat rarity table, the bla
   uncommon 11, rare 21, epic 31, legendary 41). Starter kit: white chest, legs and weapon. Better/worse is `cmpV` (the change in
   `hxR`, a rating). Old saves' pieces are made again by `migIt`; old skills are refunded.
 - **Gold:** drops `goldM` (the doc's 1-3 G at level 1 to 350-600 at 50; big foes x5), `sellP` (the doc's rare price, by rarity),
-  respec `rsP = 35 + L^2 x 5`, the Gambler (`gamble`, `gamP`; 10% epic or better, never legendary before 41), the Blacksmith (`smUp`:
+  respec `rsP` = 40% of the gold carried (at least 1), only from level `RSL` (10), the Gambler (`gamble`, `gamP`; 10% epic or better, never legendary before 41), the Blacksmith (`smUp`:
   +10% Attack/Armor, three times, for gold and iron scrap `MAT`, which salvaging gives).
 - **Weapons in hand:** `WPV` (a mesh set per kind on `staff`), `wpLook()` from `armTint`; `OHW` a twin in the off hand for pairs.
 - **Class looks** (`CLK[class]()`, before `manG`): each class's own armour pieces in the knight's cells and slot regions (a slot it
@@ -552,5 +552,12 @@ and 17 (hearts, `bDmg` = 1 + crook level, `roll` by a flat rarity table, the bla
   that far and the aim (`aimF`) looks that far. Ranged classes keep firing while the strike is held (`cbH`, Space, pad A).
 - **Ranged poses:** `RPS(sk)` in `poseStaff` holds a bow upright at the side and out at full reach in the shot, a staff upright and
   thrust forward-up, a wand pointed; mvP damps the sword-cut's twist and lunge for `CL().rng`, raises the free arm and skips the trail.
+- **Bounty board** (Nov 2026, replaces the one-at-a-time bounty `QST`): `BB` = {s boards cleared, L ten bounties {k, n, c, t, q, st 0
+  posted, 1 taken, 2 done, 3 paid}}, saved as `BB`. Up to `BBT` (3) taken at once; `qEv` counts for every taken one of its kind; paid at
+  the board (`bbClaim`). The ten run easy to hard in four tiers (`BBR`: three at 25 gold, three at 50, three at 75, one at 100; counts
+  from `bbCnt` by difficulty q, two steps harder each board; gold fixed by tier, experience `bbX` by q). All ten paid: 500 gold, a gear drop (`roll(1)`) at the board's
+  foot, and `bbMk(s+1)`. The board (`bbBuild`, from `mkPen`) stands before the keep's gate at `BBL` in the keep's frame (`cw`), solid
+  (`BBC` in `colList`), with a notice mesh per posted bounty (`BBNM`) and a gold "!" sprite (`BBS`); walking up opens its window (`#bb`,
+  overlay 6 in `sho`). The base walk is 8.085 m/s (was 7.35). The weapon's rarity glow is off for now (`armTint`).
 - **Not done yet:** a horse for Steed Charge, a real draw-to-the-cheek on the string arm, foes attacking summons, Temporal Echo's
   taunt, and balance: the numbers follow the doc but have not been played through to 50.
