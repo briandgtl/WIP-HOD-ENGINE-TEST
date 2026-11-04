@@ -498,3 +498,59 @@ textures: each cube's colour *is* the texel.
 - **Cost:** the knight about 27k triangles bare and ~81k in full armour, the hound or a wolf ~20k, a brigand ~31k, a skeleton ~20k;
   `manG` takes ~0.3 s at load. Not measured on phones. The per-cell grain makes greedy face merging pointless.
 - **Lighting is unchanged:** cel shading (`cel:1`), PCF soft shadows (section 5.3); `BasicShadowMap` would change every shadow in the world.
+
+## 19. The master design: classes, stats, loot and gold (Nov 2026)
+
+The user's spec is `~/Documents/quest_master_design_document.pdf` (8 pages). It replaces the older progression notes in sections 16
+and 17 (hearts, `bDmg` = 1 + crook level, `roll` by a flat rarity table, the blade/crit/reach tree): where they disagree, this wins.
+
+- **Numbers:** `stv()` returns every stat (`STD`: Attack, Arcana, Critical Chance, Ferocity, Affliction, Haste, Cooldown Reduction,
+  Armor, Block, Evasion, Ward, Life Leech, Health, Move Speed, plus weapon stats such as Bleed Chance, Armor Shred, Stun Duration, Holy
+  Impact), totalled by `hxC(E)` from the level, the gear `E` and the class passives `CPS[CLS]`, capped by `SCAP` (armour damage
+  reduction `dr = arm/(arm+AK(level))`, at most 75%; Evasion 50% in leather, 35% otherwise). It is cached: set `hxD=1` when gear, level or
+  skills change (`armTint` and `apply` do); `DYN[CLS]()` names the buffs a class's passives read, so a change re-totals. `lvC`/`lvG` are
+  the doc's curves through levels 1, 15, 30 and 50 (linear / geometric). `bMax()` and `bDmg()` are now `stv().hp` / `.atk`; Health is a
+  number (100 + 20 a level), shown in the shield; the Ward soaks blows first (`wdV`, refilling 3 s after a hit).
+- **Classes** (`CLD`, `CLS`, `CL()`): war, pal, nec, rog, rgr, mag, each with an armour class (`ACN`), resource (`rgV`, 0-100; `rg`
+  says how it is earned, regained and lost), base attacks a second, weapon kinds (`WPT`: hands, built-in stat, names, speed), a starting
+  weapon and a plate tint (`tn`). Picked on a new quest (`pickCls`, in the `#al` dialog); saved as `C`. Ranged classes (`rng`) loose
+  `BSH[CLS]()` from `swordSweep` instead of the melee sweep; a caster's (`mg`) weapons and affixes give Arcana for Attack.
+- **Skills:** `SKTC[class]` (three trees of six, built by `skT`; keys start with the class letter), `ACT[class]` (the actives on keys
+  1-6, Shift = the first, E = the second, pad RB LB RT LT R3 L3: `[skill, cooldown, cost]`, a negative cost is a share of Health),
+  `ACF[skill]()` what each does, `acUse(i)` casts. `skL(k)` = learned rank, `skr(k)` = with gear's +1 ranks. Per-class hooks into a blow:
+  `CHK` (weapon hit), `CDM`/`CCB`/`CFB` (damage, crit, ferocity bonus), `CLL`, `CKL` (kill), `CHT`/`CHU` (hit taken), `CDG` (dodge),
+  `CHP` (Health spent), `CTK` (each frame), `CSW` (each swing), `MSX` (speed), `CLR` (reset). Legendary mutators: `MUT`, tested by `mut(k)`.
+- **Shared combat:** every blow goes through `fHit(f, dm, o)` (crit, bonuses, leech, Rage, stagger, `fDie`); damage over time by kind
+  `dotA(f,'bl'|'ps'|'bn'|'bt',n)`; slows/freezes/roots run a foe's AI clock slower (`fSpd`, `slowF`, `frzF`); `markF` for marks.
+  Projectiles `pjFire` (pool `PJL`, kinds `PJK`), ground zones `zonAdd`/`ZON`, allied skeletons and the Bone Golem `ALY`/`alyNew`
+  (the foes' skeleton puppet, posed by `foePose`), orbiting blocks `ORB`, the Warrior's banner `BNR`, a scripted move `mvA`. Foe health
+  and damage scale with the level (`fHP`, `fDm`); `hurtP(n, x, z, foe)` takes a multiplier of a foe's blow, not hearts.
+- **Gear:** `mkIt(slot, rarity, il, kind)`: built-in stats `b` (weapon Attack 2.5 to 45 one-handed, x1.4 two-handed; Armor by slot
+  share `ARW` x armour class x `AK(il)`), affixes `x` (0, 1-2, 2-3, 3-4, 4 by rarity, drawn from `AFP[slot]`, valued by `afV`; an epic
+  or legendary may carry `['sk', key]`, +1 rank), legendary mutator `m`, blacksmith upgrades `up`. Rarity opens by level (`rMax`:
+  uncommon 11, rare 21, epic 31, legendary 41). Starter kit: white chest, legs and weapon. Better/worse is `cmpV` (the change in
+  `hxR`, a rating). Old saves' pieces are made again by `migIt`; old skills are refunded.
+- **Gold:** drops `goldM` (the doc's 1-3 G at level 1 to 350-600 at 50; big foes x5), `sellP` (the doc's rare price, by rarity),
+  respec `rsP = 35 + L^2 x 5`, the Gambler (`gamble`, `gamP`; 10% epic or better, never legendary before 41), the Blacksmith (`smUp`:
+  +10% Attack/Armor, three times, for gold and iron scrap `MAT`, which salvaging gives).
+- **Weapons in hand:** `WPV` (a mesh set per kind on `staff`), `wpLook()` from `armTint`; `OHW` a twin in the off hand for pairs.
+- **Class looks** (`CLK[class]()`, before `manG`): each class's own armour pieces in the knight's cells and slot regions (a slot it
+  leaves out keeps the knight's piece) plus `bd`, blocks always on its body (the ranger's quiver); `CPAL` the body palette. Builders:
+  `lkPC` plate chest under a tabard with an emblem, `lkCL` cloak, `lkLC` leather jerkin, `lkHD` hood (face carved out with a negative
+  blend), `lkGL`, `lkLG`, `lkBT`. Paladin: closed great helm, crest and wings, white tabard with a gilt sun. Necro-knight: horned helm,
+  violet slits, skull tabard, ragged cloak. Rogue: hood and mask, strapped leathers, pouches. Ranger: green hood and feather, leathers,
+  mantle, quiver. Mage: pointed hat, robe to the shins (cloth, so it swings), slippers. `clsLook()` (from `apply`) rebuilds the meshes
+  when `CLS` changes (~0.3 s). The body bbox is now z ±.47 and the armour's top 3.6 (moved by whole cells, so the lattice is unchanged).
+  Plate (6) parts still take the rarity's finish; leather and cloth classes show it on buckles, clasps and gems (their `tn` is gone).
+- **The war hammer** (`hm2`) slams instead of sweeping: `RPS(sk, su)` raises it overhead through the coil and brings it straight down
+  ahead in the cut, both arms on the haft; the blow lands at `su > .44` (the head at the ground) as `hSlam`, every foe within 2.3 m of a
+  point 1.9 m ahead, with dust and a thud. The holy greatsword still sweeps.
+- **Arm twist** (`PU.aw`: x the left upper arm, y the right): a turn about the arm's own length at the shoulder, before the pitch
+  and roll in `manRig` (and on the shield hanger `SHS` as its Euler y), so an elbow bend can bring the forearm across the body with the
+  elbow out. Without it the free arm can only fold forward. The ranger's two-handed hold uses it (elbows out, hands meeting before the chest).
+- **Bow range** (`bowR(it)`): 20 m for a common bow or crossbow, 7.5 m more a rarity grade, 50 m for a legendary; the arrow (44 m/s) flies
+  that far and the aim (`aimF`) looks that far. Ranged classes keep firing while the strike is held (`cbH`, Space, pad A).
+- **Ranged poses:** `RPS(sk)` in `poseStaff` holds a bow upright at the side and out at full reach in the shot, a staff upright and
+  thrust forward-up, a wand pointed; mvP damps the sword-cut's twist and lunge for `CL().rng`, raises the free arm and skips the trail.
+- **Not done yet:** a horse for Steed Charge, a real draw-to-the-cheek on the string arm, foes attacking summons, Temporal Echo's
+  taunt, and balance: the numbers follow the doc but have not been played through to 50.
