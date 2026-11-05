@@ -559,5 +559,10 @@ and 17 (hearts, `bDmg` = 1 + crook level, `roll` by a flat rarity table, the bla
   foot, and `bbMk(s+1)`. The board (`bbBuild`, from `mkPen`) stands before the keep's gate at `BBL` in the keep's frame (`cw`), solid
   (`BBC` in `colList`), with a notice mesh per posted bounty (`BBNM`) and a gold "!" sprite (`BBS`); walking up opens its window (`#bb`,
   overlay 6 in `sho`). The base walk is 8.085 m/s (was 7.35). The weapon's rarity glow is off for now (`armTint`).
+- **Greywatch's town** (Nov 2026): the muster ring's pillars and braziers are gone (`mkPen` keeps only `fen`, its 9m circle `RNG`
+  for the gate path `U.gate` and the packed-earth circle round the well, `plazaT` from `U.penR`). The safe ground is unmarked and
+  three times as wide: `penR()` 27 (safe within 32m; spawning margins follow it). The keep site's (`p.s==3`) stalls stand in a ring
+  11m out facing the well, where roads and the gate path leave room. Every well's shaft is an unlit black disc (`rlHole`, `WHM`; a
+  site part may carry its own material `m`).
 - **Not done yet:** a horse for Steed Charge, a real draw-to-the-cheek on the string arm, foes attacking summons, Temporal Echo's
   taunt, and balance: the numbers follow the doc but have not been played through to 50.

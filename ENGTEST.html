@@ -1323,6 +1323,8 @@ terrainColT=Fn(([p,y])=>{const ws=rlWs(p),c=mix(rlSum(ws,rlPal.map(z=>z[0])),rlS
  const lt=vnT(p.mul(.07).add(vec2(2.7,6.1))),ls=vnT(p.mul(vec2(.3,.11)).add(vec2(8.3,1.9)));c.assign(mix(c,rlSum(ws,rlPal.map(z=>z[2])),ws[2].mul(smoothstep(.5,.72,lt.mul(.65).add(ls.mul(.35)))).mul(.8)));c.assign(mix(c,rlSum(ws,rlPal.map(z=>z[3])),ss1(WL+.3,WL+1.5,y)));c.mulAssign(vnT(p.mul(.11)).mul(.6).add(vnT(p.mul(.31).add(vec2(7.3,2.1))).mul(.4)).mul(.2).add(.9));return c}),
 segD=(p,a,b)=>{const pa=p.sub(a),ba=b.sub(a),h=pa.dot(ba).div(ba.dot(ba)).clamp();return pa.sub(ba.mul(h)).length()},
 pathT=Fn(([p])=>ss1(.75,1.55,segD(p,U.gate,vec2(-19.7,-17)).add(vnT(p.mul(.9)).sub(.5).mul(.8)))),
+// the packed-earth circle round the well before the keep, U.penR (9m) across, its edge frayed into the grass
+plazaT=Fn(([p])=>ss1(U.penR.sub(1.4),U.penR.add(.2),p.length().add(vnT(p.mul(.7)).sub(.5).mul(1.6)))),
 // the cottage yard: packed earth whose edge frays into the meadow. Returns the elliptical distance (1 = the old plinth rim) roughened by noise,
 // shared by the ground colour and the grass mask so the grass thins out exactly where the earth shows through
 yardT=Fn(([p])=>{const d=p.add(vec2(21,20)),lx=d.x.sub(d.y).mul(.7071),lz=d.x.add(d.y).mul(.7071);return vec2(lx.div(7.4),lz.div(5.4)).length().add(vnT(p.mul(.55)).sub(.5).mul(.34)).add(vnT(p.mul(2.1).add(vec2(4.1,8.3))).sub(.5).mul(.12))}),
@@ -1331,7 +1333,7 @@ yardT=Fn(([p])=>{const d=p.add(vec2(21,20)),lx=d.x.sub(d.y).mul(.7071),lz=d.x.ad
 rlRdT=p=>{const m=float(0).toVar();Loop(RDK,({i})=>{const s=RDU.element(i);m.assign(Max(m,ss1(2,3.4,segD(p,s.xy,s.zw))))});return m},
 grassMaskT=Fn(([p,h])=>{const d=p.add(vec2(21,20)),lx=d.x.sub(d.y).mul(.7071),lz=d.x.add(d.y).mul(.7071),m=smoothstep(WL+.8,WL+2,h).mul(smoothstep(.98,1.4,yardT(p))).toVar();
  m.mulAssign(select(lz.greaterThan(0).and(lz.lessThan(11.5)),smoothstep(.7,1.5,lx.add(1.2).abs()),float(1)));m.mulAssign(pathT(p).mul(-.85).add(1));
- m.mulAssign(select(p.length().lessThan(U.penR.add(.5)),float(.55),float(1)));m.mulAssign(float(1).sub(U.trough.mul(step(p.sub(vec2(4.6,-2.4)).length(),2.2))));m.mulAssign(float(1).sub(U.hay.mul(step(p.sub(vec2(-4.8,-2.6)).length(),2.4))));m.mulAssign(float(1).sub(U.shed.mul(step(p.sub(vec2(0,5.4)).length(),2.8))));m.mulAssign(rlDen(p));m.mulAssign(rlRdT(p).oneMinus());return m}),
+ m.mulAssign(plazaT(p).mul(-.92).add(1));m.mulAssign(float(1).sub(U.trough.mul(step(p.sub(vec2(4.6,-2.4)).length(),2.2))));m.mulAssign(float(1).sub(U.hay.mul(step(p.sub(vec2(-4.8,-2.6)).length(),2.4))));m.mulAssign(float(1).sub(U.shed.mul(step(p.sub(vec2(0,5.4)).length(),2.8))));m.mulAssign(rlDen(p));m.mulAssign(rlRdT(p).oneMinus());return m}),
 // rain puddles: blobs of standing water on flat ground (f = up component of the ground normal) that swell with U.pud (0 dry .. 1 full),
 // favouring the worn path and the yard and keeping off the lake shore. Shared by the ground, the grass and the splashes.
 puddleT=Fn(([p,y,f])=>{const n=vnT(p.mul(.27).add(vec2(13.7,5.2))).mul(.7).add(vnT(p.mul(.8).add(vec2(2.9,11.1))).mul(.3)).add(pathT(p).mul(.2)).add(ss1(.9,1.3,yardT(p)).mul(.14)),t=mix(float(1.02),float(.72),U.pud),k=smoothstep(.955,.985,f).mul(smoothstep(WL+.6,WL+1.4,y));
@@ -1981,7 +1983,7 @@ const RLDT=[[3520,-1000],[4080,-1800]].map(([x,z])=>{let y=1e9;for(const[a,b]of[
 // ---- streamed terrain chunks ----
 const TM=new BotwMat({roughness:.95},{key:'terrain',toon:.85,rim:0,spec:.35,wet:0});
 const PUD2=puddleAt(positionWorld.xz,positionWorld.y,normalGeometry.y),PUD=PUD2.x,FRS=positionViewDirection.dot(transformNormalToView(vec3(0,1,0))).clamp().oneMinus().pow(3).mul(.7).add(.18);
-TM.colorNode=Fn(()=>{const p=positionWorld.xz,c=terrainColT(p,positionWorld.y).toVar();c.assign(mix(c,rockT(p,positionWorld.y),ss1(.55,.78,normalGeometry.y)));c.assign(mix(c,tcP.mul(vnT(p.mul(1.7)).mul(.3).add(.85)),pathT(p).mul(.85)));c.assign(mix(c,tcP.mul(vnT(p.mul(2.3)).mul(.28).add(.8)),rlRdT(p).mul(.92)));c.assign(mix(c,mix(tcY,tcP,vnT(p.mul(.4)).mul(.55)).mul(vnT(p.mul(1.9)).mul(.24).add(.88)),ss1(.78,1.24,yardT(p))));c.mulAssign(U.wet.mul(-.3).add(1));c.mulAssign(PUD2.y.mul(-.45).add(1));return mix(c,mix(c.mul(.22),U.hor.mul(.42),FRS),PUD)})();
+TM.colorNode=Fn(()=>{const p=positionWorld.xz,c=terrainColT(p,positionWorld.y).toVar();c.assign(mix(c,rockT(p,positionWorld.y),ss1(.55,.78,normalGeometry.y)));c.assign(mix(c,tcP.mul(vnT(p.mul(1.7)).mul(.3).add(.85)),pathT(p).mul(.85)));c.assign(mix(c,tcP.mul(vnT(p.mul(1.3).add(vec2(3.1,7.7))).mul(.3).add(.85)),plazaT(p).mul(.85)));c.assign(mix(c,tcP.mul(vnT(p.mul(2.3)).mul(.28).add(.8)),rlRdT(p).mul(.92)));c.assign(mix(c,mix(tcY,tcP,vnT(p.mul(.4)).mul(.55)).mul(vnT(p.mul(1.9)).mul(.24).add(.88)),ss1(.78,1.24,yardT(p))));c.mulAssign(U.wet.mul(-.3).add(1));c.mulAssign(PUD2.y.mul(-.45).add(1));return mix(c,mix(c.mul(.22),U.hor.mul(.42),FRS),PUD)})();
 TM.roughnessNode=mix(mix(float(.95),float(.32),U.wet),float(.04),PUD);
 TM.emissiveNode=U.hor.mul(PUD.mul(FRS).mul(.1));
 const CH=new Map(),CHL=[],seen=new Set(),QU=[],CCOL=new Map(),GATES=[],GOPEN=new Map();let pcx=0,pcz=0;
@@ -2003,15 +2005,22 @@ rlRing=rng=>{const L=[];for(let i=0;i<12;i++){const a=i/12*TAU;L.push([B(1.2,3.8
 rlPlot=()=>{const L=[];for(let x=-9;x<=9;x+=2)L.push([B(1.3,.4,.5).translate(x,.1,-6),0x8a867a],[B(1.3,.4,.5).translate(x,.1,6),0x8a867a]);for(let z=-5;z<=5;z+=2)L.push([B(.5,.4,1.3).translate(-9,.1,z),0x8a867a],[B(.5,.4,1.3).translate(9,.1,z),0x8a867a]);
  L.push([Cy(.1,.12,2.2,5).translate(-9.8,1,-6.8),0x5a4130],[B(1.4,.8,.08).translate(-9.8,2.2,-6.8),0x3aa845]);return L},
 rlStall=col=>mg([[B(2.2,.9,1.2).translate(0,.45,0),0x8a6a43],[B(2.7,.12,1.7).translate(0,2.2,0),col],...[[-1.2,.7],[1.2,.7],[-1.2,-.7],[1.2,-.7]].map(([x,z])=>[Cy(.06,.06,2.2,5).translate(x,1.1,z),0x5a4130])]),
-rlWell=()=>mg([[Cy(1.2,1.3,1,10).translate(0,.5,0),0x8d8996],[Cy(.95,.95,.1,10).translate(0,.95,0),0x2a4c6a],[Cy(.07,.07,2.6,5).translate(-1.1,1.3,0),0x5a4130],[Cy(.07,.07,2.6,5).translate(1.1,1.3,0),0x5a4130],[B(2.8,.15,1.4).translate(0,2.6,0),0x6a4a2c]]),
-rlParts=p=>{if(p.parts)return p.parts;const rng=rlRng(Math.abs(Math.round(p.x*13+p.z*7))%2147483646+1),zn=rlz(p.x,p.z),pal=RLPAL[zn<0?0:zn],P=[],put=(g,x,z,ry,c)=>P.push({g:Array.isArray(g)?mg(rdKeep(g,x,z,ry)):g,x,z,ry,c});
+// a well: a round stone wall, two posts and a little roof; its shaft (rlHole) a disc of unlit black just above the wall's top, so it
+// reads as a hole with no water showing, whatever the light
+rlWell=()=>mg([[Cy(1.2,1.3,1,10).translate(0,.5,0),0x8d8996],[Cy(.07,.07,2.6,5).translate(-1.1,1.3,0),0x5a4130],[Cy(.07,.07,2.6,5).translate(1.1,1.3,0),0x5a4130],[B(2.8,.15,1.4).translate(0,2.6,0),0x6a4a2c]]),
+WHM=new THREE.MeshBasicNodeMaterial({color:0x000000}),rlHole=()=>new THREE.CylinderGeometry(.96,.96,.04,10).translate(0,1.01,0),
+rlParts=p=>{if(p.parts)return p.parts;const rng=rlRng(Math.abs(Math.round(p.x*13+p.z*7))%2147483646+1),zn=rlz(p.x,p.z),pal=RLPAL[zn<0?0:zn],P=[],put=(g,x,z,ry,c,m)=>P.push({g:Array.isArray(g)?mg(rdKeep(g,x,z,ry)):g,x,z,ry,c,m});
  // flat enough, dry, clear of the roads
  const flat=(x,z,r)=>{const y=H(x,z);if(y<WL+1.2)return false;for(const[a,b]of[[r,0],[-r,0],[0,r],[0,-r]])if(abs(H(x+a,z+b)-y)>2.2)return false;return rlRoad(x,z)>r+1};
  if(p.k=='m')put(rlTower(3.2,14+rng()*4),p.x,p.z,0,[0,0,3.6]);
  else if(p.k=='e')p.s?put(rlCamp(rng),p.x,p.z,rng()*TAU):put(rlRing(rng),p.x,p.z,0);
  else if(p.k=='h')put(rlPlot(),p.x,p.z,rng()*PI);
  else{const n=[0,6,11,12][p.s],r0=[0,12,16,56][p.s],r1=[0,30,50,82][p.s],hs=[],HS=1.794;  // HS: the houses are built 1.794x (1.3 x 1.15 x 1.2) their modelled size (walls, roof, door and all), with their spacing and ground checks to match
-  if(p.s>1){put(rlWell(),p.x,p.z,0,[0,0,1.5]);const cs=[0xb83a3a,0x3a62b8,0x3aa06a,0xc8a03a];for(let i=0;i<3;i++){const a=i*2.1+.6,cc=cs[(i+(rng()*4|0))%4];
+  if(p.s>1){put(rlWell(),p.x,p.z,0,[0,0,1.5]);put(rlHole(),p.x,p.z,0,null,WHM);const cs=[0xb83a3a,0x3a62b8,0x3aa06a,0xc8a03a];
+   // Greywatch's own: eight places in a ring 11m out, just beyond the packed earth round the well, each facing it; one on a road or
+   // on the path to the keep's gate is left out
+   if(p.s==3)for(let i=0;i<8;i++){const b=i/8*TAU+.2,x=p.x+cos(b)*11,z=p.z+sin(b)*11;abs(wa(b-atan2(-20,-21)))>.45&&rdBox(x,z,-b+PI/2,1.5,1.05)&&put(rlStall(cs[i%4]),x,z,-b+PI/2)}
+   else for(let i=0;i<3;i++){const a=i*2.1+.6,cc=cs[(i+(rng()*4|0))%4];
    // the plaza's roads end at its well, so a stall that would stand on one is slid round and out to the nearest clear ground, or left out
    for(const[da,dr]of[[0,0],[.5,0],[-.5,0],[0,3],[.9,3],[-.9,3],[.4,6],[-.4,6]]){const b=a+da,e=6+dr,x=p.x+cos(b)*e,z=p.z+sin(b)*e;if(rdBox(x,z,-b+PI/2,1.5,1.05)){put(rlStall(cc),x,z,-b+PI/2);break}}}}
   for(let t=0;t<n*40&&hs.length<n;t++){const a=rng()*TAU,r=r0+rng()*(r1-r0),x=p.x+cos(a)*r,z=p.z+sin(a)*r;if(!flat(x,z,4.5*HS)||hs.some(q=>hypot(q[0]-x,q[1]-z)<10*HS))continue;
@@ -2284,7 +2293,7 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
  LGI.forEach((M,n)=>addM(LOGS[n],VWF,M,1));STI.forEach((a,n)=>addI(STUMPS[n],VWF,a,1));TDI.forEach((a,n)=>addI(MSH[n],VWF,a,!mob));
  seen.add(k);
  // the realm's sites: each part is built by the chunk it stands in (rlParts)
- for(const p of RLP){if(hypot(p.x-ox,p.z-oz)>p.r+CS*.8)continue;for(const q of rlParts(p)){if(abs(q.x-ox)>=CS/2||abs(q.z-oz)>=CS/2)continue;const y=Hm(q.x,q.z),m=new THREE.Mesh(q.g.clone(),VC);m.position.set(q.x,y,q.z);m.rotation.y=q.ry;m.castShadow=m.receiveShadow=true;G.add(m);
+ for(const p of RLP){if(hypot(p.x-ox,p.z-oz)>p.r+CS*.8)continue;for(const q of rlParts(p)){if(abs(q.x-ox)>=CS/2||abs(q.z-oz)>=CS/2)continue;const y=Hm(q.x,q.z),m=new THREE.Mesh(q.g.clone(),q.m||VC);m.position.set(q.x,y,q.z);m.rotation.y=q.ry;m.castShadow=m.receiveShadow=true;G.add(m);
   if(q.c)cg.push(q.c[0]?B(q.c[0],4,q.c[1]).rotateY(q.ry).translate(q.x,y+1.5,q.z):Cy(q.c[2],q.c[2],8,10).translate(q.x,y+4,q.z))}}
  const cc=[];cg.length&&cc.push(mkCol(cg));wc.length&&cc.push(Object.assign(mkCol(wc),{wall:1}));for(const gr of gts)gr.tg||(gr.col=Object.assign(mkCol([gtBox(gr)]),{wall:1}),cc.push(gr.col));cc.length&&CCOL.set(k,cc);colList();sc.add(G);const rec={g:G,x:ox,z:oz,k,gc:GCP,itm};gcD=1;plD=1;CH.set(k,rec);CHL.push(rec)}
 const colList=()=>{COLS.length=0;COLS.push(FARMC,FENCEC);BBC&&COLS.push(BBC);for(const c of CCOL.values())COLS.push(...c)};
@@ -2596,16 +2605,12 @@ const farmCol=()=>{const k=g=>g.rotateY(PI/4).translate(-21,0,-20),c=[k(B(11,8.6
   B(4.95,1.2,.8).rotateY(-atan2(.8,4.8)).translate(-4.8,.6,6.12).rotateY(PI/4).translate(-21,0,-20),B(7.3,1.2,.8).rotateY(-atan2(-.8,7.2)).translate(3.6,.6,6.12).rotateY(PI/4).translate(-21,0,-20),Cy(.96,1.08,7,8).translate(...(([x,z])=>[x,2.5,z])(cw(-12.6,-4.2)))];
  FARMC&&FARMC.g.dispose();FARMC=mkCol(c);colList()};
 
-// the muster ring: squat stone pillars round the parade ground before the keep, each crowned with an iron brazier lit from the first howl
-// to dawn (and in rain or fog), the ring left open toward the keep's gate. Inside it the knight is safe: no foe follows him in, and his
-// wounds close three times as fast (wlfU). PG is a pillar; BZF the braziers' flames, a sprite each, flickering in wv
-let fen=null;const PG=mg([[Cy(.34,.42,1.5,8).translate(0,.75,0),0x8b877d],[Cy(.46,.46,.16,8).translate(0,1.55,0),0x77736a],[Cy(.38,.2,.36,8).translate(0,1.8,0),0x2b2724],[new THREE.TorusGeometry(.36,.04,4,8).rotateX(PI/2).translate(0,1.97,0),0x3a342e]]),GA=atan2(-20,-21),BZF=[],
-BZM=new THREE.SpriteNodeMaterial({map:DOT,color:0xff9a3c,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0,fog:false});
-function mkPen(){const r=penR(),n=12,ps=[],cg=[];
- for(let i=0;i<n;i++){const a=(i+.5)/n*TAU,x=cos(a)*r,z=sin(a)*r;if(abs(wa(a-GA))<.3||rlRoad(x,z)<RDH+.9)continue;ps.push([x,0,z,1,-a]);cg.push(Cy(.46,.46,2,8).translate(x,1,z))}
- fen=new THREE.Group();Object.assign(fen,{r,gx:cos(GA)*r,gz:sin(GA)*r});fen.add(IM(PG,VC,ps,1));
- for(const q of ps){const s=new THREE.Sprite(BZM);s.position.set(q[0],2.42,q[2]);s.scale.set(.7,1.1,1);s.visible=false;fen.add(s);BZF.push(s)}
- farm.add(fen);FENCEC&&FENCEC.g.dispose();FENCEC=mkCol(cg);colList();U.penR.value=r;U.gate.value.set(fen.gx,fen.gz);bbBuild()}
+// the muster ground before the keep: open ground now, its pillars and braziers cleared away. Its 9m circle (RNG) still sets where the old
+// path to the keep's gate begins (fen.gx, gz, as U.gate) and how far the packed earth round the well reaches (U.penR, plazaT). The safe
+// ground about home is wider and unmarked: within penR() + 5 of the well (32m) no foe follows the knight and his wounds close three
+// times as fast (wlfU)
+let fen=null;const RNG=9,GA=atan2(-20,-21);
+function mkPen(){const r=RNG;fen=new THREE.Group();Object.assign(fen,{r,gx:cos(GA)*r,gz:sin(GA)*r});farm.add(fen);FENCEC&&FENCEC.g.dispose();FENCEC=null;colList();U.penR.value=r;U.gate.value.set(fen.gx,fen.gz);bbBuild()}
 
 // ---- landmarks out in the wilds: watchtowers (tw, whole under a slate cone with its pennant flying; tr, broken off at the top with its
 // stones tumbled round its foot) and, rarely, a fortress on its rock (cs): curtain walls with merlons, round corner towers under slate
@@ -3238,7 +3243,7 @@ wxU=dt=>{if(run&&!pz&&(wxN-=dt)<0){const o=WXN[wxI];wxGo(o[R()*o.length|0])}cons
  U.fogC.value.copy(hc).lerp(C2.setScalar(hc.r*.3+hc.g*.59+hc.b*.11).multiplyScalar(1.08),mfog*.45);U.fogA.value=wx.fa*(1+2.5*mist)+.0015*mfog;U.fogB.value=wx.fb+.0012*mfog;U.zen.value.copy(zc);U.hor.value.copy(hc);U.gnd.value.copy(hc);
  hemi.color.copy(zc).lerp(hc,.45);U.fill.value.copy(zc).lerp(hc,.6).multiplyScalar(.35+.65*dl);hemi.groundColor.setRGB(.15,.19,.08).multiplyScalar(.25+.75*dl);hemi.intensity=(.42+.62*dl)*(1+.45*wx.c);
  renderer.toneMappingExposure=EXB*wx.x*(1+.6*(1-dl))*(1-.12*NF2);
- // the keep's lamps (windows, the gate's torches, the braziers round the muster ring): dark while the sun has the sky; lit in rain or
+ // the keep's lamps (its windows and the gate's torches): dark while the sun has the sky; lit in rain or
  // fog, and from the first wolf howl (a minute before nightfall) until the sun is back up
  LT+=(max(sm(.1,.3,wx.r),sm(.3,.7,wx.hf),dT>=DAY-60&&dT<CYC-20?1:0)-LT)*min(1,dt/1.2);WGM.opacity=LT*.9;U.win.value=LT;
  U.rays.value=.16*sm(-.02,.12,sE)*(1-.8*wx.c)*(1-wx.r);U.sunCol.value.copy(sun.color);U.sat.value=1.16+.1*(1-wx.c)-.18*wx.r;U.stH.value=.42+.2*gold;U.stHigh.value.setRGB(1,.82-.06*gold-.1*sO,.56-.1*gold-.16*sO);U.stS.value=.5+.25*(1-dl);
@@ -3343,7 +3348,7 @@ CLR={},DYN={},MSX={},CSA={},CHK={},CDM={},CCB={},CFB={},CLL={},CKL={},CHT={},CHU
  stv=()=>{const k=DYN[CLS]?.()||'';if(hxD||!HX||k!==hxK){hxK=k;HX=hxC();hxD=0}return HX},
  // one number to weigh a set by, for "better" and "worse": what it hits for, times what it takes to bring down, rooted
  hxR=s=>{const o=(s.atk+.5*s.arc)*(1+s.cc*(.5+s.fer))*(1+s.hst)*(1+.3*s.aff+.4*s.bch+.4*s.shr),d=(s.hp+s.wrd)/(1-s.dr)/(1-.7*s.eva)/(1-.4*s.blk)*(1+2*s.ll);return Math.sqrt(o*d)*(1+.3*s.ms+.3*s.cdr)},
- POTM=5,potP=()=>Math.round(lvG(LV,[20,250,900,3000])),rsP=()=>max(1,Math.floor(W*.4)),RSL=10,rsOk=()=>LV>=RSL&&W>=rsP(),penR=()=>9,swR=()=>3.4,
+ POTM=5,potP=()=>Math.round(lvG(LV,[20,250,900,3000])),rsP=()=>max(1,Math.floor(W*.4)),RSL=10,rsOk=()=>LV>=RSL&&W>=rsP(),penR=()=>27,swR=()=>3.4,
  // the arc a stroke sweeps: Reckless Cleave widens it rank by rank, until it goes nearly all round him
  crit=()=>stv().cc,kbM=()=>1,arcT=()=>.2-.18*skr('rc')-(EQ.w?.t=='sc2'?.12*skr('nrf'):0),
  // a new knight's kit: a common chest, legs and weapon for the class, rolled at level 1; the rest is found
@@ -4024,7 +4029,7 @@ let BB=null,bbArm=1;
 // which opens when he walks up to it (and not again until he has stepped away)
 function qstU(dt){if(!BB)BB=bbMk(0);const p=P.position;
  for(const b of BB.L)if(b.st==1&&b.k=='far'){const d=hypot(p.x+21,p.z+20);d>b.c&&(b.c=d)>=b.n&&qEv('far',0)}
- if(!BBG)return;for(let i=0;i<BBN;i++)BBNM[i].visible=!BB.L[i].st;BBS.visible=bbAt();BBS.position.y=3.55+.12*sin(tm*3);
+ if(!BBG)return;for(let i=0;i<BBN;i++)BBNM[i].visible=!BB.L[i].st;BBS.visible=bbAt();BBS.position.y=3.7+.12*sin(tm*3);
  const d=hypot(p.x-BBP.fx,p.z-BBP.fz);if(d>4.5)bbArm=1;else if(d<2.4&&bbArm&&!ov&&!bDead&&!tuOn){bbArm=0;sho(6)}}
 // the bounty board: two posts, a planked board under a little red roof, a gilt plaque, and a paper notice with a wax seal for each bounty
 // still posted (BBNM); a gold mark bobs over it while there is something for him there (BBS). It stands beside the path just before the
@@ -4037,15 +4042,15 @@ function bbBuild(){if(BBG)return;let lx=BBL[0];for(const o of[0,.8,1.6,-7.2,-8])
   [B(2.55,.12,.16).translate(0,2.38,0),W1],[B(2.55,.1,.16).translate(0,.86,0),W1],[B(1,.24,.04).translate(0,2.12,.07),GILT],
   [B(2.9,.08,.62).rotateX(.5).translate(0,2.66,.24),RF],[B(2.9,.08,.62).rotateX(-.5).translate(0,2.66,-.24),RF],[B(2.95,.1,.1).translate(0,2.8,0),W1]]),VC,0,0,0,BBG);
  for(let i=0;i<BBN;i++)BBNM.push(part(mg([[B(.34,.42,.02),0xe9dcb4],[B(.07,.07,.025).translate(0,.15,.005),0xa8231f]]),VC,-.92+(i%5)*.46,1.87-(i/5|0)*.54,.065,BBG,0,0,(R()-.5)*.12));
- const c=document.createElement('canvas');c.width=8;c.height=16;const g=c.getContext('2d');g.fillStyle='#0b0706';g.fillRect(1,0,6,11);g.fillRect(1,12,6,4);g.fillStyle='#f6c844';g.fillRect(2,1,4,9);g.fillRect(2,13,4,2);g.fillStyle='#fff3b0';g.fillRect(2,1,2,8);
+ const c=document.createElement('canvas');c.width=8;c.height=16;const g=c.getContext('2d');g.fillStyle='#0b0706';g.fillRect(1,0,6,11);g.fillRect(1,12,6,4);g.fillStyle='#ffc800';g.fillRect(2,1,4,9);g.fillRect(2,13,4,2);g.fillStyle='#fff04a';g.fillRect(2,1,2,8);
  const tx=new THREE.CanvasTexture(c);tx.magFilter=tx.minFilter=THREE.NearestFilter;tx.colorSpace=THREE.SRGBColorSpace;
- BBS=new THREE.Sprite(new THREE.SpriteNodeMaterial({map:tx,transparent:true,depthWrite:false,fog:false}));BBS.scale.set(.42,.84,1);BBS.position.set(0,3.55,0);BBG.add(BBS);
+ BBS=new THREE.Sprite(new THREE.SpriteNodeMaterial({map:tx,color:new THREE.Color(1.5,1.4,1.1),transparent:true,depthWrite:false,fog:false,toneMapped:false}));BBS.scale.set(.525,1.05,1);BBS.position.set(0,3.7,0);BBG.add(BBS);
  BBC=mkCol([B(2.6,2.8,.45).rotateY(PI/4).translate(x,y+1.4,z)]);colList()}
 $('bbx').onclick=()=>sho(0);$('bbf').onclick=e=>e.target.closest('#bbd')&&sho(0);
 $('bbc').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;b.dataset.bt!=null?bbTake(+b.dataset.bt):b.dataset.bc!=null&&bbClaim(+b.dataset.bc)};
 
 // health: the number in the shield beside the clock. A blow takes its share, then he is safe for a second (hiT); out of the fight (bRg) it
-// comes back, quickest inside the muster ring
+// comes back, quickest at home
 let bHP=5,hiT=0,bDead=0,bRg=0,wlT=5,pkx=0,pkz=0,hrK='';
 const hrt=()=>{const m=Math.round(bMax()),v=Math.ceil(max(0,bHP)),k=v+'/'+m,h=$('hh');h.hidden=$('hud').hidden;if(k==hrK)return;hrK=k;h.setAttribute('aria-label',`Health ${v} of ${m}`);h.style.setProperty('--hp',(Math.round(max(0,bHP)/m*20)/20).toFixed(2));$('hpn').textContent=v},
 PJ=V(),dmgNum=(x,y,z,t,c='')=>{PJ.set(x,y,z).project(cam);if(PJ.z>1)return;const d=document.createElement('div');d.className='dn '+c;d.textContent=t;d.style.left=(PJ.x+1)/2*innerWidth+'px';d.style.top=(1-PJ.y)/2*innerHeight+'px';document.body.append(d);setTimeout(()=>d.remove(),950)},
@@ -4497,7 +4502,6 @@ function wv(dt){const p=P.position,pa=PS.p,ca=PS.c,wdv=U.wd.value,ws=.35+.7*wx.w
   if(l>40){d.set(hx,p.y,hz);dsp=0}else{let mx=0,mz=0;if(dsp>.05&&l>.01){mx=x/l*min(dsp*dt,l);mz=z/l*min(dsp*dt,l);dog.rotation.y+=wa(atan2(x,z)-dog.rotation.y)*min(1,dt*8)}else dog.rotation.y+=wa(atan2(p.x-d.x,p.z-d.z)-dog.rotation.y)*min(1,dt*2);const ex=d.x-p.x,ez=d.z-p.z,e=hypot(ex,ez);if(e<1.2&&e>.01){mx+=ex/e*(1.2-e);mz+=ez/e*(1.2-e)}d.y=Hm(d.x,d.z);const dbx=d.x,dbz=d.z;sweep(d,mx,mz,.45,1.5,1);wade(d,dbx,dbz)}
   const w=min(dsp/5,1);dph+=dsp*dt*1.9;d.y=max(Hm(d.x,d.z),WL-.8)+abs(sin(dph))*.1*w;const A=sin(dph)*.85*w;DU.dl.value.set(A,-A,-A,A);DU.dt.value=sin(tm*(w>.3?9:6))*(.2+.4*(1-w));DU.dh.value.set(sin(tm*.7)*.35*(1-w),w>.3?.16:sin(tm*1.1)*.07);dhd.rotation.set(DU.dh.value.y,DU.dh.value.x,0)}
  {const tr=TRU.array;let k=0;tr[k++].set(p.x,p.z,1.7,pvel>.3?1.5:1.1);dog.visible&&tr[k++].set(dog.position.x,dog.position.z,1.3,1.1);for(const w of WLF)w.on&&k<TRN&&tr[k++].set(w.x,w.z,1.6,1.2);for(const h of HUM)h.on&&k<TRN&&tr[k++].set(h.x,h.z,1.4,1.1);for(;k<TRN;k++)tr[k].set(1e5,1e5,1,0)}
- BZM.opacity=.85*LT;for(let i=0;i<BZF.length;i++){const s=BZF[i];s.visible=LT>.01;if(!s.visible)continue;{const f=(1+.2*sin(tm*9+i*2.3)+.12*sin(tm*23+i*5))*(.45+.55*LT);s.scale.set(.66*f,1.08*f,1)}R()<dt*LT*1.6&&emit(s.position.x,2.4,s.position.z,1,0xffa040,.35,2.4,1.1,-.8,.16)}
  LGS.visible=LGS2.visible=LT>.01;LGS.material.opacity=(.62+sin(tm*9)*.07+sin(tm*23.7)*.05)*LT}
 let czK=0,camM=0,seeK=0;
 function camU(dt){ZM+=(ZMt-ZM)*min(1,dt*6);const p=P.position,pit=.48+.36*cl((ZM-38)/62,0,1);CO.set(cos(pit)*.7071,sin(pit),cos(pit)*.7071);czK+=(0-czK)*min(1,dt*4);
@@ -4905,7 +4909,7 @@ const tuS=(kb,tc,pd)=>[kb,tc,pd][gpOn?2:mob?1:0],
  {ic:'shield',t:'Welcome, Hero',lead:'Shadow lies over the realm. Ride out from Greywatch Keep, cut down its beasts, brigands and risen dead, break open the old kings\' chests, and come home richer and stronger.',
   cards:[['scroll','Bounties','Ten hang on the board before the keep. Take up to three, finish them in the wilds and bring each back for gold. Pay off all ten for 500 gold and gear.'],
    ['moon','Day and night','A day lasts <b>15 minutes</b>, and so does the night. After dark the wolves hunt in bigger packs and the dead rise until dawn.'],
-   ['castle','Greywatch Keep','No foe follows you inside its ring of braziers, and wounds close quickly there. Fall in battle and you wake at its gate, a fifth of your gold lighter.']]},
+   ['castle','Greywatch Keep','No foe follows you into the town round the keep, and wounds close quickly there. Fall in battle and you wake at its gate, a fifth of your gold lighter.']]},
  {ic:'boot',t:'Controls',bl:'Walking, striking, skills and the menus.',lead:tuS('Walk with <b>W A S D</b> or the arrow keys, and zoom with the mouse wheel. Everything else is a key or two away.','<b>Drag</b> anywhere on the screen to walk: a stick appears under your finger. The buttons strike, drink and cast.','The <b>left stick</b> walks and the <b>right stick</b> zooms. Everything else is on the buttons.'),
   keys:[tuK(tuS(tuC(['KeyW','W'],['KeyA','A'],['KeyS','S'],['KeyD','D']),'<kbd>Drag</kbd>',gpG('ls')),'Walk',tuS('or the arrow keys','anywhere on the screen','or the D-pad')),
    tuK(tuS(tuC(['Space','Space',1]),tuB('sword'),gpG('a')),'Strike',tuS('hold to keep striking','the sword button','hold to keep striking')),
@@ -5162,7 +5166,7 @@ const stage=async(k,t)=>{ldp(k,t);await new Promise(r=>setTimeout(r,30))};
  if(sd)dT=min(sd.dT||0,CYC-30);apply();wxU(.001);snU(.001);camU(1);poseStaff(0,0,1.9);buildPost();
  // pre-warm every render pipeline before the first frame: show normally-hidden objects for the compile pass
  // (a trunk's shimmer and a hay bale too, which the first chunks may not have: kept in the scene, hidden, so their pipelines stay built)
- await stage(5,'Tempering the shaders…');const chw=IM(CHC,TKM,[[0,-60,0,1,0]],1),blw=IM(BAL,HYM,[[0,-60,0,1,0]],1);chw.visible=blw.visible=false;sc.add(chw,blw);const hid=[dog,RNM,SPM,RFM,FRM,swTM,chw,blw,WIM,PKM,LGS,LGS2,...BZF,...HUM.map(h=>h.g),LBM,SHG,BNR,...(alyInit(),ALY.map(a=>a.g)),...ORB,...Object.keys(PJK).map(k=>pjMesh(k).m)].filter(o=>!o.visible);hid.forEach(o=>o.visible=true);WIM.count=PKM.count=LBM.count=1;
+ await stage(5,'Tempering the shaders…');const chw=IM(CHC,TKM,[[0,-60,0,1,0]],1),blw=IM(BAL,HYM,[[0,-60,0,1,0]],1);chw.visible=blw.visible=false;sc.add(chw,blw);const hid=[dog,RNM,SPM,RFM,FRM,swTM,chw,blw,WIM,PKM,LGS,LGS2,...HUM.map(h=>h.g),LBM,SHG,BNR,...(alyInit(),ALY.map(a=>a.g)),...ORB,...Object.keys(PJK).map(k=>pjMesh(k).m)].filter(o=>!o.visible);hid.forEach(o=>o.visible=true);WIM.count=PKM.count=LBM.count=1;
  // compileAsync warms pipelines one object at a time and, where scheduler.yield() is missing (Safari), waits a frame between each
  // (so a background tab simply pauses the load until it's back). The title waits for every one; the caps only guard against a
  // compile that never settles
