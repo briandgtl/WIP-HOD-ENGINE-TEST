@@ -1595,6 +1595,201 @@ HPXS=(s,xa,xb,...r)=>s>0?HPX(xa,xb,...r):HPX(-xb,-xa,...r),VXF=VXZ/2,FIG={off:.5
 const bump=(g,y0,y1,k)=>vcol(g,(c,x,y)=>c.multiplyScalar(k+(1.1-k)*sm(y0,y1,y)));
 // a copy of a model lying under snow, for the Winterlands: what faces up (and a patchwork of the rest) takes a blue-white, b more of it (shrubs, walls)
 const snowV=(g,b=0)=>vcol(g.clone(),(c,x,y,z,ny)=>{const k=cl(ny*1.2-.12+b+(vn3(x*2.7+4,y*2.7,z*2.7+9)-.5)*.9,0,1);c.multiplyScalar(.85).lerp(C2.setHex(0xe9f0f9),k*k*(3-2*k))});
+// ---- voxel buildings: the houses, stalls, wells and towers are built of cubes as the figures are (VXS), at VBZ cells, so they read as voxel
+// models with real depth: timber frames, sills, shutters, quoins, log ends and string courses stand a cell proud of the walls, windows and doors
+// sit a cell in, and the roofs step up in courses of tiles. VBK(I0,J0,K0, I1,J1,K1) is a grid of cells over those indices (cell I spans
+// I*VBZ..(I+1)*VBZ), each empty or holding its own colour: put sets one (0 empties it, a colour below 0 or null leaves it), box fills a block
+// (the colour may be a function of the cell), col reads one back (-1 if empty). mesh() makes every face of a kept cell that looks on an empty one a
+// flat square of the cell's colour, shaded at each corner by the cells round it (so creases, sills and the undersides of the eaves darken), with
+// the dirt splashed up from the ground (y 0) over the lowest op.dh metres (op.dc its colour, op.dk how much). The faces carry aM 6 (still in the wind)
+let VBZ=.2;
+const VBK=(I0,J0,K0,I1,J1,K1)=>{const i0=I0-1,j0=J0-1,k0=K0-1,nx=I1-i0+2,ny=J1-j0+2,nz=K1-k0+2,G=new Int32Array(nx*ny*nz),
+ ix=(I,J,K)=>{const i=I-i0,j=J-j0,k=K-k0;return i<1||j<1||k<1||i>=nx-1||j>=ny-1||k>=nz-1?-1:i+nx*(j+ny*k)},
+ put=(I,J,K,c)=>{if(c==null||c<0)return;const q=ix(I,J,K);q>=0&&(G[q]=c?(c&0xffffff)+1:0)},
+ col=(I,J,K)=>{const q=ix(I,J,K);return q<0||!G[q]?-1:G[q]-1},
+ box=(Ia,Ib,Ja,Jb,Ka,Kb,f)=>{const fn=typeof f=='function';for(let K=Ka;K<=Kb;K++)for(let J=Ja;J<=Jb;J++)for(let I=Ia;I<=Ib;I++)put(I,J,K,fn?f(I,J,K):f)},
+ mesh=(op={})=>{const P=[],Nm=[],Co=[],Ix=[],c=new THREE.Color(),dc=new THREE.Color(op.dc??0x4a3b2b),dh=op.dh??1.4,dk=op.dk??.55,AO=[1,.84,.72,.58],NS=[nx,ny,nz],ST=[1,nx,nx*ny],e=[0,0,0];
+  // face by face, slice by slice: each face's key is its colour (with the dirt) and its corners' shading; neighbours with the same key and even
+  // shading are merged into one rectangle (greedy), so a flat run of one colour is a single square however long
+  for(let ax=0;ax<3;ax++){const ua=(ax+1)%3,va=(ax+2)%3,nu=NS[ua],nv=NS[va],su=ST[ua],sv=ST[va],M=new Float64Array(nu*nv);
+   for(const s of[1,-1])for(let w=1;w<NS[ax]-1;w++){let any=0;
+    for(let b=1;b<nv-1;b++)for(let a=1;a<nu-1;a++){e[ax]=w;e[ua]=a;e[va]=b;const q=e[0]+nx*(e[1]+ny*e[2]),v=G[q];M[a+nu*b]=0;if(!v)continue;const nq=q+s*ST[ax];if(G[nq])continue;
+     let hx=v-1;const J=e[1]+j0,Y=(J+.5)*VBZ;if(ax==1&&s<0&&Y<.2)continue;// (the undersides of what stands on the ground are never seen)
+    if(Y<dh){const t=Y<0?1:1-Y/dh;c.setHex(hx).lerp(dc,min(1,dk*t*t*(.55+.9*vn3((e[0]+i0)*.3,J*.45,(e[2]+k0)*.3))));hx=c.getHex()}
+     let k=0;for(const[x,y]of[[-1,-1],[1,-1],[1,1],[-1,1]]){const s1=G[nq+x*su]?1:0,s2=G[nq+y*sv]?1:0;k=k*4+(s1&&s2?3:s1+s2+(G[nq+x*su+y*sv]?1:0))}
+     M[a+nu*b]=hx*256+k+1;any=1}
+    if(!any)continue;
+    for(let b=1;b<nv-1;b++)for(let a=1;a<nu-1;){const k=M[a+nu*b];if(!k){a++;continue}const ao=(k-1)%256,A4=[ao>>6,ao>>4&3,ao>>2&3,ao&3],uni=A4[0]==A4[1]&&A4[1]==A4[2]&&A4[2]==A4[3];
+     let wa=1,hb=1;if(uni){while(a+wa<nu-1&&M[a+wa+nu*b]==k)wa++;o:while(b+hb<nv-1){for(let t=0;t<wa;t++)if(M[a+t+nu*(b+hb)]!=k)break o;hb++}}
+     for(let t=0;t<hb;t++)for(let x=0;x<wa;x++)M[a+x+nu*(b+t)]=0;
+     c.setHex(Math.floor((k-1)/256));const pl=(w+(s>0?1:0)+[i0,j0,k0][ax])*VBZ,u0=(a+[i0,j0,k0][ua])*VBZ,v0=(b+[i0,j0,k0][va])*VBZ,u1=u0+wa*VBZ,v1=v0+hb*VBZ,
+      Cn=s>0?[[u0,v0,0],[u1,v0,1],[u1,v1,2],[u0,v1,3]]:[[u0,v0,0],[u0,v1,3],[u1,v1,2],[u1,v0,1]],o=P.length/3,L=[];
+     for(const[u,v,n]of Cn){const p=[0,0,0];p[ax]=pl;p[ua]=u;p[va]=v;P.push(p[0],p[1],p[2]);Nm.push(ax==0?s:0,ax==1?s:0,ax==2?s:0);const f=AO[A4[n]];L.push(A4[n]);Co.push(c.r*f,c.g*f,c.b*f)}
+     L[0]+L[2]<L[1]+L[3]?Ix.push(o+1,o+2,o+3,o+1,o+3,o):Ix.push(o,o+1,o+2,o,o+2,o+3);a+=wa}}}
+  const g=new THREE.BufferGeometry(),n=P.length/3;g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(Nm,3));
+  g.setAttribute('color',new THREE.Float32BufferAttribute(Co,3));g.setAttribute('aM',new THREE.Float32BufferAttribute(new Float32Array(n).fill(6),1));g.setIndex(new THREE.BufferAttribute(n>65535?Uint32Array.from(Ix):Uint16Array.from(Ix),1));
+  g.userData.cvn=1;g.userData.vb=1;return g};
+ return{put,col,box,mesh}},
+// a colour scaled (vbT) or mixed toward another (vbM), a cell's hash (vbH, s a salt), a cell inside a ring or disc about the y axis (vbR: its middle
+// between radii a and b), and stone laid in courses bh cells high of blocks bw long (along I + K, so the bond turns corners), each block its own shade
+vbT=(c,f)=>C1.setHex(c).multiplyScalar(f).getHex(),vbM=(a,b,t)=>C1.setHex(a).lerp(C2.setHex(b),t).getHex(),vbH=(I,J,K,s=0)=>h3(I*.7313+s*1.37,J*.9171+s*.31,K*.6127+s*.53),
+vbR=(I,K,a,b,ox=0,oz=0)=>{const d=hypot((I+.5)*VBZ-ox,(K+.5)*VBZ-oz);return d>=a&&d<b},
+vbSt=(c,I,J,K,bw=2,bh=2,v=.32,s=0)=>{const cr=Math.floor(J/bh),b=Math.floor((I+K+(cr&1)*Math.ceil(bw/2))/bw);return vbT(c,1-v/2+v*vbH(b,cr,s,7))},
+// stone round a drum (radius-agnostic): blocks bw cells long round it by bearing (n blocks to the round), courses bh high
+vbSr=(c,I,J,K,n,bh=2,v=.32,s=0,ox=0,oz=0)=>{const cr=Math.floor(J/bh),a=(atan2((K+.5)*VBZ-oz,(I+.5)*VBZ-ox)/TAU+1)*n+(cr&1)*.5;return vbT(c,1-v/2+v*vbH(Math.floor(a)%n,cr,s,7))},
+// a stepped cone of courses (a slate or shingle roof) over the drum at (ox, oz): radius r0 at J0 narrowing to nothing at J1, colour f(I, J, K, course)
+vbCone=(V,ox,oz,r0,J0,J1,f)=>{const n=Math.ceil(r0/VBZ)+1,ci=Math.round(ox/VBZ),ck=Math.round(oz/VBZ);for(let J=J0;J<=J1;J++){const r=r0*(1-(J-J0)/(J1-J0+1));for(let I=ci-n;I<=ci+n;I++)for(let K=ck-n;K<=ck+n;K++)vbR(I,K,0,r+.02,ox,oz)&&V.put(I,J,K,f(I,J,K,J-J0))}},
+// ---- the zones' houses (by RLPAL's index): [wall kind (0 lime plaster on a timber frame, 1 logs, 2 dark rubble, 3 sun-baked render, 4
+// fieldstone), walls, roof, timber, roof pitch (rise a cell for each cell in), roof kind (0 tiles, 1 shingles under snow, 2 slates), moss on the
+// roof, shutters' paint, dirt's colour]
+HSTY=[[0,0xd8c9a2,0x8c4a32,0x4e3828,.95,0,1,[0x4f6b45,0x7a3a2e,0x3f5a78],0x4a3b2b],[1,0x6b5a48,0x4a4038,0x3c3026,1,1,0,[0x3c3026],0x55565c],[0,0xcbb084,0xa0522d,0x4f3520,.95,0,1,[0x6b4a28,0x7a3a2e,0x4f6b45],0x4f3a26],
+ [2,0x5a5560,0x3a3640,0x2a2630,1,2,1,[0x2f3b3a,0x3a3036],0x2e2d30],[3,0xdcc191,0xb8653a,0x6a4a2c,.55,0,0,[0x3f6a8a,0x2f7a78,0x8a4a2a],0x8a6a48],[4,0x9b968a,0x4e5864,0x5a524a,.8,2,1,[0x3f5a78,0x2a5a6a,0xd8d2c4],0x4a4640]],
+// a house W x D cells either side of its middle (walls from -W to W-1 along x, the door's face at +z), its walls Hc cells high over the ground
+// (and 12 cells below it, so a slope never shows under them), in zone zn's way, with a chimney if ch; sd seeds its details. Two storeys: a
+// door and two windows below on its face, windows above, the gable ridge along its longer side
+rlHouseV=(W,D,Hc,zn,ch,sd)=>{const[kd,wc,rc,tc,pit,rk,mo,SHC,DC]=HSTY[zn]||HSTY[0],r=rlRng(sd),O=3,RX=W>=D,A=RX?W:D,Bh=RX?D:W,et=e=>Hc+Math.floor((e-(O-1))*pit),EM=Bh+O-1,JR=et(EM),
+  V=VBK(-W-O-4,-12,-D-O-4,W+O+3,JR+9,D+O+3),PL=kd==2||kd==4?vbT(wc,.8):0x7f7a70,Hm=Math.floor(Hc*.47),ww=5,wh=7,dw=9,dh=14,GJ=6,UJ=Math.round((Hm+3)*1.1),shc=SHC[r()*SHC.length|0],
+  SNOW=(I,J,K)=>vbT(0xe9f0f9,.92+.08*vbH(I,J,K,21)),haunt=zn==3,
+  wall=(I,J,K)=>{const h=vbH(I,J,K,1),n=vn3(I*.16+sd%7,J*.06,K*.16);
+   if(kd==0||kd==3){if(vn3(I*.28+3,J*.3,K*.28+sd%5)>.75)return vbSt(kd?0xb08e66:0x9a5c45,I,J,K,2,1,.3,2);return vbT(wc,.86+.14*Math.round(n*7)/7+(h<.04?-.05:0))}
+   if(kd==1){const L=J>>1;return vbT(wc,(.84+.24*vbH(L,0,(I+K)>>3,3))*(J&1?1.05:.82)*(h<.025?.7:1))}
+   const c=vbSt(wc,I,J,K,kd==2?2:3,2,kd==2?.36:.44,4);return haunt&&J<8&&n>.55?vbM(c,0x4f6f5a,.45):kd==4&&vbH(I>>1,J>>1,K>>1,5)<.12?vbM(c,0xa89a80,.5):c},
+  // the four faces, each walked left to right (u) at a height J and a depth o (0 the wall's own outer cells, 1 a cell proud of it, -1 a cell in)
+  FC=[[W,(u,J,o)=>[u,J,D-1+o]],[W,(u,J,o)=>[-1-u,J,-D-o]],[D,(u,J,o)=>[W-1+o,J,-1-u]],[D,(u,J,o)=>[-W-o,J,u]]],
+  fp=(f,u,J,o,c)=>{const p=FC[f][1](u,J,o);V.put(p[0],J,p[2],c)},fcol=(f,u,J,o)=>{const p=FC[f][1](u,J,o);return V.col(p[0],J,p[2])},
+  OP=[[],[],[],[]],near=(f,u,J,m=3)=>OP[f].some(([a,b,c,d])=>u>=a-m&&u<=b+m&&J>=c-2&&J<=d+2),
+  lay=(f,us,J0)=>us.forEach(u=>r()<.88&&OP[f].push([u-(ww>>1),u+(ww>>1),J0,J0+wh-1,'w'])),s0=Math.round(W*.55),s1=Math.round(D*.5);
+ // the body, solid, and its plinth a cell proud from below the ground to 2 cells over it
+ V.box(-W,W-1,-9,Hc-1,-D,D-1,wall);
+ for(let f=0;f<4;f++){const L=FC[f][0];for(let J=-9;J<2;J++)for(let u=-L-1;u<=L;u++)fp(f,u,J,1,vbSt(PL,u+f*7,J,0,3,2,.34,6))}
+ // where the door and windows go: the door mid-face below, a window either side of it, windows above; two and two behind; one or two up each side, maybe one below
+ // (the door 9 x 14 cells; the windows' sills a tenth higher than they were first set: GJ below, UJ above)
+ OP[0].push([-(dw>>1),dw-(dw>>1)-1,0,dh-1,'d']);lay(0,[-s0,s0],GJ);lay(0,W>=26?[-s0,0,s0]:[-s0,s0],UJ);lay(1,[-s0,s0],GJ);lay(1,[-s0,s0],UJ);
+ for(const f of[2,3]){lay(f,D>=24?[-s1,s1]:[0],UJ);r()<.6&&lay(f,[D>=24?-s1:0],GJ)}
+ // the frame: corner posts, the sill beam, the floor beam and the wall plate, studs between the openings and braces up from the corners
+ if(kd==0)for(let f=0;f<4;f++){const L=FC[f][0],T=(u,J)=>near(f,u,J)||fp(f,u,J,1,vbT(tc,.8+.28*vbH(u,J,f,13)));
+  for(let J=2;J<Hc;J++)for(const u of[-L-1,-L,L-1,L])fp(f,u,J,1,vbT(tc,.8+.28*vbH(u,J,f,13)));
+  for(const J of[2,Hm,Hc-1])for(let u=-L-1;u<=L;u++)T(u,J);
+  for(let u=-L+6;u<L-6;u+=6){for(let J=3;J<Hm;J++)T(u,J);for(let J=Hm+1;J<Hc-1;J++)T(u,J)}
+  for(let t=0;t<Hc-Hm-2;t++)for(const u of[-L+1+t,L-2-t])T(u,Hm+1+t),T(u+(u<0?1:-1),Hm+1+t)}
+ // stone corners: quoins, long and short by turns; and a stone here and there standing proud of the wall
+ if(kd==2||kd==4)for(let f=0;f<4;f++){const L=FC[f][0],Q=vbT(wc,1.18);for(let J=-1;J<Hc;J++){const n=(J>>1)&1?3:1;for(let k=0;k<n;k++){fp(f,-L-1+k,J,1,vbSt(Q,k,J,f,4,2,.2,8));fp(f,L-k,J,1,vbSt(Q,k,J,f,4,2,.2,8))}}
+  for(let J=2;J<Hc-2;J+=2)for(let u=-L+3;u<L-5;u+=3)if(vbH(u,J,f,9)<.08&&!near(f,u,J,1))for(let a=0;a<3;a++)for(let b=0;b<2;b++){const c=fcol(f,u+a,J+b,0);c>=0&&fp(f,u+a,J+b,1,vbT(c,1.06))}}
+ // log ends: the logs of the long walls run on past the corners one row, the ends' logs the next
+ if(kd==1)for(const sx of[-1,1])for(const sz of[-1,1]){const Ic=sx>0?W-1:-W,Kc=sz>0?D-1:-D;for(let J=2;J<Hc;J++){const x=(J>>1)&1;for(let t=1;t<3;t++)for(const w of[0,1]){const c=t==2?0xa88a62:0x8a6d4c;
+  x?V.put(Ic-sx*w,J,Kc+sz*t,vbT(c,.9+.15*vbH(J,t,w,4))):V.put(Ic+sx*t,J,Kc-sz*w,vbT(c,.9+.15*vbH(J,t,w,4)))}}}
+ // the render's roof beams (vigas) poking out under the eaves
+ if(kd==3)for(const f of RX?[0,1]:[2,3]){const L=FC[f][0];for(let u=-L+2;u<L-1;u+=5)for(let o=1;o<4;o++)fp(f,u,Hc-3,o,o==3?0x4a3420:vbT(0x6a4a2c,.9+.15*vbH(u,o,f,5)))}
+ // the roof: courses e cells in from the eave (e 0 the eave, EM the ridge), each a step of tiles over its underside of rafters; the attic
+ // under it filled (its gable ends show the walls' own stuff, boards on a log house); barge boards on the gables, a ridge row on top, moss on
+ // the low courses, snow over the shingles with icicles at the eaves, and slates fallen from the Hollow's
+ const RP=(a,J,b,c)=>RX?V.put(a,J,b,c):V.put(b,J,a,c);
+ for(let b=-Bh-O;b<Bh+O;b++){const e=b<0?b+Bh+O:Bh+O-1-b,jt=et(e);for(let a=-A-2;a<A+2;a++){const h=vbH(a,jt,b,14),vg=a==-A-2||a==A+1,
+   tile=rk==2?vbT(rc,h>.94?1.25:.8+.3*vbH(a>>1,jt,0,17)):rk==1?vbT(rc,.78+.35*vbH(a>>1,jt,0,16)):vbT(rc,.8+.3*vbH(Math.floor((a+(jt&1))/2),jt,0,15)),
+   top=vg?vbT(tc,.95):mo&&e<EM-2&&vn3(a*.3+sd%9,jt*.32,b*.12)>(rk==2?.76:.7)?vbM(tile,0x5d7a3a,.6):tile;
+  if(b>=-Bh&&b<Bh&&a>=-A&&a<A)for(let J=Hc;J<jt-1;J++)RP(a,J,b,kd==1?vbT(0x5a4a3a,(a+b)&1?1:.86):wall(RX?a:b,J,RX?b:a));
+  RP(a,jt-1,b,vbT(tc,.72));RP(a,jt,b,haunt&&e>1&&e<EM&&h<.07?0:top);
+  e==EM&&RP(a,jt+1,b,vbT(rc,.66));
+  if(rk==1){(e||h>.45)&&RP(a,jt+(e==EM?2:1),b,SNOW(a,jt,b));e==0&&h<.3&&RP(a,jt-2,b,0xcfe4f2);e==0&&h<.1&&RP(a,jt-3,b,0xdcecf6)}}}
+ // a vent in each gable
+ for(const s of[-1,1]){const a=s<0?-A:A-1;for(let J=JR-6;J<JR-3;J++)for(const b of[-1,0])RP(a,J,b,0x1d1a17)}
+ // windows: a cell in, dark glass with a glint at its corner, a cross of timber (boards nailed over them in the Hollow); a sill below, a lintel over,
+ // shutters either side, a box of flowers under some below
+ for(let f=0;f<4;f++)for(const[u0,u1,J0,J1,k]of OP[f]){if(k=='d')continue;const mu=u0+(ww>>1),mj=J0+(wh>>1),bd=haunt&&r()<.6,TR=vbT(tc,1.05),LN=kd==2||kd==4?vbT(wc,1.15):vbT(tc,.95);
+  for(let J=J0;J<=J1;J++)for(let u=u0;u<=u1;u++){fp(f,u,J,-1,u==u0&&J==J1?0x8a9fb0:vbT(0x27313b,.85+.25*vbH(u,J,f,9)));
+   fp(f,u,J,0,bd?(J==J0+1||J==J1-1||Math.round((u-u0)*(wh-1)/(ww-1))==J-J0)?vbT(0x6b5d4a,.85+.2*vbH(u,J,f,3)):0:u==mu||J==mj?TR:0)}
+  for(let u=u0-1;u<=u1+1;u++){fp(f,u,J0-1,1,vbT(LN,.9+.12*vbH(u,J0,f,2)));fp(f,u,J1+1,1,LN)}
+  if(kd!=1&&r()<.6)for(let J=J0;J<=J1;J++)for(const u of[u0-2,u0-1,u1+1,u1+2])fp(f,u,J,1,vbT(shc,(u&1?1:.85)*(.92+.12*vbH(u,J,f,6))));
+  if(J0<Hm&&!haunt&&rk!=1&&r()<.45){const fl=[0xd94a5a,0xf0c040,0xe8e0f0,0x9a6ad8][r()*4|0];for(let u=u0;u<=u1;u++){fp(f,u,J0-2,1,0x6a4a2c);fp(f,u,J0-2,2,0x6a4a2c);fp(f,u,J0-1,2,(u+f)&1?fl:0x4f7a33)}}}
+ // the door: a cell in, planks banded with iron and a brass ring; jambs and a lintel round it, a step before it and a lantern by it
+ {const[u0,u1]=OP[0][0],FR=kd==2||kd==4?vbT(wc,1.15):vbT(tc,.9),DD=haunt?0x3a3028:0x6a4428;for(let J=0;J<dh;J++)for(let u=u0;u<=u1;u++){fp(0,u,J,0,0);fp(0,u,J,-1,J==3||J==dh-4?0x2e2c2a:vbT(DD,((u-u0)&1?1:.84)*(.92+.14*vbH(u,J,0,11))))}
+  fp(0,u1-1,Math.round(dh*.45),0,0xc9a043);for(let J=-1;J<=dh;J++){fp(0,u0-1,J,1,FR);fp(0,u1+1,J,1,FR)}for(let u=u0-1;u<=u1+1;u++)fp(0,u,dh,1,FR);
+  for(let u=u0-1;u<=u1+1;u++)for(const o of[1,2])fp(0,u,0,o,vbSt(0x8a857a,u,0,o,3,1,.25,12));
+  if(r()<.7){fp(0,u1+2,dh-1,1,0x2b2724);fp(0,u1+2,dh-2,1,0x2b2724);fp(0,u1+2,dh-3,1,0xffc860)}}
+ // the chimney: a stack through the back of the roof, a cap over it round its black flue
+ if(ch){const ca=Math.round(A*.5),cb=-Math.round(Bh*.45),top=JR+4,ST=kd==3?wc:kd==2||kd==4?wc:0x8a8478;
+  for(let J=Hc-2;J<=top;J++)for(let a=ca;a<ca+3;a++)for(let b=cb;b<cb+3;b++)RP(a,J,b,vbSt(ST,a,J,b,2,1,.3,18));
+  for(let a=ca-1;a<ca+4;a++)for(let b=cb-1;b<cb+4;b++){RP(a,top+1,b,a==ca+1&&b==cb+1?0x15110e:vbT(0x6f6a62,.9+.2*vbH(a,b,0,19)));rk==1&&(a!=ca+1||b!=cb+1)&&RP(a,top+2,b,SNOW(a,top,b))}}
+ // by the front corner a barrel, round the side another; along a side wall with no window low down, a stack of firewood
+ if(r()<.65)for(const[f,u0]of r()<.5?[[0,-W+1],[3,D-5]]:[[0,-W+1]])for(let J=0;J<5;J++)for(let a=0;a<3;a++)for(let o=1;o<4;o++){if((a==0||a==2)&&(o==1||o==3))continue;
+  fp(f,u0+a,J,o,J==4?vbT(0x8a6a45,1.1):J==1||J==3?0x3a3632:vbT(0x7a5232,(a+o)&1?1:.85))}
+ if(!haunt&&r()<.55){const f=[2,3].find(f=>!OP[f].some(o=>o[2]<Hm));f&&(()=>{for(let J=0;J<5;J++)for(let u=-4;u<4;u++)for(const o of[1,2])(J<4||o==1)&&fp(f,u,J,o,vbT((u+J)&1?0xb08a5a:0x8a6a45,.9+.2*vbH(u,J,o,23)))})()}
+ return V.mesh({dc:DC,dk:rk==1?.3:.55})},
+// a house of about w x d metres with walls h high, as rlParts asks for one, from a cache of the zone's: the sizes are rounded to half metres,
+// so a town's houses share a few models (built once, never disposed: userData.vb)
+VBC=new Map(),rlHouseQ=(w,d,h,zn,ch)=>{const W=Math.round(w/VBZ/4)*2,D=Math.round(d/VBZ/4)*2,Hc=Math.round(h/VBZ/4)*4,k=[zn,W,D,Hc,ch|0].join();
+ let g=VBC.get(k);g||VBC.set(k,g=rlHouseV(W,D,Hc,zn<0?0:zn,ch,(W*131+D*71+Hc*17+(ch?5:0)+zn*977)%2147483646+1));return g},
+// a market stall (3.6 x 1.8m counter, 4.8 x 3.2m awning 3.4m up): a plank counter set with its wares, four posts and a striped awning over them, its edges scalloped
+rlStallV=c=>{let g=VBC.get('st'+c);if(g)return g;const V=VBK(-13,-1,-9,12,19,8),WR=[0xb8322e,0x6f9a3a,0xc89a5a,c],AW=I=>Math.floor((I+12)/3)&1?c:0xeee4cc;
+ V.box(-9,8,0,6,-4,4,(I,J,K)=>J==6?vbT(0x9a7a50,.9+.15*vbH(I,J,K,1)):vbT(0x8a6a43,(J&1?1:.86)*(.9+.12*vbH(I>>1,J,K,2))));
+ for(let I=-8;I<8;I++)for(let K=-3;K<4;K++){const w=WR[Math.min(3,Math.floor((I+8)/4))];vbH(I,K,0,4)<.8&&V.put(I,7,K,vbT(w,.85+.3*vbH(I,K,1,5)));vbH(I,K,1,6)<.3&&V.put(I,8,K,vbT(w,.95))}
+ for(const I of[-11,10])for(const K of[-7,6])V.box(I,I,0,16,K,K,vbT(0x5a4130,.9));
+ V.box(-12,11,17,17,-8,7,(I,J,K)=>vbT(AW(I),.92+.1*vbH(I,J,K,7)));for(let I=-12;I<12;I++)for(const K of[-8,7])(I+12)%3!=2&&V.put(I,16,K,vbT(AW(I),.85));
+ VBC.set('st'+c,g=V.mesh({dk:.4}));return g},
+// a well: a round wall of stone a metre high on a wider footing, two posts and an axle with its rope and bucket, and a little roof of shingles. Its
+// shaft is the black disc (rlHole) just under the wall's top, wide enough to fill the stepped opening
+rlWellV=()=>{let g=VBC.get('well');if(g)return g;const V=VBK(-9,-4,-6,8,16,5);
+ for(let J=-3;J<5;J++)for(let I=-8;I<8;I++)for(let K=-8;K<8;K++)vbR(I,K,1,J<0?1.46:1.32)&&V.put(I,J,K,J==4?vbSr(0x9a958a,I,J,K,14,1,.2,3):vbSr(0x8d8996,I,J,K,14,1,.34,2));
+ for(const I of[-6,5])V.box(I,I,0,12,-1,0,(I,J,K)=>vbT(0x5a4130,.85+.2*vbH(I,J,K,4)));
+ V.box(-5,4,10,10,-1,-1,0x4a3220);V.box(-1,-1,7,9,-1,-1,0xb8a070);V.box(-2,0,5,6,-2,0,(I,J,K)=>J==6?0x3a3632:vbT(0x6a4a2c,(I+K)&1?1:.85));
+ for(let b=-4;b<4;b++){const e=b<0?b+4:3-b;for(let a=-8;a<8;a++){V.put(a,12+e,b,vbT(0x6a4a2c,.8+.3*vbH(a,e,b,8)));V.put(a,11+e,b,vbT(0x4a3220,.8))}}
+ VBC.set('well',g=V.mesh({dk:.35}));return g},
+// a mage's tower h metres to its crown: a stone drum tapering a little from its footing, banded twice, under a corbelled crown and a tall cone of
+// violet shingles with a gold spire, the orb glowing over it; arched windows up it (dark, a sill under each) and its door at the foot, facing +z
+rlTowerV=h=>{let g=VBC.get('tw'+h);if(g)return g;const r=3.2,Jh=Math.round(h/VBZ),n=Math.ceil(4.8/VBZ)+1,JC=Jh+2,JA=JC+Math.round(h*.42/VBZ),
+  V=VBK(-n-2,-10,-n-2,n+2,JA+14,n+2),ST=0x8d8996,DK=0x6e6a70,
+  // a window or door at bearing q (0 +z, 1 +x, 2 -z, 3 -x), w cells wide (odd), from J0 for t rows, its top rounded: the outermost cell of each
+  // column taken out and the next made dark (or the door's planks), a sill under it
+  hole=(q,w,J0,t,c)=>{const hw=w>>1,P=(l,J,d)=>q==0?[l,J,d]:q==1?[d,J,-1-l]:q==2?[-1-l,J,-1-d]:[-1-d,J,l];
+   for(let l=-hw;l<=hw;l++)for(let J=J0;J<J0+t-(abs(l)==hw&&hw>0?1:0);J++){let d=n+1;while(d>0&&V.col(...P(l,J,d))<0)d--;if(d<=0)continue;V.put(...P(l,J,d),0);V.put(...P(l,J,d-1),c(l,J))}
+   for(let l=-hw-1;l<=hw+1;l++){let d=n+1;while(d>0&&V.col(...P(l,J0-1,d))<0)d--;d>0&&V.put(...P(l,J0-1,d+1),vbT(DK,1.1))}};
+ for(let J=-9;J<JC;J++){const y=(J+.5)*VBZ,R=y<.8?4.4:J>=Jh?r*1.18:(abs(y-h*.36)<.2||abs(y-h*.7)<.2)?r*(1-.08*y/h)+.2:r*(1-.08*y/h),nb=Math.round(TAU*R/.8);
+  for(let I=-n;I<=n;I++)for(let K=-n;K<=n;K++)vbR(I,K,0,R)&&V.put(I,J,K,y<.8||R>r*(1-.08*y/h)+.1?vbSr(DK,I,J,K,nb,2,.3,5):vbSr(ST,I,J,K,nb,2,.32,4))}
+ vbCone(V,0,0,4.5,JC,JA,(I,J,K,c)=>vbT(0x5a3a8c,(c%4==3?1.18:1)*(.82+.3*vbH(Math.floor((atan2(K,I)/TAU+1)*28+(c&1)*.5),c,0,9))));
+ V.box(-1,0,JA+1,JA+3,-1,0,0xd2a23c);for(let J=JA+3;J<JA+12;J++)for(let I=-5;I<5;I++)for(let K=-5;K<5;K++){const d=hypot((I+.5)*VBZ+.1,(J+.5)*VBZ-(JA+7.2)*VBZ,(K+.5)*VBZ+.1);d<.72&&V.put(I,J,K,d<.4&&J>JA+7?0xeedcff:vbT(0xc79bff,.9+.2*vbH(I,J,K,3)))}
+ hole(0,5,4,11,(l,J)=>J==6||J==11?0x2e2c2a:vbT(0x5a3a22,(l&1?1:.84)*(.92+.14*vbH(l,J,0,2))));
+ for(const[q,y]of[[0,.55],[1,.8],[2,.38],[3,.66],[1,.3],[3,.9]])hole(q,3,Math.round(h*y/VBZ)-3,7,(l,J)=>vbT(0x1e1830,.9+.25*vbH(l,J,q,6)));
+ VBC.set('tw'+h,g=V.mesh({dk:.45}));return g};
+const // a drum about (cx, cz) from J0 to J1, its radius R(y) in metres at the height y, each cell inside coloured by f(I, J, K, d, R) (-1 leaves it); rm bounds the radius
+vbDrum=(V,cx,cz,J0,J1,R,f,rm=8)=>{const n=Math.ceil(rm/VBZ)+1,ci=Math.floor(cx/VBZ),ck=Math.floor(cz/VBZ);for(let J=J0;J<=J1;J++){const r=R((J+.5)*VBZ);if(!(r>0))continue;
+ for(let I=ci-n;I<=ci+n;I++)for(let K=ck-n;K<=ck+n;K++){const d=hypot((I+.5)*VBZ-cx,(K+.5)*VBZ-cz);d<r&&V.put(I,J,K,f(I,J,K,d,r))}}},
+// which of n sectors round (cx, cz) a cell lies in (merlons and corbels go every other one)
+vbSec=(I,K,cx,cz,n)=>Math.floor((atan2((K+.5)*VBZ-cz,(I+.5)*VBZ-cx)/TAU+1)*n)%n,
+// a slit or window n cells tall and w wide at the bearing a (out along (sin a, cos a) from (cx, cz), as the glow planes are set): the outermost cells
+// taken out, those behind them coloured c
+vbSlit=(V,cx,cz,R,a,J0,n,c,w=1)=>{const ux=sin(a),uz=cos(a);for(let l=-(w>>1);l<=(w>>1);l++)for(let J=J0;J<J0+n;J++){if(w>2&&J==J0+n-1&&abs(l)==(w>>1))continue;let pv=null;
+ for(let t=R+1;t>R-1.4;t-=.04){const I=Math.floor((cx+ux*t+uz*l*VBZ)/VBZ),K=Math.floor((cz+uz*t-ux*l*VBZ)/VBZ);if(pv&&I==pv[0]&&K==pv[1])continue;if(V.col(I,J,K)>=0){if(!pv){V.put(I,J,K,0);pv=[I,K]}else{V.put(I,J,K,typeof c=='function'?c(l,J):c);break}}}}},
+// the grey stone of the keep, the towers and the ruins: courses three cells high, blocks by I + K (or round a drum, by sector), each a shade of pal
+vbAsh=(pal,I,J,K,s=0,bw=6,bh=3)=>{const cr=Math.floor(J/bh),b=Math.floor((I+K+(cr&1)*(bw>>1))/bw);return vbT(pal[vbH(b,cr,s,31)*pal.length|0],.88+.2*vbH(b,cr,s,32))},
+vbAshR=(pal,I,J,K,cx,cz,n,s=0,bh=3)=>{const cr=Math.floor(J/bh),b=Math.floor(((atan2((K+.5)*VBZ-cz,(I+.5)*VBZ-cx)/TAU+1)*n+(cr&1)*.5))%n;return vbT(pal[vbH(b,cr,s,33)*pal.length|0],.88+.2*vbH(b,cr,s,34))},
+// rough rock (a plinth, a crag's foot): its edge pulled in by noise; lichen here and there
+vbRock=(c,I,J,K)=>{const n=vn3(I*.22,J*.3,K*.22);return n>.74?vbM(vbT(c,.9),0xa4a46a,.45):vbT(c,.78+.4*n)},
+// a heap of tumbled stones round (cx, cz), R across and h high at its middle
+vbHeap=(V,cx,cz,R,h,pal,s=0)=>{const n=Math.ceil(R/VBZ)+1,ci=Math.floor(cx/VBZ),ck=Math.floor(cz/VBZ);for(let I=ci-n;I<=ci+n;I++)for(let K=ck-n;K<=ck+n;K++){const d=hypot((I+.5)*VBZ-cx,(K+.5)*VBZ-cz)/R;if(d>=1)continue;
+ const t=h*Math.pow(1-d,.8)*(.55+.7*vn3(I*.5+s,s,K*.5));for(let J=-2;(J+.5)*VBZ<t;J++)V.put(I,J,K,vbT(pal[vbH(I>>1,J,K>>1,s)*pal.length|0],.85+.25*vbH(I,J,K,s+1)))}},
+// a rubble wall from (x0, z0) to (x1, z1), th thick, up to top(u) (u metres along it, the top ragged by a cell), leaving openings [u0, u1, y0, y1];
+// col(I, J, K, u) colours a cell
+vbMason=(V,x0,z0,x1,z1,th,top,holes,col)=>{const dx=x1-x0,dz=z1-z0,L=hypot(dx,dz),ux=dx/L,uz=dz/L,e=th/2+VBZ;
+ for(let I=Math.floor((min(x0,x1)-e)/VBZ);I<=Math.ceil((max(x0,x1)+e)/VBZ);I++)for(let K=Math.floor((min(z0,z1)-e)/VBZ);K<=Math.ceil((max(z0,z1)+e)/VBZ);K++){const x=(I+.5)*VBZ-x0,z=(K+.5)*VBZ-z0,u=x*ux+z*uz,v=-x*uz+z*ux;
+  if(u<-.1||u>L+.1||abs(v)>th/2)continue;const tp=top(u)-(vbH(I,0,K,77)<.3?VBZ:0);for(let J=-4;(J+.5)*VBZ<tp;J++){const y=(J+.5)*VBZ;if(holes&&holes.some(h=>u>h[0]&&u<h[1]&&y>h[2]&&y<h[3]))continue;V.put(I,J,K,col(I,J,K,u))}}},
+// ---- the windmills of the dry grasslands: a whitewashed drum of render (patched, the plaster fallen to the stone in places, dirt splashed up it),
+// a door and two little windows, a gallery rail, a dark conical cap of boards and the windshaft's hub sticking out of it toward +z; the sails turn
+// on their own geometry (MLSL, its middle on the hub at MLH), lattice frames of timber with cloth on them, four about the shaft
+MLH=[0,9.7,3.25],
+MILL=(()=>{const V=VBK(-20,-8,-20,20,72,20),WH=0xe8e0cc,ST=0xa89a80;
+ vbDrum(V,0,0,-6,44,y=>y<.4?2.9:2.7-.35*y/9,(I,J,K)=>vn3(I*.3,J*.25,K*.3)>.73?vbAshR([ST,vbT(ST,.88),vbT(ST,1.1)],I,J,K,0,0,18,3,2):J<1?vbT(0x8a8478,.95):vbT(WH,.9+.1*vn3(I*.15,J*.05,K*.15)+(vbH(I,J,K,2)<.04?-.06:0)),3.2);
+ vbDrum(V,0,0,45,46,()=>2.65,(I,J,K)=>vbT(0x6a4a2c,.9+.15*vbH(I,J,K,3)),3.2);
+ vbDrum(V,0,0,47,47,()=>2.65,(I,J,K,d)=>d<2.4?-1:vbSec(I,K,0,0,20)&1?-1:0x5a3a22,3.2);
+ vbDrum(V,0,0,45,62,y=>2.3*(1-(y-9)/3.6),(I,J,K)=>vbT(0x5a4632,(.82+.3*vbH(vbSec(I,K,0,0,16),J>>1,0,4))*(J&1?1:.88)),3);
+ V.box(-1,0,47,48,0,15,(I,J,K)=>K>9?vbT(0x4a3220,1.1):0x4a3220);V.box(-2,1,46,49,14,15,0x3a3632);
+ vbSlit(V,0,0,2.7,PI,0,11,(l,J)=>vbT(0x6a4428,(l&1?1:.84)*(J==3||J==8?.6:1)),5);vbSlit(V,0,0,2.4,1.9,20,5,0x2a2520,3);vbSlit(V,0,0,2.2,4.2,32,5,0x2a2520,3);
+ return V.mesh({dc:0x8a6a48,dk:.6})})(),
+MLSL=(()=>{const V=VBK(-50,-50,-3,50,50,3);
+ for(let s=0;s<4;s++){const a=s*PI/2,c=cos(a),n=sin(a),P=(u,v,k,col)=>V.put(Math.floor((c*u-n*v)/VBZ),Math.floor((n*u+c*v)/VBZ),k,col);
+  for(let u=.2;u<8.3;u+=VBZ*.5)P(u,0,0,vbT(0x5a3a22,.95));
+  for(let u=1.8;u<8.1;u+=VBZ*.5)for(let v=.3;v<1.9;v+=VBZ*.5){const fr=abs(v-.3)<.15||abs(v-1.8)<.15||(u%1.2)<.2;P(u,v,fr?0:1,fr?vbT(0x6a4a2c,.95):vbT(0xe9e0c6,.92+.08*vn3(u,v,s)))}}
+ V.box(-2,1,-2,1,-2,1,0x3a3632);return V.mesh({dh:-99})})(),
+MILLS=[];
 // chunky (voxel-like) trees, bushes and hedges, in place of sculpted wood and loose round leaves. For each layer [materials, cell size, crown noise, grow, jitter, tone] the union of
 // the model's primitives of those materials is sampled on a grid of cubes, the cells whose middle falls inside kept, and every face of a kept cell that looks on an empty one drawn
 // as a flat square (no shared vertices, so each is lit flat); jitter (of a cell) moves the cubes' corners about, the same for every face that meets at one, so the cubes become
@@ -1614,9 +1809,10 @@ const VOX=(S,lay,spk,rc)=>{const P=[],N=[],Co=[],M=[],AX=[[[0,1,0],[0,0,1],[1,0,
    const hs=h3(i+o[0]+.37,j+o[1]+.11,k+o[2]+.53),sh=.82+.34*hs,sp=spk&&hs>1-spk[1];
    for(const[u,v,n]of AX){const a=i+n[0],c=j+n[1],e=k+n[2];if(a>=0&&c>=0&&e>=0&&a<nx&&c<ny&&e<nz&&G[a+nx*(c+ny*e)])continue;
     const f=sh*(n[1]>0?1.08:n[1]<0?.78:1);C1.setHex(sp?spk[0]:q[1]);leaf&&!sp&&(rc?rc(C1,hs):C1.multiply(C2.setRGB(.92*tone,1.02*tone,.78*tone)));C1.multiplyScalar(f);
-    const px=cx+n[0]*h,py=cy+n[1]*h,pz=cz+n[2]*h,C=[[-1,-1],[1,-1],[1,1],[-1,1]].map(([a2,b2])=>{const X=px+(u[0]*a2+v[0]*b2)*h,Y=py+(u[1]*a2+v[1]*b2)*h,Z=pz+(u[2]*a2+v[2]*b2)*h;if(!jit)return[X,Y,Z];const d=jt(X,Y,Z);return[X+d[0],Y+d[1],Z+d[2]]});
+    const oc=(x,y,z)=>x>=0&&y>=0&&z>=0&&x<nx&&y<ny&&z<nz&&G[x+nx*(y+ny*z)]?1:0,AOF=[[-1,-1],[1,-1],[1,1],[-1,1]].map(([a2,b2])=>{const s1=oc(a+u[0]*a2,c+u[1]*a2,e+u[2]*a2),s2=oc(a+v[0]*b2,c+v[1]*b2,e+v[2]*b2);return[1,.86,.75,.63][s1&&s2?3:s1+s2+oc(a+u[0]*a2+v[0]*b2,c+u[1]*a2+v[1]*b2,e+u[2]*a2+v[2]*b2)]}),
+     px=cx+n[0]*h,py=cy+n[1]*h,pz=cz+n[2]*h,C=[[-1,-1],[1,-1],[1,1],[-1,1]].map(([a2,b2])=>{const X=px+(u[0]*a2+v[0]*b2)*h,Y=py+(u[1]*a2+v[1]*b2)*h,Z=pz+(u[2]*a2+v[2]*b2)*h;if(!jit)return[X,Y,Z];const d=jt(X,Y,Z);return[X+d[0],Y+d[1],Z+d[2]]});
     for(const t of[[0,1,2],[0,2,3]]){E1.set(...C[t[1]]).sub(TV[0].set(...C[t[0]]));E2.set(...C[t[2]]).sub(TV[0]);const nn=E1.cross(E2).normalize();
-     for(const m of t){P.push(...C[m]);N.push(nn.x,nn.y,nn.z);Co.push(C1.r,C1.g,C1.b);M.push(q[3]||0)}}}}}
+     for(const m of t){P.push(...C[m]);N.push(nn.x,nn.y,nn.z);Co.push(C1.r*AOF[m],C1.g*AOF[m],C1.b*AOF[m]);M.push(q[3]||0)}}}}}
  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(N,3));g.setAttribute('color',new THREE.Float32BufferAttribute(Co,3));g.setAttribute('aM',new THREE.Float32BufferAttribute(M,1));g.userData.cvn=1;return g};
 // two of those models (non-indexed, the same four attributes) as one, the second after the first: a tree's sculpted wood (WOOD, in few flat facets) and its voxel crown
 const catG=(a,b)=>{const g=new THREE.BufferGeometry();for(const k of['position','normal','color','aM']){const x=a.attributes[k],y=b.attributes[k],A=new Float32Array(x.array.length+y.array.length);A.set(x.array);A.set(y.array,x.array.length);g.setAttribute(k,new THREE.BufferAttribute(A,x.itemSize))}g.userData.cvn=1;return g};
@@ -1687,13 +1883,13 @@ TLP=n=>({layer:.02,ao:.9,lp:n,one:1,wind:1}),
 WOOD=(S,Pn,N,noi,lp)=>{const W=S.filter(q=>q[3]==5),b=[0,1,2,3,4,5].map(i=>(i<3?min:max)(...W.map(q=>q[0].bb[i]))+(i<3?-.3:.3));return SCULPT(W,Pn,b,N,noi,TLP(lp))},
 bgS=[[EL([0,0,0],[1,.85,1]),0x3f8f3a,0,2],[EL([.62,.12,.28],[.72,.6,.72]),0x4b9b3f,.35,2],[EL([-.55,.08,-.38],[.66,.55,.66]),0x378232,.35,2],[EL([.1,.5,-.45],[.55,.45,.55]),0x4f9f44,.3,2]],bgN=(x,y,z,d)=>d-(vn3(x*2.4,y*2.4,z*2.4)-.5)*.26,
 traS=[[RC([0,-.3,0],[0,3.3,0],.504,.312),0x5e4128,0,5],[EL([0,.1,0],[.744,.3,.744]),0x5e4128,.3,5],[RC([0,2.6,0],[1.2,3.7,.2],.16,.1),0x5e4128,.15,5],[RC([0,2.8,0],[-.9,3.9,.5],.14,.09),0x5e4128,.15,5],[CN([0,3.3,0],[0,4.7,0],[2,1.5,2]),0x4f9a36,.6,2],[CN([0,3.3,0],[1.4,4.2,.3],[1.4,1.1,1.4]),0x5aa63d,.6,2],[CN([0,3.3,0],[-1.3,4.3,-.4],[1.3,1.05,1.3]),0x4a9233,.6,2],[CN([0,3.3,0],[.2,4.4,1.3],[1.2,1,1.2]),0x55a13a,.6,2],[CN([0,3.3,0],[-.3,5.7,-.2],[1.1,.9,1.1]),0x62ad42,.6,2]],traN=(x,y,z,d,w)=>y>3.1?d-(vn3(x*1.3,y*1.3,z*1.3)-.5)*0.4*NF(w):d,
-TRAW=WOOD(traS,[],36,traN,95),TRA=catG(TRAW,VOX(traS,[[[2],.42,traN,-.25,.12,.62]])),
+TRAW=WOOD(traS,[],36,traN,95),TRA=catG(TRAW,VOX(traS,[[[2],.42,traN,-.25,.07,.62]])),
 trbS=[[RC([0,-.3,0],[-.7,2.6,0],.36,.192),0x6a4a30,0,5],[RC([-.5,2.1,0],[.3,2.7,.3],.1,.07),0x6a4a30,.12,5],[CN([-.7,2.6,0],[-.9,3,0],[2.1,.9,1.6]),0x5c9a3a,.5,2],[CN([-.7,2.6,0],[.4,2.8,.4],[1.4,.75,1.2]),0x68a843,.5,2],[CN([-.7,2.6,0],[-1.9,3.2,-.3],[1.2,.7,1.1]),0x578f36,.5,2]],trbN=(x,y,z,d,w)=>y>2.2?d-(vn3(x*1.5,y*1.5,z*1.5)-.5)*0.35*NF(w):d,
-TRBW=WOOD(trbS,[],32,trbN,75),TRB=catG(TRBW,VOX(trbS,[[[2],.4,trbN,-.25,.12,.62]])),
+TRBW=WOOD(trbS,[],32,trbN,75),TRB=catG(TRBW,VOX(trbS,[[[2],.4,trbN,-.25,.07,.62]])),
 // a boulder, its upper side mossed (the Winterlands' RKS: under snow, a thicker cap of it)
 mkRK=(m,t)=>SCULPT([[EL([0,0,0],[1,.72,1]),0x9b9d93,0,6],[EL([.4,-.1,.3],[.62,.5,.6]),0x8f918a,.3,6]],[[(x,y,z)=>t-y+(vn3(x*3,y*3,z*3)-.5)*.35,m,.08]],[-1.5,-1,-1.4,1.5,1,1.4],16,(x,y,z,d)=>d-(vn3(x*2+5,y*2,z*2)-.5)*.32),
 RK=mkRK(0x6f9440,.3),RKS=mkRK(0xf0f5fb,-.08),
-BGL=VOX(bgS,[[[2],.26,bgN,0,.3]]),TAL=foliage(traS,traN,mob?360:600,1.6),TBL=foliage(trbS,trbN,mob?255:425,1.42);
+BGL=VOX(bgS,[[[2],.26,bgN,0,.14]]),TAL=foliage(traS,traN,mob?360:600,1.6),TBL=foliage(trbS,trbN,mob?255:425,1.42);
 
 // ---- the Irish countryside: native trees, gorse, hedgerows, dry stone walls, field gates and ruins ----
 // Every tree is sculpted near TRA's size (crown around y 2-9) and scaled per instance, so the shared wind sway stays in proportion.
@@ -1702,46 +1898,46 @@ const CONE=(c,h,r)=>{const L=hypot(h,r),f=(x,y,z)=>{const Y=y-c[1];return max(-Y
 // sessile oak: a short stout bole, heavy limbs spreading wide and low, a broad dark lumpy crown
 tokS=[[RC([0,-.3,0],[.1,2.5,0],.6,.44),0x5b4d3e,0,5],[EL([0,.05,0],[.86,.32,.86]),0x5b4d3e,.3,5],[RC([.1,2.2,0],[2.3,3.9,.5],.28,.13),0x5b4d3e,.18,5],[RC([.1,2.3,0],[-2.1,3.7,-.7],.27,.12),0x5b4d3e,.18,5],[RC([.1,2.4,0],[.4,4.1,-2.1],.27,.12),0x5b4d3e,.15,5],[RC([.1,2.4,0],[-.5,4.3,2],.27,.12),0x5b4d3e,.15,5],[RC([.1,2.5,0],[.2,5,.1],.3,.15),0x5b4d3e,.15,5],
  [EL([0,5,0],[3,1.6,2.8]),0x3d6f2d,.6,2],[EL([2.6,4.3,.6],[1.9,1.3,1.8]),0x467a33,.6,2],[EL([-2.5,4.2,-.8],[2,1.3,1.8]),0x3a6a2b,.6,2],[EL([.4,4.5,-2.4],[1.8,1.2,1.7]),0x44762f,.6,2],[EL([-.5,4.6,2.3],[1.8,1.3,1.7]),0x3f7130,.6,2],[EL([1.1,6,.7],[1.6,1.1,1.5]),0x4b7f36,.6,2],[EL([-1.2,5.9,-.5],[1.5,1.1,1.4]),0x42742f,.6,2]],tokN=(x,y,z,d,w)=>y>3.3?d-(vn3(x*1.25,y*1.25,z*1.25)-.5)*0.5*NF(w):d,
-TOKW=WOOD(tokS,[],40,tokN,140),TOK=catG(TOKW,VOX(tokS,[[[2],.44,tokN,-.25,.12,.62]])),
+TOKW=WOOD(tokS,[],40,tokN,140),TOK=catG(TOKW,VOX(tokS,[[[2],.44,tokN,-.25,.07,.62]])),
 // ash: a tall pale-grey stem, limbs sweeping upward, an open airy crown of separate light-green clumps
 tasS=[[RC([0,-.3,0],[.1,4,0],.36,.22),0x8b877c,0,5],[EL([0,.05,0],[.5,.25,.5]),0x8b877c,.25,5],[RC([.1,3,0],[1.9,5.6,.3],.2,.11),0x8b877c,.14,5],[RC([.1,3.3,0],[-1.7,5.8,-.6],.2,.11),0x8b877c,.14,5],[RC([.1,3.7,0],[.4,6.3,-1.6],.19,.1),0x8b877c,.12,5],[RC([.1,3.9,0],[-.3,6.7,1.4],.19,.1),0x8b877c,.12,5],[RC([.1,4,0],[0,7.3,0],.2,.11),0x8b877c,.12,5],
  [EL([2,6,.3],[1.45,1.05,1.35]),0x6a9c42,.35,2],[EL([-1.8,6.1,-.6],[1.45,1.05,1.35]),0x72a347,.35,2],[EL([.5,6.6,-1.7],[1.3,1,1.25]),0x66983f,.35,2],[EL([-.3,7,1.5],[1.3,1,1.2]),0x6fa045,.35,2],[EL([0,7.6,0],[1.4,.95,1.35]),0x78a94c,.35,2],[EL([1,5.2,-.8],[1,.75,.95]),0x62933c,.3,2]],tasN=(x,y,z,d,w)=>y>4.6?d-(vn3(x*1.6,y*1.6,z*1.6)-.5)*0.55*NF(w):d,
-TASW=WOOD(tasS,[],44,tasN,125),TAS=catG(TASW,VOX(tasS,[[[2],.4,tasN,-.25,.12,.62]])),
+TASW=WOOD(tasS,[],44,tasN,125),TAS=catG(TASW,VOX(tasS,[[[2],.4,tasN,-.25,.07,.62]])),
 // hawthorn, the lone fairy thorn: a gnarled leaning stem, a dense crown combed flat by the prevailing wind (it leans toward +x)
 hawS=[[RC([0,-.3,0],[.45,1.3,.1],.27,.19),0x4f443a,0,5],[RC([.45,1.25,.1],[1.1,2.3,-.15],.19,.12),0x4f443a,.1,5],[RC([.3,.9,.05],[-.45,2.2,.4],.17,.11),0x4f443a,.1,5],[RC([.9,1.9,0],[2,2.7,.35],.11,.06),0x4f443a,.08,5],[RC([.55,1.4,.06],[.3,2.6,-.9],.13,.08),0x4f443a,.08,5],
  [EL([1.1,2.95,0],[2.1,1.05,1.75]),0x3d682c,.5,2],[EL([2.3,2.65,.3],[1.3,.85,1.15]),0x44712f,.45,2],[EL([.05,2.85,-.35],[1.25,.85,1.15]),0x39632a,.45,2],[EL([1.2,3.55,.1],[1.35,.65,1.1]),0x437031,.45,2]],
 hawN=(x,y,z,d,w)=>y>2.05?d-(vn3(x*1.7,y*1.7,z*1.7)-.5)*0.4*NF(w):d,
-THWW=WOOD(hawS,[],32,hawN,115),THW=catG(THWW,VOX(hawS,[[[2],.34,hawN,-.25,.12,.62]])),THW2=catG(THWW,VOX(hawS,[[[2],.34,(x,y,z,d,w)=>hawN(x+3.7,y,z+1.3,d,w),-.25,.12,.62]])),
+THWW=WOOD(hawS,[],32,hawN,115),THW=catG(THWW,VOX(hawS,[[[2],.34,hawN,-.25,.07,.62]])),THW2=catG(THWW,VOX(hawS,[[[2],.34,(x,y,z,d,w)=>hawN(x+3.7,y,z+1.3,d,w),-.25,.07,.62]])),
 // Scots pine: a bare stem going orange-red up top, flat blue-green pads of foliage
 tpnS=[[RC([0,-.3,0],[.12,3.6,0],.3,.2),0x6c5747,0,5],[RC([.12,3.5,0],[.32,7.9,.1],.23,.19),0xa4623a,.08,5],[EL([0,.05,0],[.42,.22,.42]),0x6c5747,.2,5],[RC([.22,5.6,0],[1.7,6.5,.5],.17,.1),0x9a5c38,.06,5],[RC([.26,6.1,0],[-1.4,6.9,-.5],.17,.1),0x9a5c38,.06,5],[RC([.28,6.6,0],[.7,7.5,-1.3],.16,.09),0x9a5c38,.06,5],[RC([.22,5.8,0],[-.45,6.5,.9],.16,.09),0x9a5c38,.06,5],
  [EL([1.8,6.7,.55],[1.3,.48,1.15]),0x2f5a3c,.3,2],[EL([-1.5,7.1,-.5],[1.25,.45,1.1]),0x325e40,.3,2],[EL([.75,7.7,-1.35],[1.15,.45,1.05]),0x2c5539,.3,2],[EL([.3,8,.25],[1.4,.6,1.25]),0x345f41,.35,2],[EL([-.5,6.5,1],[1,.4,.9]),0x2e583b,.3,2]],tpnN=(x,y,z,d,w)=>y>5.8?d-(vn3(x*1.9,y*1.9,z*1.9)-.5)*0.35*NF(w):d,
-TPNW=WOOD(tpnS,[],44,tpnN,170),TPN=catG(TPNW,VOX(tpnS,[[[2],.36,tpnN,-.25,.12,.62]])),
+TPNW=WOOD(tpnS,[],44,tpnN,170),TPN=catG(TPNW,VOX(tpnS,[[[2],.36,tpnN,-.25,.07,.62]])),
 // Sitka spruce, the forestry tree of the Leitrim and Cavan hills: a spire of drooping tiers, plantations filled with them. Like the other
 // crowns it is built of voxels (VOX, from spS); spK, the darker solid core it once had under its cards, is unused now
 // dense and its shadows crisp, and shows through the cards' gaps as the shade inside the crown
 spS=[[RC([0,-.3,0],[0,7.8,0],.26,.06),0x54443a,0,5],...[0,1,2,3,4,5].map(k=>[CONE([0,.9+k*1.15,0],2.3-k*.12,2.25-k*.3),[0x2c5a38,0x316040,0x2a5537][k%3],.2,2]),[CONE([0,7.2,0],1.3,.42),0x30603d,.15,2]],
 spK=[spS[0],...[0,1,2,3,4,5].map(k=>[CONE([0,1.15+k*1.15,0],(2.3-k*.12)*.72,(2.25-k*.3)*.6),[0x1b3624,0x1d3a26,0x1a3322][k%3],.2,2]),[CONE([0,7.3,0],.9,.28),0x1f3d28,.15,2]],
 spB=[-2.8,-.4,-2.8,2.8,9,2.8],spN=(x,y,z,d)=>y>.8?d-(vn3(x*2.4,y*2.4,z*2.4)-.5)*0.2:d,
-TSPW=WOOD(spS,[],24,spN,50),TSP=catG(TSPW,VOX(spS,[[[2],.3,spN,-.15,.12,.62]])),
+TSPW=WOOD(spS,[],24,spN,50),TSP=catG(TSPW,VOX(spS,[[[2],.3,spN,-.15,.07,.62]])),
 // silver birch, on the lake shores: a slim white leaning stem flecked black, dark and rough at the foot, a small light crown
 tbrS=[[RC([0,-.3,0],[.22,3.4,.05],.2,.17),0xe2ded2,0,5],[RC([.22,3.3,.05],[.42,6.2,.12],.17,.07),0xe2ded2,.06,5],[RC([.25,3.8,.05],[1.3,5.4,.35],.09,.05),0xd9d4c6,.05,5],[RC([.3,4.3,.05],[-.9,5.9,-.3],.09,.05),0xd9d4c6,.05,5],[RC([.35,4.9,.1],[.5,6.3,-1],.09,.05),0xd9d4c6,.05,5],
  [EL([.35,5.6,.05],[1.35,1.9,1.25]),0x7caf4b,.4,2],[EL([1.15,5,.35],[.85,1.1,.85]),0x86b853,.35,2],[EL([-.65,5.3,-.3],[.85,1.2,.85]),0x74a746,.35,2],[EL([.45,6.9,0],[.85,.9,.85]),0x8abb56,.35,2]],tbrN=(x,y,z,d,w)=>y>3.7?d-(vn3(x*2,y*2,z*2)-.5)*0.45*NF(w):d,
-TBRW=WOOD(tbrS,[[(x,y,z)=>hypot(x-y*.068,z-y*.02)>.3||y>5.8?1:y<.7?-.1:(0.6-vn3(x*3,y*3.5,z*3))*.5,0x2d2a27,.03,5]],44,tbrN,150),TBR=catG(TBRW,VOX(tbrS,[[[2],.32,tbrN,-.25,.12,.62]])),
+TBRW=WOOD(tbrS,[[(x,y,z)=>hypot(x-y*.068,z-y*.02)>.3||y>5.8?1:y<.7?-.1:(0.6-vn3(x*3,y*3.5,z*3))*.5,0x2d2a27,.03,5]],44,tbrN,150),TBR=catG(TBRW,VOX(tbrS,[[[2],.32,tbrN,-.25,.07,.62]])),
 // gorse (whin): a dark spiny mound of voxels (GRSL), starred with yellow ones
 grsS=[[EL([0,0,0],[1.1,.72,1]),0x3a5827,0,2],[EL([.65,.08,.3],[.8,.58,.72]),0x42602b,.3,2],[EL([-.55,.04,-.38],[.78,.55,.7]),0x375424,.3,2],[EL([.1,.42,-.1],[.7,.42,.6]),0x3f5d29,.3,2]],grsN=(x,y,z,d)=>d-(vn3(x*4.2,y*4.2,z*4.2)-.5)*.34,
 // hedgerow: a 3.6m run of hawthorn hedge along local x (the second kind has elderflower cells through it)
 hdS=[[EL([0,0,0],[1.85,1,1.05]),0x3e6e2f,0,2],[EL([.95,.22,.28],[1.1,.8,.8]),0x467733,.35,2],[EL([-1,.18,-.25],[1.1,.84,.8]),0x3a682c,.35,2],[EL([.15,.55,-.05],[1.05,.6,.8]),0x4a7b36,.3,2],[EL([-.2,-.1,.45],[1.2,.7,.6]),0x3c6a2e,.3,2]],
 hdN=(x,y,z,d)=>d-(vn3(x*2.4,y*2.4,z*2.4)-.5)*.3,
-GRSL=VOX(grsS,[[[2],.22,grsN,0,.3]],[0xf5c42c,.13]),
+GRSL=VOX(grsS,[[[2],.22,grsN,0,.14]],[0xf5c42c,.13]),
 TOL=foliage(tokS,tokN,mob?450:750,1.62),TASL=foliage(tasS,tasN,mob?360:600,1.3),THWL=foliage(hawS,hawN,mob?220:360,.95),THBL=foliage(hawS,hawN,mob?170:290,.95),TPNL=foliage(tpnS,tpnN,mob?170:290,1.06),TBRL=foliage(tbrS,tbrN,mob?240:390,.84),TSPL=foliage(spS,spN,mob?260:440,1.1),
 // yew, the churchyard tree: a short red-brown bole under a dense, dark evergreen crown that reaches almost to the ground
 tywS=[[RC([0,-.3,0],[.1,2,0],.45,.32),0x6a3f2c,0,5],[EL([0,.05,0],[.7,.3,.7]),0x6a3f2c,.25,5],[EL([0,3,0],[2.4,2.1,2.3]),0x1f3a25,.6,2],[EL([1.3,2.3,.5],[1.5,1.4,1.4]),0x22402a,.5,2],[EL([-1.2,2.4,-.6],[1.5,1.5,1.4]),0x1c3622,.5,2],[EL([.2,4.3,.1],[1.5,1.2,1.4]),0x244430,.5,2],[EL([-.3,1.6,1.2],[1.3,1,1.2]),0x1f3a25,.5,2]],tywN=(x,y,z,d,w)=>y>1.2?d-(vn3(x*1.8,y*1.8,z*1.8)-.5)*0.35*NF(w):d,
-TYWW=WOOD(tywS,[],28,tywN,85),TYW=catG(TYWW,VOX(tywS,[[[2],.4,tywN,-.25,.12,.62]])),TYWL=foliage(tywS,tywN,mob?390:650,.9),
+TYWW=WOOD(tywS,[],28,tywN,85),TYW=catG(TYWW,VOX(tywS,[[[2],.4,tywN,-.25,.07,.62]])),TYWL=foliage(tywS,tywN,mob?390:650,.9),
 // a windswept sea-cliff olive (kind 20, the Cliffs and coastline's tree): a thick trunk twisting and leaning over, a few heavy limbs, a wide flat crown of grey-green leaves
 olvS=[[RC([0,-.3,0],[.7,1.2,.2],.72,.56),0x7a6048,0,5],[EL([0,.1,0],[1,.35,.95]),0x7a6048,.3,5],[RC([.7,1.1,.2],[-.2,2.5,.7],.56,.42),0x7a6048,.2,5],[RC([-.2,2.4,.7],[1.1,3.7,.1],.42,.3),0x7a6048,.15,5],[RC([.1,2.3,.6],[-2,3.6,1],.26,.14),0x7a6048,.12,5],[RC([1,3.5,.1],[2.7,4.2,-.7],.24,.12),0x7a6048,.12,5],
  [EL([.2,4.6,.1],[3,1.15,2.7]),0x6f8f5e,.5,2],[EL([2.5,4.3,-.5],[1.7,.95,1.5]),0x78996a,.45,2],[EL([-2,4.1,.9],[1.8,.95,1.5]),0x688859,.45,2],[EL([.6,5.4,.5],[1.7,.8,1.6]),0x7c9d6e,.4,2]],
 olvN=(x,y,z,d,w)=>y>3.1?d-(vn3(x*1.5,y*1.5,z*1.5)-.5)*.42*NF(w):d,
-TOVW=WOOD(olvS,[],40,olvN,120),TOV=catG(TOVW,VOX(olvS,[[[2],.4,olvN,-.25,.12,.62]])),TOVL=foliage(olvS,olvN,mob?300:500,1.5),
+TOVW=WOOD(olvS,[],40,olvN,120),TOV=catG(TOVW,VOX(olvS,[[[2],.4,olvN,-.25,.07,.62]])),TOVL=foliage(olvS,olvN,mob?300:500,1.5),
 // the Haunted Hollow's trees: a dead one (21), a bare twisting trunk forking into black limbs that end in sprays of twigs, and an ancient one (22), massive and gnarled, a few long limbs hung with
 // dark leaves. spray grows the twigs the sculpt is too coarse to hold: from each tip [position, heading, width, length] a three-sided prism, forking into two or three finer ones, three times over (twice on a phone)
 spray=(tips,c,seed)=>{let s=seed;const r=()=>(s=s*16807%2147483647)/2147483647,L=[],up=V(0,1,0),grow=(p,d,w,len,k)=>{const g=Cy(w*.55,w,len,3).applyQuaternion(new THREE.Quaternion().setFromUnitVectors(up,d));
@@ -1762,14 +1958,14 @@ ancS=[[RC([0,-.4,0],[.3,1.6,.1],1.05,.8),0x403d36,0,5],[EL([0,.1,0],[1.7,.55,1.6
 ancN=(x,y,z,d,w)=>y>3.1?d-(vn3(x*1.5,y*1.5,z*1.5)-.5)*.42*NF(w):d,
 TANCW=WOOD(ancS,[],56,ancN,230),TANC=catG(TANCW,spray([[[-3.9,6.7,.5],[-.6,1,-.3],.14,1.1],[[3.5,6.4,.5],[.7,.8,.3],.14,1.1],[[-.6,7.5,.2],[0,1,0],.14,1.1],[[1.2,6.9,-1.4],[.4,1,-.8],.13,1],[[-2.5,4.8,1],[-1,.4,1],.14,1],[[1.8,5,-.4],[1,.3,-.5],.13,1]],0x2c2e37,11)),TANCL=foliage(ancS,ancN,mob?170:300,1.3),
 AUC=[[.95,.52,.12],[.88,.36,.1],[1,.7,.16],[.82,.44,.1]],rcT=(c,h)=>c.setRGB(...AUC[h*4|0]),rcB=(c,h)=>c.setHex([0xd9651e,0xc43c1c,0xe8a02a,0xb84a1c][h*4|0]),
-HEDGEL=(h=>[...h,...h.map(g=>snowV(g,.35)),VOX(hdS,[[[2],.26,hdN,0,.3]],0,rcB),VOX(hdS,[[[2],.26,(x,y,z,d)=>hdN(x+3.7,y,z+1.3,d),0,.3]],0,rcB)])([VOX(hdS,[[[2],.26,hdN,0,.3]]),VOX(hdS,[[[2],.26,(x,y,z,d)=>hdN(x+3.7,y,z+1.3,d),0,.3]],[0xf1ebd8,.1])]),
+HEDGEL=(h=>[...h,...h.map(g=>snowV(g,.35)),VOX(hdS,[[[2],.26,hdN,0,.14]],0,rcB),VOX(hdS,[[[2],.26,(x,y,z,d)=>hdN(x+3.7,y,z+1.3,d),0,.14]],0,rcB)])([VOX(hdS,[[[2],.26,hdN,0,.14]]),VOX(hdS,[[[2],.26,(x,y,z,d)=>hdN(x+3.7,y,z+1.3,d),0,.14]],[0xf1ebd8,.1])]),
 // the Autumn Grasslands' models (tree() swaps the broadleaves for them there, AU: old kind -> autumn kind): the same primitives with warm cores (rcT) under cards cut from LTXA (autL: their
 // vertex colours only light and shade them), and shrubs (rcB) of orange, red and gold
 autL=g=>vcol(g.clone(),c=>{const l=cl((c.r*.3+c.g*.59+c.b*.11)/.3,.8,1.3);c.setRGB(l,l,l)}),
-TRAA=catG(TRAW,VOX(traS,[[[2],.42,traN,-.25,.12,.62]],0,rcT)),TRBA=catG(TRBW,VOX(trbS,[[[2],.4,trbN,-.25,.12,.62]],0,rcT)),TOKA=catG(TOKW,VOX(tokS,[[[2],.44,tokN,-.25,.12,.62]],0,rcT)),
-TASA=catG(TASW,VOX(tasS,[[[2],.4,tasN,-.25,.12,.62]],0,rcT)),THWA=catG(THWW,VOX(hawS,[[[2],.34,hawN,-.25,.12,.62]],0,rcT)),
-THW2A=catG(THWW,VOX(hawS,[[[2],.34,(x,y,z,d,w)=>hawN(x+3.7,y,z+1.3,d,w),-.25,.12,.62]],0,rcT)),TBRA=catG(TBRW,VOX(tbrS,[[[2],.32,tbrN,-.25,.12,.62]],0,rcT)),
-TALA=autL(foliage(traS,traN,mob?540:900,1.6)),TBLA=autL(foliage(trbS,trbN,mob?380:640,1.42)),TOLA=autL(foliage(tokS,tokN,mob?680:1120,1.62)),TASLA=autL(foliage(tasS,tasN,mob?540:900,1.3)),THWLA=autL(foliage(hawS,hawN,mob?330:540,.95)),THBLA=autL(foliage(hawS,hawN,mob?260:430,.95)),TBRLA=autL(foliage(tbrS,tbrN,mob?360:580,.84)),BGLA=VOX(bgS,[[[2],.26,bgN,0,.3]],0,rcB),
+TRAA=catG(TRAW,VOX(traS,[[[2],.42,traN,-.25,.07,.62]],0,rcT)),TRBA=catG(TRBW,VOX(trbS,[[[2],.4,trbN,-.25,.07,.62]],0,rcT)),TOKA=catG(TOKW,VOX(tokS,[[[2],.44,tokN,-.25,.07,.62]],0,rcT)),
+TASA=catG(TASW,VOX(tasS,[[[2],.4,tasN,-.25,.07,.62]],0,rcT)),THWA=catG(THWW,VOX(hawS,[[[2],.34,hawN,-.25,.07,.62]],0,rcT)),
+THW2A=catG(THWW,VOX(hawS,[[[2],.34,(x,y,z,d,w)=>hawN(x+3.7,y,z+1.3,d,w),-.25,.07,.62]],0,rcT)),TBRA=catG(TBRW,VOX(tbrS,[[[2],.32,tbrN,-.25,.07,.62]],0,rcT)),
+TALA=autL(foliage(traS,traN,mob?540:900,1.6)),TBLA=autL(foliage(trbS,trbN,mob?380:640,1.42)),TOLA=autL(foliage(tokS,tokN,mob?680:1120,1.62)),TASLA=autL(foliage(tasS,tasN,mob?540:900,1.3)),THWLA=autL(foliage(hawS,hawN,mob?330:540,.95)),THBLA=autL(foliage(hawS,hawN,mob?260:430,.95)),TBRLA=autL(foliage(tbrS,tbrN,mob?360:580,.84)),BGLA=VOX(bgS,[[[2],.26,bgN,0,.14]],0,rcB),
 AU=[13,14,15,16,17,18,null,null,null,19,null],
 // every tree kind the countryside plants: [wood, foliage cards, collider radius per unit scale, flower cards]. The spruces' reach their drooping lower
 // tiers at shoulder height, so nobody walks through the branches and a plantation packs into one solid block of forest
@@ -1788,35 +1984,37 @@ CRN=[2.88,2.85,4.11,2.98,3.04,2.99,2.52,2.02,2.02,1.63,2.47,2.02,2.52,2.84,2.96,
 // stone for walls and ruins: limestone greys, a brown one and one grey-green with lichen. rockG tags it rock (aM 6) for VW's stone bump
 STC=[0x8b877c,0x7a766c,0x969184,0x6d6a62,0x857c6c,0x8e9179,0x7f7a70],ico=()=>new THREE.IcosahedronGeometry(1,0),
 rockG=(L,y0,y1,k)=>{const g=bump(mg(L),y0,y1,k);g.setAttribute('aM',new THREE.Float32BufferAttribute(new Float32Array(g.attributes.position.count).fill(6),1));return g},
-// dry stone wall: a ~2.1m run (local x) of battered courses under a crest of edge-set coping stones; the last variant has tumbled down
-wallSeg=(sd,tum)=>{let s=sd;const r=()=>(s=s*16807%2147483647)/2147483647,L=[],c=()=>STC[r()*7|0];
- (tum?[.13,.38]:[.13,.4,.66,.92,1.17]).forEach(y=>{const w=.9-.3*y/1.2;for(let x=-1.1+r()*.25;x<1.05;){const l=.34+r()*.28;L.push([ico().scale(l*.56,.16,w*.5).rotateX((r()-.5)*.2).rotateY((r()-.5)*.25).rotateZ((r()-.5)*.25).translate(x+l/2,y+(r()-.5)*.04,(r()-.5)*.06),c()]);x+=l*.9}});
- if(tum)for(let i=0;i<10;i++)L.push([ico().scale(.2+r()*.14,.13+r()*.06,.17+r()*.1).rotateY(r()*3).translate(-1+r()*2,.06,(r()<.5?-1:1)*(.5+r()*.8)),c()]);
- else for(let x=-1.02+r()*.08;x<1.04;x+=.19+r()*.06)L.push([ico().scale(.09+r()*.03,.2+r()*.05,.27+r()*.03).rotateZ((r()-.5)*.35).rotateX((r()-.5)*.12).translate(x,1.47+r()*.04,0),c()]);
- return rockG(L,0,1.5,.68)},
+// dry stone wall: a 2m run (local x) of cubes (VBK), as the buildings are: stones two cells long laid in staggered courses, each its own shade of the
+// field stone, the face ragged (a stone standing proud here, one fallen out there), lichen on some, the batter narrowing it a cell up its height,
+// and a crest of edge-set coping stones of odd heights; the last variant has tumbled down to a course or two with its stones strewn beside it
+wallSeg=(sd,tum)=>{const V=VBK(-6,-3,-6,5,9,5),H=(I,J,K,t)=>vbH(I+sd*3.7,J,K,t),
+  st=(I,J,K)=>{const b=Math.floor((I+(J&1))/2),c=vbT(STC[H(b,J,K,1)*7|0],.84+.28*H(b,J,K,2));return H(b,J,K>>2,3)<.14?vbM(c,0x9ea57e,.45):c};
+ for(let I=-5;I<5;I++){const t=tum?1+Math.round(vn3(I*.35+sd,1,0)*2.4):6;
+  for(let J=-2;J<t;J++){const w=J<3?2:1;for(let K=-w-1;K<=w;K++){const out=K==-w-1||K==w;if(out&&H(I>>1,J,K,4)>(J<3?.55:.3))continue;if(!out&&J>0&&(K==-w||K==w-1)&&H(I,J,K,5)<.05)continue;V.put(I,J,K,st(I,J,K))}}
+  if(!tum){const h=H(I,7,0,6)<.55?2:1;for(let J=6;J<6+h;J++)for(let K=-1;K<=0;K++)V.put(I,J,K,vbT(STC[H(I,J,0,7)*7|0],.9+.22*H(I,J,K,8)))}}
+ if(tum)for(let n=0;n<14;n++){const x=(H(n,0,0,9)-.5)*2.2,z=(H(n,1,0,10)<.5?-1:1)*(.6+H(n,2,0,11)*1.2),I=Math.floor(x/VBZ),K=Math.floor(z/VBZ);V.put(I,0,K,st(I,0,K));H(n,3,0,12)<.4&&V.put(I+1,0,K,st(I+1,0,K))}
+ return V.mesh({dc:0x4a3b2b,dk:.3})},
 WALLS=(w=>[...w,...w.map(g=>snowV(g,.05))])([wallSeg(11),wallSeg(23),wallSeg(37),wallSeg(51,1)]),
-// coursed rubble along a wall from (x0,z0) to (x1,z1), th thick, up to top(u) (u = metres along it), leaving openings [u0,u1,y0,y1]
-mason=(L,r,pal,x0,z0,x1,z1,th,top,holes=[])=>{const dx=x1-x0,dz=z1-z0,len=hypot(dx,dz),a=-atan2(dz,dx);for(let y=-.7,k=0;y<9.4;y+=.26,k++)for(let u=(k%2)*.2-.12;u<len;){const l=.36+r()*.3,uc=u+l/2;u+=l*.92;if(y+.12>top(uc)||holes.some(h=>uc>h[0]&&uc<h[1]&&y>h[2]&&y<h[3]))continue;
- L.push([ico().scale(l*.55,.17,th*.54).rotateX((r()-.5)*.15).rotateZ((r()-.5)*.2).rotateY(a+(r()-.5)*.1).translate(x0+dx*uc/len,y+.13,z0+dz*uc/len),pal(y,uc)])}},
 // a roofless famine cottage (7.4 x 4.6m, ridge along local x): one gable standing with its chimney stack, the other gable and a corner
 // fallen in, the tumble heaped at their feet, and the middle of both long walls tumbled out (3.2m, crumbling down to either side), so
 // there is an easy way in and out front and back. Variant 1 keeps patches of its old lime-wash
-ruinG=(sd,wash)=>{let s=sd;const r=()=>(s=s*16807%2147483647)/2147483647,L=[],pal=(y,u)=>wash&&vn3(u*.7+sd,y*.8,sd)>.52?(r()<.5?0xdcd6c8:0xd0c9b9):STC[r()*7|0],cr=u=>(vn3(u*1.3,sd,0)-.5)*.5;
- mason(L,r,pal,-3.7,2,3.7,2,.62,u=>2.3+cr(u)-max(0,u-5.3)*.9-max(0,2.8-abs(u-3.7))*1.25,[[2.1,5.3,-1,99]]);
- mason(L,r,pal,-3.7,-2,3.7,-2,.62,u=>2.3+cr(u+9)-max(0,u-4.6)*.75-max(0,2.8-abs(u-3.7))*1.25,[[2.1,5.3,-1,99]]);
- mason(L,r,pal,-3.4,-1.7,-3.4,1.7,.62,u=>2.3+(1.75-abs(u-1.7))*1.2+(abs(u-1.7)<.42?.75:0)+cr(u+3)*.4);
- mason(L,r,pal,3.4,-1.7,3.4,1.7,.62,u=>2.3+(1.75-abs(u-1.7))*.55+cr(u+5)*1.4-(u<1.2?.9:0));
- for(let i=0;i<40;i++){const h=[[4.4,.2],[3,2.9],[2.5,-2.8],[2.4,.6]][i%4],a=r()*TAU,d=sqrt(r())*1.4,e=.15+r()*.16;L.push([ico().scale(e*1.3,e*.8,e).rotateY(r()*3).rotateX((r()-.5)*.6).translate(h[0]+cos(a)*d,(1-d/1.4)*.5*r()+e*.3,h[1]+sin(a)*d),STC[r()*7|0]])}
- return rockG(L,-.5,3,.62)},
+ruinG=(sd,wash)=>{const V=VBK(-24,-6,-24,32,30,24),cr=u=>(vn3(u*1.3,sd,0)-.5)*.5,
+  col=(I,J,K)=>{const c=vbAsh(STC,I,J,K,sd,3,2);return wash&&vn3(I*.12+sd,J*.15,K*.12)>.52?vbT(vbH(I>>1,J,K,5)<.5?0xdcd6c8:0xd0c9b9,.92+.1*vbH(I>>1,J,K,6)):vn3(I*.3,J*.3+sd,K*.3)>.72?vbM(c,0x5f7a3a,.55):c};
+ vbMason(V,-3.7,2,3.7,2,.62,u=>2.3+cr(u)-max(0,u-5.3)*.9-max(0,2.8-abs(u-3.7))*1.25,[[2.1,5.3,-1,99]],col);
+ vbMason(V,-3.7,-2,3.7,-2,.62,u=>2.3+cr(u+9)-max(0,u-4.6)*.75-max(0,2.8-abs(u-3.7))*1.25,[[2.1,5.3,-1,99]],col);
+ vbMason(V,-3.4,-1.7,-3.4,1.7,.62,u=>2.3+(1.75-abs(u-1.7))*1.2+(abs(u-1.7)<.42?.75:0)+cr(u+3)*.4,0,col);
+ vbMason(V,3.4,-1.7,3.4,1.7,.62,u=>2.3+(1.75-abs(u-1.7))*.55+cr(u+5)*1.4-(u<1.2?.9:0),0,col);
+ for(const[x,z,h]of[[4.4,.2,.6],[3,2.9,.45],[2.5,-2.8,.45],[2.4,.6,.35]])vbHeap(V,x,z,1.5,h,STC,sd+(x*7|0));
+ return V.mesh({dc:0x4a3b2b,dk:.35})},
 RUINS=[ruinG(7,0),ruinG(19,1)],
 // ---- places to search (poiPut): a deserted farmstead's byre and cart; a graveyard's church gable and stones; the find's trunk ----
 // the byre: a low rubble outbuilding (6.4 x 3.8m), one gable fallen to its knees and heaped outside, and the middle of both long walls
 // tumbled out (2.8m) for an easy way in and out
-BYRE=(()=>{let s=29;const r=()=>(s=s*16807%2147483647)/2147483647,L=[],pal=()=>STC[r()*7|0],cr=u=>(vn3(u*1.1,4,0)-.5)*.5;
- mason(L,r,pal,-3.2,1.6,3.2,1.6,.55,u=>1.8+cr(u)-max(0,u-4.6)*.8-max(0,2.4-abs(u-3.2))*1.1,[[1.8,4.6,-1,99]]);mason(L,r,pal,-3.2,-1.6,3.2,-1.6,.55,u=>1.8+cr(u+7)-max(0,u-5)*.9-max(0,2.4-abs(u-3.2))*1.1,[[1.8,4.6,-1,99]]);
- mason(L,r,pal,-2.95,-1.35,-2.95,1.35,.55,u=>1.8+(1.35-abs(u-1.35))*.9+cr(u+3)*.4);mason(L,r,pal,2.95,-1.35,2.95,1.35,.55,u=>.9+cr(u+5)*1.2);
- for(let i=0;i<34;i++){const a=r()*TAU,d=sqrt(r())*1.3,e=.14+r()*.16;L.push([ico().scale(e*1.3,e*.8,e).rotateY(r()*3).translate(3.9+cos(a)*d,(1-d/1.3)*.45*r()+e*.3,sin(a)*d*1.4),pal()])}
- return rockG(L,-.5,2.2,.62)})(),
+BYRE=(()=>{const V=VBK(-20,-6,-14,30,16,14),cr=u=>(vn3(u*1.1,4,0)-.5)*.5,col=(I,J,K)=>{const c=vbAsh(STC,I,J,K,29,3,2);return vn3(I*.3,J*.3,K*.3)>.74?vbM(c,0x5f7a3a,.5):c};
+ vbMason(V,-3.2,1.6,3.2,1.6,.55,u=>1.8+cr(u)-max(0,u-4.6)*.8-max(0,2.4-abs(u-3.2))*1.1,[[1.8,4.6,-1,99]],col);vbMason(V,-3.2,-1.6,3.2,-1.6,.55,u=>1.8+cr(u+7)-max(0,u-5)*.9-max(0,2.4-abs(u-3.2))*1.1,[[1.8,4.6,-1,99]],col);
+ vbMason(V,-2.95,-1.35,-2.95,1.35,.55,u=>1.8+(1.35-abs(u-1.35))*.9+cr(u+3)*.4,0,col);vbMason(V,2.95,-1.35,2.95,1.35,.55,u=>.9+cr(u+5)*1.2,0,col);
+ vbHeap(V,3.9,-.6,1.4,.5,STC,29);vbHeap(V,4,.8,1.3,.4,STC,31);
+ return V.mesh({dc:0x4a3b2b,dk:.35})})(),
 // a farm cart left tipped forward onto its shafts: plank bed, spoked wheels with iron tyres
 CART=(()=>{const L=[],w=0x6b5a45,w2=0x5a4a38,ir=0x3a3632;L.push([B(1.9,.08,1.15).translate(0,.62,0),w],...[-.575,.575].map(z=>[B(1.9,.3,.06).translate(0,.8,z),w2]),...[-.95,.95].map(x=>[B(.06,.3,1.15).translate(x,.8,0),w2]),[Cy(.04,.04,1.5,6).rotateX(PI/2).translate(0,.5,0),ir]);
  for(const z of[-.68,.68]){L.push([new THREE.TorusGeometry(.5,.045,6,24).translate(0,.5,z),ir],[Cy(.09,.09,.14,10).rotateX(PI/2).translate(0,.5,z),w2]);for(let k=0;k<4;k++)L.push([B(.04,.92,.04).rotateZ(k*PI/4).translate(0,.5,z),w2])}
@@ -1864,46 +2062,64 @@ CRP=[0x474b58,0x565a69,0x3d404c,0x626675,0x32343e],
 CRG=[rockG(mkStack(15,2.3,.35,21,[],0,CRP,-1,.86),0,15,.6),rockG(mkStack(24,2.9,-.4,22,[],0,CRP,-1,.9),0,24,.6),rockG(mkStack(10,3.4,.2,23,[],0,CRP,-1,.8),0,10,.6),
  rockG([...mkStack(19,2.5,.4,24,[],-3,CRP,-1,.88),...mkStack(13,2.2,-.3,25,[],3.2,CRP,-1,.85)],0,19,.6)],
 // the cliff-top lighthouse towers (RLH): a rough plinth of rock, a round stone tower in three tapering courses, a gallery ringed with merlons, a crenellated turret and a dark lantern cap;
-// the windows are dark slits here, and glow by night (LHWIN: [height, bearing] pairs, planes lit with WGM), and two beams (LHBG, lhBeam) sweep round by night (LHB, turned by snU)
+// the windows are dark slits here, and glow by night (LHWIN: [height, bearing] pairs, planes lit with WGM), and two beams (LHBG, lhBeam) sweep round by night (LHB, turned by snU).
+// Each is set 15% larger than modelled (LHS), its collider, glow, beams and clear ground with it
 lhr=y=>y>19?2.5:3.95-.5*Math.min(2,Math.max(0,Math.floor((y-1.9)/5.6)))-((y-1.9)%5.6)/5.7*.45,
-LHWIN=[[6.2,.4],[6.2,3.5],[11.8,2],[11.8,5.2],[17,.9],[17,4.1],[21.8,2.4],[21.8,5.5]],
-LHT=(()=>{const L=[],st=[0xb2ab9b,0xa8a191,0xbab3a3],ring=(n,r,y,w,h,d,c)=>{for(let i=0;i<n;i++){const a=i/n*TAU;L.push([B(w,h,d).rotateY(-a-PI/2).translate(cos(a)*r,y,sin(a)*r),c])}};
- L.push([jitG(Cy(5.4,6.8,6,10).translate(0,-2,0),1.2,.4),0x77705f]);L.push([Cy(4.3,4.6,1.4,12).translate(0,1.2,0),0x8a8478]);
- for(let i=0;i<3;i++){const y0=1.9+i*5.6;L.push([Cy(3.5-i*.5,3.95-i*.5,5.7,12).translate(0,y0+2.85,0),st[i]]);L.push([Cy(3.62-i*.5,3.62-i*.5,.35,12).translate(0,y0+5.65,0),0x8c867a])}
- L.push([Cy(4.2,3.4,1.1,12).translate(0,19.2,0),0x8c867a]);ring(12,3.95,20.1,1.1,1.1,.9,0x9a9486);
- L.push([Cy(2.5,2.9,3.6,10).translate(0,21.4,0),0xb0a999]);L.push([Cy(3.1,2.7,.8,10).translate(0,23.5,0),0x8c867a]);ring(10,2.75,24.3,.9,1,.8,0x9a9486);L.push([Cy(.9,1.2,1.6,8).translate(0,24,0),0x3a3633]);
- L.push([B(1.5,2.4,.5).translate(0,3.1,3.95),0x3b2c20]);
- for(const[y,a]of LHWIN){const r=lhr(y);L.push([B(.62,1.35,.1).rotateY(a).translate(Math.sin(a)*(r+.02),y,Math.cos(a)*(r+.02)),0x2a2520])}
- return rockG(L,-5,25,.72)})(),
+LHS=1.15,LHWIN=[[6.2,.4],[6.2,3.5],[11.8,2],[11.8,5.2],[17,.9],[17,4.1],[21.8,2.4],[21.8,5.5]],
+LHT=(()=>{const V=VBK(-36,-26,-36,36,130,36),st=[0xb2ab9b,0xa8a191,0xbab3a3],BD=0x8c867a,MR=0x9a9486,P3=c=>[c,vbT(c,.93),vbT(c,1.05)];
+ vbDrum(V,0,0,-25,4,y=>6.8-(y+5)*.23,(I,J,K,d,r)=>d>r-1.1*vn3(I*.25,J*.2,K*.25)?-1:vbRock(0x77705f,I,J,K),7.5);
+ vbDrum(V,0,0,3,9,()=>4.6,(I,J,K)=>vbAshR(P3(0x8a8478),I,J,K,0,0,26,1,2),5);
+ for(let i=0;i<3;i++){const J0=Math.round((1.9+i*5.6)/VBZ),r0=3.95-i*.5,r1=3.5-i*.5;
+  vbDrum(V,0,0,J0,J0+27,y=>r0-(r0-r1)*(y-J0*VBZ)/5.6,(I,J,K)=>vbAshR(P3(st[i]),I,J,K,0,0,Math.round(TAU*r0/.9),i+2),4.5);
+  vbDrum(V,0,0,J0+27,J0+28,()=>r1+.2,(I,J,K)=>vbT(BD,.92+.12*vbH(I,J,K,i)),4.5)}
+ vbDrum(V,0,0,93,98,y=>3.4+(y-18.6)/1.2*.8,(I,J,K,d,r)=>J<96&&d>r-.25&&vbSec(I,K,0,0,24)&1?-1:vbT(BD,.92+.12*vbH(I,J,K,5)),4.5);
+ vbDrum(V,0,0,99,103,()=>4.2,(I,J,K,d)=>d<3.55?-1:J>100&&vbSec(I,K,0,0,24)&1?-1:vbT(MR,.9+.15*vbH(I,J,K,6)),4.5);
+ vbDrum(V,0,0,99,115,y=>2.9-(y-19.6)/3.6*.4,(I,J,K)=>vbAshR(P3(0xb0a999),I,J,K,0,0,18,7),3.5);
+ vbDrum(V,0,0,116,119,y=>2.7+(y-23.2)/.8*.4,(I,J,K)=>vbT(BD,.92+.12*vbH(I,J,K,8)),3.5);
+ vbDrum(V,0,0,120,124,()=>3,(I,J,K,d)=>d<2.35?-1:J>121&&vbSec(I,K,0,0,20)&1?-1:vbT(MR,.9+.15*vbH(I,J,K,9)),3.5);
+ vbDrum(V,0,0,116,126,()=>1.1,(I,J)=>J>124?0x4a4440:0x3a3633,1.5);V.box(-1,0,127,128,-1,0,0xd2a23c);
+ vbSlit(V,0,0,3.95,0,9,12,(l,J)=>vbT(0x3b2c20,(l&1?1:.85)*(J==12||J==17?.6:1)),7);
+ for(const[y,a]of LHWIN)vbSlit(V,0,0,lhr(y),a,Math.round(y/VBZ)-3,7,0x2a2520,3);
+ return V.mesh({dc:0x5a5246,dk:.4})})(),
 LHB=[],LHBG=(()=>{const g=new THREE.CylinderGeometry(9,.3,110,10,1,true).translate(0,55,0).rotateZ(-PI/2);return g})(),
 lhBeam=(()=>{const m=new THREE.MeshBasicNodeMaterial({transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,fog:false}),t=attribute('uv','vec2').y;m.colorNode=color(0xffe2a0).mul(1.6);m.opacityNode=U.win.mul(.5).mul(smoothstep(0,.1,t)).mul(float(1).sub(t).pow(1.6));return m})(),
 // the Haunted Hollow's dark towers (RLDT): a rock plinth, a tall round tower of dark stone banded at three stages and tapering up to a crenellated gallery and crown under a green copper dome, a
 // turret with a green cone at its flank and a low domed annex beside it; slit windows (DTWIN: [height, bearing]) glow by night, as the lighthouse's do
 dtr=y=>y<9?6.7-.07*y:y<23?5.5-(y-9)*.075:y<35?4.45-(y-23)*.05:3.5,
 DTWIN=[[5,.5],[5,3.6],[12,1.9],[12,5],[19,.3],[19,3.4],[19,5.6],[27,1.2],[27,4.3],[32,2.6],[32,5.7],[41,.6],[41,2.7],[41,4.8]],
-DTW=(()=>{const L=[],st=[0x4a4a54,0x45454f,0x4d4d58,0x41414b],gr=[0x3f7a66,0x376d5b,0x468570],ring=(n,r,y,w,h,d,c)=>{for(let i=0;i<n;i++){const a=i/n*TAU;L.push([B(w,h,d).rotateY(-a-PI/2).translate(cos(a)*r,y,sin(a)*r),c])}},cone=(r,h,x,y,z,c)=>L.push([Cy(.01,r,h,8).translate(x,y+h/2,z),c]);
- L.push([jitG(Cy(8.6,10.6,7,10).translate(0,-2.5,0),1.4,.4),0x3b3b44]);
- L.push([Cy(6.07,6.7,9,14).translate(0,4.5,0),st[0]]);L.push([Cy(4.45,5.5,14,14).translate(0,16,0),st[1]]);L.push([Cy(3.85,4.45,12,14).translate(0,29,0),st[2]]);
- for(const y of[9,23,35])L.push([Cy(dtr(y)+.4,dtr(y)+.4,.8,14).translate(0,y,0),st[3]]);
- for(let i=0;i<6;i++){const a=i/6*TAU+.3;L.push([B(1.2,9.5,1.7).rotateY(-a-PI/2).translate(cos(a)*6.45,4.75,sin(a)*6.45),st[2]])}
- L.push([Cy(5.1,4.1,1.6,14).translate(0,36.2,0),st[0]]);ring(14,4.85,37.6,1.4,1.5,.9,st[1]);
- L.push([Cy(3.3,3.55,7,14).translate(0,40.3,0),st[2]]);L.push([Cy(4.1,3.4,1.2,14).translate(0,44.2,0),st[0]]);ring(12,3.85,45.4,1.2,1.2,.8,st[1]);
- L.push([jitG(new THREE.IcosahedronGeometry(1,1).scale(3.3,2.7,3.3).translate(0,45.2,0),.15,.4),gr[0]]);L.push([Cy(.12,.28,3.4,6).translate(0,49.3,0),0x2c3a34]);
- L.push([Cy(1.9,2.2,22,10).translate(5.6,11,1.6),st[2]]);L.push([Cy(2.7,2,1,10).translate(5.6,22.5,1.6),st[0]]);cone(2.9,6.5,5.6,23,1.6,gr[1]);
- L.push([Cy(4.8,5.2,6,14).translate(-10.5,3,3),st[1]]);L.push([Cy(5.4,4.8,1,14).translate(-10.5,6.5,3),st[0]]);
- for(let i=0;i<12;i++){const a=i/12*TAU;L.push([B(1.3,1.1,.9).rotateY(-a-PI/2).translate(-10.5+cos(a)*5.2,7.5,3+sin(a)*5.2),st[1]])}
- L.push([jitG(new THREE.IcosahedronGeometry(1,1).scale(4.4,2.3,4.4).translate(-10.5,6.6,3),.15,.4),gr[2]]);L.push([Cy(1,1,.3,10).translate(-10.5,8.9,3),0x1d2a26]);L.push([B(7,3,3).translate(-6.5,2.6,2.2),st[3]]);
- L.push([B(1.9,3.2,.6).translate(0,1.6,6.55),0x1f1812]);
- for(const[y,a]of DTWIN){const r=dtr(y);L.push([B(.7,1.8,.1).rotateY(a).translate(sin(a)*(r+.02),y,cos(a)*(r+.02)),0x15161b])}
- return rockG(L,-6,52,.7)})(),
+DTW=(()=>{const V=VBK(-82,-32,-48,48,264,48),st=[0x4a4a54,0x45454f,0x4d4d58,0x41414b],gr=[0x3f7a66,0x376d5b,0x468570],SP=c=>[c,vbT(c,.9),vbT(c,1.1)],
+  cop=(c,I,J,K)=>vbH(I,J,K,40)<.15?vbM(c,0x7fb8a0,.4):vbT(c,.85+.25*vn3(I*.3,J*.3,K*.3)),
+  dome=(cx,cy,cz,rx,ry,c)=>{for(let J=Math.floor((cy-.6)/VBZ);J<=Math.ceil((cy+ry)/VBZ);J++)for(let I=Math.floor((cx-rx)/VBZ)-1;I<=Math.ceil((cx+rx)/VBZ);I++)for(let K=Math.floor((cz-rx)/VBZ)-1;K<=Math.ceil((cz+rx)/VBZ);K++){const x=((I+.5)*VBZ-cx)/rx,y=((J+.5)*VBZ-cy)/ry,z=((K+.5)*VBZ-cz)/rx;x*x+y*y+z*z<1&&V.put(I,J,K,cop(c,I,J,K))}};
+ vbDrum(V,0,0,-30,4,y=>9-(y+6)*.25,(I,J,K,d,r)=>d>r-1.3*vn3(I*.2,J*.2,K*.2)?-1:vbRock(0x3b3b44,I,J,K),9.5);
+ // the main drum in three stages, banded where they meet; buttresses round its foot, their tops sloping in
+ vbDrum(V,0,0,0,179,dtr,(I,J,K,d,r)=>{const k=J<45?0:J<115?1:2;return vbAshR(SP(st[k]),I,J,K,0,0,Math.round(TAU*r),k)},7);
+ for(const y of[9,23,35])vbDrum(V,0,0,Math.round(y/VBZ)-2,Math.round(y/VBZ)+1,()=>dtr(y)+.4,(I,J,K)=>vbT(st[3],.9+.15*vbH(I,J,K,11)),7.5);
+ for(let i=0;i<6;i++){const a=i/6*TAU+.3,ca=cos(a),sa=sin(a);for(let J=0;J<48;J++){const ro=7.4-max(0,(J+.5)*VBZ-6)*.5;for(let I=-40;I<=40;I++)for(let K=-40;K<=40;K++){const x=(I+.5)*VBZ,z=(K+.5)*VBZ,t=-x*sa+z*ca,rr=x*ca+z*sa;abs(t)<.6&&rr>5.4&&rr<ro&&V.put(I,J,K,vbAsh(SP(st[2]),I,J,K,i+20,3,2))}}}
+ // the gallery on its corbels and its merlons; the upper drum, its cap and merlons; the copper dome and its spire
+ vbDrum(V,0,0,177,184,y=>4.1+(y-35.4)/1.6,(I,J,K,d,r)=>J<181&&d>r-.3&&vbSec(I,K,0,0,28)&1?-1:vbT(st[0],.9+.15*vbH(I,J,K,12)),6);
+ vbDrum(V,0,0,185,190,()=>5.3,(I,J,K,d)=>d<4.4?-1:J>187&&vbSec(I,K,0,0,28)&1?-1:vbAshR(SP(st[1]),I,J,K,0,0,28,13,2),6);
+ vbDrum(V,0,0,184,218,y=>3.55-(y-36.8)/7*.25,(I,J,K)=>vbAshR(SP(st[2]),I,J,K,0,0,20,14),4.5);
+ vbDrum(V,0,0,218,223,y=>3.4+(y-43.6)/1.2*.7,(I,J,K)=>vbT(st[0],.9+.15*vbH(I,J,K,15)),4.5);
+ vbDrum(V,0,0,224,229,()=>4.1,(I,J,K,d)=>d<3.4?-1:J>225&&vbSec(I,K,0,0,24)&1?-1:vbT(st[1],.9+.15*vbH(I,J,K,16)),4.5);
+ dome(0,45.2,0,3.3,2.7,gr[0]);vbDrum(V,0,0,238,262,y=>.33-(y-47.6)/4.8*.15,()=>0x2c3a34,1);
+ // the flank turret under its green cone; the low domed annex with its merlons; the passage between
+ vbDrum(V,5.6,1.6,-3,109,y=>2.2-.3*y/22,(I,J,K)=>vbAshR(SP(st[2]),I,J,K,5.6,1.6,12,17),3);
+ vbDrum(V,5.6,1.6,110,114,y=>2+(y-22)*.7,(I,J,K)=>vbT(st[0],.9+.15*vbH(I,J,K,18)),3.2);
+ vbCone(V,5.6,1.6,2.9,115,147,(I,J,K)=>cop(gr[1],I,J,K));
+ vbDrum(V,-10.5,3,-3,29,y=>5.2-.4*y/6,(I,J,K)=>vbAshR(SP(st[1]),I,J,K,-10.5,3,30,19),5.6);
+ vbDrum(V,-10.5,3,30,34,()=>5.4,(I,J,K,d)=>J>32&&(d<4.6||vbSec(I,K,-10.5,3,30)&1)?-1:vbT(st[0],.9+.15*vbH(I,J,K,20)),5.8);
+ dome(-10.5,6.6,3,4.4,2.3,gr[2]);V.box(-50,-16,5,20,3,18,(I,J,K)=>vbAsh(SP(st[3]),I,J,K,21));
+ vbSlit(V,0,0,6.7,0,0,16,(l,J)=>vbT(0x1f1812,l&1?1:.8),9);
+ for(const[y,a]of DTWIN)vbSlit(V,0,0,dtr(y),a,Math.round(y/VBZ)-4,9,0x15161b,3);
+ return V.mesh({dc:0x2a2a30,dk:.4})})(),
 // the church, a roofless shell: the west gable still standing with a tall window below a bellcote's arch, the lower east gable with its lancet, and
 // the side walls between, windowed and broken down to head height
-CHURCH=(()=>{let s=41;const r=()=>(s=s*16807%2147483647)/2147483647,L=[],pal=()=>STC[r()*7|0];
- mason(L,r,pal,-3.4,0,3.4,0,.8,u=>{const d=abs(u-3.4);return d<.55?8.9:3.3+(3.4-d)*1.3},[[3.02,3.78,1.3,3.5],[3.14,3.66,7.4,8.4]]);
- mason(L,r,pal,-3.4,6,3.4,6,.8,u=>3.1+(3.4-abs(u-3.4)),[[3,3.8,2.1,4.6]]);
- for(const x of[-3.1,3.1])mason(L,r,pal,x,.4,x,5.6,.75,u=>3.1-u*.16+(vn3(u*.9,x,2)-.5)*1.2,[[1,1.9,.9,2.3],[3.6,4.5,.9,2.3]]);
- for(let i=0;i<30;i++){const a=r()*TAU,d=sqrt(r())*1.6,e=.15+r()*.16;L.push([ico().scale(e*1.3,e*.8,e).rotateY(r()*3).translate(cos(a)*d*2.2,(1-d/1.6)*.4*r()+e*.3,2.4+sin(a)*d),pal()])}
- return rockG(L,-.5,9,.6)})(),
+CHURCH=(()=>{const V=VBK(-24,-6,-10,24,48,42),col=(I,J,K)=>{const c=vbAsh(STC,I,J,K,41,3,2);return vn3(I*.25,J*.2,K*.25)>.7&&J<30?vbM(c,0x55703a,.5):c};
+ vbMason(V,-3.4,0,3.4,0,.8,u=>{const d=abs(u-3.4);return d<.55?8.9:3.3+(3.4-d)*1.3},[[3.02,3.78,1.3,3.5],[3.14,3.66,7.4,8.4]],col);
+ vbMason(V,-3.4,6,3.4,6,.8,u=>3.1+(3.4-abs(u-3.4)),[[3,3.8,2.1,4.6]],col);
+ for(const x of[-3.1,3.1])vbMason(V,x,.4,x,5.6,.75,u=>3.1-u*.16+(vn3(u*.9,x,2)-.5)*1.2,[[1,1.9,.9,2.3],[3.6,4.5,.9,2.3]],col);
+ vbHeap(V,-1.3,2.4,1.6,.45,STC,41);vbHeap(V,1.4,2.5,1.5,.4,STC,43);
+ return V.mesh({dc:0x4a3b2b,dk:.35})})(),
 // gate piers (lime-washed, or tinted to stone), a five-bar field gate hung from its local z = 0 end, and round hay bales
 PIER=mg([[Cy(.3,.34,1.75,14).translate(0,.87,0),0xe8e3d6],[Cy(.37,.37,.1,14).translate(0,1.79,0),0xd4cec1],[new THREE.ConeGeometry(.31,.36,14).translate(0,2.02,0),0xdcd6c9],[Sp(.08,8,6).translate(0,2.22,0),0xdcd6c9]]),
 FGT=mg([...[.32,.56,.8,1.04,1.28].map(y=>[B(.06,.08,2.8).translate(0,y,1.4),0x8e7152]),[B(.11,1.3,.11).translate(0,.72,.06),0x7a5f43],[B(.09,1.3,.09).translate(0,.72,2.74),0x7a5f43],[B(.055,.07,2.95).rotateX(-.36).translate(0,.8,1.4),0x7a5f43],[B(.07,1.05,.07).translate(0,.8,1.4),0x7a5f43]]),
@@ -2012,7 +2228,7 @@ SLP=V(),slip=(p,bx,bz,ix,iz)=>{const L2=ix*ix+iz*iz;if(L2<1e-8)return;let g0=((p
 mkCol=gs=>{const P=[],I=[];for(const g of gs){const p=g.attributes.position,o=P.length/3;for(let i=0;i<p.count;i++)P.push(p.getX(i),p.getY(i),p.getZ(i));if(g.index)for(let i=0;i<g.index.count;i++)I.push(g.index.getX(i)+o);else for(let i=0;i<p.count;i++)I.push(i+o);g.dispose()}const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setIndex(I);g.computeBoundingBox();return{bvh:new MeshBVH(g),box:g.boundingBox,g}};
 
 // the Cliffs and coastline's lighthouse towers, found as the realm starts: from each of a few of its places (sketch pixels) due west to the first ground within 18m of the sea, kept if
-// that is in the zone and 18m or more over the water, the tower set 8m back from the edge on the lowest of five ground heights; nothing else is set within 14m of one (ok)
+// that is in the zone and 18m or more over the water, the tower set 8m back from the edge on the lowest of five ground heights; nothing else is set within 14m (x LHS) of one (ok)
 const RLH=[[258,960],[400,1270],[300,1560],[360,820],[330,1130]].map(([u,v])=>{let[x,z]=rlw(u,v);for(let i=0;i<900;i++,x-=4.243,z+=4.243){rlf(x,z);if(rlD<18){if(rlZW(5,x,z)<.4||H(x,z)<WL+18)return null;x+=5.7;z-=5.7;let y=1e9;for(const[a,b]of[[0,0],[5,0],[-5,0],[0,5],[0,-5]])y=Math.min(y,H(x+a,z+b));return{x,z,y}}}return null}).filter(Boolean);
 // the Haunted Hollow's two dark towers, on the rises of its middle ground: [x, z] of each, set on the lowest of five ground heights under it
 const RLDT=[[3520,-1000],[4080,-1800]].map(([x,z])=>{let y=1e9;for(const[a,b]of[[0,0],[7,0],[-7,0],[0,7],[0,-7]])y=Math.min(y,H(x+a,z+b));return{x,z,y}});
@@ -2031,37 +2247,31 @@ rlRng=s=>()=>(s=s*16807%2147483647)/2147483647,
 // the loose parts of a camp, a ring or a plot (lists of [geometry, colour] about the site's own origin) once the site is set and turned: a part that reaches a road or its verge is left out,
 // but the heart of the site (within 2m of its middle, where its roads end) stays
 rdKeep=(L,x,z,ry)=>{const c=cos(ry),s=sin(ry);return L.filter(([g])=>{g.boundingBox||g.computeBoundingBox();const b=g.boundingBox,u=(b.min.x+b.max.x)/2,v=(b.min.z+b.max.z)/2;return hypot(u,v)<2||rdClr(x+c*u+s*v,z-s*u+c*v,max(b.max.x-b.min.x,b.max.z-b.min.z)/2)})},
-rlHouse=(w,d,h,pal,ch)=>{const rh=h*.62,L=[[B(w,h+1.4,d).translate(0,(h-1.4)/2,0),pal[0]],[Cy(0,.7071,1,4).rotateY(PI/4).scale(w*1.18,rh,d*1.18).translate(0,h+rh/2,0),pal[1]],[B(.95,1.9,.14).translate(0,.95,d/2+.03),pal[2]],[B(.7,.7,.14).translate(w*.28,h*.55,d/2+.03),pal[2]],[B(.7,.7,.14).translate(-w*.28,h*.55,d/2+.03),pal[2]]];
- ch&&L.push([B(.55,rh+1.2,.55).translate(w*.28,h+rh*.35,-d*.2),0x7a746a]);return mg(L)},
-rlTower=(r,h)=>mg([[Cy(r*1.25,r*1.4,2.6,12).translate(0,-.5,0),0x6e6a70],[Cy(r*.92,r,h,12).translate(0,h/2,0),0x8d8996],[Cy(r*1.18,r*1.18,.5,12).translate(0,h,0),0x6e6a70],[Cy(0,r*1.4,h*.42,12).translate(0,h+h*.21+.2,0),0x5a3a8c],[B(.5,1.3,.18).translate(0,h*.55,r*.95),0x1e1830],[B(.5,1.3,.18).translate(r*.95,h*.8,0),0x1e1830],[Sp(.7,10,8).translate(0,h+h*.42+.8,0),0xc79bff]]),
 rlCamp=rng=>{const L=[];for(let i=0;i<20;i++){const a=i/20*TAU;if(abs(wa(a-PI/2))<.28)continue;L.push([Cy(.12,.2,3.4,5).translate(cos(a)*17,1.3,sin(a)*17),0x6a4a2c])}
  for(let i=0;i<4;i++){const a=i*1.6+rng()*.6,d=7+rng()*4;L.push([Cy(0,2.5,3,6).translate(cos(a)*d,1.5,sin(a)*d),[0x6b5a45,0x5a4a3a,0x7a6a50][i%3]])}
  L.push([Cy(1,1.1,.35,8).translate(0,.1,0),0x5c5850],[Cy(0,.55,1.2,5).translate(0,.9,0),0xff8a2a],[Cy(.08,.08,6.5,5).translate(5,3,-5),0x4a3220],[B(1.7,1.1,.06).translate(5.9,5.6,-5),0xa82424]);return L},
 rlRing=rng=>{const L=[];for(let i=0;i<12;i++){const a=i/12*TAU;L.push([B(1.2,3.8+rng()*1.4,.8).rotateY(a).rotateZ((rng()-.5)*.08).translate(cos(a)*11,1.9,sin(a)*11),0x6f7886])}L.push([B(3.2,1,1.7).translate(0,.5,0),0x4a505c],[B(3.6,.3,2.1).translate(0,1.1,0),0x3a3f4a]);return L},
 rlPlot=()=>{const L=[];for(let x=-9;x<=9;x+=2)L.push([B(1.3,.4,.5).translate(x,.1,-6),0x8a867a],[B(1.3,.4,.5).translate(x,.1,6),0x8a867a]);for(let z=-5;z<=5;z+=2)L.push([B(.5,.4,1.3).translate(-9,.1,z),0x8a867a],[B(.5,.4,1.3).translate(9,.1,z),0x8a867a]);
  L.push([Cy(.1,.12,2.2,5).translate(-9.8,1,-6.8),0x5a4130],[B(1.4,.8,.08).translate(-9.8,2.2,-6.8),0x3aa845]);return L},
-rlStall=col=>mg([[B(2.2,.9,1.2).translate(0,.45,0),0x8a6a43],[B(2.7,.12,1.7).translate(0,2.2,0),col],...[[-1.2,.7],[1.2,.7],[-1.2,-.7],[1.2,-.7]].map(([x,z])=>[Cy(.06,.06,2.2,5).translate(x,1.1,z),0x5a4130])]),
-// a well: a round stone wall, two posts and a little roof; its shaft (rlHole) a disc of unlit black just above the wall's top, so it
-// reads as a hole with no water showing, whatever the light
-rlWell=()=>mg([[Cy(1.2,1.3,1,10).translate(0,.5,0),0x8d8996],[Cy(.07,.07,2.6,5).translate(-1.1,1.3,0),0x5a4130],[Cy(.07,.07,2.6,5).translate(1.1,1.3,0),0x5a4130],[B(2.8,.15,1.4).translate(0,2.6,0),0x6a4a2c]]),
-WHM=new THREE.MeshBasicNodeMaterial({color:0x000000}),rlHole=()=>new THREE.CylinderGeometry(.96,.96,.04,10).translate(0,1.01,0),
+// the well (rlWellV): its shaft (rlHole) a disc of unlit black just under its wall's top, so it reads as a hole with no water showing, whatever the light
+WHM=new THREE.MeshBasicNodeMaterial({color:0x000000}),rlHole=()=>new THREE.CylinderGeometry(1.14,1.14,.02,14).translate(0,.99,0),
 rlParts=p=>{if(p.parts)return p.parts;const rng=rlRng(Math.abs(Math.round(p.x*13+p.z*7))%2147483646+1),zn=rlz(p.x,p.z),pal=RLPAL[zn<0?0:zn],P=[],put=(g,x,z,ry,c,m)=>P.push({g:Array.isArray(g)?mg(rdKeep(g,x,z,ry)):g,x,z,ry,c,m});
  // flat enough, dry, clear of the roads
  const flat=(x,z,r)=>{const y=H(x,z);if(y<WL+1.2)return false;for(const[a,b]of[[r,0],[-r,0],[0,r],[0,-r]])if(abs(H(x+a,z+b)-y)>2.2)return false;return rlRoad(x,z)>r+1};
- if(p.k=='m')put(rlTower(3.2,14+rng()*4),p.x,p.z,0,[0,0,3.6]);
+ if(p.k=='m')put(rlTowerV(Math.round(14+rng()*4)),p.x,p.z,0,[0,0,3.6]);
  else if(p.k=='e')p.s?put(rlCamp(rng),p.x,p.z,rng()*TAU):put(rlRing(rng),p.x,p.z,0);
  else if(p.k=='h')put(rlPlot(),p.x,p.z,rng()*PI);
- else{const n=[0,6,11,12][p.s],r0=[0,12,16,56][p.s],r1=[0,30,50,82][p.s],hs=[],HS=1.794;  // HS: the houses are built 1.794x (1.3 x 1.15 x 1.2) their modelled size (walls, roof, door and all), with their spacing and ground checks to match
-  if(p.s>1){put(rlWell(),p.x,p.z,0,[0,0,1.5]);put(rlHole(),p.x,p.z,0,null,WHM);const cs=[0xb83a3a,0x3a62b8,0x3aa06a,0xc8a03a];
+ else{const n=[0,6,11,12][p.s],r0=[0,13,18,58][p.s],r1=[0,46,66,104][p.s],hs=[],HS=2.476;  // HS: the houses are 2.476x (1.3 x 1.15 x 1.2 x 1.15 x 1.2) the size they were first modelled at (built at that size by rlHouseQ), with their spacing and ground checks to match
+  if(p.s>1){put(rlWellV(),p.x,p.z,0,[0,0,1.5]);put(rlHole(),p.x,p.z,0,null,WHM);const cs=[0xb83a3a,0x3a62b8,0x3aa06a,0xc8a03a];
    // Greywatch's own: eight places in a ring 11m out, just beyond the packed earth round the well, each facing it; one on a road or
    // on the path to the keep's gate is left out
-   if(p.s==3)for(let i=0;i<8;i++){const b=i/8*TAU+.2,x=p.x+cos(b)*11,z=p.z+sin(b)*11;abs(wa(b-atan2(-20,-21)))>.45&&rdBox(x,z,-b+PI/2,1.5,1.05)&&put(rlStall(cs[i%4]),x,z,-b+PI/2)}
+   if(p.s==3)for(let i=0;i<8;i++){const b=i/8*TAU+.2,x=p.x+cos(b)*11,z=p.z+sin(b)*11;abs(wa(b-atan2(-20,-21)))>.45&&rdBox(x,z,-b+PI/2,2.4,1.6)&&put(rlStallV(cs[i%4]),x,z,-b+PI/2,[4.4,2.8])}
    else for(let i=0;i<3;i++){const a=i*2.1+.6,cc=cs[(i+(rng()*4|0))%4];
    // the plaza's roads end at its well, so a stall that would stand on one is slid round and out to the nearest clear ground, or left out
-   for(const[da,dr]of[[0,0],[.5,0],[-.5,0],[0,3],[.9,3],[-.9,3],[.4,6],[-.4,6]]){const b=a+da,e=6+dr,x=p.x+cos(b)*e,z=p.z+sin(b)*e;if(rdBox(x,z,-b+PI/2,1.5,1.05)){put(rlStall(cc),x,z,-b+PI/2);break}}}}
-  for(let t=0;t<n*40&&hs.length<n;t++){const a=rng()*TAU,r=r0+rng()*(r1-r0),x=p.x+cos(a)*r,z=p.z+sin(a)*r;if(!flat(x,z,4.5*HS)||hs.some(q=>hypot(q[0]-x,q[1]-z)<10*HS))continue;
+   for(const[da,dr]of[[0,0],[.5,0],[-.5,0],[0,3],[.9,3],[-.9,3],[.4,6],[-.4,6]]){const b=a+da,e=6+dr,x=p.x+cos(b)*e,z=p.z+sin(b)*e;if(rdBox(x,z,-b+PI/2,2.4,1.6)){put(rlStallV(cc),x,z,-b+PI/2,[4.4,2.8]);break}}}}
+  for(let t=0;t<n*80&&hs.length<n;t++){const a=rng()*TAU,r=r0+rng()*(r1-r0),x=p.x+cos(a)*r,z=p.z+sin(a)*r;if(!flat(x,z,4.5*HS)||hs.some(q=>hypot(q[0]-x,q[1]-z)<10*HS))continue;
    // the whole of its roof (1.18x its walls) must clear the roads and their verge, not just its middle (flat)
-   const w=4.6+rng()*3,d=4+rng()*3,ry=atan2(-cos(a),-sin(a));if(!rdBox(x,z,ry,w*.59*HS,d*.59*HS))continue;hs.push([x,z]);put(rlHouse(w,d,3.1+rng()*.9,pal,rng()<.6).scale(HS,HS,HS),x,z,ry,[w*HS,d*HS])}}
+   const w=4.6+rng()*3,d=4+rng()*3,ry=atan2(-cos(a),-sin(a));if(!rdBox(x,z,ry,w*.59*HS,d*.59*HS))continue;hs.push([x,z]);put(rlHouseQ(w*HS,d*HS,(3.1+rng()*.9)*HS,zn,rng()<.6),x,z,ry,[w*HS,d*HS])}}
  return p.parts=P};
 
 function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometry(CS,CS,SN,SN).rotateX(-PI/2),p=g.attributes.position,nr=g.attributes.normal,S1=SN+1;
@@ -2077,7 +2287,7 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
  for(let i=0;i<8;i++){const q=pt(0),t=.5+r()*1.4,ry=r()*7,rx=r()*.3;if(q&&rdClr(q[0],q[2],t)){A[3].push([q[0],q[1],q[2],t,ry,t*.7,rx]);t>1&&cg.push(new THREE.IcosahedronGeometry(.92,0).scale(t,t*.7*.9,t).rotateX(rx).rotateY(ry).translate(q[0],q[1],q[2]))}}
  for(let i=0;i<13;i++){const q=pt(),c=[0xffffff,0xffe066,0xc77dff,0xff8fab][i%4];if(q)for(let j=0;j<8;j++){const x=q[0]+(r()-.5)*7,z=q[2]+(r()-.5)*7,y=Hm(x,z);y>WL+1&&rdClr(x,z)&&A[4].push([x,y-.02,z,.9+r()*.5,r()*7,0,0,c])}}
  // this chunk's share of the fields: everything is placed by the chunk it stands in, so each wall run, hedge and tree is built exactly once
- const lo=ox-CS/2,lz=oz-CS/2,ok=(x,z,r=0)=>x>=lo&&x<lo+CS&&z>=lz&&z<lz+CS&&!farmClear(x,z)&&rdClr(x,z,r)&&!rlSite(x,z)&&!RLH.some(l=>hypot(x-l.x,z-l.z)<14)&&!RLDT.some(l=>hypot(x-l.x,z-l.z)<17),T=SPC.map(()=>[]),WS=[[],[],[],[],[],[],[],[]],HG=[[],[],[],[],[],[]],GO=[],PR=[],GT=[],gts=[],BL=[],RU=[[],[]],wc=[],OFL=[],GCP=[],
+ const lo=ox-CS/2,lz=oz-CS/2,ok=(x,z,r=0)=>x>=lo&&x<lo+CS&&z>=lz&&z<lz+CS&&!farmClear(x,z)&&rdClr(x,z,r)&&!rlSite(x,z)&&!RLH.some(l=>hypot(x-l.x,z-l.z)<14*LHS)&&!RLDT.some(l=>hypot(x-l.x,z-l.z)<17),T=SPC.map(()=>[]),WS=[[],[],[],[],[],[],[],[]],HG=[[],[],[],[],[],[]],GO=[],PR=[],GT=[],gts=[],BL=[],RU=[[],[]],wc=[],OFL=[],GCP=[],
  tree=(k,x,z,t,ry=r()*7,rx=0)=>{if(!ok(x,z)||!nf(x,z))return;const y=Hm(x,z);if(y<WL+.5)return;
   // in the Winterlands every tree is a pine or a spruce under snow, the old kinds surviving only toward the zone's edge (the likelier the nearer it, by a hash of the place)
   {const wi=rlZW(1,x,z);if(wi>.3){const h=abs(sin(x*12.9898+z*78.233)*43758.5453)%1;if(h<sm(.3,.9,wi))k=k==7||k==8?11:k==6||h*997%1<.6?12:11}}
@@ -2101,7 +2311,7 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
  // the ruined cottages are built 1.4x their modelled plan (RUK) and 1.2x its height (RUY), roomier inside and with 4.5m gaps through
  // the middle of their long walls (their old 1.1m door, barely wider than the shepherd, had him wedged on its jambs). RUB, their walls'
  // blocks (gapped to match), and all they place round them scale with them
- const PX={byre:[],cart:[],church:[],st:[[],[],[],[],[],[],[]],mn:[[],[],[]],sk:[[],[],[],[]],lh:[],dt:[],cr:[[],[],[],[]],tower:[],towerR:[],castle:[]},RUK=1.4,RUY=1.2,RUB=[[2.1,.64,-2.65,2],[2.1,.64,2.65,2],[2.1,.64,-2.65,-2],[2.1,.64,2.65,-2],[.64,3.4,-3.4,0],[.64,3.4,3.4,0]].map(([bw,bd,u,v])=>[bw*RUK,2.6*RUY,bd*RUK,u*RUK,v*RUK]),
+ const PX={byre:[],cart:[],church:[],st:[[],[],[],[],[],[],[]],mn:[[],[],[]],sk:[[],[],[],[]],lh:[],dt:[],cr:[[],[],[],[]],tower:[],towerR:[],castle:[],mill:[]},RUK=1.4,RUY=1.2,RUB=[[2.1,.64,-2.65,2],[2.1,.64,2.65,2],[2.1,.64,-2.65,-2],[2.1,.64,2.65,-2],[.64,3.4,-3.4,0],[.64,3.4,3.4,0]].map(([bw,bd,u,v])=>[bw*RUK,2.6*RUY,bd*RUK,u*RUK,v*RUK]),
  // a straight dry stone wall between two points, laid and blocking like the field walls
  wallLine=(ax,az,bx,bz)=>{const ex=bx-ax,ez=bz-az,el=hypot(ex,ez),dx=ex/el,dz=ez/el,n=Math.ceil(el/1.9),sx=min(1,el/n/1.9);for(let q=0;q<n;q++){const x=ax+ex*(q+.5)/n,z=az+ez*(q+.5)/n;if(!ok(x,z,1.2))continue;const y=Hm(x,z);if(y<WL+.35)continue;
   const ks=(Hm(x+dx,z+dz)-Hm(x-dx,z-dz))/2,cs=abs(Hm(x-dz*.45,z+dx*.45)-Hm(x+dz*.45,z-dx*.45))/.9,M=[dx*sx,ks*sx,dz*sx,0,0,.9+r()*.18,0,0,-dz,0,dx,0,x,y-.08-cs*.4,z,1];WS[r()*3|0].push(...M);wc.push(B(2.1,1.9,.8).translate(0,.75,0).applyMatrix4(new THREE.Matrix4().fromArray(M)))}},
@@ -2177,6 +2387,12 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
   const poi=poiT(i,j,c,hc);
   if(plant(i,j,c))for(let a=0;a<9;a++)for(let b=0;b<9;b++){const q=fcp(i,j,.1+(a+ih(i*9+a,j*9+b)*.25)*.09,.1+(b+ih(j*9+b+7,i*9+a)*.25)*.09);tree(8,q[0],q[1],1.3+r()*.4,r()*7,(r()-.5)*.05)}
   else if(poi)poiPut(poi,i,j,c,f);
+  // a windmill in about one in fourteen of the dry grasslands' fields well out from home, on its own in the field: its drum (MILL) turned to face
+  // the field's draw, its sails (MLSL) on the hub, turning (MILLS); solid to the knight
+  else if(far>150&&f(97)<.07&&rlZW(4,c[0],c[1])>.6&&hc>WL+2){if(ok(c[0],c[1],4)&&nf(c[0],c[1])){const ry=f(98)*TAU;let y=1e9;for(const[a,b]of[[0,0],[2.7,0],[-2.7,0],[0,2.7],[0,-2.7]])y=min(y,Hm(c[0]+a,c[1]+b));
+    PX.mill.push([c[0],y-.1,c[1],1,ry]);cg.push(Cy(2.8,2.8,10,10).translate(c[0],y+4,c[1]));
+    const m=new THREE.Mesh(MLSL,VC);m.rotation.order='YXZ';m.rotation.y=ry;m.userData.ph=f(99)*TAU;m.userData.ck=k;m.position.set(c[0]+sin(ry)*MLH[2],y-.1+MLH[1],c[1]+cos(ry)*MLH[2]);m.castShadow=m.receiveShadow=true;G.add(m);MILLS.push(m);
+    for(let n=0;n<3;n++){const a=f(100+n)*TAU,d=5+f(103+n)*4;scrub([c[0]+cos(a)*d,c[1]+sin(a)*d])}}}
   else{for(let k=0,n=f(20)<.45?1:f(20)<.72?2:0;k<n;k++){const q=fcp(i,j,.2+f(21+k)*.6,.2+f(24+k)*.6);lone(q[0],q[1],f(27+k))}
    if(hc>5&&f(33)<.13*(1-.7*rlDW(c[0],c[1]))){const q=fcp(i,j,.3+f(34)*.4,.3+f(35)*.4);for(let k=0;k<2+f(36)*3;k++)tree(6,q[0]+(f(50+k)-.5)*12,q[1]+(f(55+k)-.5)*12,1.45+r()*.45)}
    const ruin=far>100&&f(31)<.07;OFL.push([i,j]);
@@ -2261,11 +2477,11 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
    for(let i=0;i<n;i++){const x=cx0+(n>1?(r()-.5)*22:0),z=cz0+(n>1?(r()-.5)*22:0),k=r()*4|0,s=.8+r()*.5,hh=[15,24,10,19][k]*s,w=[2.3,2.9,3.4,2.8][k]*s*.8;if(!ok(x,z,w*1.1)||!nf(x,z)||rlZW(3,x,z)<.5)continue;const y=Hm(x,z);
     if(y<WL+1.5||abs(Hm(x+3,z)-Hm(x-3,z))>2.4||abs(Hm(x,z+3)-Hm(x,z-3))>2.4)continue;PX.cr[k].push([x,y-1,z,s,r()*7,s,0]);cg.push(Cy(w,w*1.1,hh,8).translate(x,y+hh/2,z))}}}}
  for(const l of RLDT){if(abs(l.x-ox)>=CS/2||abs(l.z-oz)>=CS/2)continue;PX.dt.push([l.x,l.y,l.z,1,0,1,0]);cg.push(Cy(6.4,6.9,18,12).translate(l.x,l.y+7,l.z),Cy(8.6,10.6,6,10).translate(l.x,l.y-2.5,l.z),Cy(5,5.2,6,12).translate(l.x-10.5,l.y+3,l.z+3),Cy(2.1,2.2,20,8).translate(l.x+5.6,l.y+10,l.z+1.6));
-  for(const[y,a]of DTWIN){const r=dtr(y),m=new THREE.Mesh(cvn(new THREE.PlaneGeometry(.55,1.5)),WGM);m.position.set(l.x+sin(a)*(r+.1),l.y+y,l.z+cos(a)*(r+.1));m.rotation.y=a;G.add(m)}}
+  for(const[y,a]of DTWIN){const r=dtr(y),m=new THREE.Mesh(cvn(new THREE.PlaneGeometry(.55,1.5)),WGM);m.position.set(l.x+sin(a)*(r+.24),l.y+y,l.z+cos(a)*(r+.24));m.rotation.y=a;G.add(m)}}
  // the lighthouse towers on this chunk's ground: the model, its collider, its windows' glow by night and its two beams
- for(const l of RLH){if(abs(l.x-ox)>=CS/2||abs(l.z-oz)>=CS/2)continue;PX.lh.push([l.x,l.y,l.z,1,0,1,0]);cg.push(Cy(4.5,4.7,16,10).translate(l.x,l.y+7,l.z),Cy(6,6.6,5,8).translate(l.x,l.y-2,l.z));
-  for(const[y,a]of LHWIN){const r=lhr(y),m=new THREE.Mesh(cvn(new THREE.PlaneGeometry(.5,1.2)),WGM);m.position.set(l.x+sin(a)*(r+.1),l.y+y,l.z+cos(a)*(r+.1));m.rotation.y=a;G.add(m)}
-  for(const ph of[0,PI]){const b=new THREE.Mesh(LHBG,lhBeam);b.position.set(l.x,l.y+24,l.z);b.userData.ph=ph;b.frustumCulled=false;LHB.push(b);G.add(b)}}
+ for(const l of RLH){if(abs(l.x-ox)>=CS/2||abs(l.z-oz)>=CS/2)continue;const k=LHS;PX.lh.push([l.x,l.y,l.z,k,0,k,0]);cg.push(Cy(4.5*k,4.7*k,16*k,10).translate(l.x,l.y+7*k,l.z),Cy(6*k,6.6*k,5*k,8).translate(l.x,l.y-2*k,l.z));
+  for(const[y,a]of LHWIN){const r=(lhr(y)+.24)*k,m=new THREE.Mesh(cvn(new THREE.PlaneGeometry(.5*k,1.2*k)),WGM);m.position.set(l.x+sin(a)*r,l.y+y*k,l.z+cos(a)*r);m.rotation.y=a;G.add(m)}
+  for(const ph of[0,PI]){const b=new THREE.Mesh(LHBG,lhBeam);b.position.set(l.x,l.y+24*k,l.z);b.userData.ph=ph;b.frustumCulled=false;LHB.push(b);G.add(b)}}
  // the Cliffs and coastline, drawn last from the chunk's stream: boulders on the cliff tops and heaped along the foot of the cliffs at the sea's edge, drifts of white flowers, twisted olives near the
  // cliff edge, and out at sea the stacks (alone or in a group, now and then an arch)
  {const wc=rlZW(5,ox,oz);if(wc>.3){
@@ -2283,7 +2499,7 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
  // OCC: what already stands in this chunk, as (x, z, radius), for the logs and stumps to keep clear of
  let gcs=(((cx*83492791)^(cz*29712151))>>>0)%2147483646+1;const gcr=()=>(gcs=gcs*16807%2147483647)/2147483647,LGI=[[],[]],STI=[[],[]],TDI=[[],[],[]],OCC=[],
  occ=(L,f)=>{for(const q of L)OCC.push([q[0],q[2],f*(q[3]||1)])};
- T.forEach((L,n)=>occ(L,SPC[n][2]));[[BL,.9],[A[3],1],[A[1],1.4],[A[7],1.4],[GO,1.1],[HG[0],1.9],[HG[1],1.9],[HG[2],1.9],[HG[3],1.9],[HG[4],1.9],[HG[5],1.9],[A[8],1],[A[9],1.4],[A[10],1.4],[PR,.5],[GT,2.9],[PX.byre,4.5],[PX.cart,2],[PX.church,6],[PX.tower,4.2],[PX.towerR,4.2],[PX.castle,22],[PX.dt,10],...PX.cr.map(L=>[L,4]),...PX.st.map(L=>[L,.6]),...PX.mn.map(L=>[L,1.6])].forEach(([L,f])=>occ(L,f));
+ T.forEach((L,n)=>occ(L,SPC[n][2]));[[BL,.9],[A[3],1],[A[1],1.4],[A[7],1.4],[GO,1.1],[HG[0],1.9],[HG[1],1.9],[HG[2],1.9],[HG[3],1.9],[HG[4],1.9],[HG[5],1.9],[A[8],1],[A[9],1.4],[A[10],1.4],[PR,.5],[GT,2.9],[PX.byre,4.5],[PX.cart,2],[PX.church,6],[PX.tower,4.2],[PX.towerR,4.2],[PX.castle,22],[PX.dt,10],[PX.mill,3.4],...PX.cr.map(L=>[L,4]),...PX.st.map(L=>[L,.6]),...PX.mn.map(L=>[L,1.6])].forEach(([L,f])=>occ(L,f));
  for(const[M,f]of[...WS.map(M=>[M,1.2]),[RU[0],7.5],[RU[1],7.5]])for(let i=0;i<M.length;i+=16)OCC.push([M[i+12],M[i+14],f]);
  for(const o of FND)o.ck==k&&OCC.push([o.x,o.z,1.2]);
  const clr=(x,z,d)=>{if(!ok(x,z)||!nf(x,z))return false;for(const[a,b,e]of OCC)if(hypot(a-x,b-z)<d+e)return false;return true},
@@ -2325,11 +2541,11 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
  SPC.forEach(([g,l,,b],k)=>{addI(g,VWT,T[k],1);l&&addI(l,k==20||k==22?VLT:k>12?VLTA:k>10?VLTS:VLT,T[k],1);b&&addI(b,VBT,T[k])});
  WS.forEach((M,k)=>addM(WALLS[k],VW,M,!mob));HG.forEach((a,k)=>addI(HEDGEL[k],VWF,a,!mob));
  addI(GRSL,VWF,GO,!mob);addI(PIER,VC,PR,1);if(GT.length){const it=plItem(FGT,VC,GT,1);itm.push(it);gts.forEach(gr=>gr.it=it)}addI(BAL,HYM,BL,1);RU.forEach((a,k)=>addM(RUINS[k],VW,a,1));
- addI(BYRE,VW,PX.byre,1);addI(CART,VC,PX.cart,1);addI(CHURCH,VW,PX.church,1);addI(LMK.tw,VC,PX.tower,1);addI(LMK.tr,VC,PX.towerR,1);addI(LMK.cs,VC,PX.castle,1);PX.st.forEach((a,k)=>addI(GSTONE[k],VW,a,1));PX.mn.forEach((a,k)=>addI(MNH[k],VW,a,1));PX.sk.forEach((a,k)=>addI(STK[k],VW,a,1));addI(LHT,VW,PX.lh,1);addI(DTW,VW,PX.dt,1);PX.cr.forEach((a,k)=>addI(CRG[k],VW,a,1));
+ addI(BYRE,VW,PX.byre,1);addI(CART,VC,PX.cart,1);addI(CHURCH,VW,PX.church,1);addI(LMK.tw,VC,PX.tower,1);addI(LMK.tr,VC,PX.towerR,1);addI(LMK.cs,VC,PX.castle,1);addI(MILL,VC,PX.mill,1);PX.st.forEach((a,k)=>addI(GSTONE[k],VW,a,1));PX.mn.forEach((a,k)=>addI(MNH[k],VW,a,1));PX.sk.forEach((a,k)=>addI(STK[k],VW,a,1));addI(LHT,VW,PX.lh,1);addI(DTW,VW,PX.dt,1);PX.cr.forEach((a,k)=>addI(CRG[k],VW,a,1));
  LGI.forEach((M,n)=>addM(LOGS[n],VWF,M,1));STI.forEach((a,n)=>addI(STUMPS[n],VWF,a,1));TDI.forEach((a,n)=>addI(MSH[n],VWF,a,!mob));
  seen.add(k);
  // the realm's sites: each part is built by the chunk it stands in (rlParts)
- for(const p of RLP){if(hypot(p.x-ox,p.z-oz)>p.r+CS*.8)continue;for(const q of rlParts(p)){if(abs(q.x-ox)>=CS/2||abs(q.z-oz)>=CS/2)continue;const y=Hm(q.x,q.z),m=new THREE.Mesh(q.g.clone(),q.m||VC);m.position.set(q.x,y,q.z);m.rotation.y=q.ry;m.castShadow=m.receiveShadow=true;G.add(m);
+ for(const p of RLP){if(hypot(p.x-ox,p.z-oz)>p.r+CS*.8)continue;for(const q of rlParts(p)){if(abs(q.x-ox)>=CS/2||abs(q.z-oz)>=CS/2)continue;const y=Hm(q.x,q.z),m=new THREE.Mesh(q.g.userData.vb?q.g:q.g.clone(),q.m||VC);m.position.set(q.x,y,q.z);m.rotation.y=q.ry;m.castShadow=m.receiveShadow=true;G.add(m);
   if(q.c)cg.push(q.c[0]?B(q.c[0],4,q.c[1]).rotateY(q.ry).translate(q.x,y+1.5,q.z):Cy(q.c[2],q.c[2],8,10).translate(q.x,y+4,q.z))}}
  const cc=[];cg.length&&cc.push(mkCol(cg));wc.length&&cc.push(Object.assign(mkCol(wc),{wall:1}));for(const gr of gts)gr.tg||(gr.col=Object.assign(mkCol([gtBox(gr)]),{wall:1}),cc.push(gr.col));cc.length&&CCOL.set(k,cc);colList();sc.add(G);const rec={g:G,x:ox,z:oz,k,gc:GCP,itm};gcD=1;plD=1;CH.set(k,rec);CHL.push(rec)}
 const colList=()=>{COLS.length=0;COLS.push(FARMC,FENCEC);BBC&&COLS.push(BBC);for(const c of CCOL.values())COLS.push(...c)};
@@ -2382,7 +2598,7 @@ plSync=all=>{plD=0;const T=new Map();
 // what is far is drawn lightly (see cull): meshes too small to show at that range wait out of the view (LVR radii, LVD distances
 // from the camera), and only chunks near the sun's shadow box cast shadows (SHD)
 const AHD=mob?230:280,AHM=8e3,LVR=[1.4,2.2],LVD=[150,220],SHD=mob?140:185,AW=new Map();let aqT=0;
-const dropC=(k,o)=>{AW.delete(k);plD=1;sc.remove(o.g);o.g.children.forEach(m=>m.isInstancedMesh?m.dispose():m.geometry.dispose());CH.delete(k);CHL.splice(CHL.indexOf(o),1);gcD=1;for(let q=FND.length;q--;)FND[q].ck==k&&FND.splice(q,1);for(let q=GATES.length;q--;)GATES[q].ck==k&&GATES.splice(q,1);const c=CCOL.get(k);if(c){c.forEach(o=>o.g.dispose());CCOL.delete(k);colList()}},
+const dropC=(k,o)=>{AW.delete(k);plD=1;sc.remove(o.g);o.g.children.forEach(m=>m.isInstancedMesh?m.dispose():m.geometry.userData.vb||m.geometry.dispose());CH.delete(k);CHL.splice(CHL.indexOf(o),1);gcD=1;for(let q=FND.length;q--;)FND[q].ck==k&&FND.splice(q,1);for(let q=GATES.length;q--;)GATES[q].ck==k&&GATES.splice(q,1);for(let q=MILLS.length;q--;)MILLS[q].userData.ck==k&&MILLS.splice(q,1);const c=CCOL.get(k);if(c){c.forEach(o=>o.g.dispose());CCOL.delete(k);colList()}},
 aheadScan=(cx,cz,now)=>{const p=P.position,fx=LK.x-cam.position.x,fz=LK.z-cam.position.z,fl=hypot(fx,fz)||1,vx=fx/fl,vz=fz/fl,mv=pvel>1.2,hx=sin(P.rotation.y),hz=cos(P.rotation.y),L=[];
  for(let i=-3;i<4;i++)for(let j=-3;j<4;j++){if(max(abs(i),abs(j))<2)continue;const rx=(cx+i)*CS-p.x,rz=(cz+j)*CS-p.z,rl=hypot(rx,rz),d=hypot(max(abs(rx)-CS/2,0),max(abs(rz)-CS/2,0));
   if(d<=AHD&&(rx*vx+rz*vz>.45*rl||mv&&rx*hx+rz*hz>.45*rl)){L.push([d,cx+i,cz+j]);AW.set((cx+i)+','+(cz+j),now)}}
@@ -2480,12 +2696,14 @@ const LFMm=new THREE.MeshBasicNodeMaterial({transparent:true,depthWrite:false,si
  const vA=vertexStage(LFK.mul(step(HT(p.xz),p.y)).mul(ss1(18,24,p.xz.sub(SNC.xz).length())).mul(smoothstep(8,16,cameraPosition.sub(p).length())));
  LFMm.colorNode=mix(mix(mix(vec3(.9,.42,.1),vec3(.95,.72,.2),smoothstep(.25,.35,aR.z)),vec3(.8,.22,.1),smoothstep(.55,.65,aR.z)),vec3(.96,.82,.3),smoothstep(.82,.9,aR.z)).mul(U.fogC.length().mul(1.3).clamp(.35,1));LFMm.opacityNode=vA.mul(.95)}
 const LFM=new THREE.InstancedMesh(LG,LFMm,LFN);LFM.frustumCulled=false;LFM.renderOrder=5;LFM.visible=false;sc.add(LFM);
-// ---- seagulls over the Cliffs and coastline (snU): a few of them circling the view's focus on slow wide loops, wings beating (stateless, in the vertex stage; three triangles each) ----
+// ---- seagulls over the Cliffs and coastline (snU): a few of them circling the view's focus on slow wide loops, high over the ground under them, wings beating (stateless, in the vertex stage; three triangles each) ----
 const GLN=28,GG=new THREE.BufferGeometry();GG.setAttribute('position',new THREE.Float32BufferAttribute([0,0,.55,-.14,0,-.3,.14,0,-.3,  0,0,.2,-1,0,-.15,-.12,0,-.4,  0,0,.2,.12,0,-.4,1,0,-.15],3));
 GG.setAttribute('aT',new THREE.Float32BufferAttribute([0,0,0, 0,1,0, 0,0,1],1));GG.setAttribute('aR',new THREE.InstancedBufferAttribute(Float32Array.from({length:GLN*4},()=>R()),4));
 const GLMm=new THREE.MeshBasicNodeMaterial({side:THREE.DoubleSide,fog:false}),GLT=uniform(0);
 {const aR=attribute('aR','vec4'),aT=attribute('aT','float'),pg=positionGeometry,an=GLT.mul(aR.w.mul(.07).add(.06)).add(aR.x.mul(6.28)),rad=aR.y.mul(70).add(25),hh=aR.z.mul(26).add(9),c=Cos(an),s=Sin(an),
- p=vec3(SNC.x.add(c.mul(rad)),SNC.y.add(hh).add(Sin(an.mul(2.3)).mul(2)),SNC.z.add(s.mul(rad))),F=vec3(s.negate(),0,c),Rg=vec3(c,0,s),sz=aR.w.mul(.5).add(1.1),fl=aT.mul(Sin(GLT.mul(7).add(aR.x.mul(30))).mul(.38));
+ F=vec3(s.negate(),0,c),gxz=vec2(SNC.x.add(c.mul(rad)),SNC.z.add(s.mul(rad))),
+ // each flies at its height over whichever is higher, the view's focus or the ground under it (and 14m ahead of it, so it climbs before a cliff), never into the cliffs
+ gy=SNC.y.max(HT(gxz).add(8)).max(HT(gxz.add(F.xz.mul(14))).add(8)),p=vec3(gxz.x,gy.add(hh).add(Sin(an.mul(2.3)).mul(2)),gxz.y),Rg=vec3(c,0,s),sz=aR.w.mul(.5).add(1.1),fl=aT.mul(Sin(GLT.mul(7).add(aR.x.mul(30))).mul(.38));
  GLMm.positionNode=p.add(Rg.mul(pg.x.mul(sz))).add(vec3(0,1,0).mul(pg.y.add(fl).mul(sz))).add(F.mul(pg.z.mul(sz)));GLMm.colorNode=vec3(.96,.97,1).mul(U.fogC.length().mul(1.3).clamp(.25,1))}
 const GLM=new THREE.InstancedMesh(GG,GLMm,GLN);GLM.frustumCulled=false;GLM.visible=false;sc.add(GLM);
 // ---- the Haunted Hollow's fireflies (snU): slow glowing motes drifting low over the ground and pulsing, warm yellow-green with now and then a cold teal one (stateless, in the vertex stage) ----
@@ -2583,8 +2801,8 @@ SLM=new BotwMat({map:slate,roughness:.62},{key:'slate',wrap:.2,toon:.8,rim:.2});
 cot.position.set(-21,0,-20);cot.rotation.y=PI/4;
 // the keep, in its own frame (x along its face, +z out of its gate toward the muster ring; the gate at x KX, where the old path comes in):
 // a crenellated hall of grey ashlar under a slate roof, round towers at its front corners under tall slate cones flying red pennants, a
-// square tower rising behind with the banner, red banners with the gold cross hung down its face either side of the arched gate, and
-// torches at the gate. The stone is shaded per vertex in a mottle of courses and blocks (ash); the roofs are the slate (SLM)
+// square tower rising behind with the banner, the arched gate between plain walls, and
+// torches at the gate; all of cubes (below). STN, KX, cw and cv serve it and the low walls before it
 const CV=[],KX=-1.2,STN=[0x948f85,0x89847a,0x9d988c,0x837e74,0x8f8a7c],RED=0x9c1f24,GILT=0xd2a23c,
 cw=(x,z)=>[-21+(x+z)*.7071,-20+(z-x)*.7071],cv=(g,c,x,y,z,rx=0,ry=0,rz=0)=>CV.push([g.rotateX(rx).rotateY(ry).rotateZ(rz).translate(x,y,z),c]),
 // a wall box cut about every metre (and every course, .55m) so the mottle has vertices to sit on
@@ -2592,35 +2810,58 @@ BX=(w,h,d)=>new THREE.BoxGeometry(w,h,d,max(1,Math.ceil(w)),max(1,Math.ceil(h/.5
 ash=(g,x,y,z)=>{g.translate(x,y,z);const p=g.attributes.position,C=new Float32Array(p.count*3),c=new THREE.Color();
  for(let i=0;i<p.count;i++){const X=p.getX(i),Y=p.getY(i),Z=p.getZ(i),k=floor(Y/.55),u=floor((X+Z)/1.1+(k&1)*.5);c.setHex(STN[h3(u,k,7)*5|0]).multiplyScalar(.9+.16*h3(u,k,3));C[i*3]=c.r;C[i*3+1]=c.g;C[i*3+2]=c.b}
  g.setAttribute('color',new THREE.BufferAttribute(C,3));CV.push([g,null])},
-// a banner: red cloth on a rod, the gold cross on it and a gilt fringe at its foot (w x h, hung from y, facing +z at z)
-banner=(x,y,z,w,h,ry=0)=>{const g=[[Cy(.06,.06,w+.5,6).rotateZ(PI/2).translate(0,y,.04),0x4a3020],[B(w,h,.06).translate(0,y-h/2-.08,0),RED],[B(w*.18,h*.56,.03).translate(0,y-h*.45,.045),GILT],[B(w*.68,w*.18,.03).translate(0,y-h*.31,.045),GILT],[B(w,.13,.08).translate(0,y-h-.12,0),GILT]];
- for(const[q,c]of g)CV.push([q.rotateY(ry).translate(x,0,z),c])},
 WIN=[];
-// the hall: plinth, walls, a string course, the corbel table under the parapet and its merlons all round
-ash(BX(11,8,7),KX,4,0);cv(B(11.4,.7,7.4),0x6f6b64,KX,.35,0);cv(B(11.2,.22,7.2),0x7d786e,KX,4.4,0);cv(B(11.3,.35,7.3),0x7d786e,KX,7.85,0);
-for(const[x0,z0,x1,z1]of[[-5.45,3.45,5.45,3.45],[-5.45,-3.45,5.45,-3.45],[-5.45,-3.45,-5.45,3.45],[5.45,-3.45,5.45,3.45]]){const n=Math.round(hypot(x1-x0,z1-z0)/1.35);for(let i=0;i<=n;i++){const u=i/n;cv(B(.72,.85,.5),STN[i%5],KX+x0+(x1-x0)*u,8.45,z0+(z1-z0)*u,0,z0==z1?0:PI/2)}}
-// the slate roof inside the parapet (ridge along x), stone gables at its ends, and a chimney stack
-{const sh=new THREE.Shape([[-3.15,7.9],[0,10.9],[3.15,7.9],[3.15,7.6],[0,10.6],[-3.15,7.6]].map(a=>new THREE.Vector2(...a)));part(new THREE.ExtrudeGeometry(sh,{depth:10.2,bevelEnabled:false,curveSegments:1}).translate(0,0,-5.1).rotateY(PI/2),SLM,KX,0,0,cot);
- const gb=new THREE.Shape([[-3.15,0],[0,3],[3.15,0]].map(a=>new THREE.Vector2(...a)));for(const s of[-1,1])cv(new THREE.ExtrudeGeometry(gb,{depth:.4,bevelEnabled:false}).translate(0,0,-.2).rotateY(PI/2),0x8f8a80,KX+s*5.05,7.9,0);
- ash(BX(.9,2.6,.9),KX-3.6,9.6,-1.6);cv(B(1.1,.2,1.1),0x6f6b64,KX-3.6,10.95,-1.6)}
-// the gate: an arched opening, its two oak leaves banded with iron, a ring of voussoirs over it; torches either side
-cv(B(2.7,3.4,.1),0x14120f,KX,1.7,3.52);cv(new THREE.CircleGeometry(1.35,12,0,PI),0x14120f,KX,3.4,3.53);cv(new THREE.TorusGeometry(1.5,.24,5,12,PI),0x7d786e,KX,3.4,3.55);
-for(const s of[-1,1]){cv(B(1.26,3.3,.12),0x5a3a22,KX+s*.64,1.65,3.58);for(const y of[.7,1.7,2.7])cv(B(1.26,.1,.15),0x2b2b2b,KX+s*.64,y,3.6);cv(Sp(.07,6,4),0x2b2b2b,KX+s*.18,1.45,3.66)}
-for(const s of[-1,1]){cv(B(.1,.7,.1),0x2b2724,KX+s*2.1,2.75,3.62,.25,0,0);cv(B(.3,.06,.3),0x2b2724,KX+s*2.1,3.08,3.74)}
-// a great window above the gate and a pair on each flank of the hall
-for(const[x,y,z,ry,w,h]of[[KX,6.3,3.51,0,1.05,1.9],[KX-5.51,5.8,1.2,-PI/2,.8,1.4],[KX-5.51,5.8,-1.6,-PI/2,.8,1.4],[KX+5.51,5.8,1.2,PI/2,.8,1.4],[KX+5.51,5.8,-1.6,PI/2,.8,1.4]]){cv(B(w,h,.14),0x1c2028,x,y,z,0,ry);cv(B(w+.3,.18,.3),0x7d786e,x+sin(ry)*.05,y-h/2-.1,z+cos(ry)*.05,0,ry);WIN.push([x,y,z,ry,w*.9,h*.92])}
-// the front towers: a battered drum, a corbelled ring and parapet, arrow slits looking out and forward, and a tall cone of slate with a
-// pennant on its pole
-for(const s of[-1,1]){const x=KX+s*5.7,z=2.2;ash(new THREE.CylinderGeometry(2.25,2.45,12.4,18,22),x,6.2,z);cv(Cy(2.62,2.3,.7,18),0x7d786e,x,12.6,z);cv(Cy(2.66,2.66,.5,18),0x8b867c,x,13.2,z);
- for(const[y,a]of[[3.4,.15],[6.7,.75],[9.9,.35],[6.2,-.5]]){const A=PI/2-s*a;cv(B(.24,1.25,.3),0x1c1f26,x+cos(A)*2.3,y,z+sin(A)*2.3,0,PI/2-A);WIN.push([x+cos(A)*2.47,y,z+sin(A)*2.47,PI/2-A,.18,1.05])}
- const cg=new THREE.ConeGeometry(2.95,6.2,18,1,true),uv=cg.attributes.uv;for(let i=0;i<uv.count;i++)uv.setXY(i,uv.getY(i)*6.2,uv.getX(i)*18.5);part(cg,SLM,x,16.55,z,cot);
- cv(Cy(.05,.05,2.4,6),0x3a3632,x,20.6,z);cv(B(1.5,.5,.04),0xb3262c,x+.78,21.35,z)}
-// the square tower rising behind the hall, crenellated, the great banner flying from its pole
-{const x=KX+2.6,z=-1.8;ash(BX(4.6,15.6,4.6),x,7.8,z);cv(B(5.1,.4,5.1),0x7d786e,x,15.75,z);
- for(const[x0,z0,x1,z1]of[[-2.35,2.35,2.35,2.35],[-2.35,-2.35,2.35,-2.35],[-2.35,-2.35,-2.35,2.35],[2.35,-2.35,2.35,2.35]])for(let i=0;i<=3;i++){const u=i/3;cv(B(.7,.85,.5),STN[i%5],x+x0+(x1-x0)*u,16.35,z+z0+(z1-z0)*u,0,z0==z1?0:PI/2)}
- cv(Cy(.07,.07,5,6),0x3a3632,x,18.5,z);cv(B(2.6,1.5,.05),RED,x+1.36,20.1,z);cv(B(.3,1.5,.03),GILT,x+1.1,20.1,z+.04);cv(B(2.6,.3,.03),GILT,x+1.36,20.25,z+.04);
- for(const[y,a]of[[10.5,0],[13.4,0]])WIN.push([x,y,z+2.31,a,.25,1.1]),cv(B(.28,1.25,.14),0x1c2028,x,y,z+2.3)}
-banner(KX-3.4,7.55,3.62,1.7,4.5);banner(KX+3.4,7.55,3.62,1.7,4.5);
+// the keep, of cubes (VBK) half the towns' size (.1m: it stands at home, always in view, and read too blocky at .2), laid out in metres in a frame
+// centred on the hall (x' = x - KX) and set at KX: grey ashlar in courses of blocks, each its own shade, with lines of mortar between them; a plinth
+// and a string course proud of the walls, the corbels of the parapet's table and its merlons; a slate roof stepping up between stone gables, its
+// chimney; the arched gate set in, its oak leaves banded with iron under a dark tympanum, voussoirs round it, torch brackets either side; windows
+// set in; the front towers' battered drums under corbelled crowns and stepped cones of slate flying pennants; the square tower behind,
+// crenellated, flying the banner (the great red banners that hung down the face were taken down, 2026-11-05). The windows' glow planes (WIN) sit in their recesses
+{const q0=VBZ;VBZ=.1;const q=VBZ,c=m=>Math.round(m/q),cx=I=>(I+.5)*q,V=VBK(-96,-21,-46,96,226,57),SLC=[0x56606f,0x48515e],TRM=0x7d786e,
+ B3=(x0,x1,y0,y1,z0,z1,f)=>V.box(c(x0),c(x1)-1,c(y0),c(y1)-1,c(z0),c(z1)-1,f),
+ // ashlar: courses .6m, blocks 1.2m staggered, a cell of mortar along each course's foot and at each block's end
+ ash2=(I,J,K)=>{const cr=Math.floor(J/6),u=I+K+(cr&1)*6,b=Math.floor(u/12),col=vbT(STN[vbH(b,cr,0,31)*5|0],.9+.16*vbH(b,cr,0,32));return J-cr*6==0||u-b*12==0?vbT(col,.8):col},
+ ashR=(I,J,K,x0,z0,n)=>{const cr=Math.floor(J/6),a=(atan2(cx(K)-z0,cx(I)-x0)/TAU+1)*n+(cr&1)*.5,b=Math.floor(a)%n,col=vbT(STN[vbH(b,cr,0,33)*5|0],.9+.16*vbH(b,cr,0,34));return J-cr*6==0||a-Math.floor(a)<.07?vbT(col,.8):col},
+ trim=(I,J,K,s)=>vbT(TRM,.94+.1*vbH(I>>1,J,K>>1,s)),
+ inB=(I,K,x0,x1,z0,z1)=>cx(I)>x0&&cx(I)<x1&&cx(K)>z0&&cx(K)<z1,
+ slate=(I,J,K,e)=>{const cr=e>>1;return vbH(I,J,K,36)<.02?0x9a9468:vbT(SLC[cr&1],(.85+.3*vbH(Math.floor((cx(I)+cx(K)+(cr&1)*.2)/.4),cr,0,37))*(e&1?1:.92))},
+ // a drum about (x, z) from y0 to y1 metres, its radius R(y); f colours a cell (-1 leaves it)
+ drum=(x,z,y0,y1,R,f)=>vbDrum(V,x,z,c(y0),c(y1)-1,R,f,3.4),
+ // a flag of cloth a cell thick off a pole two cells square at (x, z): the pole from y0 to y1, the cloth w long and h high from yf, a gold cross if gx
+ flag=(x,z,y0,y1,yf,w,h,col,gx)=>{B3(x-.1,x+.1,y0,y1,z-.1,z+.1,0x3a3632);B3(x+.1,x+.1+w,yf,yf+h,z-.05,z+.05,(I,J)=>gx&&(abs(cx(I)-(x+.1+w*.35))<.12||abs(cx(J)-(yf+h*.55))<.12)?GILT:vbT(col,(Math.floor(cx(I)/.2)&1)?1:.88))};
+ // the hall, its plinth, string course, corbel table and parapet
+ B3(-5.6,5.6,-2,8,-3.6,3.6,ash2);
+ B3(-5.8,5.8,-2,.4,-3.8,3.8,(I,J,K)=>inB(I,K,-5.6,5.6,-3.6,3.6)?-1:vbSt(0x6f6b64,I,J,K,8,4,.25,33));
+ B3(-5.8,5.8,4.4,4.6,-3.8,3.8,(I,J,K)=>inB(I,K,-5.6,5.6,-3.6,3.6)?-1:trim(I,J,K,34));
+ B3(-5.8,5.8,7.4,8,-3.8,3.8,(I,J,K)=>inB(I,K,-5.6,5.6,-3.6,3.6)?-1:J<c(7.6)&&Math.floor((I+K)/2)&1?-1:trim(I,J,K,35));
+ B3(-5.8,5.8,8,9,-3.8,3.8,(I,J,K)=>{if(inB(I,K,-5.4,5.4,-3.4,3.4))return-1;if(J<c(8.4))return ash2(I,J,K);const u=abs(cx(I))>5.35?cx(K):cx(I);return(u+20)%1<.6?ash2(I,J,K):-1});
+ // the roof, ridge along x, stepping a cell up for each cell in from gutters inside the parapet; stone gables standing over it at its ends; the chimney
+ for(let K=c(-3.2);K<c(3.2);K++){const e=K<0?K-c(-3.2):c(3.2)-1-K,jt=c(8)+e;for(let I=c(-5.2);I<c(5.2);I++){for(let J=c(8);J<jt-1;J++)V.put(I,J,K,ash2(I,J,K));V.put(I,jt-1,K,0x3a3f48);V.put(I,jt,K,slate(I,jt,K,e));e==c(3.2)-1&&(V.put(I,jt+1,K,0x3f4652),V.put(I,jt+2,K,0x3f4652))}
+  for(const I of[c(-5.4),c(-5.3),c(5.2),c(5.3)])for(let J=c(8);J<=jt+1;J++)V.put(I,J,K,ash2(I,J,K))}
+ B3(-3.8,-3.2,8,11.2,-1.8,-1.2,ash2);B3(-4,-3,11.2,11.4,-2,-1,(I,J,K)=>abs(cx(I)+3.5)<.15&&abs(cx(K)+1.5)<.15?0x15110e:vbT(0x6f6b64,.9+.2*vbH(I,J,K,38)));
+ // the gate: the arch set .2 in, the leaves behind it, the dark tympanum over them; voussoirs and jambs .2 proud; the curb cleared and a step laid
+ {const K0=c(3.6)-1;for(let J=0;J<c(5.2);J++)for(let I=c(-1.8);I<c(1.8);I++){const x=cx(I),y=cx(J),r=hypot(x,y-3.4),inA=abs(x)<1.35&&y<3.4||r<1.35,vs=y>=3.2&&r>=1.35&&r<1.78,jb=y<3.4&&abs(x)>=1.35&&abs(x)<1.7;
+  if(inA){V.put(I,J,K0,0);V.put(I,J,K0-1,0);V.put(I,J,K0-2,y>3.3?0x14120f:[.65,1.65,2.65].some(v=>abs(y-v)<.06)?0x2b2b2b:abs(abs(x)-.15)<.06&&abs(y-1.45)<.06?0x2b2b2b:vbT(0x5a3a22,(Math.floor(x/.2)&1?1:.84)*(abs(x)<.06?.7:1)*(.92+.14*vbH(I,J,0,39))))}
+  else if(vs)for(const k of[1,2])V.put(I,J,K0+k,vbT(TRM,.85+.25*vbH(Math.floor((atan2(y-3.4,x)/PI)*9),0,0,40)));else if(jb)for(const k of[1,2])V.put(I,J,K0+k,vbT(TRM,Math.floor(y/.4)&1?.95:1.08))}}
+ B3(-1.4,1.4,.2,.4,3.6,3.8,0);B3(-1.8,1.8,0,.2,3.6,4,(I,J,K)=>vbSt(0x7f7a70,I,J,K,6,2,.25,41));
+ for(const x of[2.1,-2.1]){B3(x-.1,x+.1,2.4,3,3.6,3.8,0x2b2724);B3(x-.15,x+.15,3,3.2,3.6,4,0x2b2724)}
+ // windows: the great one over the gate (a stone transom across it), a pair down each flank; each set .2 in, its glass dark, a sill under it
+ const win=(u0,u1,y0,y1,f)=>{for(let J=c(y0);J<c(y1);J++)for(let U=c(u0);U<c(u1);U++){if(J>=c(y1)-2&&(U<c(u0)+2||U>=c(u1)-2))continue;f(U,J,0,0);f(U,J,1,0);f(U,J,2,abs(cx(J)-(y0+(y1-y0)*.5))<.06&&u1-u0>1?TRM:vbT(0x1c2028,.85+.3*vbH(U,J,0,42)))}for(let U=c(u0)-2;U<c(u1)+2;U++)for(const J of[c(y0)-2,c(y0)-1])f(U,J,-1,TRM),f(U,J,-2,TRM)};
+ win(-.6,.6,5.4,7.2,(U,J,d,v)=>V.put(U,J,c(3.6)-1-d,v));WIN.push([KX,6.3,3.4,0,1.05,1.75]);
+ for(const s of[1,-1])for(const[z0,z]of[[.8,1.2],[-2,-1.6]]){win(z0,z0+.8,5.2,6.6,(U,J,d,v)=>V.put(s>0?c(5.6)-1-d:c(-5.6)+d,J,U,v));WIN.push([KX+s*5.4,5.9,z,s*PI/2,.7,1.3])}
+ // the front towers
+ for(const s of[-1,1]){const x=s*5.7,z=2.2;
+  drum(x,z,-2,12.4,y=>y<.4?2.65:2.45-.2*y/12.4,(I,J,K)=>J<c(.4)?vbSr(0x6f6b64,I,J,K,28,4,.25,43,x,z):ashR(I,J,K,x,z,14));
+  drum(x,z,12.4,12.8,()=>2.66,(I,J,K)=>J<c(12.6)&&vbSec(I,K,x,z,48)&1?-1:trim(I,J,K,46));
+  drum(x,z,12.8,13.4,()=>2.66,(I,J,K,d)=>d<2.2?-1:J>=c(13)&&vbSec(I,K,x,z,20)&1?-1:vbT(0x8b867c,.9+.15*vbH(I>>1,J,K>>1,47)));
+  vbCone(V,x,z,2.95,c(13.4),c(19.6),slate);flag(x,z,19.6,21.6,20.6,1.5,.6,0xb3262c,0);
+  for(const[y,a]of[[3.4,.15],[6.7,.75],[9.9,.35],[6.2,-.5]]){const A=PI/2-s*a;vbSlit(V,x,z,2.45-.2*y/12.4,PI/2-A,c(y)-6,12,0x1c1f26,3);WIN.push([KX+x+cos(A)*2.62,y,z+sin(A)*2.62,PI/2-A,.18,1.05])}}
+ // the square tower behind, its corbelled cap and merlons, two windows looking out over the roof, and the banner flying
+ B3(.2,4.8,-2,15.6,-4,.6,ash2);B3(0,5,15.6,16,-4.2,.8,(I,J,K)=>trim(I,J,K,48));
+ B3(0,5,16,16.8,-4.2,.8,(I,J,K)=>{const e=cx(I)<.2||cx(I)>4.8||cx(K)<-4||cx(K)>.6;if(!e)return-1;const u=cx(I)<.2||cx(I)>4.8?cx(K):cx(I);return(u+20)%.8<.4?ash2(I,J,K):-1});
+ for(const y0 of[12,13.8]){B3(2.4,2.8,y0,y0+1.2,.4,.6,0);B3(2.4,2.8,y0,y0+1.2,.2,.4,0x1c2028);WIN.push([KX+2.6,y0+.6,.3,0,.3,1.1])}
+ flag(2.5,-1.7,16.8,21.6,19.9,2.6,1.4,RED,1);
+ part(V.mesh({dc:0x4a3b2b,dk:.4}),VC,KX,0,0,cot);VBZ=q0}
 {const ST=[0x8f8c84,0x7d7a73,0xa3a095,0x6f6d68,0x8a9471,0x979382];
  // two runs across the whole front of the house, bowing gently outward, with a gap where the path comes through (x -2.4..0)
  for(const[x0,z0,x1,z1]of[[-7.2,5.6,-2.4,6.4],[0,6.4,7.2,5.6]]){const dx=x1-x0,dz=z1-z0,L0=hypot(dx,dz),ang=-atan2(dz,dx);
@@ -2631,7 +2872,7 @@ part(mg(CV),VC,0,0,0,cot);
 {const lm=new THREE.MeshBasicNodeMaterial({fog:false});lm.colorNode=color(0xffb04a).mul(U.win.mul(3.2).add(.25));for(const s of[-1,1])part(B(.2,.32,.2),lm,KX+s*2.1,3.3,3.74,cot).castShadow=false}
 const WGM=new THREE.MeshBasicNodeMaterial({transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false});WGM.colorNode=color(0xffb45c).mul(2.4);
 for(const[x,y,z,r,w,h]of WIN){const m=new THREE.Mesh(cvn(new THREE.PlaneGeometry(w,h)),WGM);m.position.set(x+sin(r)*.09,y,z+cos(r)*.09);m.rotation.y=r;cot.add(m)}
-cot.updateMatrixWorld(true);const CHM=V(KX-3.6,11.1,-1.6).applyMatrix4(cot.matrixWorld);
+cot.updateMatrixWorld(true);const CHM=V(KX-3.5,11.45,-1.5).applyMatrix4(cot.matrixWorld);
 // a round-crowned tree beside the cottage's left gable; its crown spreads ~5.4m, so the trunk stands ~7m clear of the gable
 {const tt=[[...cw(-12.6,-4.2)].flatMap((v,i)=>i?[-.2,v]:[v]).concat([1.45,.6])];farm.add(IM(TRA,VWT,tt,1),IM(TAL,VLT,tt,1))}
 const LGS=new THREE.Sprite(new THREE.SpriteNodeMaterial({map:DOT,color:0xffb050,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:.7,fog:false})),LGS2=new THREE.Sprite(LGS.material);
@@ -2655,31 +2896,45 @@ function mkPen(){const r=RNG;fen=new THREE.Group();Object.assign(fen,{r,gx:cos(G
 // solid boxes [w, h, d, x, y, z] in its own frame (the corner towers' drums are added as cylinders) ----
 const LMK=(()=>{const mot=(g,x,y,z)=>{g.translate(x,y,z);const p=g.attributes.position,C=new Float32Array(p.count*3),c=new THREE.Color();
   for(let i=0;i<p.count;i++){const X=p.getX(i),Y=p.getY(i),Z=p.getZ(i),k=floor(Y/.6),u=floor((X+Z)/1.2+(k&1)*.5);c.setHex(STN[h3(u,k,11)*5|0]).multiplyScalar(.82+.18*h3(u,k,5));C[i*3]=c.r;C[i*3+1]=c.g;C[i*3+2]=c.b}
-  g.setAttribute('color',new THREE.BufferAttribute(C,3));return[g,null]},
- // a slate cone in courses (radius r, height h, its foot at y), a pole with its pennant, a run of merlons, a banner with the gold cross
- slate=(L,r,h,x,y,z)=>{const g=new THREE.ConeGeometry(r,h,16,8),p=g.attributes.position,C=new Float32Array(p.count*3),c=new THREE.Color();for(let i=0;i<p.count;i++){c.setHex((((p.getY(i)/h+.5)*8|0)%2)?0x56606f:0x48515e);C[i*3]=c.r;C[i*3+1]=c.g;C[i*3+2]=c.b}g.setAttribute('color',new THREE.BufferAttribute(C,3));L.push([g.translate(x,y+h/2,z),null])},
- flag=(L,x,y,z,w,h,c)=>L.push([Cy(.06,.06,h+1.6,6).translate(x,y+(h+1.6)/2,z),0x3a3632],[B(w,h*.42,.05).translate(x+w/2+.05,y+h+1.6-h*.25,z),c]),
- merl=(L,x0,z0,x1,z1,y)=>{const n=Math.round(hypot(x1-x0,z1-z0)/1.5);for(let i=0;i<=n;i++){const u=i/n;L.push([B(.8,.9,.6).rotateY(z0==z1?0:PI/2).translate(x0+(x1-x0)*u,y+.45,z0+(z1-z0)*u),STN[i%5]])}},
- bnr=(L,x,y,z,w,h)=>L.push([Cy(.07,.07,w+.6,6).rotateZ(PI/2).translate(x,y,z+.05),0x4a3020],[B(w,h,.07).translate(x,y-h/2-.1,z),0x9c1f24],[B(w*.18,h*.55,.04).translate(x,y-h*.45,z+.05),0xd2a23c],[B(w*.68,w*.18,.04).translate(x,y-h*.31,z+.05),0xd2a23c],[B(w,.14,.09).translate(x,y-h-.15,z),0xd2a23c]),
- slit=(L,r,y,a)=>L.push([B(.26,1.3,.4).rotateY(PI/2-a).translate(cos(a)*r,y,sin(a)*r),0x1c1f26]),
- door=L=>L.push([B(1.5,2.5,.3).translate(0,1.25,2.95),0x14120f],[new THREE.CircleGeometry(.75,10,0,PI).translate(0,2.5,3.06),0x14120f]);
+  g.setAttribute('color',new THREE.BufferAttribute(C,3));return[g,null]};
  let s=71;const r=()=>(s=s*16807%2147483647)/2147483647;
- // the watchtower, whole: a battered drum from below the ground to 14m, its corbelled top under a tall cone, slits up it, a banner by the door
- const tw=[mot(new THREE.CylinderGeometry(2.75,3.05,17,16,30),0,5.5,0),[Cy(3.15,2.8,.7,16).translate(0,14.35,0),0x7d786e]];slate(tw,3.35,7,0,14.7,0);flag(tw,0,21.7,0,1.4,1.2,0xb3262c);door(tw);
- for(const[y,a]of[[5,.4],[8.5,2.2],[11.5,-.9],[6.5,3.6],[12,1.3]])slit(tw,2.83,y,a);bnr(tw,0,10.8,2.92,1.3,3.4);
- // broken off at 9m: what's left of its crown at odd heights, gaps between, and its stones round its foot
- const tr=[mot(new THREE.CylinderGeometry(2.8,3.05,12,16,22),0,3,0)];door(tr);for(const[y,a]of[[5,.4],[7.5,2.6]])slit(tr,2.88,y,a);
- for(let i=0;i<14;i++){if(r()<.3)continue;const a=i/14*TAU,h=.4+r()*1.8;tr.push([B(1.1,h,.7).rotateY(PI/2-a).translate(cos(a)*2.65,9+h/2-.2,sin(a)*2.65),STN[i%5]])}
- for(let i=0;i<26;i++){const a=r()*TAU,d=3.3+r()*2.2,e=.25+r()*.35;tr.push([ico().scale(e*1.3,e*.8,e).rotateY(r()*3).translate(cos(a)*d,e*.3,sin(a)*d),STN[r()*5|0]])}
- // the fortress on its rock (a twelve-sided plinth whose top is the courtyard), the gate toward +z between two square towers
- const cs=[mot(new THREE.CylinderGeometry(23,25,6,12,6),0,-2.8,0)],col=[[28,10,2.4,0,4,-14],[2.4,10,28,-14,4,0],[2.4,10,28,14,4,0],[10.5,10,2.4,-8.75,4,14],[10.5,10,2.4,8.75,4,14],[4,13,4,-4.6,5.5,14.5],[4,13,4,4.6,5.5,14.5],[10,22,10,0,9,-4]];
- for(const[w,h,d,x,y,z]of col.slice(0,5))cs.push(mot(BX(w,h,d),x,y,z));merl(cs,-12.5,-14,12.5,-14,9);merl(cs,-14,-12.5,-14,12.5,9);merl(cs,14,-12.5,14,12.5,9);merl(cs,-12.5,14,-6.6,14,9);merl(cs,6.6,14,12.5,14,9);
- for(const sg of[-1,1]){cs.push(mot(BX(4,13,4),sg*4.6,5.5,14.5));merl(cs,sg*4.6-1.6,16.5,sg*4.6+1.6,16.5,12)}cs.push(mot(BX(5.2,3.2,2.6),0,8.6,14.4));bnr(cs,0,6.8,15.75,2.4,3);
- for(const[x,z]of[[-14,-14],[14,-14],[-14,14],[14,14]]){cs.push(mot(new THREE.CylinderGeometry(3.5,3.8,16,16,26),x,5,z),[Cy(3.95,3.55,.8,16).translate(x,13.4,z),0x7d786e]);slate(cs,4.2,8,x,13.8,z);flag(cs,x,21.8,z,1.6,1.4,0xb3262c);
-  for(const a of[.6,2.2,3.8,5.3])cs.push([B(.28,1.4,.4).rotateY(PI/2-a).translate(x+cos(a)*3.62,8+a,z+sin(a)*3.62),0x1c1f26])}
- cs.push(mot(BX(10,22,10),0,9,-4),[B(10.8,.5,10.8).translate(0,20.2,-4),0x7d786e]);for(const[a,b,c2,d2]of[[-5,1,5,1],[-5,-9,5,-9],[-5,-9,-5,1],[5,-9,5,1]])merl(cs,a,b,c2,d2,20.4);
- flag(cs,0,21.3,-4,3,2.2,0x9c1f24);bnr(cs,0,17.5,1.06,2.8,9);for(const[x,y]of[[-3,12],[3,12],[-3,7],[3,7]])cs.push([B(.6,1.6,.2).translate(x,y,1.02),0x1c2028]);
- return{tw:mg(tw),tr:mg(tr),cs:mg(cs),col}})();
+ // all of cubes (VBK) now, as the keep is. A slate cone stepping in by courses; a flag a cell thick off its pole; a banner down a face (its rod, red
+ // cloth in folds, the gold cross, a gilt fringe), facing +z from the face's cell layer K
+ const SLT=(I,J,K,c)=>vbH(I,J,K,36)<.03?0x9a9468:vbT(c&1?0x56606f:0x48515e,.85+.3*vbH(Math.floor((atan2(K,I)/TAU+1)*30+(c&1)*.5),J,c,37)),
+  vflag=(V,I,K,J0,J1,Jf,w,h,c,gx)=>{V.box(I,I,J0,J1,K,K,0x3a3632);V.box(I+1,I+w,Jf,Jf+h-1,K,K,(X,J)=>gx&&(X==I+1+Math.round(w*.35)||J==Jf+Math.round(h*.6))?0xd2a23c:vbT(c,X&1?1:.88))},
+  vbnr=(V,I0,I1,Jt,Jb,K)=>{const w=I1-I0+1,m=I0+(w>>1);V.box(I0-1,I1+1,Jt,Jt,K,K+1,0x4a3020);
+   V.box(I0,I1,Jb,Jt-1,K,K,(I,J)=>J==Jb?0xd2a23c:abs(I-m+.5)<w*.1+.5&&J>Jb+3&&J<Jt-4||abs(J-(Jt-Math.round((Jt-Jb)*.32)))<1&&abs(I-m+.5)<w*.35?0xd2a23c:vbT(0x9c1f24,(I&1?1:.84)*(.95+.08*vbH(I,J,K,49))))},
+  ASH=(I,J,K)=>vbAsh(STN,I,J,K,3),
+ // the watchtower: a battered drum from below the ground to 14m under a corbelled ring and a tall slate cone with its pennant, slits up it, the
+ // dark arched door at +z and the banner over it; broken off at 9m: what's left of its crown at odd heights, and its stones in heaps round its foot
+ TWR=br=>{const V=VBK(-30,-18,-30,30,br?60:118,30),Jt=br?45:70,rr=y=>3.05-.3*(y+3)/17;
+  vbDrum(V,0,0,-15,Jt-1,rr,(I,J,K)=>vbAshR(STN,I,J,K,0,0,20,1),4);
+  if(!br){vbDrum(V,0,0,Jt,Jt+3,y=>2.8+(y-14)/.7*.35,(I,J,K,d,r)=>J<Jt+2&&d>r-.25&&vbSec(I,K,0,0,24)&1?-1:vbT(0x7d786e,.92+.12*vbH(I,J,K,2)),4);
+   vbCone(V,0,0,3.35,Jt+4,Jt+38,SLT);vflag(V,0,0,Jt+38,Jt+48,Jt+44,7,3,0xb3262c,0);
+   for(let I=-3;I<=3;I++)for(let J=37;J<=55;J++){let K=16;while(K>0&&V.col(I,J,K)<0)K--;K>0&&V.put(I,J,K+1,J==37?0xd2a23c:J==55?0x4a3020:abs(I)<1&&J>40&&J<53||J==49&&abs(I)<3?0xd2a23c:vbT(0x9c1f24,I&1?1:.84))}}
+  else{for(let i=0;i<14;i++){if(vbH(i,0,0,5)<.3)continue;const h=.4+vbH(i,1,0,6)*1.8;vbDrum(V,0,0,Jt,Jt+Math.round(h/VBZ),()=>2.95,(I,J,K,d)=>d<2.2||vbSec(I,K,0,0,14)!=i?-1:vbAshR(STN,I,J,K,0,0,20,1),4)}
+   for(let i=0;i<7;i++){const a=i*.9+.4,d=3.8+vbH(i,2,0,7)*1.4;vbHeap(V,cos(a)*d,sin(a)*d,1+vbH(i,3,0,8)*.6,.4+vbH(i,4,0,9)*.35,STN,i)}}
+  vbSlit(V,0,0,3,0,0,13,0x14120f,7);
+  for(const[y,a]of br?[[5,.4],[7.5,2.6]]:[[5,.4],[8.5,2.2],[11.5,-.9],[6.5,3.6],[12,1.3]])vbSlit(V,0,0,rr(y),PI/2-a,Math.round(y/VBZ)-3,7,0x1c1f26,1);
+  return V.mesh({dc:0x4a3b2b,dk:.4})},
+ // the fortress on its rock (a twelve-sided plinth whose top is the courtyard), the gate toward +z between two square towers under the gatehouse
+ col=[[28,10,2.4,0,4,-14],[2.4,10,28,-14,4,0],[2.4,10,28,14,4,0],[10.5,10,2.4,-8.75,4,14],[10.5,10,2.4,8.75,4,14],[4,13,4,-4.6,5.5,14.5],[4,13,4,4.6,5.5,14.5],[10,22,10,0,9,-4]],
+ CSV=(()=>{const V=VBK(-95,-8,-95,95,128,95),c=v=>Math.round(v/VBZ),bx=(w,h,d,x,y,z,f)=>V.box(c(x-w/2),c(x+w/2)-1,c(y-h/2),c(y+h/2)-1,c(z-d/2),c(z+d/2)-1,f),
+   // merlons along the outer edge of a wall's top, 3 cells on and 2 off
+   mer=(w,h,d,x,y,z,ox,oz)=>bx(w,1,d,x,y+h/2+.5,z,(I,J,K)=>{const e=ox?(ox>0?I>=c(x+w/2)-3:I<c(x-w/2)+3):(oz>0?K>=c(z+d/2)-3:K<c(z-d/2)+3);return e&&((ox?K:I)+200)%5<3?ASH(I,J,K):-1});
+  col.slice(0,5).forEach(([w,h,d,x,y,z],i)=>{bx(w,h,d,x,y,z,ASH);mer(w,h,d,x,y,z,[0,-1,1,0,0][i],[-1,0,0,1,1][i])});
+  for(const sg of[-1,1]){bx(4,13,4,sg*4.6,5.5,14.5,ASH);bx(4,1,4,sg*4.6,12.5,14.5,(I,J,K)=>(I==c(sg*4.6-2)||I==c(sg*4.6+2)-1||K==c(12.5)||K==c(16.5)-1)&&((I+K)>>1)&1?ASH(I,J,K):-1)}
+  bx(5.2,3.2,2.6,0,8.6,14.4,ASH);vbnr(V,-6,5,34,19,79);
+  for(const[x,z]of[[-14,-14],[14,-14],[-14,14],[14,14]]){vbDrum(V,x,z,-15,64,y=>3.8-.3*(y+3)/16,(I,J,K)=>vbAshR(STN,I,J,K,x,z,22,2),4.2);
+   vbDrum(V,x,z,65,68,()=>3.95,(I,J,K,d)=>J<67&&d>3.7&&vbSec(I,K,x,z,26)&1?-1:vbT(0x7d786e,.92+.12*vbH(I,J,K,4)),4.2);
+   vbCone(V,x,z,4.2,69,108,SLT);vflag(V,c(x),c(z),109,119,114,8,4,0xb3262c,0);
+   for(const a of[.6,2.2,3.8,5.3])vbSlit(V,x,z,3.62,PI/2-a,Math.round((8+a)/VBZ)-3,7,0x1c1f26,1)}
+  bx(10,22,10,0,9,-4,ASH);bx(10.8,.5,10.8,0,20.2,-4,(I,J,K)=>vbT(0x7d786e,.92+.12*vbH(I,J,K,5)));
+  bx(10.8,.9,10.8,0,20.9,-4,(I,J,K)=>{const e=I<c(-5.4)+2||I>=c(5.4)-2||K<c(-9.4)+2||K>=c(1.4)-2;return e&&((I+K+200)%4<2)?ASH(I,J,K):-1});
+  vflag(V,0,c(-4),106,126,113,15,10,0x9c1f24,1);vbnr(V,-7,6,87,42,5);
+  for(const[x,y]of[[-3,12],[3,12],[-3,7],[3,7]])for(let I=c(x)-1;I<=c(x)+1;I++)for(let J=c(y)-4;J<c(y)+4;J++){V.put(I,J,4,0);V.put(I,J,3,0x1c2028)}
+  return V.mesh({dc:0x4a3b2b,dk:.35})})();
+ return{tw:TWR(0),tr:TWR(1),cs:mg([mot(new THREE.CylinderGeometry(23,25,6,12,6),0,-2.8,0),[CSV,null]]),col}})();
 
 // ---- characters: shaped from SDF primitives and cut into cubes (VXS), skinned in TSL (positions + normals) and cel shaded ----
 const rotV=(ax,v,c,s)=>ax==0?vec3(v.x,v.y.mul(c).sub(v.z.mul(s)),v.y.mul(s).add(v.z.mul(c))):ax==1?vec3(v.x.mul(c).add(v.z.mul(s)),v.y,v.z.mul(c).sub(v.x.mul(s))):vec3(v.x.mul(c).sub(v.y.mul(s)),v.x.mul(s).add(v.y.mul(c)),v.z),
@@ -2985,7 +3240,7 @@ const WPV={sw1:[staff.children[0]],sw2:[part(mg([[B(.12,1.05,.03).translate(0,.9
   ax1:[part(mg([[B(.05,.8,.05).translate(0,.72,0),LTH],[B(.07,.06,.07).translate(0,1.13,0),GLD]]),VC,0,0,0,staff),part(mg([[B(.24,.18,.03).translate(.13,1.0,0),0],[B(.06,.34,.03).translate(.27,.97,0),0]]),BLM,0,0,0,staff)],
   ax2:[part(mg([[B(.06,1.2,.06).translate(0,.9,0),LTH],[B(.08,.07,.08).translate(0,1.52,0),GLD]]),VC,0,0,0,staff),part(mg([[B(.46,.24,.035).translate(0,1.34,0),0],[B(.06,.42,.035).translate(.25,1.34,0),0],[B(.06,.42,.035).translate(-.25,1.34,0),0]]),BLM,0,0,0,staff)]},
  AXHM=part(mg([[B(.08,.08,.08).translate(0,.04,0),GLD],[B(.05,.26,.05).translate(0,.21,0),LTH]]),VC,0,0,0,staff),SWHG=staff.geometry,AXHG=AXHM.geometry,
- wpLook=()=>{const t=WPV[EQ.w?.t]?EQ.w.t:CL().kw;OHG.parent||SHE.add(OHG);for(const k in WPV)for(const m of WPV[k])m.visible=k==t;staff.geometry=SWK[t]?SWHG:AXHG;for(const k in OHW)OHW[k].visible=WPT[t]?.[1]==2&&k==t||EQ.s?.s=='w'&&k==EQ.s.t;BOWA.visible=false};
+ wpLook=()=>{const t=WPV[EQ.w?.t]?EQ.w.t:CL().kw;OHG.parent||SHE.add(OHG);for(const k in WPV)for(const m of WPV[k])m.visible=k==t;staff.geometry=SWK[t]?SWHG:AXHG;for(const k in OHW)OHW[k].visible=k!='dag'&&(WPT[t]?.[1]==2&&k==t||EQ.s?.s=='w'&&k==EQ.s.t);ODG.parent||staff.parent?.add(ODG);ODG.visible=t=='dag'&&dwOn();BOWA.visible=false};
 AXHM.visible=false;
 // the other classes' weapons: the paladin's war hammer (enlarged: its head 1.2x then 1.25x the size it was drawn at; the haft 1.2x, 1.25x and 1.2x again long, from the butt, its head HMH up it) and holy greatsword, the necro-knight's scythe and runeblades, the ranger's longbow
 // and crossbow, the rogue's daggers and claws, the mage's staff and wand (its gem the blade's glowing material). A pair puts its twin in
@@ -3007,6 +3262,9 @@ const SWK={sw1:1,sw2:1,pw2:1,rb1:1,dag:1},OHG=new THREE.Group();OHG.position.set
 const OHW={rb1:part(mg([[B(.05,.2,.05).translate(0,.1,0),LTH],[B(.22,.04,.06).translate(0,.22,0),GLD],[B(.07,.6,.025).translate(0,.54,0),0]]),BLM,0,0,0,OHG),
  dag:part(mg([[B(.05,.18,.05).translate(0,.09,0),LTH],[B(.06,.36,.025).translate(0,.36,0),0]]),BLM,0,0,0,OHG),
  clw:part(mg([[B(.02,.3,.02).translate(-.045,.2,0),0],[B(.02,.34,.02).translate(0,.22,0),0],[B(.02,.3,.02).translate(.045,.2,0),0],[B(.14,.05,.05).translate(0,.05,0),0]]),BLM,0,0,0,OHG)};
+// a Rogue's second dagger, in his left fist: the main dagger's twin (its hilt and blade), set each frame where the left arm puts the hand (poseStaff),
+// beside the staff in the same frame. (OHW's dagger, on the forearm where a shield hangs, sat in his elbow and is no longer shown)
+const ODG=new THREE.Mesh(SWHG,staff.material);ODG.add(new THREE.Mesh(WPV.dag[0].geometry,WPV.dag[0].material));ODG.visible=false;ODG.castShadow=ODG.children[0].castShadow=true;
 // the shield on his left forearm when one is worn (armTint shows it): hung from the shoulder and the elbow as manRig bends that arm (PU.ar.x
 // then ar.y about the shoulder, el.x about the elbow), on tg so the spine carries it as it does the sword, its face turned a little forward.
 // A heater shield in the surcoat's crimson with the gold cross, its rim (SHRM) in the finish of the shield's rarity, its curved foot cut
@@ -3280,7 +3538,7 @@ wxU=dt=>{if(run&&!pz&&(wxN-=dt)<0){const o=WXN[wxI];wxGo(o[R()*o.length|0])}cons
  hemi.color.copy(zc).lerp(hc,.45);U.fill.value.copy(zc).lerp(hc,.6).multiplyScalar(.35+.65*dl);hemi.groundColor.setRGB(.15,.19,.08).multiplyScalar(.25+.75*dl);hemi.intensity=(.42+.62*dl)*(1+.45*wx.c);
  renderer.toneMappingExposure=EXB*wx.x*(1+.6*(1-dl))*(1-.12*NF2);
  // the keep's lamps (its windows and the gate's torches): dark while the sun has the sky; lit in rain or
- // fog, and from the first wolf howl (a minute before nightfall) until the sun is back up
+ // fog, and from a minute before nightfall until the sun is back up
  LT+=(max(sm(.1,.3,wx.r),sm(.3,.7,wx.hf),dT>=DAY-60&&dT<CYC-20?1:0)-LT)*min(1,dt/1.2);WGM.opacity=LT*.9;U.win.value=LT;
  U.rays.value=.16*sm(-.02,.12,sE)*(1-.8*wx.c)*(1-wx.r);U.sunCol.value.copy(sun.color);U.sat.value=1.16+.1*(1-wx.c)-.18*wx.r;U.stH.value=.42+.2*gold;U.stHigh.value.setRGB(1,.82-.06*gold-.1*sO,.56-.1*gold-.16*sO);U.stS.value=.5+.25*(1-dl);
  RNM.visible=SPM.visible=RFM.visible=wx.r>.01;FRM.visible=U.pud.value>0;if(RNM.visible){U.rt.value=(U.rt.value+dt)%1000;U.rwv.value.copy(U.wd.value).multiplyScalar(2+3*wx.w);U.rc.value.set(LK.x+CO.x*8,LK.y+12,LK.z+CO.z*8)}};
@@ -3291,17 +3549,19 @@ let snW=0,auW=0,cliW=0,hnW=0;
 const snU=dt=>{const p=P.position;snW+=(rlZW(1,p.x,p.z)-snW)*min(1,dt*.7);auW+=(rlZW(2,p.x,p.z)-auW)*min(1,dt*.7);const w=sm(.12,.75,snW),a=sm(.12,.75,auW);SNK.value=w*(1-.6*wx.r);SNM.visible=SNK.value>.01;LFK.value=a*(1-.8*wx.r);LFM.visible=LFK.value>.01;cliW+=(rlZW(5,p.x,p.z)-cliW)*min(1,dt*.7);GLM.visible=sm(.12,.6,cliW)>.05;if(GLM.visible)GLT.value=(GLT.value+dt)%1000;
  hnW+=(rlZW(3,p.x,p.z)-hnW)*min(1,dt*.7);const hz=sm(.12,.75,hnW);FFK.value=hz*(.25+.75*max(U.ngt.value,U.win.value));FFM.visible=FFK.value>.01;if(FFM.visible)FFT.value=(FFT.value+dt)%1000;
  if(SNM.visible||LFM.visible||GLM.visible||FFM.visible){SNC.value.set(LK.x+CO.x*8,LK.y+8,LK.z+CO.z*8);SNR.value.setFromMatrixColumn(cam.matrixWorld,0);SNU.value.setFromMatrixColumn(cam.matrixWorld,1)}
- if(SNM.visible)SNT.value=(SNT.value+dt)%1000;for(const b of LHB)b.rotation.y=tm*.5+b.userData.ph;if(LFM.visible)LFT.value=(LFT.value+dt)%1000;
+ if(SNM.visible)SNT.value=(SNT.value+dt)%1000;for(const b of LHB)b.rotation.y=tm*.5+b.userData.ph;for(const m of MILLS)m.rotation.z=m.userData.ph-tm*.55;if(LFM.visible)LFT.value=(LFT.value+dt)%1000;
  // the Autumn Grasslands' light: golden, hazier, with more shafts and richer colour
  if(a>.002){const warm=(c,r,g,b,k)=>c.lerp(C2.setRGB(r,g,b).multiplyScalar(c.r*.3+c.g*.59+c.b*.11),k*a);warm(U.fogC.value,1.2,.98,.7,.5);warm(U.hor.value,1.2,.98,.7,.35);warm(U.gnd.value,1.2,.98,.7,.35);warm(hemi.color,1.1,.97,.8,.4);warm(U.fill.value,1.1,.97,.8,.4);
   sun.color.lerp(C2.setRGB(1,.8,.52),.4*a);U.rays.value*=1+1.4*a;U.sat.value*=1+.1*a;U.fogA.value*=1+.5*a}
  if(w>.002){const cold=(c,r,g,b,k)=>c.lerp(C2.setRGB(r,g,b).multiplyScalar(c.r*.3+c.g*.59+c.b*.11),k*w);
   cold(U.fogC.value,.76,.92,1.22,.85);cold(U.hor.value,.76,.92,1.22,.8);cold(U.gnd.value,.76,.92,1.22,.8);cold(U.zen.value,.62,.88,1.34,.5);cold(hemi.color,.7,.88,1.28,.8);cold(U.fill.value,.7,.88,1.28,.8);
-  sun.color.lerp(C2.setRGB(.7,.84,1.08),.75*w);sun.intensity*=1-.2*w;U.cov.value+=(1-U.cov.value)*.45*w;U.fogA.value*=1+.9*w;U.fogB.value*=1+.5*w}
- // the Haunted Hollow's light: a teal murk, the sun veiled by day and the moon strengthened by night, the mist thick and shafts of haze through it
+  sun.color.lerp(C2.setRGB(.7,.84,1.08),.75*w);sun.intensity*=1-.2*w;U.cov.value+=(1-U.cov.value)*.45*w;U.fogA.value*=1+1.5*w;U.fogB.value*=1+.8*w;
+  // and a light fog that never lifts: the distance thicker (a little short of the Hollow's), and a thin share (.14) of the heavy fog's white veil, clear round the knight
+  U.hf.value=max(U.hf.value,.14*w)}
+ // the Haunted Hollow's light: a teal murk, the sun veiled by day and the moon strengthened by night, the mist thick (a fifth thicker since 2026-11-05) and shafts of haze through it
  if(hz>.002){const mist=(c,r,g,b,k)=>c.lerp(C2.setRGB(r,g,b).multiplyScalar(c.r*.3+c.g*.59+c.b*.11),k*hz);
   mist(U.fogC.value,.55,.95,1.02,.8);mist(U.hor.value,.55,.92,1.02,.7);mist(U.gnd.value,.55,.92,1.02,.7);mist(U.zen.value,.5,.85,1.08,.45);mist(hemi.color,.5,.92,1.02,.8);mist(U.fill.value,.5,.92,1.02,.8);
-  sun.color.lerp(C2.setRGB(.62,.86,1.02),.7*hz);sun.intensity*=1-.4*hz*(1-U.ngt.value)+.3*hz*U.ngt.value;U.cov.value+=(1-U.cov.value)*.5*hz;U.fogA.value*=1+1.4*hz;U.fogB.value*=1+.7*hz;U.rays.value*=1+1.2*hz;U.sat.value*=1-.12*hz}};
+  sun.color.lerp(C2.setRGB(.62,.86,1.02),.7*hz);sun.intensity*=1-.4*hz*(1-U.ngt.value)+.3*hz*U.ngt.value;U.cov.value+=(1-U.cov.value)*.5*hz;U.fogA.value*=(1+1.4*hz)*(1+.2*hz);U.fogB.value*=(1+.7*hz)*(1+.2*hz);U.rays.value*=1+1.2*hz;U.sat.value*=1-.12*hz}};
 let dy=1,dT=0,hw=0,DSK=0,LT=0,NF2=0;
 let W=0,run=0,pz=0,svT=15,tm=0,LV=1,XP=0,POT=1,QN=0,SP=1,skSel='blade',dsT=0,dsC=0,dsN=0,wardT=0;
 // ---- the hero's numbers, after the master design. A class (CLD, CLS) wears one armour class, wields its own weapons and spends one
@@ -3729,7 +3989,8 @@ Object.assign(CCD,{rst:()=>mut('step')?.5:1,gtv:()=>mut('vault')?.5:1,mbk:()=>mu
  const chill=f=>{skr('mpf')&&slowF(f,.06*skr('mpf'),2)};
  CHK.mag=(f,dm)=>{if(skr('msb')){for(const o of near(1.5+.2*skr('msb'),f.x,f.z))o!==f&&fHit(o,dm*.5,{el:1,kb:.4});dotA(f,'bn',dm*.12*skr('msb'))}chill(f)};
  CKL.mag=f=>{if(skr('mpy')&&dotOn(f,'bn')){const s=stv();for(const o of near(3,f.x,f.z))o!==f&&fHit(o,s.arc*.4*skr('mpy'),{el:1});burst(f.x,f.z,3,0,{},0xff7a2a)}};
- BSH.mag=()=>{const[dx,dz]=aimF(26,.45),w=EQ.w?.t=='wnd';shoot(w?'arc':'blt',dx,dz,w?30:24,1,stv().arc,{w:1,el:1,kb:.5},{r:1.2});snd(w?900:500,.15,'triangle',.04,w?1400:250)};
+ // (the bolt flies 15% faster than it first did, 34.5 and 27.6 m/s; its life cut to match so it reaches as far as before)
+BSH.mag=()=>{const[dx,dz]=aimF(26,.45),w=EQ.w?.t=='wnd';shoot(w?'arc':'blt',dx,dz,w?34.5:27.6,1/1.15,stv().arc,{w:1,el:1,kb:.5},{r:1.2});snd(w?900:500,.15,'triangle',.04,w?1400:250)};
  CTK.mag=dt=>{tdT=max(0,tdT-dt);psT=max(0,psT-dt);if(wd0>0&&wdV<=0&&skr('mps'))psT=3;wd0=wdV};
  Object.assign(ACF,{
   mbk:()=>{const p=P_(),fy=P.rotation.y,ox=p.x,oz=p.z,d=9+.5*skr('mbk');emit(ox,p.y+1,oz,20,0x9fd0ff,3,2,.5,0,.4);sweep(p,sin(fy)*d,cos(fy)*d,.45,2.4);p.y=max(Hm(p.x,p.z),WL-1.2);emit(p.x,p.y+1,p.z,20,0x9fd0ff,3,2,.5,0,.4);
@@ -3769,7 +4030,7 @@ $('ski').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return
 $('ml').onclick=async e=>{const b=e.target.closest('[data-rs]');if(!b||b.disabled)return;const n=skSpent(),g=rsP();if(!n||!rsOk())return;
  if(!await ask('Unlearn every skill?',`All <b>${n}</b> point${n>1?'s':''} come back to spend again, for <b>${g}</b> gold: two fifths of all the gold you carry.`,'Unlearn all'))return;W-=g;SP+=n;for(const q in SKL)delete SKL[q];apply();bHP=min(bHP,bMax());hrt();sfx.coin();menu();hud();sv()};
 function apply(){hxD=1;abK='';dog.visible=false;clsLook();farmCol();fen||mkPen();armTint()}
-const SK='quest-1',sv=()=>{try{localStorage.setItem(SK,JSON.stringify({W,K:SKL,SP,LV,XP,POT,dy,dT,G:EQ,B:BAG,BB,QN,F:[...SHF],X:[...XPL],C:CLS,A:LOOK,M:MAT,V:2}))}catch(e){}};let sd=null;try{sd=JSON.parse(localStorage.getItem(SK))}catch(e){}
+const SK='quest-1',sv=()=>{try{localStorage.setItem(SK,JSON.stringify({W,K:SKL,SP,LV,XP,POT,dy,dT,G:EQ,B:BAG,BB,QN,F:[...SHF],X:[...XPL],C:CLS,A:LOOK,M:MAT,V:3}))}catch(e){}};let sd=null;try{sd=JSON.parse(localStorage.getItem(SK))}catch(e){}
 // ---- treasure: iron-bound chests at deserted farmsteads, in graveyards and ruins and at the foot of old towers (FIND, fndU), each opened
 // once for good (SHF keeps their keys, saved with the quest); a chest holds gold and a piece of gear rolled a grade above the field's ----
 const SHF=new Set(),FND=[],XPL=new Set();try{const s=JSON.parse(localStorage.getItem(SK));(s?.F||[]).forEach(k=>SHF.add(k));(s?.X||[]).forEach(k=>XPL.add(k))}catch(e){}
@@ -3880,12 +4141,12 @@ fndU=dt=>{const p=P.position,sp=(fndT-=dt)<0;sp&&(fndT=.3);let nd=30,nf=null;for
 // the knight's name, asked for on the title screen the first time (kept apart from the quest's save, so a new quest keeps it)
 let FARM=null;try{FARM=localStorage.getItem(SK+'-name')}catch(e){}const escH=t=>t.replace(/[&<>"']/g,c=>`&#${c.charCodeAt(0)};`);
 
-// a minute before nightfall the wolves start to howl (and go on through the night, further apart); at nightfall the dead begin to rise and
+// at nightfall the wolves howl, and now and then through the dark (every 20-50s; never by day, and no warning before it); the dead begin to rise and
 // the beasts grow bolder (the spawns read dT); when the night is out the sun comes up on a new day, and the knight is healed
 function dayU(dt){const l0=DAY-dT;dT+=dt;const l=DAY-dT;
- if(l0>60&&l<=60){howl(.05,-.4);hw=12+R()*8;toast('The wolves are howling. Night falls in a minute.','w','wolf')}
- if(l0>0&&l<=0){howl(.05,-.5);setTimeout(()=>howl(.04,.55,1.15),700);toast('Night falls over the realm. The dead are stirring.','w','moon');sv()}
- if(l<60&&(hw-=dt)<0){hw=l<0?24+R()*22:13+R()*11;const pn=(R()-.5)*1.6;howl(.02+R()*.028,pn,.9+R()*.25);R()<.35&&setTimeout(()=>howl(.012+R()*.012,-pn*.8,.95+R()*.2,1100),1500+R()*1500)}
+ 
+ if(l0>0&&l<=0){howl(.05,-.5);setTimeout(()=>howl(.04,.55,1.15),700);hw=18+R()*14;toast('Night falls over the realm. The dead are stirring.','w','moon');sv()}
+ if(l<0&&(hw-=dt)<0){hw=20+R()*30;const pn=(R()-.5)*1.6;howl(.02+R()*.028,pn,.9+R()*.25);R()<.35&&setTimeout(()=>howl(.012+R()*.012,-pn*.8,.95+R()*.2,1100),1500+R()*1500)}
  dT>=CYC&&dawn()}
 function dawn(){dT-=CYC;dy++;hw=0;bHP=bMax();hrt();toast(`Day ${dy}. Dawn breaks over the realm.`,'g','dawn');for(let k=0;k<7;k++)setTimeout(bird,500+k*380);sv()}
 
@@ -4034,7 +4295,7 @@ xpG=n=>{if(LV>=LVM)return;XP+=n;const p=P.position;dmgNum(p.x+.8,p.y+3.4,p.z,'+'
 // boards cleared). A bounty: k its kind (QK), n how many, c how far along, t its title, q how hard, r its tier, g its gold, st 0 posted,
 // 1 taken, 2 done, 3 paid ----
 QK={wolf:{ic:'wolf',t:['Wolves at the Gate','The Grey Pack','Howls in the Dark'],d:n=>`Slay ${n} wolves in the wilds.`,v:'Wolves slain',n:q=>4+min(6,q)},
- foe:{ic:'sword',t:['Brigands on the Road','The Outlaws of the Moor','A Price on Their Heads'],d:n=>`Defeat ${n} brigands.`,v:'Brigands defeated',n:q=>3+min(5,q>>1)},
+ foe:{ic:'sword',t:['Bandits on the Road','The Outlaws of the Moor','A Price on Their Heads'],d:n=>`Defeat ${n} bandits.`,v:'Bandits defeated',n:q=>3+min(5,q>>1)},
  dead:{ic:'skull',t:['The Restless Dead','Bones in the Barrow','Lay Them to Rest'],d:n=>`Destroy ${n} of the risen dead. They walk only by night.`,v:'Risen dead destroyed',n:q=>3+min(5,q>>1)},
  chest:{ic:'chest',t:['Treasure of the Old Kings','Lost Hoards','The Iron-Bound Chests'],d:n=>`Break open ${n} treasure chest${n>1?'s':''} in the ruins, farmsteads and graveyards of the realm.`,v:'Chests opened',n:q=>1+min(3,q>>2)},
  far:{ic:'castle',t:['The Far Beacon','Beyond the Hills','Scout the Marches'],d:n=>`Ride out ${n} metres from Greywatch Keep.`,v:'Furthest from the keep',n:q=>300+min(900,q*120)}},
@@ -4166,15 +4427,27 @@ aimF=(r=24,c=.5)=>{const p=P.position,fy=P.rotation.y,fx=sin(fy),fz=cos(fy);let 
  if(!b)return[fx,fz,null];const dx=b.x-p.x,dz=b.z-p.z,d=hypot(dx,dz)||.1;return[dx/d,dz/d,b]},
 nearest=(r,x=P.position.x,z=P.position.z)=>{let b=null,bd=1e9;for(const f of near(r,x,z)){const d=hypot(f.x-x,f.z-z);d<bd&&(bd=d,b=f)}return b},
 // ---- bolts and arrows: a pool by kind (PJK: shape, colour), each flying flat (or lobbed, with g) until it has gone life seconds, struck
-// pr+1 foes, or come down; o is its blow (fHit's), or fn(foe, it) does the striking; end(it) when it is spent ----
-PJK={arr:[[.05,.05,.95],0xe8d2a0],blt:[[.3,.3,.3],0xff9a3a],ice:[[.14,.14,1.2],0xcfeaff],arc:[[.24,.24,.24],0x9fd0ff],kn:[[.05,.05,.45],0xe8eef4],vn:[[.22,.28,.22],0x8fe04a],
+// pr+1 foes, or come down; o is its blow (fHit's), or fn(foe, it) does the striking; end(it) when it is spent. (The Mage's bolt and arc
+// are drawn 25% larger than they were first made; how near a foe they strike is unchanged) ----
+PJK={arr:[[.05,.05,.95],0xe8d2a0],blt:[[.375,.375,.375],0xff9a3a],ice:[[.14,.14,1.2],0xcfeaff],arc:[[.3,.3,.3],0x9fd0ff],kn:[[.05,.05,.45],0xe8eef4],vn:[[.22,.28,.22],0x8fe04a],
  hol:[[.26,.26,.26],0xffe08a],zap:[[.09,.09,1.3],0xdaf0ff],shd:[[.06,.06,.5],0xe8e0c8],tor:[[.7,1.6,.7],0xd9e6dc],blood:[[.2,.2,.9],0xc2202a],met:[[1.2,1.2,1.2],0xff6a1a]},
 PJM={},PJL=[],pjMesh=k=>{let q=PJL.find(o=>!o.on&&o.k==k);if(q)return q;if(PJL.filter(o=>o.k==k).length>=24)return null;
  if(!PJM[k]){const m=new THREE.MeshBasicNodeMaterial({fog:false});m.colorNode=color(PJK[k][1]).mul(1.6);PJM[k]=[new THREE.BoxGeometry(...PJK[k][0]),m]}
- const m=new THREE.Mesh(PJM[k][0],PJM[k][1]);m.visible=false;m.frustumCulled=false;sc.add(m);q={k,m,on:0,hit:new Set()};PJL.push(q);return q},
-pjFire=(k,x,y,z,dx,dz,sp,life,dm,o={},op={})=>{const q=pjMesh(k);if(!q)return null;Object.assign(q,{on:1,x,y,z,vx:dx*sp,vz:dz*sp,vy:op.vy||0,g:op.g||0,t:0,life,dm,o,pr:op.pr||0,r:op.r||1.1,fn:op.fn,end:op.end,hom:op.hom,nh:op.nh,sp:op.sp||sp});q.hit.clear();q.m.visible=true;q.m.position.set(x,y,z);return q},
+ const m=k=='arr'?pjArrow():new THREE.Mesh(PJM[k][0],PJM[k][1]);m.visible=false;m.frustumCulled=false;sc.add(m);q={k,m,on:0,hit:new Set()};PJL.push(q);return q},
+// the Ranger's arrow, made to stand out in flight: a thick pale shaft, a broad steel head, red fletching in a cross at its tail (lit like the
+// world, VC, so it dims at night), and a faint thin streak trailing behind it (grown out in flight by pjU), fading to nothing (additive); all drawn 1.2x (1.7 was too big)
+PJA={},pjArrow=()=>{if(!PJA.v){const BX3=(w,h,d,z,c)=>{const g=new THREE.BoxGeometry(w,h,d).toNonIndexed().translate(0,0,z),n=g.attributes.position.count,C=new Float32Array(n*3),k=new THREE.Color(c);for(let i=0;i<n;i++)C.set([k.r,k.g,k.b],i*3);g.setAttribute('color',new THREE.BufferAttribute(C,3));return g},
+  cat=L=>{const P=[],C=[],N=[];for(const g of L){P.push(...g.attributes.position.array);C.push(...g.attributes.color.array);N.push(...g.attributes.normal.array)}const r=new THREE.BufferGeometry();r.setAttribute('position',new THREE.Float32BufferAttribute(P,3));r.setAttribute('normal',new THREE.Float32BufferAttribute(N,3));r.setAttribute('color',new THREE.Float32BufferAttribute(C,3));return r},
+  am=VC;
+ const g=cat([BX3(.08,.08,1.2,0,0xf0dca8),BX3(.22,.09,.2,.68,0xdfe8f0),BX3(.1,.09,.14,.84,0xf4f8ff),BX3(.3,.025,.32,-.5,0xb8402e),BX3(.025,.3,.32,-.5,0xb8402e)]),
+  tg=BX3(.035,.035,1.6,-.8,0xffffff),tp=tg.attributes.position,tc=tg.attributes.color;for(let i=0;i<tp.count;i++){const t=Math.min(1,Math.max(0,(tp.getZ(i)+1.6)/1.6))*.35;tc.setXYZ(i,t,t,t*.95)}
+ const tm=new THREE.MeshBasicNodeMaterial({vertexColors:true,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,fog:false});tm.colorNode=attribute('color','vec3');PJA.v=[g,am,tg,tm]}
+ const o=new THREE.Group(),a=new THREE.Mesh(PJA.v[0],PJA.v[1]),t=new THREE.Mesh(PJA.v[2],PJA.v[3]);t.position.z=-.6;a.frustumCulled=t.frustumCulled=false;o.add(a,t);o.scale.setScalar(1.2);return o},
+pjFire=(k,x,y,z,dx,dz,sp,life,dm,o={},op={})=>{const q=pjMesh(k);if(!q)return null;Object.assign(q,{on:1,x,y,z,vx:dx*sp,vz:dz*sp,vy:op.vy||0,g:op.g||0,t:0,life,dm,o,pr:op.pr||0,r:op.r||1.1,fn:op.fn,end:op.end,hom:op.hom,nh:op.nh,sp:op.sp||sp});q.hit.clear();q.m.visible=true;q.m.position.set(x,y,z);k=='arr'&&(q.m.children[1].scale.z=.001);return q},
 pjU=dt=>{for(const q of PJL){if(!q.on)continue;q.t+=dt;if(q.hom&&q.hom.on&&q.hom.st<6){const dx=q.hom.x-q.x,dz=q.hom.z-q.z,d=hypot(dx,dz)||.1,k=min(1,dt*6);q.vx+=(dx/d*q.sp-q.vx)*k;q.vz+=(dz/d*q.sp-q.vz)*k}
   q.x+=q.vx*dt;q.z+=q.vz*dt;if(q.g){q.vy-=q.g*dt;q.y+=q.vy*dt}q.m.position.set(q.x,q.y,q.z);q.m.rotation.set(q.g?atan2(-q.vy,hypot(q.vx,q.vz)):0,atan2(q.vx,q.vz),0);
+  // an arrow's streak grows out behind it as it flies, never reaching back past where it was loosed (so never behind the knight)
+  q.k=='arr'&&(q.m.children[1].scale.z=max(.001,min(1,(q.t*q.sp-.72)/1.92)));
   let end=q.t>=q.life||q.g&&q.y<Hm(q.x,q.z);
   if(!q.nh&&!end)for(const f of near(q.r,q.x,q.z))if(!q.hit.has(f)){q.hit.add(f);q.fn?q.fn(f,q):fHit(f,q.dm,q.o);if(--q.pr<0){end=1;break}}
   R()<.6&&emit(q.x,q.y,q.z,1,PJK[q.k][1],.3,.2,.3,0,.18);if(end){q.on=0;q.m.visible=false;q.end&&q.end(q)}}},
@@ -4377,7 +4650,11 @@ function foeU(dt,p,safe){const nt=dT>=DAY,hol=rlz(p.x,p.z)==3,camp=RLP.some(q=>q
 // shallow water only: the shepherd (and dog) may wade in up to the ankles, never deeper.
 // A step that ends too deep is projected back onto the ankle-depth contour (Newton steps along the depth gradient),
 // so the along-shore part of the move survives and you slide along the waterline instead of sticking.
-const ANKLE=.25,wdep=(x,z)=>WL-Hm(x,z),wade=(p,bx,bz)=>{const lim=max(ANKLE,wdep(bx,bz));for(let i=0;i<4;i++){const d=wdep(p.x,p.z)-lim;if(d<=0)return;const gx=(wdep(p.x+.2,p.z)-wdep(p.x-.2,p.z))*2.5,gz=(wdep(p.x,p.z+.2)-wdep(p.x,p.z-.2))*2.5,g2=gx*gx+gz*gz;if(g2<1e-6)break;p.x-=gx*d/g2;p.z-=gz*d/g2}if(wdep(p.x,p.z)>lim+.005){p.x=bx;p.z=bz}};
+// an invisible wall along the cliff coasts (where rlShore makes a cliff, its share cc over .45): nothing may come within 1.5m of the lip, the top of the
+// face (its run of 5m and more, as rlShore builds it, in from the waterline); a step that would is turned back or slid along it, as cliffStop does
+const cliffEdge=(x,z)=>{rlf(x,z);if(rlD>440)return 0;const d=rlD+rlWn(x,z),cc=sm(.3,.6,rlC+(vn(x*.0075+5.1,z*.0075+2.3)-.5)*1.4),hl=rlH;if(cc<.45||d<-4)return 0;return d<5+max(hl,Hm(x,z)-WL)*.12+1.5?1:0},
+cliffWall=(p,bx,bz)=>{if(!cliffEdge(p.x,p.z)||cliffEdge(bx,bz))return;if(!cliffEdge(p.x,bz))p.z=bz;else if(!cliffEdge(bx,p.z))p.x=bx;else{p.x=bx;p.z=bz}};
+const ANKLE=.25,wdep=(x,z)=>WL-Hm(x,z),wade=(p,bx,bz)=>{const lim=max(ANKLE,wdep(bx,bz));for(let i=0;i<4;i++){const d=wdep(p.x,p.z)-lim;if(d<=0)return cliffWall(p,bx,bz);const gx=(wdep(p.x+.2,p.z)-wdep(p.x-.2,p.z))*2.5,gz=(wdep(p.x,p.z+.2)-wdep(p.x,p.z-.2))*2.5,g2=gx*gx+gz*gz;if(g2<1e-6)break;p.x-=gx*d/g2;p.z-=gz*d/g2}if(wdep(p.x,p.z)>lim+.005){p.x=bx;p.z=bz}cliffWall(p,bx,bz)};
 // ---- the sword in his right hand, solved onto the grip with two-bone IK (shoulder X/Z + elbow), so the hilt always sits in his fist ----
 const stQ=new THREE.Quaternion(),stQi=new THREE.Quaternion(),stE=new THREE.Euler(),T16=V(0,1.45,0),stB=V(),stG=V(),stD=V(),stX=V(),stZ=V(),stF=V(0,0,1),stM=new THREE.Matrix4(),stA=V(),stH=V(),stR=V(),stDn=V(0,-1,0),IK_S=V(-.375,2.1,0),IK_E=V(0,1.7,-.02),IK_G=V(-.375,1.15,-.025),IK_R=IK_G.distanceTo(IK_S),
 armIK=(T,m,yw=0)=>{m&&(T.x=-T.x);const S=IK_S,d=cl(T.distanceTo(S),.3,IK_R*.995),y0=IK_G.y-IK_E.y,z0=IK_G.z-IK_E.z;let lo=-2.7,hi=0,th=0,hy=0,hz=0;
@@ -4412,7 +4689,8 @@ hmPose=(sk,su)=>{const e1=ssm(0,swUA,su),e2=ssm(swUA,.45,su),a=HMa[0]+(HMa[1]-HM
  if(w>0){const k=sin(PI*w);stG.lerp(T1.set(-.5,1.16+.02*sin(ph*2),.14+.1*sin(ph-.4)),w);stG.x+=HMc[0]*k;stG.y+=HMc[1]*k;stG.z+=HMc[2]*k;stD.lerp(T2.set(-.3,1,.55+.12*sin(ph-.4)).normalize(),w).normalize()}
  hmY=HMy[0]*hmW;if(sk<=0)return;hmY=(HMy[0]+(yw-HMy[0])*sk)*hmW;
  T1.copy(HMr).lerp(HMt,e1).lerp(HMi,e2);T1.z+=HMb[0]*sin(PI*e1)+HMb[1]*sin(PI*e2);stG.lerp(T1,sk);stD.lerp(T2.set(HMx[0]*(1-e1)+HMx[1]*e2,cos(a),sin(a)).normalize(),sk).normalize()},
-poseStaff=(w,rn,L,su=0,sk=0,a=0)=>{const q=sin(ph);
+DWV=[V(),V(),V()],DSO=.3,dsE=(su,o)=>{const t=cl((su-o)/.36,0,1);return t<.42?sm(0,.42,t):1-sm(.55,1,t)},
+ poseStaff=(w,rn,L,su=0,sk=0,a=0)=>{const q=sin(ph);
  // at rest the sword hangs in his hand, point forward and low; walking it sways with the stride, jogging it rides a little higher. The grip
  // (stG) sits a hand's width up from the pommel (gl), and the blade runs on from it along stD
  const th=.23-.3*sin(ph-.4),tj=.2-.42*sin(ph-.45),zw=.85*sin(th),zj=.76*sin(tj);
@@ -4420,8 +4698,11 @@ poseStaff=(w,rn,L,su=0,sk=0,a=0)=>{const q=sin(ph);
  stD.set(.08,-.5,1).lerp(T1.set(.06,-.42+.5*(zw-.2),1),w).lerp(T2.set(.18,-.1+.4*(zj-.18),1),rn).normalize();const gl=EQ.w?.t=='hm2'?HMG:.2;
  // swinging, he cuts with his whole arm: the hand rides an arc at nearly full reach from the shoulder (out to his right on the wind-up,
  // through in front, across on the follow-through), raised a little on the wind-up, and the blade sweeps flat and level in front of him
- if(sk>0){const b=.55*a-.15,el=swEl,rr=IK_R*swRf;
+ // with a dagger in each hand he stabs instead: the right hand thrusts out from his chest and back, the left a beat behind it (dsE)
+ const dw2=EQ.w?.t=='dag'&&dwOn();
+ if(sk>0&&!dw2){const b=.55*a-.15,el=swEl,rr=IK_R*swRf;
   stG.lerp(T1.set(IK_S.x+rr*sin(b)*cos(el),IK_S.y-rr*sin(el),IK_S.z+rr*cos(b)*cos(el)),sk);stD.lerp(T2.set(sin(a),swTl,cos(a)).normalize(),sk).normalize()}
+ else if(sk>0){const e=dsE(su,0);stG.lerp(T1.set(-.34,1.5,.15).lerp(T2.set(-.12,1.82,1.1),e),sk);stD.lerp(T2.set(-.05,.12-.2*e,1).normalize(),sk).normalize()}
  (CL().rng||EQ.w?.t=='hm2'||EQ.w?.t=='sc2')&&RPS(sk,su);stB.copy(stG).addScaledVector(stD,-gl);
  // the arm is solved before the spine bends it, so aim it at the grip with the spine's lean/rock undone, then bring the hand it reaches back
  stQ.setFromEuler(stE.set(SPp_,0,SPr_));stQi.copy(stQ).invert();armIK(T1.copy(stG).sub(T16).applyQuaternion(stQi).add(T16),0,EQ.w?.t=='hm2'?hmY:0);CL().rng&&sk>0&&(EQ.w?.t=='bow'||EQ.w?.t=='xbw')&&rgR(sk);stH.sub(T16).applyQuaternion(stQ).add(T16);
@@ -4433,8 +4714,15 @@ poseStaff=(w,rn,L,su=0,sk=0,a=0)=>{const q=sin(ph);
  if(EQ.w?.t=='hm2'&&hmW>0){const A=PU.ar.value,E=PU.el.value;
   if(hmW<1)rgT(rgT(rgT(stR.set(.375,1.15,-.025),XA,RGe,E.x),XA,HMo,A.x),ZA,HMo,A.y);
   T2.copy(stB).addScaledVector(stD,gl+HMS).sub(T16).applyQuaternion(stQi).add(T16);if(hmW<1){const k=sin(PI*(1-hmW));T2.lerp(stR,1-hmW);T2.x+=.3*k;T2.z+=.2*k}armIK(T2,1,hmY)}
+ // the second dagger: on the stab the left arm is solved onto its thrust (from where its own swing put the hand, by sk); either way the dagger
+ // is seated in the left fist the arm reaches (its grip found from the arm's angles, before the spine, as the staff's parent frame is), pointing
+ // forward and low as the right one does at rest, mirrored, and along the thrust while stabbing
+ if(dw2){const A=PU.ar.value,E=PU.el.value,fk=()=>rgT(rgT(rgT(stR.set(.375,1.15,-.025),XA,RGe,E.x),XA,HMo,A.x),ZA,HMo,A.y);
+  if(sk>0){fk();const e=dsE(su,DSO);armIK(DWV[0].copy(stR).lerp(DWV[1].set(.34,1.5,.15).lerp(DWV[2].set(.12,1.82,1.1),e),sk),1)}
+  fk();const e=sk>0?dsE(su,DSO):0,d=DWV[0].set(-.08,-.5,1).normalize().applyAxisAngle(XA,E.x).applyAxisAngle(XA,A.x).applyAxisAngle(ZA,A.y).lerp(DWV[1].set(.05,.12-.2*e,1).normalize(),sk).normalize(),
+   X=DWV[2].set(0,1,0).addScaledVector(d,-d.y).normalize();stM.makeBasis(X,d,DWV[1].crossVectors(X,d));ODG.quaternion.setFromRotationMatrix(stM);ODG.position.copy(stR).addScaledVector(d,-gl).sub(T16)}
  EQ.w?.t=='bow'?stR.set(0,0,1):EQ.w?.t=='hm2'?stR.set(0,-stD.z,stD.y):stR.set(0,1,0).lerp(T1.set(cos(a),0,-sin(a)),sk);stX.copy(stR).addScaledVector(stD,-stR.dot(stD)).normalize();stZ.crossVectors(stX,stD);stM.makeBasis(stX,stD,stZ);staff.quaternion.setFromRotationMatrix(stM).premultiply(stQi);staff.position.copy(stB).sub(T16).applyQuaternion(stQi)};
-const K={},CO=V(1,1.25,1).normalize(),LK=V(0,4,0),tv=V(),SHC=V(),lp=(a,b)=>a+(b-a)*RN;let RN=0,cvx=0,cvz=0,LNx=0,LNv=0,LSx=0,LSv=0,ASx=0,ASv=0,SPp=0,SPr=0,SKx=0,SKv=0,SKr=0,SKrv=0,ZM=63,ZMt=63,ptn=0,SPp_=0,SPr_=0,ph=0,pw=0,dgT=null,dgB=0,dsp=0,dph=0,jx=0,jy=0,gx=0,gy=0,jid=null,j0x=0,j0y=0;
+const K={},CO=V(1,1.25,1).normalize(),LK=V(0,4,0),tv=V(),SHC=V(),lp=(a,b)=>a+(b-a)*RN;let RN=0,cvx=0,cvz=0,LNx=0,LNv=0,LSx=0,LSv=0,ASx=0,ASv=0,SPp=0,SPr=0,SKx=0,SKv=0,SKr=0,SKrv=0,ZM=54,ZMt=54,ptn=0,SPp_=0,SPr_=0,ph=0,pw=0,dgT=null,dgB=0,dsp=0,dph=0,jx=0,jy=0,gx=0,gy=0,jid=null,j0x=0,j0y=0;
 // ---- the sword stroke (Space / the sword button): a level right-to-left cut; mid-stroke every foe in the arc in front of him within the
 // blade's reach, or right at his feet, takes the blow ----
 // the motion, in four beats over SWD: the coil (the blade cocked back out to his right, the arm bent, his weight dropping onto the back
@@ -4496,12 +4784,12 @@ function mvP(dt){let mx=(K.KeyD||K.ArrowRight?1:0)-(K.KeyA||K.ArrowLeft?1:0)+jx+
  let su=0,sk=0,sa=0,aE=0,aC=0,aL=0,aW=0,hmL=0,hmK=0;
  // aE: the stroke is on; aC: the coil (weight back); aL: the lunge (weight carried through onto the front foot); aW: his chest's twist,
  // a beat ahead of the blade so the body turns into the blow and the arm whips after it
- if(swT>=0){swT+=dt*swS;su=min(swT/SWD,1);sk=sm(0,.18,su)*(1-sm(.62,1,su));sa=swA(su);aE=sm(0,.16,su)*(1-sm(.74,1,su));aC=ssm(0,swUA,su)*(1-ssm(swUA,swUS,su));aL=ssm(swUA,swUS,su)*(1-ssm(swUS+.1,1,su));aW=.5*sk*swA(min(1,su+.06));if(CL().rng){aW*=.15;aC*=.3;aL*=.3}else if(EQ.w?.t=='hm2'){aW*=.1;const e1=ssm(0,swUA,su),e2=ssm(swUA,.45,su);hmL=(.14*e1*(1-e2)+.45*e2)*sk;hmK=1.1*e2*sk*(1-.75*w)}
+ if(swT>=0){swT+=dt*swS;su=min(swT/SWD,1);sk=sm(0,.18,su)*(1-sm(.62,1,su));sa=swA(su);aE=sm(0,.16,su)*(1-sm(.74,1,su));aC=ssm(0,swUA,su)*(1-ssm(swUA,swUS,su));aL=ssm(swUA,swUS,su)*(1-ssm(swUS+.1,1,su));aW=.5*sk*swA(min(1,su+.06));if(CL().rng){aW*=.15;aC*=.3;aL*=.3}else if(EQ.w?.t=='dag'&&dwOn()){aW=.4*sk*(dsE(su,0)-dsE(su,DSO));aC*=.35;aL*=.5}else if(EQ.w?.t=='hm2'){aW*=.1;const e1=ssm(0,swUA,su),e2=ssm(swUA,.45,su);hmL=(.14*e1*(1-e2)+.45*e2)*sk;hmK=1.1*e2*sk*(1-.75*w)}
   swRf=.64+.32*ssm(.12,swUS-.08,su)-.04*ssm(swUS,.72,su);swEl=.22+.3*ssm(swUA,swUS-.05,su)-.1*ssm(swUS,.74,su);swTl=-.12+.5*aC;
   if(!swH&&su>swUA-.03){swH=1;sfx.swish()}if(swH==1&&(EQ.w?.t=='hm2'?su>.44:sa>-.9)){swH=2;swordSweep()}
   // the stroke brushes the grass: the wedge swept since last frame (heading swP -> fy+sa, which includes the torso twist the staff
   // rides on) kicks the tufts it crossed; the blade itself leaves a trail (swTrail)
-  const a1=P.rotation.y+sa+aW,da=a1-swP,r=swR();if(da>0&&su>swUA-.04&&su<.8){GSW.a.value.set(p.x,p.z,r,9*sk);GSW.b.value.set(sin(swP),cos(swP),sin(a1),cos(a1))}
+  const a1=P.rotation.y+sa+aW,da=a1-swP,r=swR();if(da>0&&su>swUA-.04&&su<.8&&!(EQ.w?.t=='dag'&&dwOn())){GSW.a.value.set(p.x,p.z,r,9*sk);GSW.b.value.set(sin(swP),cos(swP),sin(a1),cos(a1))}
   swP=a1;if(su>=1)swT=-1}swC-=dt;
  // the gait: a walk that becomes a relaxed jog at his normal pace (rn). The hip swing is sized from the stride so the planted foot keeps
  // pace with the ground instead of skating; knees fold through the swing and stay softly bent under load when jogging; the ankles push
@@ -4525,7 +4813,7 @@ function mvP(dt){let mx=(K.KeyD||K.ArrowRight?1:0)-(K.KeyA||K.ArrowLeft?1:0)+jx+
  const SPe=SPp+LNx*.6-.14*aC+.3*aL+hmL,SRe=SPr+LSx*.6+.1*aC-.12*aL,tpn=cl(ptn,-1,1);SPp_=SPe;SPr_=SRe;
  PU.sp.value.set(0,SPe,SRe,0);PU.tw.value=tw+aW+tpn*.16*(.3+.7*w);tg.rotation.set(SPe,PU.tw.value,SRe);
  pb.position.set(q*.03*w*(1-rn)+ws*.022*ib,(lp(-.027,.06)*abs(q)+lp(.027,-.012))*w-ib*.008*abs(ws)+(sqrt(.2689+.264*cos((kf+kr)/2))-.73)-.15*abs(LNx),dS);pb.rotation.set(ln*.3+LNx*.4,0,-tpn*.2*w+LSx*.4);pb.scale.y=1+br*.005*ib;
- PU.hd.value.set(sin(tm*.6)*.35*ib+tpn*.35*w-tw*.9-aW*.8,-(ln*.3+SPe)*.8+sin(ph*2)*.02*w-ib*.02*br+.1*aL);hd.rotation.set(PU.hd.value.y,PU.hd.value.x,0);poseStaff(w,rn,SL,su,sk,sa);swTrail(CL().rng?0:su);SHS.rotation.set(PU.ar.value.x,PU.aw.value.x,PU.ar.value.y);SHE.rotation.x=PU.el.value.x}
+ PU.hd.value.set(sin(tm*.6)*.35*ib+tpn*.35*w-tw*.9-aW*.8,-(ln*.3+SPe)*.8+sin(ph*2)*.02*w-ib*.02*br+.1*aL);hd.rotation.set(PU.hd.value.y,PU.hd.value.x,0);poseStaff(w,rn,SL,su,sk,sa);swTrail(CL().rng||EQ.w?.t=='dag'&&dwOn()?0:su);SHS.rotation.set(PU.ar.value.x,PU.aw.value.x,PU.ar.value.y);SHE.rotation.x=PU.el.value.x}
 // ---- per-frame effects: particles, motes, dog, grass trampling, gate, lights (the grass focus and shadow box: vwU) ----
 function wv(dt){const p=P.position,pa=PS.p,ca=PS.c,wdv=U.wd.value,ws=.35+.7*wx.w;
  for(let i=0;i<NP;i++){const o=i*3,c=i*4;let l=PLF[i*2];if(l<=0){if(ca[c+3]){ca[c+3]=0;pa[o+1]=1e6}continue}l-=dt;PLF[i*2]=l;const k=max(l/PLF[i*2+1],0);PV[o+1]-=PK[i*5+3]*dt;PX[o]+=PV[o]*dt;PX[o+1]+=PV[o+1]*dt;PX[o+2]+=PV[o+2]*dt;pa[o]=PX[o];pa[o+1]=PX[o+1];pa[o+2]=PX[o+2];ca[c]=PK[i*5]*k*1.6;ca[c+1]=PK[i*5+1]*k*1.6;ca[c+2]=PK[i*5+2]*k*1.6;ca[c+3]=l>0?PK[i*5+4]:0}PS.P.needsUpdate=PS.C.needsUpdate=true;
@@ -5017,7 +5305,7 @@ const tuS=(kb,tc,pd)=>[kb,tc,pd][gpOn?2:mob?1:0],
  // the rarities: [from level, what they carry]
  TUR=[[1,'Their own stats only'],[11,'1 or 2 affixes'],[21,'2 or 3 affixes'],[31,'3 or 4 affixes, and may raise a skill a rank'],[41,'4 affixes, and a mutator that changes one of your skills']],
  TUP=()=>[
- {ic:'shield',t:'Welcome, Hero',lead:'Shadow lies over the realm. Ride out from Greywatch Keep, cut down its beasts, brigands and risen dead, break open the old kings\' chests, and come home richer and stronger.',
+ {ic:'shield',t:'Welcome, Hero',lead:'Shadow lies over the realm. Ride out from Greywatch Keep, cut down its beasts, bandits and risen dead, break open the old kings\' chests, and come home richer and stronger.',
   cards:[['scroll','Bounties','Ten hang on the board before the keep. Take up to three, finish them in the wilds and bring each back for gold. Pay off all ten for 500 gold and gear.'],
    ['moon','Day and night','A day lasts <b>15 minutes</b>, and so does the night. After dark the wolves hunt in bigger packs and the dead rise until dawn.'],
    ['castle','Greywatch Keep','No foe follows you into the town round the keep, and wounds close quickly there. Fall in battle and you wake at its gate, a fifth of your gold lighter.']]},
@@ -5265,6 +5553,8 @@ function loop(){if(dead)return;const now=performance.now();if(fcap&&now-last<10.
 $('go').onclick=()=>{if(!sd&&!clsOk){newHero().then(()=>{clsOk=1;$('go').onclick()});return}clsOk=0;if(!FARM){FARM=$('fn').value.trim().replace(/\s+/g,' ')||'Sir Aldric';try{localStorage.setItem(SK+'-name',FARM)}catch(e){}}AC||aud();
  if(sd){W=sd.W||0;LV=sd.LV||1;XP=sd.XP||0;POT=sd.POT??1;dy=sd.dy||1;QN=sd.QN|0;BB=bbOk(sd.BB)?sd.BB:null;sd.G&&Object.assign(EQ,sd.G);(sd.B||[]).forEach(it=>BAG.push(it));if(EQ.c){EQ.c.s='n';EQ.n=EQ.n||EQ.c}delete EQ.c;for(const it of BAG)it.s=='c'&&(it.s='n');
   CLS=CLD[sd.C]?sd.C:'war';LOOK=lkFix(sd.A);skS();MAT=sd.M|0;LV=min(LV,LVM);for(const k in EQ)EQ[k]=migIt(EQ[k]);for(let i=0;i<BAG.length;i++)BAG[i]=migIt(BAG[i]);clsWpn();
+  // a Rogue saved before daggers were carried two at a time gets the starting kit's second, a common one, in the off hand (once: V 3)
+  if((sd.V|0)<3&&CL().dw&&dwOk(EQ.w)&&!EQ.s)EQ.s=mkIt('w',0,1,CL().dw[0]);
   if(sd.K)Object.assign(SKL,sd.K);else if(sd.L){const m={sword:['blade',3],armor:['vit',3],boots:['fleet',3],dog:['hound',1]};for(const k in m)sd.L[k]&&(SKL[m[k][0]]=min(m[k][1],sd.L[k]))}
   if(Object.keys(SKL).some(k=>!skG(k))){for(const k in SKL)delete SKL[k];sd.SP=null;setTimeout(()=>toast('The skill trees have been redrawn: every point you had is yours to spend again.','g','skill'),2600)}
   SP=sd.SP??max(0,LV-skSpent());hxD=1;bHP=bMax()}else{kit();hxD=1;bHP=bMax()}
