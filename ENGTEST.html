@@ -448,32 +448,41 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
 #dsb.cd{opacity:.45}
 @media (orientation:landscape){body.mob #dsb{left:auto;right:calc(28px + 10vw + 188px + env(safe-area-inset-right,0px));bottom:auto;top:56%;translate:0 -50%}}
 @media (max-width:820px){.skw{grid-template-columns:1fr;grid-template-rows:auto auto auto}.skt{grid-row:2}.ski{grid-row:3;grid-column:1}.skt .stree{max-width:none}}
-/* ---- the map (M): a chart on aged paper in the dark frame, a compass rose in its corner, round bronze-rimmed markers for the places
-   (the keep's crimson and named), and the knight a gold arrowhead with a red ring pulsing out from it ---- */
-#mp>.pn{width:min(1180px,100%);height:min(820px,100%);max-height:100%;overflow:hidden;grid-template-rows:auto minmax(0,1fr) auto;gap:10px}
-.mpd{flex:1;min-width:0;text-align:right;font:400 15px/1.25 var(--pxf);color:var(--ink2)}.mpd b{color:var(--gold3)}
-.mv{position:relative;min-height:0;border-radius:4px;overflow:hidden;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;background:radial-gradient(130% 110% at 50% 45%,#e9d8ae,#d3ba8a 60%,#a3824f);box-shadow:inset 0 0 0 1px #6b4f33,inset 0 0 0 4px rgba(20,12,6,.5),inset 0 0 60px rgba(70,42,14,.5)}
+/* ---- the map (M), in the pixel style of the HUD and the primer: the primer's stone window and gilt pixel title, the chart drawn in art pixels
+   (see mDraw) in a gold pixel frame, a pixel compass rose, the places as pixel icons on square plates rimmed in their colour (blue towns, red
+   foes, green land, purple mage towers; the keep's crimson), names on dark plates, and square slot buttons ---- */
+#mp.ov{background:rgba(4,3,3,.6)}
+#mp>.pn{width:min(1180px,100%);height:min(820px,100%);max-height:100%;overflow:hidden;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;padding:12px 16px 14px;border:8px solid transparent;border-image:var(--pf-stone) 4/8px stretch;border-radius:0;color:#e4d6bc;background:var(--grain) padding-box,linear-gradient(#1f1b1a,#121010) padding-box;box-shadow:0 0 0 2px #000,0 18px 40px rgba(0,0,0,.65)}
+#mp>.pn>.r:first-child{margin:0;padding:0 0 12px;gap:12px;border:0;border-radius:0;box-shadow:none;background:linear-gradient(#0b0706 2px,#c9983f 2px 4px,#0b0706 4px 6px) bottom/100% 6px no-repeat}
+#mp .tum .pxi,#mp .mzb .pxi{display:block;flex:none;background:center/100% 100% no-repeat;image-rendering:pixelated}
+#mp .tum{width:48px;height:48px;flex:none;display:grid;place-items:center;border-radius:0;border:6px solid transparent;border-image:var(--pf-slot) 3/6px stretch;background:#2e2e33 padding-box;box-shadow:none}
+#mp .tum .pxi{width:32px;height:32px}
+#mp h2{margin:0;font:700 26px/1.05 var(--pxf);letter-spacing:.03em;color:#f0cf7a;-webkit-text-fill-color:#f0cf7a;background:none;filter:none;text-shadow:0 2px 0 #000;white-space:nowrap}
+.mpd{flex:1;min-width:0;text-align:right;font:400 15px/1.25 var(--pxf);color:#d7c7aa}.mpd b{font-weight:600;color:#f0cf7a}
+#mp #mpx{width:34px;height:34px;flex:none;border-radius:0;color:#fff;background:#7a1414;box-shadow:inset 0 0 0 2px #0b0b0c,inset 3px 3px 0 #c03030,inset -3px -3px 0 #4a0808}
+#mp #mpx .ic{width:18px;height:18px;filter:none}#mp #mpx:hover{filter:brightness(1.2)}
+.mv{position:relative;min-height:0;border:6px solid transparent;border-image:var(--pf-gold) 3/6px stretch;border-radius:0;overflow:hidden;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;background:#cdb789 padding-box;box-shadow:0 0 0 2px #000}
 .mv.dg{cursor:grabbing}
-#mcv{position:absolute;inset:0;width:100%;height:100%}
+#mcv{position:absolute;inset:auto;left:0;top:0;image-rendering:pixelated;transition:none}
 .mk{position:absolute;inset:0;pointer-events:none}
-.mk>i{position:absolute;translate:-50% -50%;display:grid;justify-items:center}
-.mpo svg{width:26px;height:26px;padding:4px;border-radius:50%;color:#f3dcbc;background:radial-gradient(circle at 50% 35%,#4e403a,#1d1615);box-shadow:0 0 0 1.5px #b08560,0 2px 5px rgba(0,0,0,.55);pointer-events:auto}
-.mpc svg{box-shadow:0 0 0 1.5px #5fb6ff,0 2px 5px rgba(0,0,0,.55)}.mpe svg{box-shadow:0 0 0 1.5px #ff5a4a,0 2px 5px rgba(0,0,0,.55)}.mph svg{box-shadow:0 0 0 1.5px #66e070,0 2px 5px rgba(0,0,0,.55)}.mpm svg{box-shadow:0 0 0 1.5px #c58bff,0 2px 5px rgba(0,0,0,.55)}
-.mpz{position:absolute;translate:-50% -50%;font:700 17px var(--pxf);font-style:normal;letter-spacing:.2em;text-transform:uppercase;color:rgba(70,44,16,.62);text-shadow:0 0 4px #f1e1b8,0 0 8px #f1e1b8;white-space:nowrap;pointer-events:none}
-.mpo.sd{opacity:.45}
-.mpo.kp svg{width:34px;height:34px;padding:6px;color:#fbe9d6;background:var(--crim);box-shadow:0 0 0 1.5px #e0b060,0 0 14px rgba(255,90,60,.5)}
-.mpo b{position:absolute;top:100%;margin-top:3px;font:700 12px var(--pxf);letter-spacing:.04em;color:#3a220c;text-shadow:0 0 3px #f1e1b8,0 0 6px #f1e1b8;white-space:nowrap}
-.mme{width:30px;height:30px;rotate:var(--a)}
-.mme svg{width:100%;height:100%;overflow:visible;fill:#ffd36b;stroke:#3a1a06;stroke-width:1.6;stroke-linejoin:round;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
-.mme::before{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid #b0201a;animation:mmp 1.8s ease-out infinite}
-@keyframes mmp{from{scale:.4;opacity:1}to{scale:1.5;opacity:0}}
-.mcr{position:absolute;left:10px;top:10px;width:92px;height:92px;pointer-events:none}
-.mzb{position:absolute;right:12px;bottom:12px;display:grid;gap:8px}
-.mlg{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;font-size:13.5px;color:var(--ink2)}
-.mlg span{display:inline-flex;align-items:center;gap:6px}.mlg .ic{width:17px;height:17px;color:var(--gold3)}.mlg .sd{opacity:.6}
-.mlg small{margin-left:auto;font-size:12.5px;color:var(--mut)}
-@media (max-width:640px){#mp>.pn{padding:12px 12px 14px}#mp .r{flex-wrap:wrap;row-gap:2px}#mp h2{font-size:22px}.mpd{order:3;flex-basis:100%;text-align:left;font-size:13.5px}.mlg{font-size:12px;gap:4px 12px}.mlg small{display:none}.mcr{width:64px;height:64px}}
-@media (prefers-reduced-motion:reduce){.mme::before{animation:none;opacity:.6}}
+.mk>i{position:absolute;translate:-50% -50%;display:grid;justify-items:center;font-style:normal}
+/* a place is stamped on the chart (an 11-pixel plate); its box here is the hover area, with the name on a dark plate under it */
+.mpo{width:33px;height:33px;pointer-events:auto}
+.mpo b{position:absolute;top:100%;margin-top:6px;padding:1px 6px 2px;font:600 12px var(--pxf);letter-spacing:.04em;color:#f0e2c8;background:#1b1413;box-shadow:0 0 0 2px #0b0706;white-space:nowrap}
+.mpo.kp b{color:#f0cf7a}
+.mpz{position:absolute;translate:-50% -50%;font:700 18px var(--pxf);font-style:normal;letter-spacing:.22em;text-transform:uppercase;color:#5a3a16;text-shadow:2px 2px 0 rgba(246,232,196,.75);white-space:nowrap;pointer-events:none}
+/* the knight: the green pixel arrow on its own canvas, over the places, the names and the compass (under the buttons) */
+#mma{position:absolute;inset:auto;z-index:2;image-rendering:pixelated;transition:none;pointer-events:none;filter:drop-shadow(0 3px 0 rgba(8,4,2,.45))}
+.mzb{z-index:3}
+.mcr{position:absolute;left:12px;top:12px;width:75px;height:96px;image-rendering:pixelated;pointer-events:none}
+.mzb{position:absolute;right:12px;bottom:12px;display:grid;gap:6px}
+#mp .mzb .b{width:44px;height:44px;border-radius:0;border:6px solid transparent;border-image:var(--pf-slot) 3/6px stretch;background:#2e2e33 padding-box;box-shadow:0 4px 0 rgba(0,0,0,.4)}
+#mp .mzb .pxi{width:32px;height:32px}
+#mp .mzb .b:hover{filter:brightness(1.25)}#mp .mzb .b:active{translate:0 2px;box-shadow:none}
+.mlg{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;font:400 13.5px var(--pxf);color:#d7c7aa}
+.mlg span{display:inline-flex;align-items:center;gap:8px}.mlg .mgl{width:22px;height:22px;flex:none;background:center/100% 100% no-repeat;image-rendering:pixelated}.mlg .sd{opacity:.6}
+.mlg small{margin-left:auto;font:400 12.5px var(--pxf);color:#9a8a70}
+@media (max-width:640px){#mp>.pn{padding:10px 10px 12px}#mp .r{flex-wrap:wrap;row-gap:6px}#mp .tum{display:none}#mp h2{font-size:21px}.mpd{order:3;flex-basis:100%;text-align:left;font-size:13.5px}.mlg{font-size:12px;gap:6px 12px}.mlg small{display:none}.mcr{width:50px;height:64px}}
 /* ---- the HUD in 32-bit pixel art. One art pixel is 2 css pixels and nothing is scaled off that grid. A pixel face (Pixelify Sans); frames of
    stepped pixel bevels (9x9 tiles whose 3-pixel border is cut by border-image: outline, bevel, inner shade); hard 1-2px outlines and shadows
    in place of blur; sprites drawn from rects with crisp edges (the px-* symbols). The minimap is a 76x76 canvas drawn small and shown
@@ -902,6 +911,31 @@ body.mob #tb #cb{display:none}
 #al .cpb.on .cpe img{animation:cpeb 1.2s steps(2,end) infinite}
 @keyframes cpeb{50%{translate:0 -2px}}
 @media (max-width:620px){#al .cpe{width:48px;height:48px}#al .cpe img{width:36px;height:36px}}
+/* ---- the last of the old leather-and-gloss pieces brought into the pixel style: the dialog (confirms, the class picker, the Hero maker, a
+   find from a chest) and the error screen take the primer's stone window, gilt pixel title and plaque buttons; the find's medallion is a
+   square gold-framed plate whose light pulses in steps; the toasts are dark bevelled plates with pixel icons (toast) ---- */
+#al,#er .pn{border:8px solid transparent;border-image:var(--pf-stone) 4/8px stretch;border-radius:0;color:#e4d6bc;background:var(--grain) padding-box,linear-gradient(#1f1b1a,#121010) padding-box;box-shadow:0 0 0 2px #000,0 18px 40px rgba(0,0,0,.65);padding:14px 18px 16px}
+#al::backdrop{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(4,3,3,.66)}
+#al[open]{animation:pxin .2s steps(4,end)}
+@keyframes pxin{from{opacity:0;translate:0 8px}}
+#al h2,#er h2{margin:0;padding:0 0 12px;font:700 24px/1.1 var(--pxf);letter-spacing:.03em;color:#f0cf7a;-webkit-text-fill-color:#f0cf7a;filter:none;text-shadow:0 2px 0 #000;background:linear-gradient(#0b0706 2px,#c9983f 2px 4px,#0b0706 4px 6px) bottom/100% 6px no-repeat}
+#al p,#er p{color:#d7c7aa}#al p b{font-weight:600;color:#f0cf7a}
+#al .ab button,#er .pb button{height:44px;min-height:44px;padding:0 12px;border-radius:0;border-style:solid;border-color:transparent;border-width:0 14px;border-image:var(--pb-char) 0 7 fill/0 14px stretch;background:none;box-shadow:none;color:#eadfca;font:400 15px var(--pxf);letter-spacing:.12em;text-transform:uppercase;text-shadow:0 2px 0 #000;line-height:1.1}
+#al .ab .pr,#er .pb .pr{border-image-source:var(--pb-crim);color:#fff1dc}
+#al .ab .dg{border-image-source:var(--pb-dng);color:#ff8a76}
+#al .ab button:hover,#er .pb button:hover{filter:brightness(1.28);translate:0 0}
+#al .ab button:active,#er .pb button:active{translate:0 2px;filter:brightness(.9)}
+#er{background:#0d0a0a}
+#alv{border-radius:0;width:132px;height:132px;border:6px solid transparent;border-image:var(--pf-gold) 3/6px stretch;background:repeating-linear-gradient(45deg,#2a201c 0 4px,#231b19 4px 8px) padding-box;box-shadow:0 0 0 2px #000,0 6px 0 rgba(0,0,0,.45)}
+#alv::before{inset:-14px;border-radius:0;background:none;-webkit-mask-image:none;mask-image:none;box-shadow:0 0 0 4px rgba(240,207,122,.28),0 0 0 8px rgba(240,207,122,.12);animation:alvp 1.4s steps(2,end) infinite}
+@keyframes alvp{50%{opacity:.35}}
+#alv svg,#alv .fv3{width:96px;height:96px;filter:none}
+.fvn{right:-14px;top:4px;rotate:0deg;border-radius:0;padding:2px 8px 3px;font:600 12px var(--pxf);letter-spacing:.1em;text-transform:uppercase;color:#fff1dc;background:#9a2020;box-shadow:0 0 0 2px #0b0706,inset 2px 2px 0 #d04040,inset -2px -2px 0 #5a0a0a}
+.t.pn{border:2px solid #0b0706;border-image:none;border-radius:0;padding:6px 12px 7px 9px;color:#e4d6bc;background:#1d1918;box-shadow:inset 2px 2px 0 #3a3430,inset -2px -2px 0 #110e0d,0 4px 0 rgba(0,0,0,.45);text-shadow:0 2px 0 #000}
+.t.pn b{font-weight:600;color:#f0cf7a}
+.t .pxi{display:block;width:32px;height:32px;flex:none;background:center/100% 100% no-repeat;image-rendering:pixelated}
+.t.g{box-shadow:inset 2px 2px 0 #3a3430,inset -2px -2px 0 #110e0d,inset 4px 0 0 #5aa04a,0 4px 0 rgba(0,0,0,.45)}.t.w{box-shadow:inset 2px 2px 0 #3a3430,inset -2px -2px 0 #110e0d,inset 4px 0 0 #c0402a,0 4px 0 rgba(0,0,0,.45)}
+.t.o{translate:0 -8px;transition-timing-function:steps(4,end)}
 </style>
 <script type="importmap">
 {"imports":{
@@ -976,7 +1010,7 @@ body.mob #tb #cb{display:none}
 <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M4.6 19.4C4.8 11 9.8 5.2 19.6 4.4c-.4 9.6-6.1 14.8-15 15zM4.6 19.4c3.3-3.6 6.6-6.4 10.2-8.6"/></symbol>
 <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 5.5v13M15 5.5v13" style="stroke-width:2.8"/></symbol>
 <symbol id="i-map" viewBox="0 0 24 24"><path d="M3.4 6.4l5.4-2.2 6.4 2.4 5.4-2.2V18l-5.4 2.2-6.4-2.4-5.4 2.2zM8.8 4.2v13.6M15.2 6.6v13.6"/></symbol>
-<symbol id="i-aim" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6.6"/><circle cx="12" cy="12" r="1.3"/><path d="M12 2.4v4.2M12 17.4v4.2M2.4 12h4.2M17.4 12h4.2"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4.5v15M4.5 12h15"/></symbol><symbol id="i-minus" viewBox="0 0 24 24"><path d="M4.5 12h15"/></symbol><symbol id="i-aim" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6.6"/><circle cx="12" cy="12" r="1.3"/><path d="M12 2.4v4.2M12 17.4v4.2M2.4 12h4.2M17.4 12h4.2"/></symbol>
 <symbol id="i-tower" viewBox="0 0 24 24"><path d="M7.6 21V9.6h8.8V21M6.4 9.6V4.4h2.3v2h2.1v-2h2.4v2h2.1v-2h2.3v5.2M10.4 21v-3.6a1.6 1.6 0 0 1 3.2 0V21M12 11.8v2.2M4 21h16"/></symbol>
 <symbol id="i-grave" viewBox="0 0 24 24"><path d="M6.6 20.6V10.2a5.4 5.4 0 0 1 10.8 0v10.4M4 20.6h16M12 8.6v6.8M9.4 11.2h5.2"/></symbol>
 <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6l-4.6 4.6M10.6 13.4 6 18"/></symbol>
@@ -1035,10 +1069,10 @@ body.mob #tb #cb{display:none}
 <div id="abw"><div id="rsb"><i id="hwd" hidden title="Ward"><i></i></i><i id="hrg" title="Rage"><i></i></i></div><span id="abr" role="group" aria-label="Skills"></span></div>
 <button id="atk" aria-label="Strike"><svg class="pi" width="57" height="57" aria-hidden="true"><use href="#px-sword"/></svg></button>
 <div id="ts" role="log" aria-live="polite"></div>
-<div id="mp" class="ov" role="dialog" aria-modal="true" aria-labelledby="mph" hidden><div class="pn"><div class="r"><h2 id="mph">Map of the Realm</h2><p id="mpd" class="mpd"></p><button class="b sm" id="mpx" aria-label="Close the map"><svg class="ic"><use href="#i-close"/></svg></button></div>
-<div class="mv" id="mv"><canvas id="mcv" aria-hidden="true"></canvas><div class="mk" id="mk"></div><svg class="mcr" viewBox="-50 -50 100 100" aria-hidden="true"><g><circle r="31" fill="rgba(246,232,196,.55)" stroke="#5a3d1c" stroke-width="1.2"/><circle r="24.5" fill="none" stroke="#5a3d1c" stroke-width=".8" stroke-dasharray="1.5 2.5"/><path d="M0-36 5.5-5.5 0 0z" fill="#8e1619"/><path d="M0-36-5.5-5.5 0 0z" fill="#5a0c0f"/><path d="M0 36 5.5 5.5 0 0z" fill="#5a3d1c"/><path d="M0 36-5.5 5.5 0 0z" fill="#3b2a18"/><path d="M-36 0-5.5-5.5 0 0zM36 0 5.5 5.5 0 0z" fill="#7a5a34"/><path d="M-36 0-5.5 5.5 0 0zM36 0 5.5-5.5 0 0z" fill="#a8845a"/><text y="-39" text-anchor="middle" font-family="'Pixelify Sans',ui-monospace,monospace" font-size="12" font-weight="700" fill="#5a0c0f">N</text></g></svg>
-<div class="mzb"><button class="b sm" id="mzi" aria-label="Zoom in"><svg class="ic"><path d="M12 5.5v13M5.5 12h13"/></svg></button><button class="b sm" id="mzo" aria-label="Zoom out"><svg class="ic"><path d="M5.5 12h13"/></svg></button><button class="b sm" id="mzc" aria-label="Find your Hero"><svg class="ic"><use href="#i-aim"/></svg></button><button class="b sm" id="mzr" aria-label="See the whole realm"><svg class="ic"><use href="#i-map"/></svg></button></div></div>
-<div class="mlg"><span><svg class="ic"><use href="#i-castle"/></svg>Keep, fortress</span><span><svg class="ic"><use href="#i-tower"/></svg>Watchtower</span><span><svg class="ic"><use href="#i-cottage"/></svg>Farmstead, cottage</span><span><svg class="ic"><use href="#i-grave"/></svg>Graveyard</span><span><svg class="ic" style="color:#5fb6ff"><use href="#i-cottage"/></svg>Friendly town</span><span><svg class="ic" style="color:#ff5a4a"><use href="#i-skull"/></svg>Enemy site</span><span><svg class="ic" style="color:#66e070"><use href="#i-fence"/></svg>Land to buy</span><span><svg class="ic" style="color:#c58bff"><use href="#i-tower"/></svg>Mage tower</span><span class="sd"><svg class="ic"><use href="#i-chest"/></svg>Dimmed once searched</span><small id="mph2"></small></div></div></div>
+<div id="mp" class="ov" role="dialog" aria-modal="true" aria-labelledby="mph" hidden><div class="pn"><div class="r"><i class="tum" aria-hidden="true"><i class="pxi" data-i="map"></i></i><h2 id="mph">Map of the Realm</h2><p id="mpd" class="mpd"></p><button class="b sm" id="mpx" aria-label="Close the map"><svg class="ic"><use href="#i-close"/></svg></button></div>
+<div class="mv" id="mv"><canvas id="mcv" aria-hidden="true"></canvas><div class="mk" id="mk"></div><canvas id="mma" title="You are here"></canvas><canvas class="mcr" aria-hidden="true"></canvas>
+<div class="mzb"><button class="b sm" id="mzi" aria-label="Zoom in"><i class="pxi" data-i="plus"></i></button><button class="b sm" id="mzo" aria-label="Zoom out"><i class="pxi" data-i="minus"></i></button><button class="b sm" id="mzc" aria-label="Find your Hero"><i class="pxi" data-i="aim"></i></button><button class="b sm" id="mzr" aria-label="See the whole realm"><i class="pxi" data-i="map"></i></button></div></div>
+<div class="mlg"><span><i class="mgl" data-g="castle" data-k=""></i>Keep, fortress</span><span><i class="mgl" data-g="tower" data-k=""></i>Watchtower</span><span><i class="mgl" data-g="cottage" data-k=""></i>Farmstead, cottage</span><span><i class="mgl" data-g="grave" data-k=""></i>Graveyard</span><span><i class="mgl" data-g="cottage" data-k="c"></i>Friendly town</span><span><i class="mgl" data-g="skull" data-k="e"></i>Enemy site</span><span><i class="mgl" data-g="fence" data-k="h"></i>Land to buy</span><span><i class="mgl" data-g="tower" data-k="m"></i>Mage tower</span><span class="sd"><i class="mgl" data-g="chest" data-k=""></i>Dimmed once searched</span><small id="mph2"></small></div></div></div>
 <div id="cm" role="dialog" aria-modal="true" aria-labelledby="cmh" hidden><div class="hx"><div class="pn sm"><h2 id="cmh">Sir Aldric</h2><div class="czt" role="tablist" aria-label="Character, inventory, skills or quests"><button role="tab" id="cmtc" aria-selected="true">Character</button><button role="tab" id="cmti" aria-selected="false">Inventory</button><button role="tab" id="cmtk" aria-selected="false">Skills</button><button role="tab" id="cmts" aria-selected="false">Quests</button></div><button class="b sm" id="cmx" aria-label="Close"><svg class="ic"><use href="#i-close"/></svg></button></div></div>
 <section id="chr" aria-label="Character"><div class="dl" id="dlL"></div><div id="cdw" aria-hidden="true"><svg class="pi" width="120" height="174"><use href="#px-doll"/></svg></div><div class="dl" id="dlR"></div><div class="dl" id="dlB"></div><div id="chb"><div id="hsx" class="pn sm"></div><div id="cdt" class="pn sm" hidden></div></div></section>
 <section id="inv" aria-label="Inventory" hidden><div class="pn"><div class="ivh" id="ivh"></div><div class="ivc" id="ivc"></div><div class="ivg" id="ivg"></div><div class="ivd" id="ivd"></div></div></section>
@@ -3707,7 +3741,7 @@ Object.assign(CCD,{rst:()=>mut('step')?.5:1,gtv:()=>mut('vault')?.5:1,mbk:()=>mu
 }
 
 skS();
-const toast=(m,c='',ic='')=>{const d=document.createElement('div'),ts=$('ts');d.className='t pn sm '+c;d.innerHTML=(ic?IC(ic):'')+'<span>'+m+'</span>';ts.prepend(d);while(ts.children.length>4)ts.lastChild.remove();setTimeout(()=>d.classList.add('o'),3200);setTimeout(()=>d.remove(),3800)};
+const toast=(m,c='',ic='')=>{const d=document.createElement('div'),ts=$('ts');d.className='t pn sm '+c;let ih='';if(ic)try{ih=PXI(ic,/\bg\b/.test(c)?'#9ae07a':/\bw\b/.test(c)?'#ff8a76':'#f0cf7a')}catch{ih=IC(ic)}d.innerHTML=ih+'<span>'+m+'</span>';ts.prepend(d);try{pxFill(d)}catch{}while(ts.children.length>4)ts.lastChild.remove();setTimeout(()=>d.classList.add('o'),3200);setTimeout(()=>d.remove(),3800)};
 // the skill tree's page: the points to spend and the respec over the tree; the tree (the trunk, each branch's curves, lit where learned,
 // its name and points, its nodes); the picked skill's card with its Learn button, and the supplies, in the panel beside
 const ug=$('ug'),skCv=(x1,y1,x2,y2)=>`M${x1} ${y1}V${(y1+y2)/2}H${x2}V${y2}`;function menu(){const n=skSpent();skG(skSel)||(skSel=SKT[0][4][0][0]);
@@ -4572,8 +4606,8 @@ const wcPaint=(i,j)=>{const x=(i+.5)*MCL,z=(j+.5)*MCL,zn=rlz(x,z),[u,v]=rlu(x,z)
    for(let it=0;it<3;it++){const m=P.length,Q=P.map((p,i)=>{const a=P[i?i-1:closed?m-2:0],b=P[i<m-1?i+1:closed?1:m-1];return[(a[0]+2*p[0]+b[0])/4,(a[1]+2*p[1]+b[1])/4]});if(!closed){Q[0]=P[0];Q[m-1]=P[m-1]}P=Q}return P})},
  wcStroke=(x,ch,w,col)=>{x.strokeStyle=col;x.lineWidth=w;x.beginPath();for(const P of ch){x.moveTo(P[0][0],P[0][1]);for(let i=1;i<P.length;i++)x.lineTo(P[i][0],P[i][1])}x.stroke()},
  // the layers: x has the world's transform on it (s pixels a metre). The chart goes behind the finer tiles; roads over, all of them (fog of war doesn't hide them); the outline over all
- wcDraw=(x,s)=>{WOL||(WOL=[wcChains(true),wcChains(false)]);
-  x.save();x.globalCompositeOperation='destination-over';x.transform(...WCM);x.imageSmoothingEnabled=true;x.drawImage(WCH,0,0);x.restore();
+ wcChart=x=>{x.save();x.globalCompositeOperation='destination-over';x.transform(...WCM);x.imageSmoothingEnabled=true;x.drawImage(WCH,0,0);x.restore()},
+ wcDraw=(x,s)=>{WOL||(WOL=[wcChains(true),wcChains(false)]);wcChart(x);
   const cw=x.canvas.width,chh=x.canvas.height;if(WRT.width!=cw||WRT.height!=chh){WRT.width=cw;WRT.height=chh}const t=WRT.getContext('2d');t.setTransform(1,0,0,1,0,0);t.clearRect(0,0,cw,chh);t.globalCompositeOperation='source-over';t.setTransform(x.getTransform());
   t.lineJoin=t.lineCap='round';t.strokeStyle='#8a5a2e';t.lineWidth=2.6/s;t.beginPath();for(const r of RLR){t.moveTo(r[0][0],r[0][1]);for(let i=1;i<r.length;i++)t.lineTo(r[i][0],r[i][1])}t.stroke();
   x.save();x.setTransform(1,0,0,1,0,0);x.drawImage(WRT,0,0);x.restore();
@@ -4605,24 +4639,85 @@ const xpR=(x,z,r=80)=>{for(let i=floor((x-r)/MCL);i<=floor((x+r)/MCL);i++)for(le
  mPOI=()=>{mPO=[];const[i0,j0,nw,nh]=mAB;let u0=1e9,u1=-1e9,v0=1e9,v1=-1e9;
   for(const[x,z]of[[i0,j0],[i0+nw,j0],[i0,j0+nh],[i0+nw,j0+nh]].map(([a,b])=>[a*MCL,b*MCL])){const u=floor((x*FLC+z*FLS)/FLD),v=floor((z*FLC-x*FLS)/FLD);u0=min(u0,u-1);u1=max(u1,u+1);v0=min(v0,v-1);v1=max(v1,v+1)}
   for(let i=u0;i<=u1;i++)for(let j=v0;j<=v1;j++){const c=fcp(i,j,.5,.5);if(!XPL.has(xk(floor(c[0]/MCL),floor(c[1]/MCL))))continue;const t=poiT(i,j,c);t&&!plant(i,j,c)&&mPO.push([c[0],c[1],t,SHF.has(i+','+j)])}},
- // draw it: s pixels a metre, (mcx, mcz) in the middle; a world step (dx, dz) goes (dx - dz)/sqrt2 right and (dx + dz)/sqrt2 down
- mDraw=()=>{const v=$('mv'),cv=$('mcv'),w=v.clientWidth,h=v.clientHeight,dp=min(2,devicePixelRatio||1),s=min(w,h)/mSp,cw=Math.round(w*dp),ch=Math.round(h*dp);if(!w||!mAT)return;
-  if(cv.width!=cw||cv.height!=ch){cv.width=cw;cv.height=ch}
-  const x=cv.getContext('2d'),k=dp*s*SQ,[i0,j0,nw,nh]=mAB;x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,cw,ch);
-  x.setTransform(k,k,-k,k,dp*w/2-k*(mcx-mcz),dp*h/2-k*(mcx+mcz));x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
-  x.drawImage(mAT,i0*MCL,j0*MCL,nw*MCL,nh*MCL);x.globalCompositeOperation='destination-in';x.drawImage(mMK,i0*MCL,j0*MCL,nw*MCL,nh*MCL);x.globalCompositeOperation='source-over';wcDraw(x,s);
-  const sp=(X,Z)=>[w/2+s*(X-mcx-Z+mcz)*SQ,h/2+s*(X-mcx+Z-mcz)*SQ],L=[],put=(X,Z,c,ic,t,lb='')=>{const[a,b]=sp(X,Z);a>-40&&b>-40&&a<w+40&&b<h+40&&L.push(`<i class="${c}" style="left:${a.toFixed(1)}px;top:${b.toFixed(1)}px" title="${t}"><svg class="ic"><use href="#i-${ic}"/></svg>${lb}</i>`)};
-  for(const[X,Z,t,d]of mPO)put(X,Z,'mpo'+(d?' sd':''),MPI[t][0],MPI[t][1]+(d?', searched':''));
-  put(-21,-20,'mpo kp','castle','Greywatch Keep','<b>Greywatch Keep</b>');
-  // the realm's sites, once their ground has been seen, and the zones' names once they have been entered
-  for(const p of RLP){if(p.k=='c'&&p.s==3||!XPL.has(xk(floor(p.x/MCL),floor(p.z/MCL))))continue;put(p.x,p.z,'mpo '+RLK[p.k],p.k=='c'?p.s>1?'castle':'cottage':p.k=='e'?'skull':p.k=='h'?'fence':'tower',RLKT[p.k]+': '+p.n,`<b>${p.n}</b>`)}
-  for(const z of ZS){const[X,Z]=rlw(RLZL[z][0],RLZL[z][1]),[a,b]=sp(X,Z);L.push(`<i class="mpz" style="left:${a.toFixed(1)}px;top:${b.toFixed(1)}px">${RLMZN[z]}</i>`)}
-  const p=P.position,fx=sin(P.rotation.y),fz=cos(P.rotation.y),[a,b]=sp(p.x,p.z);
-  L.push(`<i class="mme" style="left:${a.toFixed(1)}px;top:${b.toFixed(1)}px;--a:${atan2(fx-fz,-fx-fz).toFixed(3)}rad" title="You are here"><svg viewBox="-12 -12 24 24"><path d="M0-11 8 9 0 4.6-8 9z"/></svg></i>`);
-  $('mk').innerHTML=L.join('')},
+ // draw it, in pixels like the minimap: s css pixels a metre, (mcx, mcz) in the middle; a world step (dx, dz) goes (dx - dz)/sqrt2 right and
+ // (dx + dz)/sqrt2 down. The chart is drawn on a small canvas, an art pixel U css pixels (3, or 2 on a phone), shown nearest-neighbour: the
+ // ground's colours cut to steps, the edge of what is known dithered (BAY) into a parchment checker, a dithered shade round the frame's
+ // inside, the coast, the zones' borders (dashed) and the roads a pixel wide (mmLn); the knight's green arrow sits on its own canvas (#mma, mArr) above all of it.
+ // The places are 11-pixel glyph plates stamped into it (mGl); HTML boxes over them hold their names and hover titles
+ mDraw=()=>{const v=$('mv'),cv=$('mcv'),w=v.clientWidth,h=v.clientHeight;if(!w||!mAT)return;
+  const U=w<560?2:3,W=Math.ceil(w/U),lh=Math.ceil(h/U),s=min(w,h)/mSp,sa=s/U,k=sa*SQ,[i0,j0,nw,nh]=mAB,cx=w/2/U,cy=h/2/U;
+  if(cv.width!=W||cv.height!=lh){cv.width=W;cv.height=lh;cv.style.width=W*U+'px';cv.style.height=lh*U+'px'}
+  const x=cv.getContext('2d',{willReadFrequently:true});x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,W,lh);
+  x.setTransform(k,k,-k,k,cx-k*(mcx-mcz),cy-k*(mcx+mcz));x.imageSmoothingEnabled=sa*2<1.5;x.imageSmoothingQuality='low';
+  x.drawImage(mAT,i0*MCL,j0*MCL,nw*MCL,nh*MCL);x.imageSmoothingEnabled=true;x.globalCompositeOperation='destination-in';x.drawImage(mMK,i0*MCL,j0*MCL,nw*MCL,nh*MCL);x.globalCompositeOperation='source-over';wcChart(x);
+  x.setTransform(1,0,0,1,0,0);
+  const id=x.getImageData(0,0,W,lh),d=id.data,pq=v=>{v=(v-120)*1.12+120;return v<0?0:v>255?255:Math.round(v/16)*16},
+   px=(X,Y,R,G,B)=>{if(X<0||Y<0||X>=W||Y>=lh)return;const o=(Y*W+X)*4;d[o]=R;d[o+1]=G;d[o+2]=B};
+  for(let y=0;y<lh;y++)for(let X=0;X<W;X++){const o=(y*W+X)*4,b=(BAY[(y&3)*4+(X&3)]+.5)/16,e=min(X,y,W-1-X,lh-1-y);let R,G,B;
+   if(d[o+3]/255>b){R=pq(d[o]);G=pq(d[o+1]);B=pq(d[o+2])}else if((X+y)&1){R=212;G=192;B=144}else{R=204;G=183;B=135}
+   if(e<10&&(10-e)/10*.75>b){R*=.8;G*=.74;B*=.68}
+   d[o]=R;d[o+1]=G;d[o+2]=B;d[o+3]=255}
+  const sq=(X,Z)=>[cx+sa*(X-mcx-Z+mcz)*SQ,cy+sa*(X-mcx+Z-mcz)*SQ],
+   ln=(r,f,dash)=>{let dk=0;for(let i=0;i<r.length-1;i++){const[x0,y0]=sq(r[i][0],r[i][1]),[x1,y1]=sq(r[i+1][0],r[i+1][1]);if(x0<-2&&x1<-2||x0>W+2&&x1>W+2||y0<-2&&y1<-2||y0>lh+2&&y1>lh+2)continue;
+    mmLn(floor(x0),floor(y0),floor(x1),floor(y1),(X,Y)=>(!dash||(dk++%6)<3)&&f(X,Y))}};
+  WOL||(WOL=[wcChains(true),wcChains(false)]);
+  for(const ch of WOL[1])ln(ch,(X,Y)=>px(X,Y,122,84,40),1);
+  for(const ch of WOL[0])ln(ch,(X,Y)=>px(X,Y,42,22,8));
+  for(const r of RLR)ln(r,(X,Y)=>px(X+1,Y+1,58,32,8));for(const r of RLR)ln(r,(X,Y)=>px(X,Y,216,154,72));
+  // the places: an 11-pixel plate each (mGl) with a hard shadow, half see-through once searched; HTML boxes over them carry the names
+  const p=P.position,[ma,mb]=sq(p.x,p.z),sp=(X,Z)=>{const[a,b]=sq(X,Z);return[floor(a),floor(b)]},L=[],
+   put=(X,Z,c,g,k,t,lb='')=>{const[a,b]=sp(X,Z);if(a<-8||b<-8||a>W+8||b>lh+8)return;if(abs(a-ma)<16&&mb>b&&mb-b<14)lb='';const G=mGl(g,k),dm=c.includes(' sd');
+    for(let j=0;j<11;j++)for(let i=0;i<11;i++){const X=a-4+i,Y=b-4+j;if(X<0||Y<0||X>=W||Y>=lh)continue;const o=(Y*W+X)*4;d[o]*=.62;d[o+1]*=.58;d[o+2]*=.54}
+    for(let j=0;j<11;j++)for(let i=0;i<11;i++){const X=a-5+i,Y=b-5+j,c=G[j*11+i];if(X<0||Y<0||X>=W||Y>=lh)continue;const o=(Y*W+X)*4;
+     if(dm){d[o]=(d[o]+c[0])/2;d[o+1]=(d[o+1]+c[1])/2;d[o+2]=(d[o+2]+c[2])/2}else{d[o]=c[0];d[o+1]=c[1];d[o+2]=c[2]}}
+    L.push(`<i class="${c}" style="left:${(a+.5)*U}px;top:${(b+.5)*U}px" title="${t}">${lb}</i>`)};
+  for(const[X,Z,t,dn]of mPO)put(X,Z,'mpo'+(dn?' sd':''),MPI[t][0],'',MPI[t][1]+(dn?', searched':''));
+  // the realm's sites, once their ground has been seen, and the keep over all
+  for(const o of RLP){if(o.k=='c'&&o.s==3||!XPL.has(xk(floor(o.x/MCL),floor(o.z/MCL))))continue;put(o.x,o.z,'mpo '+RLK[o.k],o.k=='c'?o.s>1?'castle':'cottage':o.k=='e'?'skull':o.k=='h'?'fence':'tower',o.k,RLKT[o.k]+': '+o.n,`<b>${o.n}</b>`)}
+  put(-21,-20,'mpo kp','castle','k','Greywatch Keep','<b>Greywatch Keep</b>');
+  x.putImageData(id,0,0);
+  // the zones' names once they have been entered
+  for(const z of ZS){const[X,Z]=rlw(RLZL[z][0],RLZL[z][1]),[a,b]=sp(X,Z);L.push(`<i class="mpz" style="left:${a*U}px;top:${b*U}px">${RLMZN[z]}</i>`)}
+  $('mk').innerHTML=L.join('');
+  // the knight: a green arrow on its own canvas over everything else on the chart (a place's name under it steps aside)
+  const fx=sin(P.rotation.y),fz=cos(P.rotation.y),ad=(Math.round(atan2(fx-fz,-fx-fz)/(PI/8))%16+16)%16,ac=$('mma'),ax=ac.getContext('2d');
+  ac.width=ac.height=13;for(const[i,j,col]of mArr(ad)){ax.fillStyle=col;ax.fillRect(i,j,1,1)}
+  ac.style.cssText=`left:${(floor(ma)-6)*U}px;top:${(floor(mb)-6)*U}px;width:${13*U}px;height:${13*U}px`},
+ // the minimap's notched arrowhead (mmAr) 15% larger, on a 13x13 grid, green, outlined in ink; turned k sixteenths of a turn
+ MAW=[],mArr=k=>MAW[k]||(MAW[k]=(()=>{const th=k*PI/8,cs=cos(th),sn=sin(th),V=[[0,-4.4],[3.2,3.5],[0,1.9],[-3.2,3.5]].map(([x,y])=>[(x*cs-y*sn)*1.15,(x*sn+y*cs)*1.15]),N=13,g=[],o=[],
+   ins=(x,y)=>{let w=0;for(let i=0;i<4;i++){const[a,b]=V[i],[e,f]=V[(i+1)&3];if((b>y)!=(f>y)&&x<(e-a)*(y-b)/(f-b)+a)w=!w}return w};
+  for(let j=0;j<N;j++)for(let i=0;i<N;i++)g.push(ins(i+.5-6.5,j+.5-6.5)?1:0);
+  for(let j=0;j<N;j++)for(let i=0;i<N;i++){const f=g[j*N+i],up=j>0&&g[(j-1)*N+i],dn=j<N-1&&g[(j+1)*N+i],lf=i>0&&g[j*N+i-1],rt=i<N-1&&g[j*N+i+1];
+   if(f)o.push([i,j,up&&lf?'#3ec44a':'#a8f088']);else if(up||dn||lf||rt)o.push([i,j,'#08240c'])}
+  return o})()),
+ // the places' glyphs, 7 pixels square, on an 11-pixel plate: an ink keyline, a rim in the place's colour, a dark field (the keep's crimson);
+ // made once each as [r, g, b] a pixel. The legend shows the same plates (mGu)
+ MGL={castle:['X.X.X.X','XXXXXXX','.XXXXX.','.XXXXX.','.XX.XX.','.X...X.','.X...X.'],
+  tower:['.X.X.X.','.XXXXX.','..XXX..','..X.X..','..XXX..','..XXX..','.XXXXX.'],
+  cottage:['...X...','..XXX..','.XXXXX.','XXXXXXX','.XXXXX.','.X.X.X.','.XXX.X.'],
+  grave:['..XXX..','.XX.XX.','.X...X.','.XX.XX.','.XX.XX.','.XXXXX.','XXXXXXX'],
+  skull:['.XXXXX.','XXXXXXX','X..X..X','X..X..X','XXX.XXX','.XXXXX.','.X.X.X.'],
+  fence:['.X.X.X.','.X.X.X.','XXXXXXX','.X.X.X.','XXXXXXX','.X.X.X.','.X.X.X.'],
+  chest:['.XXXXX.','XXXXXXX','XXXXXXX','.......','XXX.XXX','XXXXXXX','XXXXXXX']},
+ MGC={'':['#8a6a48','#f3dcbc','#231b19'],c:['#5fb6ff','#bfe4ff','#1a2230'],e:['#ff5a4a','#ffb0a4','#2a1414'],h:['#66e070','#c4f5c0','#16261a'],m:['#c58bff','#e8d2ff','#221a30'],k:['#e0b060','#fff1dc','#8e1619']},
+ MGK={},mGl=(g,k='')=>MGK[g+k]||(MGK[g+k]=(()=>{const[rm,fg,bg]=MGC[k].map(c=>{const n=parseInt(c.slice(1),16);return[n>>16,n>>8&255,n&255]}),o=[];
+  for(let j=0;j<11;j++)for(let i=0;i<11;i++)o.push(!i||!j||i==10||j==10?[11,7,6]:i==1||j==1||i==9||j==9?rm:MGL[g][j-2][i-2]=='X'?fg:bg);return o})()),
+ mGu=(g,k)=>{const c=document.createElement('canvas'),x=c.getContext('2d'),G=mGl(g,k);c.width=c.height=11;G.forEach((p,n)=>{x.fillStyle=`rgb(${p})`;x.fillRect(n%11,n/11|0,1,1)});return c.toDataURL()},
+ // the compass rose, stamped once in pixels: four arms (north's red), four short ones between, a dotted ring, the N above, inked round
+ mRose=()=>{const c=document.querySelector('#mp .mcr');if(c.width==25)return;const S=25,T=7,o=12.5,x=c.getContext('2d'),g=[];c.width=S;c.height=S+T;
+  const arm=(u,v,R,q)=>abs(v)<=R&&abs(u)<=q*(1-abs(v)/R);
+  for(let j=0;j<S;j++)for(let i=0;i<S;i++){const u=i+.5-o,v=j+.5-o,r=hypot(u,v),p=(u+v)/SQ/2,q=(v-u)/SQ/2;let col=0;
+   if(arm(u,v,11,2.9))col=v<0?(u<0?'#6a0e12':'#c8282c'):(u<0?'#7a5a34':'#3b2a18');
+   else if(arm(v,u,11,2.9))col=u>0?(v<0?'#b08a5c':'#5a3d1c'):(v<0?'#c9a26a':'#7a5a34');
+   else if(arm(p,q,6.8,1.9)||arm(q,p,6.8,1.9))col=(u+v<0)==(abs(p)>abs(q))?'#8a6a40':'#5a3d1c';
+   else if(abs(r-8.2)<.55)col=(i+j)&1?'#5a3d1c':0;else if(r<8.2)col='#ead9ae';
+   g[j*S+i]=col}
+  const solid=(i,j)=>i>=0&&j>=0&&i<S&&j<S&&g[j*S+i]&&g[j*S+i]!='#ead9ae'&&!(abs(hypot(i+.5-o,j+.5-o)-8.2)<.55);
+  for(let j=0;j<S;j++)for(let i=0;i<S;i++){let col=g[j*S+i];if(!solid(i,j)&&(solid(i-1,j)||solid(i+1,j)||solid(i,j-1)||solid(i,j+1)))col='#1a0f08';if(col){x.fillStyle=col;x.fillRect(i,j+T,1,1)}}
+  for(const[dx,col]of[[1,'#1a0f08'],[0,'#c8282c']])for(let j=0;j<5;j++)for(let i=0;i<4;i++)if(MMNN[j][i]=='X'){x.fillStyle=col;x.fillRect(10+i+dx,j+dx,1,1)}},
  // paint the queued tiles, about 10ms a frame, while the map is open
  mLoop=()=>{if(ov!=5)return;if(mPQ.length){const t0=performance.now(),ax=mAT.getContext('2d'),[i0,j0]=mAB;while(mPQ.length&&performance.now()-t0<10){const[i,j]=mPQ.pop();ax.putImageData(mTile(i,j),(i-i0)*16,(j-j0)*16)}mDraw()}mRaf=requestAnimationFrame(mLoop)},
- mapOpen=()=>{const p=P.position,d=hypot(p.x,p.z)|0;mcx=p.x;mcz=p.z;wcFlush(6000,30);mBuild();mPOI();const n=mPO.length,f=mPO.filter(q=>q[3]).length;
+ mapOpen=()=>{const p=P.position,d=hypot(p.x,p.z)|0;mcx=p.x;mcz=p.z;mRose();pxFill($('mp'));for(const e of $('mp').querySelectorAll('.mgl:not([data-ok])')){e.dataset.ok=1;e.style.backgroundImage=`url(${mGu(e.dataset.g,e.dataset.k)})`}wcFlush(6000,30);mBuild();mPOI();const n=mPO.length,f=mPO.filter(q=>q[3]).length;
   $('mpd').innerHTML=(rlz(p.x,p.z)>=0?'<b>'+RLMZN[rlz(p.x,p.z)]+'</b> · ':'')+(d<45?'You are home at <b>Greywatch Keep</b>':`Greywatch Keep is <b>${d} m</b> away`)+(n?` · <b>${n}</b> place${n>1?'s':''} found, <b>${f}</b> searched`:'');
   $('mph2').textContent=gpOn?'Stick to look around · LB, RB to zoom · Y finds you':mob?'Drag to look around':'Drag to look around · scroll to zoom · M closes';
   mDraw();cancelAnimationFrame(mRaf);mRaf=requestAnimationFrame(mLoop)},
@@ -4888,13 +4983,13 @@ const TUK=SK+'-tutorial';let tuOn=0,tuP=0,tuMax=0,tuFrom=0,tuCb=null,tuLb='';
 const tuS=(kb,tc,pd)=>[kb,tc,pd][gpOn?2:mob?1:0],
  // the menu icons (i-*) as pixel sprites: drawn 16 pixels square in one colour, the edge hardened, an ink outline round it; made once
  // each (PXK) and set on every <i class="pxi" data-i="name" data-c="colour"> under a root by pxFill
- PXK={},pxSrc=(n,c)=>PXK[n+c]||(PXK[n+c]=new Promise(r=>{const sy=document.getElementById('i-'+n),S=16,im=new Image();if(!sy)return r('');
+ PXK={},pxSrc=(n,c,S=16)=>PXK[n+c+S]||(PXK[n+c+S]=new Promise(r=>{const sy=document.getElementById('i-'+n),im=new Image();if(!sy)return r('');
   im.onload=()=>{const cv=document.createElement('canvas');cv.width=cv.height=S;const x=cv.getContext('2d');x.drawImage(im,0,0,S,S);const D=x.getImageData(0,0,S,S),a=D.data,o=new Uint8Array(S*S);
    for(let i=0;i<S*S;i++){o[i]=a[i*4+3]>90;a[i*4+3]=o[i]?255:0}
    for(let j=0;j<S;j++)for(let i=0;i<S;i++){const q=j*S+i;if(!o[q]&&((i&&o[q-1])||(i<S-1&&o[q+1])||(j&&o[q-S])||(j<S-1&&o[q+S]))){a[q*4]=11;a[q*4+1]=7;a[q*4+2]=6;a[q*4+3]=255}}
    x.putImageData(D,0,0);r(cv.toDataURL())};im.onerror=()=>r('');
   im.src='data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.5 -1.5 27 27" width="${S}" height="${S}"><g fill="none" stroke="${c}" color="${c}" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round">${sy.innerHTML}</g></svg>`)})),
- pxFill=e=>{for(const i of e.querySelectorAll('.pxi:not([data-ok])')){i.dataset.ok=1;pxSrc(i.dataset.i,i.dataset.c||'#f0cf7a').then(u=>{u&&(i.style.backgroundImage=`url(${u})`)})}},
+ pxFill=e=>{for(const i of e.querySelectorAll('.pxi:not([data-ok])')){i.dataset.ok=1;pxSrc(i.dataset.i,i.dataset.c||'#f0cf7a',+i.dataset.s||16).then(u=>{u&&(i.style.backgroundImage=`url(${u})`)})}},
  PXI=(n,c)=>`<i class="pxi" data-i="${n}"${c?` data-c="${c}"`:''} aria-hidden="true"></i>`,
  tuB=i=>`<i class="sb">${PXI(i)}</i>`,
  tuC=(...a)=>a.map(([c,t,w])=>`<kbd data-k="${c}"${w?' class="wd"':''}>${t}</kbd>`).join(''),
