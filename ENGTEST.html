@@ -3249,7 +3249,9 @@ AXHM.visible=false;
 const HMH=1.945;let hmY=0,hmW=1;
 Object.assign(WPV,{hm2:[part(mg([[B(.06,1.89,.06).translate(0,.93,0),LTH],[B(.08,.06,.08).translate(0,.116,0),GLD]]),VC,0,0,0,staff),part(mg([[B(.57,.39,.39).translate(0,HMH,0),0],[B(.12,.45,.45).translate(.315,HMH,0),0],[B(.12,.45,.45).translate(-.315,HMH,0),0]]),BLM,0,0,0,staff)],
  pw2:[part(mg([[B(.13,1.05,.03).translate(0,.92,0),0],[B(.09,.12,.03).translate(0,1.5,0),0],[B(.04,.09,.03).translate(0,1.6,0),0]]),BLM,0,0,0,staff),part(mg([[B(.4,.06,.1).translate(0,.4,0),GLD]]),VC,0,0,0,staff)],
- sc2:[part(mg([[B(.06,1.5,.06).translate(0,.78,0),LTH],[B(.08,.07,.08).translate(0,1.53,0),GLD]]),VC,0,0,0,staff),part(mg([[B(1,.16,.035).translate(-.5,1.5,0),0],[B(.3,.06,.035).translate(-.15,1.39,0),0],[B(.24,.13,.035).translate(-1.1,1.43,0),0],[B(.16,.1,.035).translate(-1.26,1.32,0),0],[B(.09,.08,.035).translate(-1.34,1.21,0),0]]),BLM,0,0,0,staff)],
+ // (the scythe's blade reaches out along the staff's +x, the way the stroke carries it, so its point leads the cut; at rest poseStaff
+ // turns the staff's x about, so the blade still hangs forward in his hand)
+ sc2:[part(mg([[B(.06,1.5,.06).translate(0,.78,0),LTH],[B(.08,.07,.08).translate(0,1.53,0),GLD]]),VC,0,0,0,staff),part(mg([[B(1,.16,.035).translate(.5,1.5,0),0],[B(.3,.06,.035).translate(.15,1.39,0),0],[B(.24,.13,.035).translate(1.1,1.43,0),0],[B(.16,.1,.035).translate(1.26,1.32,0),0],[B(.09,.08,.035).translate(1.34,1.21,0),0]]),BLM,0,0,0,staff)],
  rb1:[part(mg([[B(.07,.6,.025).translate(0,.68,0),0],[B(.045,.08,.025).translate(0,1.02,0),0]]),BLM,0,0,0,staff)],
  dag:[part(mg([[B(.06,.36,.025).translate(0,.56,0),0],[B(.035,.07,.025).translate(0,.77,0),0]]),BLM,0,0,0,staff)],
  clw:[part(mg([[B(.02,.32,.02).translate(-.045,.48,0),0],[B(.02,.36,.02).translate(0,.5,0),0],[B(.02,.32,.02).translate(.045,.48,0),0],[B(.14,.05,.05).translate(0,.33,0),0]]),BLM,0,0,0,staff)],
@@ -4721,7 +4723,7 @@ DWV=[V(),V(),V()],DSO=.3,dsE=(su,o)=>{const t=cl((su-o)/.36,0,1);return t<.42?sm
   if(sk>0){fk();const e=dsE(su,DSO);armIK(DWV[0].copy(stR).lerp(DWV[1].set(.34,1.5,.15).lerp(DWV[2].set(.12,1.82,1.1),e),sk),1)}
   fk();const e=sk>0?dsE(su,DSO):0,d=DWV[0].set(-.08,-.5,1).normalize().applyAxisAngle(XA,E.x).applyAxisAngle(XA,A.x).applyAxisAngle(ZA,A.y).lerp(DWV[1].set(.05,.12-.2*e,1).normalize(),sk).normalize(),
    X=DWV[2].set(0,1,0).addScaledVector(d,-d.y).normalize();stM.makeBasis(X,d,DWV[1].crossVectors(X,d));ODG.quaternion.setFromRotationMatrix(stM);ODG.position.copy(stR).addScaledVector(d,-gl).sub(T16)}
- EQ.w?.t=='bow'?stR.set(0,0,1):EQ.w?.t=='hm2'?stR.set(0,-stD.z,stD.y):stR.set(0,1,0).lerp(T1.set(cos(a),0,-sin(a)),sk);stX.copy(stR).addScaledVector(stD,-stR.dot(stD)).normalize();stZ.crossVectors(stX,stD);stM.makeBasis(stX,stD,stZ);staff.quaternion.setFromRotationMatrix(stM).premultiply(stQi);staff.position.copy(stB).sub(T16).applyQuaternion(stQi)};
+ EQ.w?.t=='bow'?stR.set(0,0,1):EQ.w?.t=='hm2'?stR.set(0,-stD.z,stD.y):stR.set(0,EQ.w?.t=='sc2'?-1:1,0).lerp(T1.set(cos(a),0,-sin(a)),sk);stX.copy(stR).addScaledVector(stD,-stR.dot(stD)).normalize();stZ.crossVectors(stX,stD);stM.makeBasis(stX,stD,stZ);staff.quaternion.setFromRotationMatrix(stM).premultiply(stQi);staff.position.copy(stB).sub(T16).applyQuaternion(stQi)};
 const K={},CO=V(1,1.25,1).normalize(),LK=V(0,4,0),tv=V(),SHC=V(),lp=(a,b)=>a+(b-a)*RN;let RN=0,cvx=0,cvz=0,LNx=0,LNv=0,LSx=0,LSv=0,ASx=0,ASv=0,SPp=0,SPr=0,SKx=0,SKv=0,SKr=0,SKrv=0,ZM=54,ZMt=54,ptn=0,SPp_=0,SPr_=0,ph=0,pw=0,dgT=null,dgB=0,dsp=0,dph=0,jx=0,jy=0,gx=0,gy=0,jid=null,j0x=0,j0y=0;
 // ---- the sword stroke (Space / the sword button): a level right-to-left cut; mid-stroke every foe in the arc in front of him within the
 // blade's reach, or right at his feet, takes the blow ----
