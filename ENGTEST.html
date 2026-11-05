@@ -2985,7 +2985,7 @@ const WPV={sw1:[staff.children[0]],sw2:[part(mg([[B(.12,1.05,.03).translate(0,.9
   ax1:[part(mg([[B(.05,.8,.05).translate(0,.72,0),LTH],[B(.07,.06,.07).translate(0,1.13,0),GLD]]),VC,0,0,0,staff),part(mg([[B(.24,.18,.03).translate(.13,1.0,0),0],[B(.06,.34,.03).translate(.27,.97,0),0]]),BLM,0,0,0,staff)],
   ax2:[part(mg([[B(.06,1.2,.06).translate(0,.9,0),LTH],[B(.08,.07,.08).translate(0,1.52,0),GLD]]),VC,0,0,0,staff),part(mg([[B(.46,.24,.035).translate(0,1.34,0),0],[B(.06,.42,.035).translate(.25,1.34,0),0],[B(.06,.42,.035).translate(-.25,1.34,0),0]]),BLM,0,0,0,staff)]},
  AXHM=part(mg([[B(.08,.08,.08).translate(0,.04,0),GLD],[B(.05,.26,.05).translate(0,.21,0),LTH]]),VC,0,0,0,staff),SWHG=staff.geometry,AXHG=AXHM.geometry,
- wpLook=()=>{const t=WPV[EQ.w?.t]?EQ.w.t:CL().kw;OHG.parent||SHE.add(OHG);for(const k in WPV)for(const m of WPV[k])m.visible=k==t;staff.geometry=SWK[t]?SWHG:AXHG;for(const k in OHW)OHW[k].visible=k==t;BOWA.visible=false};
+ wpLook=()=>{const t=WPV[EQ.w?.t]?EQ.w.t:CL().kw;OHG.parent||SHE.add(OHG);for(const k in WPV)for(const m of WPV[k])m.visible=k==t;staff.geometry=SWK[t]?SWHG:AXHG;for(const k in OHW)OHW[k].visible=WPT[t]?.[1]==2&&k==t||EQ.s?.s=='w'&&k==EQ.s.t;BOWA.visible=false};
 AXHM.visible=false;
 // the other classes' weapons: the paladin's war hammer (enlarged: its head 1.2x then 1.25x the size it was drawn at; the haft 1.2x, 1.25x and 1.2x again long, from the butt, its head HMH up it) and holy greatsword, the necro-knight's scythe and runeblades, the ranger's longbow
 // and crossbow, the rogue's daggers and claws, the mage's staff and wand (its gem the blade's glowing material). A pair puts its twin in
@@ -3325,7 +3325,7 @@ const LVM=50,LVK=[1,15,30,50],
  CLD={war:{n:'Warrior',d:'Frontline bruiser and weapon master',ac:0,rs:'Rage',rc:'#e8532a',as:1,wt:['sw1','ax1','sw2','ax2'],sh:1,kw:'sw1',rg:{h:5,t:8,r:0,d:6},wn:'Swords and axes',
   ps:'Plate armour: +5% total Armor, and a shield may be carried with a one-handed weapon.'}},
  // a weapon kind: name, hands (2 also for a pair, which takes both), its built-in stat and amount (or [least, most]), its names by
- // rarity, its own attacks a second (else the class's), a second built-in stat and amount
+ // rarity, its own attacks a second (else the class's), a second built-in stat and amount, its Attack's scale (else 1.4 for two hands, 1 for one)
  WPT={sw1:['Sword',1,'cc',.05,['Blade','Longsword','Arming Sword','Falchion','Broadsword']],sw2:['Greatsword',2,'cc',.05,['Greatsword','Claymore','Zweihander','Flamberge','Executioner\'s Sword']],
   ax1:['Axe',1,'bch',.05,['Hatchet','Hand Axe','Bearded Axe','War Axe','Cleaver']],ax2:['Greataxe',2,'shr',.05,['Greataxe','Broadaxe','Poleaxe','Bardiche','Headsman\'s Axe']]},
  // the node positions, the same on every class's tree: each branch's root, its stem, the fork's two and the capstone
@@ -3369,12 +3369,15 @@ const CL=()=>CLD[CLS],skS=()=>{SKT=SKTC[CLS];SKS=SKT.flatMap(b=>b[4].map(s=>[b,s
  skL=k=>SKL[k]|0,skr=k=>{const r=SKL[k]|0;return r?r+(SKX[k]|0):0},skSpent=()=>{let n=0;for(const k in SKL)n+=SKL[k];return n},
  skOpen=s=>s[5].every(q=>skL(q)>0),mut=k=>{for(const q in EQ)if(EQ[q]?.m==k)return 1;return 0},
  // a weapon held in both hands leaves no hand for the shield
- wp2=(E=EQ)=>E.w&&WPT[E.w.t]?.[1]==2,shOn=(E=EQ)=>!!E.s&&CL().sh&&!wp2(E),
+ wp2=(E=EQ)=>E.w&&WPT[E.w.t]?.[1]==2,shOn=(E=EQ)=>!!E.s&&E.s.s=='s'&&CL().sh&&!wp2(E),
+ // dual wielding (the Rogue's daggers, CLD dw): a weapon of those kinds may go in the off hand while one is in the main hand, and counts
+ // in full; such a weapon is rolled for two to be carried (its WPT scale, k[8]), so a pair of them comes to what the old paired daggers did
+ dwOk=it=>!!it&&it.s=='w'&&!!CL().dw?.includes(it.t),dwOn=(E=EQ)=>dwOk(E.w)&&dwOk(E.s),
  AK=l=>40+12*l,hpB=l=>100+20*(l-1),
  // everything a set of gear (E) and the skills come to, with the caps; the class's passives add theirs (CPS)
  hxC=(E=EQ)=>{const C=CL(),s={},b0=SKX;SKX={};for(const q in E){const it=E[q];it&&it.x&&it.x.forEach(([a,v])=>a=='sk'&&(SKX[v]=(SKX[v]|0)+1))}
   for(const k in STD)s[k]=0;const bs=lvC(LV,[3,9.75,16.5,25]);s.atk=bs;s.arc=bs;s.cc=.05;s.hp=hpB(LV);
-  for(const q in E){const it=E[q];if(!it||!it.b||q=='s'&&!shOn(E))continue;for(const k in it.b)s[k]+=it.b[k]*(UPK[k]?1+.1*(it.up|0):1);for(const[k,v]of it.x)k!='sk'&&(s[k]+=v)}
+  for(const q in E){const it=E[q];if(!it||!it.b||q=='s'&&(it.s=='w'?!dwOn(E):!shOn(E)))continue;for(const k in it.b)s[k]+=it.b[k]*(UPK[k]?1+.1*(it.up|0):1);for(const[k,v]of it.x)k!='sk'&&(s[k]+=v)}
   CPS[CLS](s,E);
   for(const k in SCAP)k in s&&(s[k]=min(SCAP[k],s[k]));s.eva=min(C.ac==1?.5:.35,s.eva);s.blk=shOn(E)?max(0,s.blk):0;s.dr=min(SCAP.dr,s.arm/(s.arm+AK(LV)));
   E!==EQ&&(SKX=b0);return s},
@@ -3388,7 +3391,7 @@ CLR={},DYN={},MSX={},CSA={},CHK={},CDM={},CCB={},CFB={},CLL={},CKL={},CHT={},CHU
  // the arc a stroke sweeps: Reckless Cleave widens it rank by rank, until it goes nearly all round him
  crit=()=>stv().cc,kbM=()=>1,arcT=()=>.2-.18*skr('rc')-(EQ.w?.t=='sc2'?.12*skr('nrf'):0),
  // a new knight's kit: a common chest, legs and weapon for the class, rolled at level 1; the rest is found
- kit=()=>{for(const k of 'alw')EQ[k]=mkIt(k,0,1,k=='w'?CL().kw:0)},
+ kit=()=>{for(const k of 'alw')EQ[k]=mkIt(k,0,1,k=='w'?CL().kw:0);CL().dw&&(EQ.s=mkIt('w',0,1,CL().dw[0]))},
  // experience to the next level, from level l; what a kill or a find is worth grows with the level
  xpN=l=>30+l*25+l*l*5,xpM=n=>Math.round(n*(1+.12*(LV-1))),
  // a foe's health: so many of a level's ordinary blows (the white-gear Attack the design gives each level), stiffening toward 50 so better gear is wanted
@@ -3450,7 +3453,7 @@ Object.assign(CLD,{
   tn:[0xd8d2c0,0xc8d8b8,0xc0cce0,0xd0c0e0,0xf0d070],ps:'Plate armour, and 2% Life Leech: what you deal heals you.'},
  nec:{n:'Necro-Knight',d:'Dark runeblade and bone commander',ac:0,rs:'Essence',rc:'#9a7ad8',as:1.25,wt:['sc2','rb1'],sh:0,kw:'sc2',rg:{h:2,t:3,r:0,d:1},wn:'Scythes and paired runeblades',
   tn:[0x5a5e66,0x4e6052,0x4c5670,0x5e4e70,0x806a3a],ps:'Plate armour, and Harvest Souls: every kill gives up a soul that restores 3% of your missing Health and a stacking +2% Attack and Arcana.'},
- rog:{n:'Rogue',d:'Lethal assassin and alchemical trickster',ac:1,rs:'Energy',rc:'#e8d84a',as:1.5,wt:['dag','clw'],sh:0,kw:'dag',rg:{h:0,t:0,r:20,d:0},wn:'Paired daggers and twin claws',
+ rog:{n:'Rogue',d:'Lethal assassin and alchemical trickster',ac:1,rs:'Energy',rc:'#e8d84a',as:1.5,wt:['dag','clw'],sh:0,dw:['dag'],kw:'dag',rg:{h:0,t:0,r:20,d:0},wn:'A dagger in each hand, or twin claws',
   ps:'Reinforced leather, and Momentum and Shadows: kills and dodges cloak you in Shadowmeld for 3 seconds, +15% Haste and +15% Evasion.'},
  rgr:{n:'Ranger',d:'Precision marksman and nature warden',ac:1,rs:'Focus',rc:'#8fe04a',as:1.35,wt:['bow','xbw'],sh:0,kw:'bow',rg:{h:2,t:0,r:0,d:0},rng:1,wn:'Longbows and crossbows',
   ps:'Scout leather, and Keen Senses: standing still builds Focus, up to +10% Critical Chance and +30% Ferocity; setting off from it gives a burst of speed.'},
@@ -3463,7 +3466,7 @@ Object.assign(WPT,{
  rb1:['Runeblades',2,'ll',[.04,.1],['Runeblades','Twin Runeblades','Grave Blades','Soulbound Blades','Lichbrands'],1.4],
  bow:['Longbow',2,'fer',[.2,.35],['Shortbow','Longbow','Yew Bow','Warbow','Stormstring']],
  xbw:['Crossbow',2,'fer',[.2,.35],['Crossbow','Arbalest','Heavy Crossbow','Repeater','Siege Bow']],
- dag:['Daggers',2,'hst',[.08,.15],['Knives','Daggers','Stilettos','Kris Blades','Fangs'],0,'ll',.02],
+ dag:['Dagger',1,'hst',[.04,.075],['Knife','Dagger','Stiletto','Kris','Fang'],0,'ll',.01,.7],
  clw:['Claws',2,'hst',[.08,.15],['Hook Claws','Talons','Tiger Claws','Raking Claws','Night Talons'],0,'ll',.02],
  stf:['Staff',2,'cdr',[.1,.18],['Quarterstaff','Staff','Runestaff','Spellstaff','Archstaff']],
  wnd:['Wand',1,'cdr',[.1,.18],['Rod','Wand','Runed Wand','Spellwand','Sceptre']]});
@@ -3949,7 +3952,7 @@ GEN={1:{p:['Worn','Supple','Ranger\'s','Shadowstitched','Nightfall'],a:['Jerkin'
  2:{p:['Frayed','Woven','Runed','Spellbound','Astral'],a:['Robe','Vestment','Tunic','Raiment','Regalia'],l:['Trousers','Silk Leggings','Kilt','Wraps','Pantaloons'],
   h:['Hat','Circlet','Cowl','Hood','Crown'],g:['Gloves','Silk Gloves','Handwraps','Mitts','Cuffs'],b:['Slippers','Sandals','Shoes','Silk Boots','Footwraps']}},
 EQ={h:null,n:null,a:null,k:null,g:null,r:null,q:null,l:null,b:null,w:null,s:null},BAG=[],BGM=30,
- slT=k=>k=='q'?'r':k,eqK=it=>it.s!='r'?it.s:!EQ.r?'r':!EQ.q?'q':sellP(EQ.r)<=sellP(EQ.q)?'r':'q',eqW=it=>EQ[eqK(it)],
+ slT=k=>k=='q'?'r':k,eqK=it=>dwOk(it)?!dwOk(EQ.w)?'w':!EQ.s?'s':sellP(EQ.w)<=sellP(EQ.s)?'w':'s':it.s!='r'?it.s:!EQ.r?'r':!EQ.q?'q':sellP(EQ.r)<=sellP(EQ.q)?'r':'q',eqW=it=>EQ[eqK(it)],
 // each armour slot's share of a full set's Armor; the stats a slot's affixes are drawn from, and each one's best roll at item level l
 ARW={a:.4,l:.3,h:.2,g:.12,b:.12,s:.4},
 AFP={w:['atk','arc','cc','fer','aff','hst','ll'],a:['arm','hp','wrd','ll','aff'],l:['arm','hp','wrd','ms','eva'],h:['arm','hp','wrd','cdr','arc'],g:['atk','cc','hst','arm','fer'],
@@ -3961,7 +3964,7 @@ afV=(k,il,r)=>{const v=AFT[k](il)*[0,.55,.7,.85,1][r]*(r==4?.9+R()*.1:.75+R()*.2
 rMax=l=>l>=41?4:l>=31?3:l>=21?2:l>=11?1:0,
 // a piece for slot s at rarity r and item level il (t: a weapon kind, or the class's own at random)
 mkIt=(s,r,il,t)=>{const C=CL(),it={s,r,il,b:{},x:[],up:0},j=()=>.92+R()*.16;
- if(s=='w'){t=WPT[t]?t:C.wt[R()*C.wt.length|0];const k=WPT[t];it.t=t;it.b[C.mg?'arc':'atk']=+(lvC(il,[2.5,12,25,45])*(k[1]==2?1.4:1)*j()).toFixed(1);const iv=v=>Array.isArray(v)?+(v[0]+R()*(v[1]-v[0])).toFixed(3):v;it.b[k[2]]=iv(k[3]);k[6]&&(it.b[k[6]]=iv(k[7]))}
+ if(s=='w'){t=WPT[t]?t:C.wt[R()*C.wt.length|0];const k=WPT[t];it.t=t;it.b[C.mg?'arc':'atk']=+(lvC(il,[2.5,12,25,45])*(k[8]||(k[1]==2?1.4:1))*j()).toFixed(1);const iv=v=>Array.isArray(v)?+(v[0]+R()*(v[1]-v[0])).toFixed(3):v;it.b[k[2]]=iv(k[3]);k[6]&&(it.b[k[6]]=iv(k[7]))}
  else if(ARW[s]){it.t=s=='s'?0:C.ac;it.b.arm=Math.round(ARW[s]*ACN[it.t][1]*AK(il)*j());s=='s'&&(it.b.blk=+(.1+R()*.08).toFixed(3));s=='b'&&(it.b.ms=.03)}
  else if(s=='k')it.b.eva=+(.02+R()*.02).toFixed(3);else if(s=='n')it.b.hp=Math.round(hpB(il)*.06*j());else it.b.cc=+(.01+R()*.01).toFixed(3);
  const n=[0,1+(R()<.5),2+(R()<.5),3+(R()<.5),4][r],pool=[...new Set(AFP[s].map(k=>C.mg&&k=='atk'?'arc':k))];
@@ -3991,16 +3994,18 @@ sellP=it=>Math.round(lvG(it.il,[15,250,1200,4500])*[.15,.4,1,2.5,6][it.r]*(1+.1*
 // shield-bearing class has anything to put there
 whyNot=it=>{const C=CL();return it.s=='w'?C.wt.includes(it.t)?'':`A ${C.n} cannot wield this weapon`:it.s=='s'?C.sh?'':`A ${C.n} cannot carry a shield`:ARW[it.s]&&(it.t|0)!=C.ac?`A ${C.n} wears ${ACN[C.ac][0].toLowerCase()} armour only`:''},
 canUse=it=>!whyNot(it),
-ohWhy=(E=EQ)=>{const C=CL(),w=E.w,k=w&&WPT[w.t];return w&&OHW[w.t]?`Your ${k[0].toLowerCase()} fill both hands`:k&&k[1]==2?`Your ${k[0].toLowerCase()} takes both hands`:C.sh?'':`A ${C.n} carries nothing in the off hand`},
+ohWhy=(E=EQ)=>{const C=CL(),w=E.w,k=w&&WPT[w.t];return k&&k[1]==2?OHW[w.t]?`Your ${k[0].toLowerCase()} fill both hands`:`Your ${k[0].toLowerCase()} takes both hands`:C.sh||dwOk(w)?'':C.dw?`Hold a ${WPT[C.dw[0]][0].toLowerCase()} in your main hand first`:`A ${C.n} carries nothing in the off hand`},
+// what fits a slot: its own pieces, and in the off hand a dual-wielder's weapon
+slFit=(b,q)=>q=='s'?(b.s=='s'||dwOk(b))&&!ohWhy():b.s==slT(q),
 // on loading: a weapon of his class in hand, and whatever else he cannot wear (another class's, or a shield with no hand free) to the pack
-clsWpn=()=>{if(!(EQ.w&&canUse(EQ.w))){EQ.w&&BAG.length<BGM&&BAG.push(EQ.w);EQ.w=mkIt('w',0,max(1,LV),CL().kw)}
- for(const k in EQ){const it=EQ[k];if(it&&k!='w'&&(!canUse(it)||k=='s'&&ohWhy())){BAG.length<BGM?BAG.push(it):W+=sellP(it);EQ[k]=null}}},
-cmpV=it=>{if(!canUse(it))return -1;const E={...EQ},k=eqK(it);E[k]=it;WPT[it.t]?.[1]==2&&(E.s=null);return hxR(hxC(E))/hxR(stv())-1},
+clsWpn=()=>{if(!(EQ.w&&canUse(EQ.w))){EQ.w&&BAG.length<BGM&&BAG.push(EQ.w);EQ.w=mkIt('w',0,max(1,LV),CL().kw)}if(EQ.s?.s=='w'&&!dwOn()){BAG.length<BGM?BAG.push(EQ.s):W+=sellP(EQ.s);EQ.s=null}
+ for(const k in EQ){const it=EQ[k];if(it&&k!='w'&&(!canUse(it)||k=='s'&&(ohWhy()||!slFit(it,'s')))){BAG.length<BGM?BAG.push(it):W+=sellP(it);EQ[k]=null}}},
+cmpV=(it,k=eqK(it))=>{if(!canUse(it))return -1;const E={...EQ};E[k]=it;WPT[it.t]?.[1]==2&&(E.s=null);return hxR(hxC(E))/hxR(stv())-1},
 cmpTxt=a=>{const d=cmpV(a);return d>.005?`<span class="gup">better (+${max(1,Math.round(d*100))}%)</span>`:d<-.005?`<span class="gdn">worse (${min(-1,Math.round(d*100))}%)</span>`:'no better'},
 // wearing a piece: what it replaces goes in the pack (or is sold, the pack being full); a two-handed weapon sends the shield there too.
 // What it adds to his Health he gains at once; the look follows
-equip=(it,k=eqK(it))=>{const no=whyNot(it)||(it.s=='s'?ohWhy():'');if(no){BAG.includes(it)||bagAdd(it,1);toast(`<b style="color:${RCO(it.r)}">${escH(it.n)}</b>: ${no.charAt(0).toLowerCase()+no.slice(1)}.`,'w',it.s=='w'?'sword':it.s=='s'?'shield':'armor');return}const cur=EQ[k],i=BAG.indexOf(it),m0=bMax();i>=0&&BAG.splice(i,1);if(k=='w'&&WPT[it.t]?.[1]==2&&EQ.s){const sh=EQ.s;EQ.s=null;bagAdd(sh,1)}
- EQ[k]=it;cur&&bagAdd(cur,1);armTint();bHP=min(bMax(),bHP+max(0,bMax()-m0));hrt();sfx.dab();sv()},
+equip=(it,k=eqK(it))=>{const no=whyNot(it)||(k=='s'?ohWhy()||(slFit(it,'s')?'':'That does not go in the off hand'):'');if(no){BAG.includes(it)||bagAdd(it,1);toast(`<b style="color:${RCO(it.r)}">${escH(it.n)}</b>: ${no.charAt(0).toLowerCase()+no.slice(1)}.`,'w',it.s=='w'?'sword':it.s=='s'?'shield':'armor');return 0}const cur=EQ[k],i=BAG.indexOf(it),m0=bMax();i>=0&&BAG.splice(i,1);if(k=='w'&&WPT[it.t]?.[1]==2&&EQ.s){const sh=EQ.s;EQ.s=null;bagAdd(sh,1)}
+ EQ[k]=it;cur&&bagAdd(cur,1);if(k=='w'&&EQ.s?.s=='w'&&!dwOn()){bagAdd(EQ.s,1);EQ.s=null}armTint();bHP=min(bMax(),bHP+max(0,bMax()-m0));hrt();sfx.dab();sv();return 1},
 bagAdd=(it,q)=>{if(BAG.length<BGM){BAG.push(it);q||toast(`<b style="color:${RCO(it.r)}">${escH(it.n)}</b> goes in your pack${eqW(it)?`: ${cmpTxt(it)} than yours`:''}.`,'','bag')}else{const g=sellP(it);W+=g;toast(`Your pack is full: the ${escH(it.n)} is sold for <b>${g}</b> gold.`,'','coin')}sv()},
 bGear=()=>`Health <b>${Math.round(bMax())}</b> · Attack <b>${+bDmg().toFixed(1)}</b> · Armor <b>${Math.round(stv().arm)}</b>`,
 // iron scrap (MAT), salvaged from gear, and the two sinks for gold beside the respec: the Blacksmith (+10% to a piece's Attack or Armor,
@@ -4825,7 +4830,8 @@ czSw=c=>Array.isArray(c)?c.length>2?`conic-gradient(${c.map((v,i)=>`${czHx(v)} $
 // J the bounty in hand. czTab picks the screen, qSel the slot picked on the doll, iSel the pack's piece picked ----
 EQL=['h','n','k','a'],EQR=['g','l','b','r','q'],EQB=['w','s'],
 rcs=it=>it?`--rc:${RCO(it.r)};--rg:${it.r>1?RCO(it.r)+'66':'transparent'}`:'',
-eqBtn=s=>{const it=EQ[s],lk=s=='s'&&!it&&ohWhy();if(lk)return`<button class="eq em lk${qSel==s?' on':''}" data-q="s" title="${SLN.s}: ${lk}" aria-label="${SLN.s}: ${lk}"><span class="fr">${IC('lock')}</span><span class="tx"><small>${SLN.s}</small><b>Out of use</b><em>${lk}</em></span></button>`;return`<button class="eq${it?'':' em'}${qSel==s?' on':''}" data-q="${s}" style="${rcs(it)}" title="${SLN[s]}${it?': '+escH(it.n):''}" aria-label="${SLN[s]}: ${it?escH(it.n)+', '+RAR[it.r][0]+', '+gTxt(it):'empty'}"><span class="fr">${IC(SLI[s])}${it?`<i>${it.il}</i>`:''}</span><span class="tx"><small>${SLN[s]}</small><b>${it?escH(it.n):'Empty'}</b><em>${it?gTxt(it):'Find one in the wilds'}</em></span></button>`},
+slIc=s=>s=='s'&&(EQ.s?.s=='w'||CL().dw)?'sword':SLI[s],
+eqBtn=s=>{const it=EQ[s],lk=s=='s'&&!it&&ohWhy();if(lk)return`<button class="eq em lk${qSel==s?' on':''}" data-q="s" title="${SLN.s}: ${lk}" aria-label="${SLN.s}: ${lk}"><span class="fr">${IC('lock')}</span><span class="tx"><small>${SLN.s}</small><b>Out of use</b><em>${lk}</em></span></button>`;return`<button class="eq${it?'':' em'}${qSel==s?' on':''}" data-q="${s}" style="${rcs(it)}" title="${SLN[s]}${it?': '+escH(it.n):''}" aria-label="${SLN[s]}: ${it?escH(it.n)+', '+RAR[it.r][0]+', '+gTxt(it):'empty'}"><span class="fr">${IC(slIc(s))}${it?`<i>${it.il}</i>`:''}</span><span class="tx"><small>${SLN[s]}</small><b>${it?escH(it.n):'Empty'}</b><em>${it?gTxt(it):'Find one in the wilds'}</em></span></button>`},
 // a piece in the pack as a tile (a: data-i picks it in the inventory, data-e wears it from the character's slot); ▲ marks an upgrade
 tile=(it,i,a)=>{const w=eqW(it),nu=!canUse(it),up=!nu&&(!w||cmpV(it)>.005);return`<button class="it${nu?' nu':''}${a=='i'&&iSel==i?' on':''}" data-${a}="${i}" style="${rcs(it)}" title="${escH(it.n)}" aria-label="${escH(it.n)}, ${RAR[it.r][0]} ${SLN[it.s].toLowerCase()}, ${gTxt(it)}${nu?', not for your class':up?', an upgrade':''}">${IC(SLI[it.s])}<i>${it.il}</i>${up?'<u aria-hidden="true">▲</u>':''}</button>`},
 // his numbers on the character page: the class and level, then every stat the design names, then his gold and scrap
@@ -4838,8 +4844,8 @@ itCard=(it,cur)=>`<h4 style="color:${RCO(it.r)}">${escH(it.n)}${it.up?` +${it.up
 smB=(it,a)=>{if(!smOk(it))return'';const[g,m]=smC(it);return`<button ${a}${W>=g&&MAT>=m?'':' disabled'}>Temper +${(it.up|0)+1} · ${g} gold, ${m} scrap</button>`},
 heroMenu=()=>{const t=czTab;$('cmh').textContent=FARM||'Your Hero';[['cmtc',0],['cmti',1],['cmtk',2],['cmts',3]].forEach(([id,k])=>$(id).setAttribute('aria-selected',t==k));$('chr').hidden=t!=0;$('inv').hidden=t!=1;$('skl').hidden=t!=2;$('qst').hidden=t!=3;$('cm').classList.toggle('sk',t==2);SP>0?$('cmtk').dataset.n=SP:$('cmtk').removeAttribute('data-n');
  if(t==0){$('dlL').innerHTML=EQL.map(eqBtn).join('');$('dlR').innerHTML=EQR.map(eqBtn).join('');$('dlB').innerHTML=EQB.map(eqBtn).join('');const d=$('cdt'),h=$('hsx');d.hidden=!qSel;h.hidden=!!qSel;
-  if(!qSel){h.innerHTML=statBar();return}const it=EQ[qSel],c=[];BAG.forEach((b,i)=>b.s==slT(qSel)&&canUse(b)&&!(b.s=='s'&&ohWhy())&&c.push(tile(b,i,'e')));
-  const lk=qSel=='s'&&!it&&ohWhy();d.innerHTML=`<span class="fr big" style="${rcs(it)}">${IC(lk?'lock':SLI[qSel])}</span><div class="ivd">${it?itCard(it):lk?`<h4>Off hand</h4><p class="rk">${lk}.</p>`:`<h4>No ${SLN[qSel].toLowerCase()} worn</h4><p class="rk">Anything for this slot in your pack is listed alongside, to put on.</p>`}<div class="bt">${it?`<button data-u="${qSel}">Take off</button>`+smB(it,`data-mq="${qSel}"`):''}<button data-x>Back</button></div></div><div class="cdp"><small>${c.length?`From your pack (${c.length}): click to wear`:`No ${SLN[qSel].toLowerCase()} in your pack`}</small><div class="ivg sm">${c.join('')}</div></div>`;return}
+  if(!qSel){h.innerHTML=statBar();return}const it=EQ[qSel],c=[];BAG.forEach((b,i)=>slFit(b,qSel)&&canUse(b)&&c.push(tile(b,i,'e')));
+  const lk=qSel=='s'&&!it&&ohWhy();d.innerHTML=`<span class="fr big" style="${rcs(it)}">${IC(lk?'lock':slIc(qSel))}</span><div class="ivd">${it?itCard(it):lk?`<h4>Off hand</h4><p class="rk">${lk}.</p>`:`<h4>No ${SLN[qSel].toLowerCase()} worn</h4><p class="rk">Anything for this slot in your pack is listed alongside, to put on.</p>`}<div class="bt">${it?`<button data-u="${qSel}">Take off</button>`+smB(it,`data-mq="${qSel}"`):''}<button data-x>Back</button></div></div><div class="cdp"><small>${c.length?`From your pack (${c.length}): click to wear`:`No ${SLN[qSel].toLowerCase()} in your pack`}</small><div class="ivg sm">${c.join('')}</div></div>`;return}
  if(t==1){const it=BAG[iSel];
   $('ivh').innerHTML=`<b>Pack</b><span>${BAG.length} / ${BGM}</span><span class="sp"></span><span class="gd">${IC('coin')} ${W|0}</span><span class="gd" title="Iron scrap">${IC('anvil')} ${MAT}</span><button data-k${BAG.length>1?'':' disabled'}>Sort</button><button data-j${BAG.some(b=>!b.r)?'':' disabled'}>Sell commons</button>`;
   $('ivc').innerHTML=`<button class="it" data-p${POT&&bHP<bMax()?'':' disabled'} aria-label="Drink a healing draught (${POT} carried)">${IC('potion')}<i>${POT}</i></button><p><b>Healing draught</b> ×${POT}<br>${POT?(bHP<bMax()?'Drink one here for a third of your Health back, or with Q in the field.':'You are at full health.'):'Buy them with gold on the skills page (K).'}</p><button class="it" data-gm${W>=gamP()&&BAG.length<BGM?'':' disabled'} aria-label="Buy an unknown piece from the Gambler for ${gamP()} gold">${IC('chest')}</button><p><b>The Gambler</b><br>An unknown piece for <b>${gamP()}</b> gold. One in ten comes up epic or better.</p>`;
@@ -4939,8 +4945,8 @@ $('bf').onclick=()=>hero(2);$('bp').onclick=()=>sho(2);$('rs').onclick=()=>sho(0
 $('cm').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled||b.id=='cmx'||b.getAttribute('role')=='tab')return;const d=b.dataset;
  if(d.q)qSel=qSel==d.q?null:d.q;
  else if(d.x!=null)qSel=null;
- else if(d.u){const it=EQ[d.u];if(it){if(BAG.length>=BGM)return toast('Your pack is full.','w','bag');EQ[d.u]=null;BAG.push(it);armTint();bHP=min(bHP,bMax());hrt();sfx.dab();sv()}}
- else if(d.e!=null){const it=BAG[+d.e];if(it){equip(it,qSel&&slT(qSel)==it.s?qSel:undefined);iSel=-1;toast(`You put on the <b style="color:${RCO(it.r)}">${escH(it.n)}</b>.`,'g',SLI[it.s])}}
+ else if(d.u){const it=EQ[d.u];if(it){if(BAG.length>=BGM)return toast('Your pack is full.','w','bag');EQ[d.u]=null;BAG.push(it);d.u=='w'&&EQ.s?.s=='w'&&(EQ.w=EQ.s,EQ.s=null);armTint();bHP=min(bHP,bMax());hrt();sfx.dab();sv()}}
+ else if(d.e!=null){const it=BAG[+d.e];if(it&&equip(it,qSel&&slFit(it,qSel)?qSel:undefined)){iSel=-1;toast(`You put on the <b style="color:${RCO(it.r)}">${escH(it.n)}</b>.`,'g',SLI[it.s])}}
  else if(d.i!=null)iSel=iSel==+d.i?-1:+d.i;
  else if(d.s!=null){const it=BAG.splice(+d.s,1)[0];if(it){const g=sellP(it);W+=g;iSel=-1;sfx.coin();toast(`The ${escH(it.n)} is sold for <b>${g}</b> gold.`,'','coin');sv()}}
  else if(d.k!=null){BAG.sort((a,b)=>b.r-a.r||'hnakgrlbws'.indexOf(a.s)-'hnakgrlbws'.indexOf(b.s)||sellP(b)-sellP(a));iSel=-1;sfx.dab()}
@@ -5043,7 +5049,7 @@ const tuS=(kb,tc,pd)=>[kb,tc,pd][gpOn?2:mob?1:0],
   note:'Every piece is made for your class, at its level. Your inventory marks it <b class="gup">better</b> or <b class="gdn">worse</b> than what you wear.'},
  {ic:'armor',t:'Gear',bl:'Eleven slots, your pack, and what your class can wear.',lead:'Your Hero wears eleven pieces. A new find goes on at once if its slot is empty; otherwise it waits in your pack.',
   html:`<div class="tgs">${Object.keys(SLN).map(k=>`<span><i>${PXI(SLI[k],'#c9b89a')}</i>${SLN[k]}</span>`).join('')}</div>`,
-  cards:[['bag','Your pack','Holds 30 pieces. Pick one to wear it, sell it for gold or salvage it for iron scrap.'],['sword','Weapons and the off hand','Each class has its own weapons. A two-handed weapon or a pair fills both hands; only a Warrior with a one-handed weapon has a shield in the off hand.'],
+  cards:[['bag','Your pack','Holds 30 pieces. Pick one to wear it, sell it for gold or salvage it for iron scrap.'],['sword','Weapons and the off hand','Each class has its own weapons. A two-handed weapon or a pair fills both hands. A Warrior with a one-handed weapon carries a shield in the off hand; a Rogue may hold a second dagger there, the same or another. Daggers are made light, to be carried two at a time.'],
    ['armor','Armour','Each class wears its own: plate for the Warrior, Paladin and Necro-Knight, leather for the Rogue and Ranger, cloth for the Mage. What your class cannot wear is greyed out in your pack.'],
    ['crown','Your look','Your armour takes on the finish of its rarity, from bright steel to gilt.']],
   keys:[tuK(tuS(tuC(['KeyC','C']),tuB('helm'),gpG('x')),'Character','what you wear'),tuK(tuS(tuC(['KeyI','I']),tuB('bag'),gpG('x')),'Inventory',tuS('your pack','your pack','then RB'))]},
