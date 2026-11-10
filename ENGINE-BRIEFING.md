@@ -566,3 +566,48 @@ and 17 (hearts, `bDmg` = 1 + crook level, `roll` by a flat rarity table, the bla
   site part may carry its own material `m`).
 - **Not done yet:** a horse for Steed Charge, a real draw-to-the-cheek on the string arm, foes attacking summons, Temporal Echo's
   taunt, and balance: the numbers follow the doc but have not been played through to 50.
+
+## 20. Interiors: entering buildings (Nov 2026; Greywatch Keep's great hall for now)
+
+Everything is in one block headed `// ---- inside:` (just above `// ---- the knight ----`), plus one-line hooks elsewhere. It was built fresh for
+Quest: the sheep game's old indoor scene was not used as a model.
+
+- **An interior is an instance, a `THREE.Scene` of its own (`INT`).** The post chain is not doubled. While the knight is inside, its one scene
+  pass is pointed at that scene (`scenePass.scene = INT`). The knight `P` and the hound `dog` are re-parented into it and back out (`inSwap`).
+- **It is laid out in the building's own frame and set where the building stands.** `f: [x, z, turn]` is the frame's origin, as `cot`'s;
+  `IFr`/`IFw` convert between the frame and the realm. So his realm position stays true while he is inside: the minimap, the map, the zone, the
+  safe ground and the streaming all behave as if he stood in the keep, and nothing is rebuilt when he walks out. The inside is larger than the
+  outside.
+- **`IND`** holds the interiors by key: `n`/`o` are the card's names going in and out, `f` the frame, `bld` builds the interior (once, on the first
+  visit), `fl(x, z)` gives the floor height (steps are eased by `inGl`), `ex` is the way out, `dr` is the doorway outside that takes him in when he
+  walks into it (`cvx`/`cvz` pushing in), `sp`/`so` are where he stands going in and out, `zm` is the zoom inside, and `fi` is the hearth's place.
+  `INS` is the interior he is in (null outside); `IL` is set while a card is up. Inside, the zoom is held to 38-60 and the pitch is .12 rad steeper
+  (`camU`).
+- **Load card** `#ilc` (`inCard`, `inBar`, CSS at the end of the stylesheet): a pixel/gothic full-screen card with "Entering"/"Leaving", a
+  `pxTitle` name, a crimson bar (transform-animated, so it keeps moving while the first build blocks the main thread), a status line and a tip
+  (`ITP`). `inGo` and `inOut` run it. The first visit builds the hall (~0.4 s) and warms its pipelines (`compileAsync(INT, cam)`, ~2 s on a
+  desktop). Later visits hold the card ~1.2 s. Input is blocked while it is up (`mvP`, the key handler, `sho`, `swing`, `acUse`).
+- **Isolation while inside.** He and his hound collide only with `INC`: `capsule` reads `colIN ? INC : COLS`, and `mvP` and the hound set
+  `colIN` around their sweeps, so the realm's foes keep to `COLS`. `wade` and `cliffStop` are skipped. `hurtP` does nothing. `wlfU` counts him
+  as safe, so foes break off and his wounds close fast. Loot can't be drawn to him, the bounty board's walk-up is off, and the hound doesn't chase.
+  Strikes and skills are sheathed (`inPx` says so once a visit). The realm goes on unseen (day, weather, foes), but `stream`, `cull` and the
+  grass compute pause. Outdoor ambience is muffled in `amb`. `bres` and `fresh` drop him out at once.
+- **Drawing (`inDraw`).** `wxU` integrates wetness and puddles from the uniforms themselves (`U.wet`, `U.pud`), so the interior must not overwrite
+  them. Instead it stashes the outdoor values, sets its own (no wet, puddles, cloud shadows (`U.cov = -2`), heavy fog or sun shafts; its own
+  exposure, fill and grade), renders, and restores them.
+- **Light inside.** A key `DirectionalLight` (`IKL`) casts the only shadows: the day's or the moon's light by the hour, set in `inU`. It comes in
+  through the west windows alone, because boxes on layer 1 (`irf`: a roof, and the walls where they're cut away for the camera) are seen by its
+  shadow camera but not by `cam`. The rest is a hemisphere fill (`IHL`) and flickering fire `PointLight`s (`IPL`, fewer on phones). Flames are
+  voxel tongues in four frames swapped about every 0.08 s (`IFG`, `IFM`, unlit), each with a glow sprite (`IGM`). Embers rise off the hearth
+  (`IEM`) and it crackles (`inCk`). The window glass is `IWM`/`IWC`; the light shafts are additive prisms (`ISM`, `ISK`).
+- **The keep's hall (`kpB`)** is built of VBK cubes, the shell at .1 m and the furniture at .05. In frame metres: the hall is x -9..9, z -17..3; the
+  armoury is x 9.8..16.4, z -8.6..1; the walls are 7.2 m high; the dais is .3 then .6 m up from z -12.6. It is a diorama cutaway for the
+  fixed camera: the south wall (the camera's side) is cut to 1 m, the side walls step down toward it, there is no roof, and cut tops show the
+  wall's core. Features meant to be seen sit on the north walls (the camera sees side walls edge-on, which is why the hearth moved there). It has
+  an arcade of four bays, three west windows, a rose window, banners, the throne and high table, trestle tables, the hearth with a bearskin, a
+  hanging, casks and crates, and an armoury (racks, plate on stands, shields, grindstone, anvil). It is ~190k faces in ~110 objects.
+- **Outside**, the keep's gate stands open: a passage 1.6 m deep with the oak leaves folded back. It is dark by day and glows by night (a `WIN`
+  plane and a half disc). The first time he comes near it, a toast says to walk in.
+- **Adding a building:** give it an `IND` entry with its frame (the building's frame with its door at local z +), a `bld` that builds into `IG`
+  (set `IG`'s transform from `f`) and fills `INC`, then call its door check from `inU`. That check is hard-wired to the keep now. Interiors with
+  foes would need their own foe set inside `INT`: the realm's foes simulate outside and can't enter.
