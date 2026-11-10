@@ -1648,7 +1648,7 @@ HSTY=[[0,0xd8c9a2,0x8c4a32,0x4e3828,.95,0,1,[0x4f6b45,0x7a3a2e,0x3f5a78],0x4a3b2
 // (and 12 cells below it, so a slope never shows under them), in zone zn's way, with a chimney if ch; sd seeds its details. Two storeys: a
 // door and two windows below on its face, windows above, the gable ridge along its longer side
 rlHouseV=(W,D,Hc,zn,ch,sd)=>{const[kd,wc,rc,tc,pit,rk,mo,SHC,DC]=HSTY[zn]||HSTY[0],r=rlRng(sd),O=3,RX=W>=D,A=RX?W:D,Bh=RX?D:W,et=e=>Hc+Math.floor((e-(O-1))*pit),EM=Bh+O-1,JR=et(EM),
-  V=VBK(-W-O-4,-12,-D-O-4,W+O+3,JR+9,D+O+3),PL=kd==2||kd==4?vbT(wc,.8):0x7f7a70,Hm=Math.floor(Hc*.47),ww=5,wh=7,dw=9,dh=14,GJ=6,UJ=Math.round((Hm+3)*1.1),shc=SHC[r()*SHC.length|0],
+  V=VBK(-W-O-4,-12,-D-O-4,W+O+3,JR+9,D+O+3),PL=kd==2||kd==4?vbT(wc,.8):0x7f7a70,Hm=Math.floor(Hc*.47),ww=5,wh=7,dw=9,dh=16,GJ=6,UJ=Math.round((Hm+3)*1.1),shc=SHC[r()*SHC.length|0],
   SNOW=(I,J,K)=>vbT(0xe9f0f9,.92+.08*vbH(I,J,K,21)),haunt=zn==3,
   wall=(I,J,K)=>{const h=vbH(I,J,K,1),n=vn3(I*.16+sd%7,J*.06,K*.16);
    if(kd==0||kd==3){if(vn3(I*.28+3,J*.3,K*.28+sd%5)>.75)return vbSt(kd?0xb08e66:0x9a5c45,I,J,K,2,1,.3,2);return vbT(wc,.86+.14*Math.round(n*7)/7+(h<.04?-.05:0))}
@@ -1663,7 +1663,7 @@ rlHouseV=(W,D,Hc,zn,ch,sd)=>{const[kd,wc,rc,tc,pit,rk,mo,SHC,DC]=HSTY[zn]||HSTY[
  V.box(-W,W-1,-9,Hc-1,-D,D-1,wall);
  for(let f=0;f<4;f++){const L=FC[f][0];for(let J=-9;J<2;J++)for(let u=-L-1;u<=L;u++)fp(f,u,J,1,vbSt(PL,u+f*7,J,0,3,2,.34,6))}
  // where the door and windows go: the door mid-face below, a window either side of it, windows above; two and two behind; one or two up each side, maybe one below
- // (the door 9 x 14 cells; the windows' sills a tenth higher than they were first set: GJ below, UJ above)
+ // (the door 9 x 16 cells, 15% taller than its first 14; the windows' sills a tenth higher than they were first set: GJ below, UJ above)
  OP[0].push([-(dw>>1),dw-(dw>>1)-1,0,dh-1,'d']);lay(0,[-s0,s0],GJ);lay(0,W>=26?[-s0,0,s0]:[-s0,s0],UJ);lay(1,[-s0,s0],GJ);lay(1,[-s0,s0],UJ);
  for(const f of[2,3]){lay(f,D>=24?[-s1,s1]:[0],UJ);r()<.6&&lay(f,[D>=24?-s1:0],GJ)}
  // the frame: corner posts, the sill beam, the floor beam and the wall plate, studs between the openings and braces up from the corners
