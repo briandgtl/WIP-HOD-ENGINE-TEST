@@ -499,6 +499,8 @@ button.it:not(:disabled):hover{filter:brightness(1.3)}button.it:disabled{opacity
 #sts{position:absolute;left:calc(14px + env(safe-area-inset-left,0px));top:calc(14px + env(safe-area-inset-top,0px));display:grid;gap:8px;justify-items:start}
 .sr{display:flex;align-items:center;gap:8px;font:400 16px/1 var(--pxf);color:#f4f1ea;text-shadow:var(--po)}
 #szn{width:152px;justify-content:center;font-size:17px}
+/* the elixirs working: each its pixel icon in its colour and the time left */
+#elx{flex-wrap:wrap;gap:12px}#elx span{display:flex;align-items:center;gap:5px}#elx .pxi{display:block;width:24px;height:24px;background:center/100% 100% no-repeat;image-rendering:pixelated}
 .si{width:44px;height:44px;display:grid;place-items:center;border:6px solid transparent;border-image:var(--pf-slot) 3/6px stretch;background:#2e2e33 padding-box}
 #trc{position:absolute;right:calc(14px + env(safe-area-inset-right,0px));top:calc(12px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;align-items:flex-end;gap:10px}
 #qt{display:grid;justify-items:end;gap:6px;text-align:right;max-width:min(440px,calc(100vw - 220px))}
@@ -898,6 +900,10 @@ body.mob #tb #cb{display:none}
 #bb .bbg>span i{width:16px;height:16px;background:#2e2a28;box-shadow:inset 0 0 0 2px #0b0b0c}
 #bb .bbg>span i.on{background:#f6c844;box-shadow:inset 0 0 0 2px #0b0b0c,inset 3px 3px 0 #fff3b0}
 #bb .bbg small{font:400 12.5px var(--pxf);color:#bfae92}#bb .bbg b{color:#f0cf7a;font-weight:600}
+/* the market's stalls in the same window: two headings, the wares and what he can sell, each a notice with its rarity's tag */
+#bb .vdh{margin:2px 0 -2px;font:600 13px var(--pxf);letter-spacing:.14em;text-transform:uppercase;color:#bfae92}
+#bb .bbq.vq0{background:#6a6050}#bb .bbq.vq1{background:#2f7d3a}#bb .bbq.vq2{background:#1f5fae}#bb .bbq.vq3{background:#7a35b0}#bb .bbq.vq4{background:#a8590c}
+#bb .bbn.vd h3{line-height:1.35}#bb .bbn.vd .gup{color:#1f6a24}#bb .bbn.vd .gdn{color:#9a2020}
 @media (max-width:640px){#bb>.pn{padding:10px 10px 12px;gap:8px}#bb .bbl{grid-template-columns:1fr}#bb #bbt{font-size:21px}#bb .tuf{flex-wrap:wrap;justify-content:center}#bb .pb.tn{flex:1 0 100%}#bb .pb.tn button{flex:1}}
 /* the HUD's objective with more than one bounty in hand: each smaller */
 #qt>div{display:grid;justify-items:end;gap:4px}
@@ -1060,7 +1066,7 @@ body.mob #tb #cb{display:none}
 <symbol id="px-doll" viewBox="0 0 20 29" shape-rendering="crispEdges"><rect x="8" y="0" width="4" height="1" fill="#463d39"/><rect x="7" y="1" width="1" height="1" fill="#463d39"/><rect x="8" y="1" width="4" height="1" fill="#2e2826"/><rect x="12" y="1" width="1" height="1" fill="#463d39"/><rect x="7" y="2" width="2" height="1" fill="#2e2826"/><rect x="9" y="2" width="2" height="1" fill="#1c1817"/><rect x="11" y="2" width="2" height="1" fill="#2e2826"/><rect x="7" y="3" width="2" height="1" fill="#2e2826"/><rect x="11" y="3" width="2" height="1" fill="#2e2826"/><rect x="7" y="4" width="1" height="1" fill="#1c1817"/><rect x="8" y="4" width="1" height="1" fill="#2e2826"/><rect x="9" y="4" width="2" height="1" fill="#463d39"/><rect x="11" y="4" width="1" height="1" fill="#2e2826"/><rect x="12" y="4" width="1" height="1" fill="#1c1817"/><rect x="8" y="5" width="4" height="1" fill="#2e2826"/><rect x="5" y="6" width="3" height="1" fill="#463d39"/><rect x="8" y="6" width="4" height="1" fill="#2e2826"/><rect x="12" y="6" width="3" height="1" fill="#463d39"/><rect x="4" y="7" width="1" height="1" fill="#463d39"/><rect x="5" y="7" width="10" height="1" fill="#2e2826"/><rect x="15" y="7" width="1" height="1" fill="#463d39"/><rect x="3" y="8" width="1" height="1" fill="#463d39"/><rect x="4" y="8" width="12" height="1" fill="#2e2826"/><rect x="16" y="8" width="1" height="1" fill="#463d39"/><rect x="3" y="9" width="2" height="1" fill="#2e2826"/><rect x="5" y="9" width="1" height="1" fill="#1c1817"/><rect x="6" y="9" width="8" height="1" fill="#2e2826"/><rect x="14" y="9" width="1" height="1" fill="#1c1817"/><rect x="15" y="9" width="2" height="1" fill="#2e2826"/><rect x="2" y="10" width="1" height="1" fill="#463d39"/><rect x="3" y="10" width="2" height="1" fill="#2e2826"/><rect x="6" y="10" width="8" height="1" fill="#2e2826"/><rect x="15" y="10" width="2" height="1" fill="#2e2826"/><rect x="17" y="10" width="1" height="1" fill="#463d39"/><rect x="2" y="11" width="3" height="1" fill="#2e2826"/><rect x="6" y="11" width="8" height="1" fill="#2e2826"/><rect x="15" y="11" width="3" height="1" fill="#2e2826"/><rect x="2" y="12" width="3" height="1" fill="#2e2826"/><rect x="6" y="12" width="8" height="1" fill="#2e2826"/><rect x="15" y="12" width="3" height="1" fill="#2e2826"/><rect x="2" y="13" width="3" height="1" fill="#2e2826"/><rect x="6" y="13" width="8" height="1" fill="#2e2826"/><rect x="15" y="13" width="3" height="1" fill="#2e2826"/><rect x="2" y="14" width="2" height="1" fill="#2e2826"/><rect x="4" y="14" width="1" height="1" fill="#1c1817"/><rect x="6" y="14" width="8" height="1" fill="#2e2826"/><rect x="15" y="14" width="1" height="1" fill="#1c1817"/><rect x="16" y="14" width="2" height="1" fill="#2e2826"/><rect x="2" y="15" width="2" height="1" fill="#2e2826"/><rect x="6" y="15" width="8" height="1" fill="#2e2826"/><rect x="16" y="15" width="2" height="1" fill="#2e2826"/><rect x="2" y="16" width="2" height="1" fill="#2e2826"/><rect x="6" y="16" width="1" height="1" fill="#1c1817"/><rect x="7" y="16" width="6" height="1" fill="#2e2826"/><rect x="13" y="16" width="1" height="1" fill="#1c1817"/><rect x="16" y="16" width="2" height="1" fill="#2e2826"/><rect x="2" y="17" width="2" height="1" fill="#1c1817"/><rect x="7" y="17" width="6" height="1" fill="#2e2826"/><rect x="16" y="17" width="2" height="1" fill="#1c1817"/><rect x="7" y="18" width="6" height="1" fill="#2e2826"/><rect x="7" y="19" width="2" height="1" fill="#2e2826"/><rect x="9" y="19" width="2" height="1" fill="#1c1817"/><rect x="11" y="19" width="2" height="1" fill="#2e2826"/><rect x="6" y="20" width="1" height="1" fill="#463d39"/><rect x="7" y="20" width="2" height="1" fill="#2e2826"/><rect x="11" y="20" width="2" height="1" fill="#2e2826"/><rect x="13" y="20" width="1" height="1" fill="#463d39"/><rect x="6" y="21" width="3" height="1" fill="#2e2826"/><rect x="11" y="21" width="3" height="1" fill="#2e2826"/><rect x="6" y="22" width="3" height="1" fill="#2e2826"/><rect x="11" y="22" width="3" height="1" fill="#2e2826"/><rect x="6" y="23" width="3" height="1" fill="#2e2826"/><rect x="11" y="23" width="3" height="1" fill="#2e2826"/><rect x="6" y="24" width="3" height="1" fill="#2e2826"/><rect x="11" y="24" width="3" height="1" fill="#2e2826"/><rect x="6" y="25" width="3" height="1" fill="#2e2826"/><rect x="11" y="25" width="3" height="1" fill="#2e2826"/><rect x="6" y="26" width="3" height="1" fill="#2e2826"/><rect x="11" y="26" width="3" height="1" fill="#2e2826"/><rect x="5" y="27" width="1" height="1" fill="#463d39"/><rect x="6" y="27" width="3" height="1" fill="#2e2826"/><rect x="11" y="27" width="3" height="1" fill="#2e2826"/><rect x="14" y="27" width="1" height="1" fill="#463d39"/><rect x="5" y="28" width="4" height="1" fill="#1c1817"/><rect x="11" y="28" width="4" height="1" fill="#1c1817"/></symbol>
 </defs></svg>
 <div id="hud" hidden>
-<div id="sts"><div id="mm" role="img" aria-label="Day 1" title="Map (M)"><canvas id="mmc"></canvas><div id="mmb"><b id="di" title="Weather"><svg class="pi" width="18" height="18" aria-hidden="true"><use id="wiu" href="#px-fair"/></svg><span id="wq">Fair</span></b><b id="mmz"></b></div></div><div class="sr" id="szn" hidden><span id="zn"></span></div><div class="sr" id="sng" hidden><i class="si"><svg class="pi" width="26" height="22" aria-hidden="true"><use href="#px-skull"/></svg></i><span>The dead walk</span></div></div>
+<div id="sts"><div id="mm" role="img" aria-label="Day 1" title="Map (M)"><canvas id="mmc"></canvas><div id="mmb"><b id="di" title="Weather"><svg class="pi" width="18" height="18" aria-hidden="true"><use id="wiu" href="#px-fair"/></svg><span id="wq">Fair</span></b><b id="mmz"></b></div></div><div class="sr" id="szn" hidden><span id="zn"></span></div><div class="sr" id="sng" hidden><i class="si"><svg class="pi" width="26" height="22" aria-hidden="true"><use href="#px-skull"/></svg></i><span>The dead walk</span></div><div class="sr" id="elx" aria-label="Elixirs working" hidden></div></div>
 <div id="trc"><div id="qt" aria-live="polite" hidden></div></div>
 </div><div id="bfx"></div>
 <div id="tb" hidden>
@@ -1719,12 +1725,12 @@ rlHouseV=(W,D,Hc,zn,ch,sd)=>{const[kd,wc,rc,tc,pit,rk,mo,SHC,DC]=HSTY[zn]||HSTY[
 // so a town's houses share a few models (built once, never disposed: userData.vb)
 VBC=new Map(),rlHouseQ=(w,d,h,zn,ch)=>{const W=Math.round(w/VBZ/4)*2,D=Math.round(d/VBZ/4)*2,Hc=Math.round(h/VBZ/4)*4,k=[zn,W,D,Hc,ch|0].join();
  let g=VBC.get(k);g||VBC.set(k,g=rlHouseV(W,D,Hc,zn<0?0:zn,ch,(W*131+D*71+Hc*17+(ch?5:0)+zn*977)%2147483646+1));return g},
-// a market stall (3.6 x 1.8m counter, 4.8 x 3.2m awning 3.4m up): a plank counter set with its wares, four posts and a striped awning over them, its edges scalloped
-rlStallV=c=>{let g=VBC.get('st'+c);if(g)return g;const V=VBK(-13,-1,-9,12,19,8),WR=[0xb8322e,0x6f9a3a,0xc89a5a,c],AW=I=>Math.floor((I+12)/3)&1?c:0xeee4cc;
+// a market stall (3.6 x 1.8m counter, 4.8 x 3.2m awning 4m up, raised 15% from 3.4m): a plank counter set with its wares, four posts and a striped awning over them, its edges scalloped
+rlStallV=c=>{let g=VBC.get('st'+c);if(g)return g;const V=VBK(-13,-1,-9,12,22,8),WR=[0xb8322e,0x6f9a3a,0xc89a5a,c],AW=I=>Math.floor((I+12)/3)&1?c:0xeee4cc;
  V.box(-9,8,0,6,-4,4,(I,J,K)=>J==6?vbT(0x9a7a50,.9+.15*vbH(I,J,K,1)):vbT(0x8a6a43,(J&1?1:.86)*(.9+.12*vbH(I>>1,J,K,2))));
  for(let I=-8;I<8;I++)for(let K=-3;K<4;K++){const w=WR[Math.min(3,Math.floor((I+8)/4))];vbH(I,K,0,4)<.8&&V.put(I,7,K,vbT(w,.85+.3*vbH(I,K,1,5)));vbH(I,K,1,6)<.3&&V.put(I,8,K,vbT(w,.95))}
- for(const I of[-11,10])for(const K of[-7,6])V.box(I,I,0,16,K,K,vbT(0x5a4130,.9));
- V.box(-12,11,17,17,-8,7,(I,J,K)=>vbT(AW(I),.92+.1*vbH(I,J,K,7)));for(let I=-12;I<12;I++)for(const K of[-8,7])(I+12)%3!=2&&V.put(I,16,K,vbT(AW(I),.85));
+ for(const I of[-11,10])for(const K of[-7,6])V.box(I,I,0,19,K,K,vbT(0x5a4130,.9));
+ V.box(-12,11,20,20,-8,7,(I,J,K)=>vbT(AW(I),.92+.1*vbH(I,J,K,7)));for(let I=-12;I<12;I++)for(const K of[-8,7])(I+12)%3!=2&&V.put(I,19,K,vbT(AW(I),.85));
  VBC.set('st'+c,g=V.mesh({dk:.4}));return g},
 // a well: a round wall of stone a metre high on a wider footing, two posts and an axle with its rope and bucket, and a little roof of shingles. Its
 // shaft is the black disc (rlHole) just under the wall's top, wide enough to fill the stepped opening
@@ -2255,20 +2261,27 @@ rlPlot=()=>{const L=[];for(let x=-9;x<=9;x+=2)L.push([B(1.3,.4,.5).translate(x,.
  L.push([Cy(.1,.12,2.2,5).translate(-9.8,1,-6.8),0x5a4130],[B(1.4,.8,.08).translate(-9.8,2.2,-6.8),0x3aa845]);return L},
 // the well (rlWellV): its shaft (rlHole) a disc of unlit black just under its wall's top, so it reads as a hole with no water showing, whatever the light
 WHM=new THREE.MeshBasicNodeMaterial({color:0x000000}),rlHole=()=>new THREE.CylinderGeometry(1.14,1.14,.02,14).translate(0,.99,0),
-rlParts=p=>{if(p.parts)return p.parts;const rng=rlRng(Math.abs(Math.round(p.x*13+p.z*7))%2147483646+1),zn=rlz(p.x,p.z),pal=RLPAL[zn<0?0:zn],P=[],put=(g,x,z,ry,c,m)=>P.push({g:Array.isArray(g)?mg(rdKeep(g,x,z,ry)):g,x,z,ry,c,m});
+rlParts=p=>{if(p.parts)return p.parts;const rng=rlRng(Math.abs(Math.round(p.x*13+p.z*7))%2147483646+1),zn=rlz(p.x,p.z),pal=RLPAL[zn<0?0:zn],P=[],put=(g,x,z,ry,c,m,vk)=>P.push({g:Array.isArray(g)?mg(rdKeep(g,x,z,ry)):g,x,z,ry,c,m,vk});
  // flat enough, dry, clear of the roads
  const flat=(x,z,r)=>{const y=H(x,z);if(y<WL+1.2)return false;for(const[a,b]of[[r,0],[-r,0],[0,r],[0,-r]])if(abs(H(x+a,z+b)-y)>2.2)return false;return rlRoad(x,z)>r+1};
  if(p.k=='m')put(rlTowerV(Math.round(14+rng()*4)),p.x,p.z,0,[0,0,3.6]);
  else if(p.k=='e')p.s?put(rlCamp(rng),p.x,p.z,rng()*TAU):put(rlRing(rng),p.x,p.z,0);
  else if(p.k=='h')put(rlPlot(),p.x,p.z,rng()*PI);
  else{const n=[0,6,11,12][p.s],r0=[0,13,18,58][p.s],r1=[0,46,66,104][p.s],hs=[],HS=2.476;  // HS: the houses are 2.476x (1.3 x 1.15 x 1.2 x 1.15 x 1.2) the size they were first modelled at (built at that size by rlHouseQ), with their spacing and ground checks to match
-  if(p.s>1){put(rlWellV(),p.x,p.z,0,[0,0,1.5]);put(rlHole(),p.x,p.z,0,null,WHM);const cs=[0xb83a3a,0x3a62b8,0x3aa06a,0xc8a03a];
-   // Greywatch's own: eight places in a ring 11m out, just beyond the packed earth round the well, each facing it; one on a road or
-   // on the path to the keep's gate is left out
-   if(p.s==3)for(let i=0;i<8;i++){const b=i/8*TAU+.2,x=p.x+cos(b)*11,z=p.z+sin(b)*11;abs(wa(b-atan2(-20,-21)))>.45&&rdBox(x,z,-b+PI/2,2.4,1.6)&&put(rlStallV(cs[i%4]),x,z,-b+PI/2,[4.4,2.8])}
-   else for(let i=0;i<3;i++){const a=i*2.1+.6,cc=cs[(i+(rng()*4|0))%4];
-   // the plaza's roads end at its well, so a stall that would stand on one is slid round and out to the nearest clear ground, or left out
-   for(const[da,dr]of[[0,0],[.5,0],[-.5,0],[0,3],[.9,3],[-.9,3],[.4,6],[-.4,6]]){const b=a+da,e=6+dr,x=p.x+cos(b)*e,z=p.z+sin(b)*e;if(rdBox(x,z,-b+PI/2,2.4,1.6)){put(rlStallV(cc),x,z,-b+PI/2,[4.4,2.8]);break}}}}
+  if(p.s>1){put(rlWellV(),p.x,p.z,0,[0,0,1.5]);put(rlHole(),p.x,p.z,0,null,WHM);
+   // the stalls' awnings by trade, and each stall's vendor (vk, read by vdSp): red the weaponsmith, blue the armourer, green the provisioner
+   const cs=[0xb83a3a,0x3a62b8,0x3aa06a];
+   // one stall of each trade in every town, no more and no fewer, all facing south (down the screen, +x+z), so the vendor behind each
+   // counter faces the camera and customers come up from the south. The places round the well, by bearing from north (up the screen,
+   // -x-z, where Greywatch's path to the keep runs; most plazas have a road out to the south): the two flanks, then the shoulders either
+   // side of north, then those either side of south, at the ring (11m in Greywatch, 9m in a town) and then a little further out. The
+   // first three clear of the roads and of each other are taken (red, blue, green); if fewer are clear, the rest stand at the first
+   // places not taken. rng is still drawn three times, as it was for the old stalls, so the houses fall where they did
+   {const SY=-3*PI/4,Q=Math.SQRT1_2,R0=p.s==3?11:9,C=[],U=[],apart=([x,z])=>!U.some(u=>hypot(u[0]-x,u[1]-z)<6);rng();rng();rng();
+    for(const dr of[0,2.5,5])for(const t of[-90,90,-50,50,-130,130]){const q=t*PI/180,e=R0+dr;C.push([p.x+Q*(sin(q)-cos(q))*e,p.z-Q*(cos(q)+sin(q))*e])}
+    for(const c of C)U.length<3&&rdBox(c[0],c[1],SY,2.4,1.6)&&apart(c)&&U.push(c);
+    for(const c of C)U.length<3&&apart(c)&&U.push(c);
+    U.forEach(([x,z],k)=>put(rlStallV(cs[k]),x,z,SY,[4.4,2.8],0,k))}}
   for(let t=0;t<n*80&&hs.length<n;t++){const a=rng()*TAU,r=r0+rng()*(r1-r0),x=p.x+cos(a)*r,z=p.z+sin(a)*r;if(!flat(x,z,4.5*HS)||hs.some(q=>hypot(q[0]-x,q[1]-z)<10*HS))continue;
    // the whole of its roof (1.18x its walls) must clear the roads and their verge, not just its middle (flat)
    const w=4.6+rng()*3,d=4+rng()*3,ry=atan2(-cos(a),-sin(a));if(!rdBox(x,z,ry,w*.59*HS,d*.59*HS))continue;hs.push([x,z]);put(rlHouseQ(w*HS,d*HS,(3.1+rng()*.9)*HS,zn,rng()<.6),x,z,ry,[w*HS,d*HS])}}
@@ -3636,11 +3649,16 @@ const CL=()=>CLD[CLS],skS=()=>{SKT=SKTC[CLS];SKS=SKT.flatMap(b=>b[4].map(s=>[b,s
  // in full; such a weapon is rolled for two to be carried (its WPT scale, k[8]), so a pair of them comes to what the old paired daggers did
  dwOk=it=>!!it&&it.s=='w'&&!!CL().dw?.includes(it.t),dwOn=(E=EQ)=>dwOk(E.w)&&dwOk(E.s),
  AK=l=>40+12*l,hpB=l=>100+20*(l-1),
- // everything a set of gear (E) and the skills come to, with the caps; the class's passives add theirs (CPS)
+ // elixirs, sold by the provisioner (Mirra): each strengthens him for ELT seconds of play. ELC how many of each he carries (ELM at most),
+ // ELB the seconds left on those working; elFx adds what they do to his numbers (in hxC, before the caps). [name, what it does, colour, icon]
+ ELX={mt:['Elixir of Might','Attack and Arcana +20%','#e0603a','burst'],ir:['Ironbark Tonic','Armor +30%','#a8a090','armor'],vg:['Draught of Vigor','Health +20%','#e04a6a','heart'],
+  sw:['Swiftfoot Brew','Speed +15%','#5ac8e0','boot'],fx:["Fox's Luck",'Critical Chance +5%','#e8c040','shamrock']},ELT=180,ELM=3,ELC={},ELB={},
+ elFx=s=>{if(ELB.mt>0){s.atk*=1.2;s.arc*=1.2}ELB.ir>0&&(s.arm*=1.3);ELB.vg>0&&(s.hp*=1.2);ELB.sw>0&&(s.ms+=.15);ELB.fx>0&&(s.cc+=.05)},
+ // everything a set of gear (E) and the skills come to, with the caps; the class's passives add theirs (CPS), and the elixirs working theirs
  hxC=(E=EQ)=>{const C=CL(),s={},b0=SKX;SKX={};for(const q in E){const it=E[q];it&&it.x&&it.x.forEach(([a,v])=>a=='sk'&&(SKX[v]=(SKX[v]|0)+1))}
   for(const k in STD)s[k]=0;const bs=lvC(LV,[3,9.75,16.5,25]);s.atk=bs;s.arc=bs;s.cc=.05;s.hp=hpB(LV);
   for(const q in E){const it=E[q];if(!it||!it.b||q=='s'&&(it.s=='w'?!dwOn(E):!shOn(E)))continue;for(const k in it.b)s[k]+=it.b[k]*(UPK[k]?1+.1*(it.up|0):1);for(const[k,v]of it.x)k!='sk'&&(s[k]+=v)}
-  CPS[CLS](s,E);
+  CPS[CLS](s,E);elFx(s);
   for(const k in SCAP)k in s&&(s[k]=min(SCAP[k],s[k]));s.eva=min(C.ac==1?.5:.35,s.eva);s.blk=shOn(E)?max(0,s.blk):0;s.dr=min(SCAP.dr,s.arm/(s.arm+AK(LV)));
   E!==EQ&&(SKX=b0);return s},
 CLR={},DYN={},MSX={},CSA={},CHK={},CDM={},CCB={},CFB={},CLL={},CKL={},CHT={},CHU={},CDG={},CEV={},CHP={},CTK={},CSW={},CBL={},BSH={},
@@ -4032,7 +4050,7 @@ $('ski').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return
 $('ml').onclick=async e=>{const b=e.target.closest('[data-rs]');if(!b||b.disabled)return;const n=skSpent(),g=rsP();if(!n||!rsOk())return;
  if(!await ask('Unlearn every skill?',`All <b>${n}</b> point${n>1?'s':''} come back to spend again, for <b>${g}</b> gold: two fifths of all the gold you carry.`,'Unlearn all'))return;W-=g;SP+=n;for(const q in SKL)delete SKL[q];apply();bHP=min(bHP,bMax());hrt();sfx.coin();menu();hud();sv()};
 function apply(){hxD=1;abK='';dog.visible=false;clsLook();farmCol();fen||mkPen();armTint()}
-const SK='quest-1',sv=()=>{try{localStorage.setItem(SK,JSON.stringify({W,K:SKL,SP,LV,XP,POT,dy,dT,G:EQ,B:BAG,BB,QN,F:[...SHF],X:[...XPL],C:CLS,A:LOOK,M:MAT,V:3}))}catch(e){}};let sd=null;try{sd=JSON.parse(localStorage.getItem(SK))}catch(e){}
+const SK='quest-1',sv=()=>{try{localStorage.setItem(SK,JSON.stringify({W,K:SKL,SP,LV,XP,POT,dy,dT,G:EQ,B:BAG,BB,QN,F:[...SHF],X:[...XPL],C:CLS,A:LOOK,M:MAT,E2:ELC,EB:ELB,V:3}))}catch(e){}};let sd=null;try{sd=JSON.parse(localStorage.getItem(SK))}catch(e){}
 // ---- treasure: iron-bound chests at deserted farmsteads, in graveyards and ruins and at the foot of old towers (FIND, fndU), each opened
 // once for good (SHF keeps their keys, saved with the quest); a chest holds gold and a piece of gear rolled a grade above the field's ----
 const SHF=new Set(),FND=[],XPL=new Set();try{const s=JSON.parse(localStorage.getItem(SK));(s?.F||[]).forEach(k=>SHF.add(k));(s?.X||[]).forEach(k=>XPL.add(k))}catch(e){}
@@ -4327,7 +4345,7 @@ bbClaim=i=>{const b=BB.L[i];if(b.st!=2)return;const g=bbG(b),x=bbX(b);b.st=3;W+=
   toast('The board is cleared! <b>500</b> gold, and a reward lies at its foot.','g','crown');BB=bbMk(BB.s+1);setTimeout(()=>toast('Ten new bounties are posted on the board.','','scroll'),3000)}
  hud();qtU();sv();bbR()},
 // the board's window: the ten notices, each with what it asks, what it pays and what can be done with it
-bbR=()=>{if(!BB)return;const tk=bbIn(),pd=BB.L.filter(b=>b.st==3).length;
+bbR=()=>{if(VD)return vdR();if(!BB)return;bbHd('scroll','Greywatch Keep','Bounty Board','Close the bounty board');const tk=bbIn(),pd=BB.L.filter(b=>b.st==3).length;
  $('bbc').innerHTML=`<p class="tl">Take up to <b>three</b> bounties at a time. Finish one out in the wilds, then bring it back here for its gold. Pay off all ten for <b>500 gold</b> and a piece of gear.</p><div class="bbl">${BB.L.map((b,i)=>{const q=QK[b.k];
   return`<div class="bbn s${b.st}"><i>${PXI(q.ic,'#4a2e14')}</i><div class="bbd"><h3>${b.t}<span class="bbq q${b.r|0}">${BBR[b.r|0][0]}</span></h3><p>${q.d(b.n)}</p>${b.st==1?`<span class="bbp"><span style="width:${min(100,b.c/b.n*100).toFixed(1)}%"></span></span><small>${bbPr(b)}</small>`:''}</div>
   <div class="bbr"><em>${PXI('coin','#8a5a10')}${bbG(b)}</em>${b.st==0?`<button data-bt="${i}"${tk>=BBT?' disabled title="You already hold three bounties"':''}>Take</button>`:b.st==1?'<span class="bbs">Taken</span>':b.st==2?`<button class="pr" data-bc="${i}">Claim</button>`:'<span class="bbs">Paid</span>'}</div></div>`}).join('')}</div>`;
@@ -4338,10 +4356,10 @@ drink=f=>{if(!f&&(!run||pz||bDead)||!POT||bHP>=bMax())return;POT--;const n=bMax(
 let BB=null,bbArm=1;
 // each frame of play: how far out he has come (for a scouting bounty), the board's notices and its gold mark, and the board's window,
 // which opens when he walks up to it (and not again until he has stepped away)
-function qstU(dt){if(!BB)BB=bbMk(0);const p=P.position;
+function qstU(dt){if(!BB)BB=bbMk(0);vdU(dt);elU(dt);const p=P.position;
  for(const b of BB.L)if(b.st==1&&b.k=='far'){const d=hypot(p.x+21,p.z+20);d>b.c&&(b.c=d)>=b.n&&qEv('far',0)}
  if(!BBG)return;for(let i=0;i<BBN;i++)BBNM[i].visible=!BB.L[i].st;BBS.visible=bbAt();BBS.position.y=3.7+.12*sin(tm*3);
- const d=hypot(p.x-BBP.fx,p.z-BBP.fz);if(d>4.5)bbArm=1;else if(d<2.4&&bbArm&&!ov&&!bDead&&!tuOn){bbArm=0;sho(6)}}
+ const d=hypot(p.x-BBP.fx,p.z-BBP.fz);if(d>4.5)bbArm=1;else if(d<2.4&&bbArm&&!ov&&!bDead&&!tuOn){bbArm=0;VD=null;sho(6)}}
 // the bounty board: two posts, a planked board under a little red roof, a gilt plaque, and a paper notice with a wax seal for each bounty
 // still posted (BBNM); a gold mark bobs over it while there is something for him there (BBS). It stands beside the path just before the
 // keep's gate (BBL, in the keep's frame), facing the muster ring, and is solid (BBC)
@@ -4358,7 +4376,7 @@ function bbBuild(){if(BBG)return;let lx=BBL[0];for(const o of[0,.8,1.6,-7.2,-8])
  BBS=new THREE.Sprite(new THREE.SpriteNodeMaterial({map:tx,color:new THREE.Color(1.5,1.4,1.1),transparent:true,depthWrite:false,fog:false,toneMapped:false}));BBS.scale.set(.525,1.05,1);BBS.position.set(0,3.7,0);BBG.add(BBS);
  BBC=mkCol([B(2.6,2.8,.45).rotateY(PI/4).translate(x,y+1.4,z)]);colList()}
 $('bbx').onclick=()=>sho(0);$('bbf').onclick=e=>e.target.closest('#bbd')&&sho(0);
-$('bbc').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;b.dataset.bt!=null?bbTake(+b.dataset.bt):b.dataset.bc!=null&&bbClaim(+b.dataset.bc)};
+$('bbc').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(VD)return vdC(b);b.dataset.bt!=null?bbTake(+b.dataset.bt):b.dataset.bc!=null&&bbClaim(+b.dataset.bc)};
 
 // health: the number in the shield beside the clock. A blow takes its share, then he is safe for a second (hiT); out of the fight (bRg) it
 // comes back, quickest at home
@@ -4639,6 +4657,86 @@ foePose=(h,dt)=>{const g=h.g,st=h.st,t=h.t,am=h.am,sk=h.k==1,ps=sin(h.ph),sw=ps*
 // a blow: damage, a knockback away from him, sparks; at nought it dies, leaving gold and maybe more (wlfDrop), experience and the bounty's tally
 foeSwing=(p,fx,fz)=>{const r=swR(),dm=bDmg();let n=0;for(const h of HUM){if(!h.on||h.st>5||h.up<1)continue;const dx=h.x-p.x,dz=h.z-p.z,d=hypot(dx,dz);if(d>r+.7||(d>1.8&&(dx*fx+dz*fz)/d<arcT()))continue;foeHit(h,dm);n++}n&&sfxW.hit()};
 EYM.colorNode=color(0xff4a1a).mul(3.2);
+// ---- the market's vendors: a shopkeeper behind every stall in a town's plaza, the awning telling the trade (VDK: red the weaponsmith,
+// blue the armourer, green the provisioner). Each is the knight's base body (BOD) in their own colours, with an apron and a band, cap or
+// straw hat, cut into rigid parts as the brigands are (vdGeo, built the first time one is needed) and drawn from a pool by trade (VDP).
+// They stand behind the counter, breathe, turn to him when he is near and wave as he comes up. Walking up to the front of the counter,
+// facing it, opens the shop in the bounty board's window (VD the stall; the board clears it): wares made for his class at his level,
+// restocked each dawn (or when his level or class changes) at four times what they would sell for, and what of his pack they deal in, to
+// sell. A stall's spot (vdSp, from its town's parts once its chunk has built them): x, z, ry the stall's; the vendor 1.15m behind its
+// middle, facing south as the stall does; the customer's place 2.05m in front ----
+let VD=null,vdT=0,vdA=[];
+const VDK=[{n:'Bram',t:'Weaponsmith',ic:'sword',w:'weapons',hi:'Steel for the road, every blade made for a hand like yours.',
+  p:{tun:0x7a2a24,trim:0x4e1a16,tun2:0x6a241f,hose:0x3a302a,shorts:0x5a4a3a,skin:0xb07a58,skin2:0x9a6448,hair:0x1e1612,hairHi:0x3a2a20},ap:0x5a3a22,ap2:0x46301c,
+  hat:C=>[[[[C(-6,6,54,55,-6,6,1),0x2a2420,0,4,5]]]],dl:it=>it.s=='w',mk:()=>Array.from({length:5},()=>mkIt('w',vdRr(),LV))},
+ {n:'Odo',t:'Armourer',ic:'armor',w:'armour',hi:'Plate, leather or cloth: whatever you wear, I have it, cut to fit.',
+  p:{tun:0x2f4a86,trim:0x22355f,tun2:0x2a4277,hose:0x34384a,shorts:0x8a8070,skin:0xe0b090,skin2:0xc89a7a,hair:0x8a8a86,hairHi:0xb4b4ae},ap:0x8a8070,ap2:0x6e6658,
+  hat:C=>[[[[C(-6,6,54,58,-6,6,1.6),0x9aa0a8,0,7,5]],[[HPX(-6.5,6.5,53.5,54.5,-6.5,6.5),0x5e646c]]]],dl:it=>!!ARW[it.s],
+  mk:()=>{const sl='ahlgb'+(CL().sh?'s':'');return Array.from({length:6},()=>mkIt(sl[R()*sl.length|0],vdRr(),LV))}},
+ {n:'Mirra',t:'Provisioner',ic:'potion',w:'charms and cloaks',hi:'Draughts for your wounds, elixirs for the fight, charms for your luck, and a sealed bundle or two.',
+  p:{tun:0x3a6a32,trim:0x2a4a22,tun2:0x335e2c,hose:0x4a3a2a,shorts:0xcfc3a6,skin:0xf0c8a0,skin2:0xd8a888,hair:0x8a4a22,hairHi:0xa86030,eye:0x3a7a3a},ap:0xe8dcb8,ap2:0xc8b890,
+  hat:C=>[[[[C(-8,8,56,56,-8,8,1),0xd8b860,0,7,5],[C(-5,5,57,59,-5,5,1),0xd8b860,0,7,5]],[[HPX(-5.5,5.5,56.5,57.5,-5.5,5.5),0x7a3a2a]]]],dl:it=>it.s=='n'||it.s=='r'||it.s=='k',
+  mk:()=>Array.from({length:4},()=>mkIt('nrrk'[R()*4|0],vdRr(),LV))}],
+ VDG=[],VDP=[[],[],[]],
+ // a ware's rarity: the drop odds, a little kinder, never past what his level has opened
+ vdRr=()=>{const q=R();return min(rMax(LV),q<.45?0:q<.78?1:q<.94?2:q<.99?3:4)},
+ buyP=it=>sellP(it)*4,
+ // the body, an apron (a bib over the chest on straps, the skirt below the belt, a pocket) and the trade's headwear
+ vdGeo=k=>VDG[k]||(VDG[k]=(()=>{const q=VDK[k],C=CEL,A=q.ap,A2=q.ap2;
+  return FPT([BOD({...BCL,...q.p}),[[[C(-3,3,30,38,4,4),A,0,4,0],[C(-3,-3,39,41,4,4),A,0,4,0],[C(3,3,39,41,4,4),A,0,4,0],[C(-3,3,17,26,5,5),A,0,4,0]],
+   [[HPX(-2,2,19.5,23.5,5,5.5),A2],[HPX(-3.5,3.5,25.5,26.5,5,5.5),A2]]],...q.hat(C)])})()),
+ vdFig=k=>{const G=vdGeo(k),g=new THREE.Group(),b=new THREE.Group(),mk=(geo,par,x,y,z)=>{const q=new THREE.Group(),o=new THREE.Mesh(geo,HMM);o.castShadow=o.receiveShadow=true;q.position.set(x,y,z);q.add(o);par.add(q);return q};
+  g.rotation.order='YXZ';b.position.y=.85;g.add(b);mk(G.body,b,0,0,0);const aL=mk(G.arm,b,.4,1.25,0),aR=mk(G.armR,b,-.4,1.25,0);mk(G.legL,g,.15,.85,0);mk(G.legR,g,-.15,.85,0);sc.add(g);return{g,b,aL,aR}},
+ vdSp=o=>o.vds||(o.vds=o.parts.filter(q=>q.vk!=null).map((q,i)=>({i,k:q.vk,x:q.x,z:q.z,ry:q.ry,y:Hm(q.x,q.z),tn:o.n,arm:1,hi:0,wv:0,yw:0,f:null,st:null}))),
+ // each frame of play: the stalls within 90m (looked for twice a second) have their vendors, and the rest give theirs back to the pool
+ vdU=dt=>{const p=P.position;
+  if((vdT-=dt)<=0){vdT=.5;const A=[];for(const o of RLP)if(o.k=='c'&&o.s>1&&o.parts&&hypot(o.x-p.x,o.z-p.z)<o.r+90)for(const v of vdSp(o))hypot(v.x-p.x,v.z-p.z)<90&&A.push(v);
+   for(const v of vdA)if(v.f&&!A.includes(v)){v.f.g.visible=false;VDP[v.k].push(v.f);v.f=null}vdA=A}
+  const fs=sin(P.rotation.y),fc=cos(P.rotation.y);
+  for(const v of vdA){if(!v.f){v.f=VDP[v.k].pop()||vdFig(v.k);v.f.g.visible=true;v.yw=0}
+   const f=v.f,s=sin(v.ry),c=cos(v.ry),x=v.x+s*1.15,z=v.z+c*1.15,dx=p.x-x,dz=p.z-z,d=hypot(dx,dz),h0=v.ry+PI,t=tm*1.6+v.i*2.1+v.x,br=sin(t);
+   // his head and shoulders follow him while he is near, as far as the counter lets them; a wave when he comes up
+   v.yw+=((d<12?cl(wa(atan2(dx,dz)-h0),-.8,.8):0)-v.yw)*min(1,dt*3);d>16&&(v.hi=0);if(d<10&&!v.hi){v.hi=1;v.wv=1.8}
+   f.g.position.set(x,v.y,z);f.g.rotation.y=h0+v.yw;f.b.rotation.set(.04+br*.012,0,0);f.aL.rotation.x=-.55+br*.025;
+   if(v.wv>0){v.wv=max(0,v.wv-dt);const e=sm(0,.3,1.8-v.wv)*sm(0,.3,v.wv);f.aR.rotation.x=-.5-2.2*e;f.aR.rotation.z=-e*(.25+.3*sin(tm*11))}else{f.aR.rotation.x=-.5+br*.02;f.aR.rotation.z=0}
+   // the shop opens as he steps up to the counter's front facing it, and not again until he has stepped away
+   const dd=hypot(p.x-(v.x-s*2.05),p.z-(v.z-c*2.05));if(dd>3)v.arm=1;else if(dd<1.3&&v.arm&&fs*s+fc*c>.5&&!ov&&!bDead&&!tuOn){v.arm=0;VD=v;sho(6)}}},
+ // the window's header: its icon, the place, the title and what its close button says
+ bbHd=(ic,s,t,x)=>{const b=$('bb'),m=b.querySelector('.tum');m.dataset.i!=ic&&(m.dataset.i=ic,m.innerHTML=PXI(ic));b.querySelector('.tus').textContent=s;$('bbt').textContent=t;$('bbx').setAttribute('aria-label',x)},
+ vdStk=v=>{(!v.st||v.dy!=dy||v.lv!=LV||v.cl!=CLS)&&(v.st=VDK[v.k].mk().sort((a,b)=>'hnakgrlbws'.indexOf(a.s)-'hnakgrlbws'.indexOf(b.s)||b.r-a.r),v.dy=dy,v.lv=LV,v.cl=CLS);return v.st},
+ // the shop: the wares (a provisioner's draughts and the Gambler's bundle first) as notices like the board's, then what he could sell them
+ vdR=()=>{const v=VD,q=VDK[v.k],S=vdStk(v),full=BAG.length>=BGM,
+   card=(ic,c,h,p,pr,bt)=>`<div class="bbn vd"><i>${PXI(ic,c)}</i><div class="bbd"><h3>${h}</h3>${p}</div><div class="bbr"><em>${PXI('coin','#8a5a10')}${pr}</em>${bt}</div></div>`,
+   pc=(it,pr,bt)=>card(SLI[it.s],RAR[it.r][2],`<span style="color:${RAR[it.r][2]}">${escH(it.n)}</span><span class="bbq vq${it.r}">${RAR[it.r][0]}</span>`,
+    `<p>${itKind(it)} · item level ${it.il}</p><p>${gLn(it).map(l=>l[0]).join(' · ')}</p><small>${whyNot(it)?whyNot(it)+'.':eqW(it)?'Against yours: '+cmpTxt(it):'Nothing worn there yet.'}</small>`,pr,bt),
+   no=(g,f)=>f?` disabled title="${f}"`:W<g?` disabled title="You need ${g} gold"`:'',
+   sl=BAG.map((it,i)=>[it,i]).filter(([it])=>q.dl(it));
+  bbHd(q.ic,v.tn+' market',`${q.n} the ${q.t}`,`Close ${q.n}'s stall`);
+  $('bbc').innerHTML=`<p class="tl">&ldquo;${q.hi}&rdquo; What you buy goes in your pack.</p><h4 class="vdh">For sale</h4><div class="bbl">${
+   v.k==2?card('potion','#8a1a1a','Healing draught',`<p>A third of your Health back, drunk with Q. You carry ${POT} of ${POTM}.</p>`,potP(),`<button class="pr" data-vp${no(potP(),POT>=POTM&&'You carry all you can')}>${POT>=POTM?'Full':'Buy'}</button>`)
+    +Object.entries(ELX).map(([k,[n,e,c,ic]])=>{const h=ELC[k]|0;return card(ic,c,n,`<p>${e} for three minutes. Drink it from your inventory (I). You carry ${h} of ${ELM}.</p>`,elP(),`<button class="pr" data-ve="${k}"${no(elP(),h>=ELM&&'You carry all you can')}>${h>=ELM?'Full':'Buy'}</button>`)}).join('')
+    +card('chest','#6a3a08','A sealed bundle','<p>An unknown piece of gear for your class. One in ten comes up epic or better.</p>',gamP(),`<button class="pr" data-vg${no(gamP(),full&&'Your pack is full')}>Buy</button>`):''}${
+   S.map((it,i)=>pc(it,buyP(it),`<button class="pr" data-vb="${i}"${no(buyP(it),full&&'Your pack is full')}>Buy</button>`)).join('')}${S.length||v.k==2?'':'<p class="tl">Sold out until dawn.</p>'}</div>
+   <h4 class="vdh">${q.n} buys ${q.w}</h4>${sl.length?`<div class="bbl">${sl.map(([it,i])=>pc(it,sellP(it),`<button data-vs="${i}">Sell</button>`)).join('')}</div>`:`<p class="tl">You carry no ${q.w} to sell.</p>`}`;
+  $('bbf').innerHTML=`<div class="bbg"><small>Gold <b>${W|0}</b> · Pack <b>${BAG.length} of ${BGM}</b></small></div><div class="pb tn"><button class="pr" id="bbd">Done</button></div>`;
+  pxFill($('bb'))},
+ // a button in the shop: b buys a ware, s sells a piece from the pack, p a draught, g the Gambler's bundle
+ vdC=b=>{const d=b.dataset,v=VD,S=vdStk(v);
+  if(d.vb!=null){const it=S[+d.vb],g=it&&buyP(it);if(!it||W<g||BAG.length>=BGM)return;W-=g;S.splice(+d.vb,1);BAG.push(it);sfx.coin();toast(`You buy the <b style="color:${RCO(it.r)}">${escH(it.n)}</b> for <b>${g}</b> gold${canUse(it)&&eqW(it)?`: ${cmpTxt(it)} than yours`:''}.`,'g','bag')}
+  else if(d.vs!=null){const it=BAG[+d.vs];if(!it)return;BAG.splice(+d.vs,1);const g=sellP(it);W+=g;sfx.coin();toast(`${VDK[v.k].n} buys the ${escH(it.n)} for <b>${g}</b> gold.`,'','coin')}
+  else if(d.vp!=null){const g=potP();if(W<g||POT>=POTM)return;W-=g;POT++;sfx.coin();toast('A healing draught, corked and ready.','g','potion')}
+  else if(d.ve!=null){const k=d.ve,g=elP();if(!ELX[k]||W<g||(ELC[k]|0)>=ELM)return;W-=g;ELC[k]=(ELC[k]|0)+1;sfx.coin();toast(`A <b>${ELX[k][0]}</b> for your pack. Drink it from your inventory (I).`,'g','potion')}
+  else if(d.vg!=null)gamble();
+  sv();hud();vdR()},
+ // the elixirs: their price (half again a healing draught's), drinking one (a fresh one of a kind already working tops it back up to the
+ // full time; the Health it adds is given at once), their time running down in play, and the HUD's row of those working (elH: built
+ // again only when which are working changes, its times set each second)
+ elP=()=>Math.round(potP()*1.5),
+ elDrink=k=>{if(!(ELC[k]>0))return;ELC[k]--;const m0=bMax(),on=ELB[k]>0,p=P.position;ELB[k]=ELT;hxD=1;bHP=min(bMax(),bHP+max(0,bMax()-m0));hrt();sfx.dab();
+  emit(p.x,p.y+1.4,p.z,16,parseInt(ELX[k][2].slice(1),16),2.2,3,.8,-1,.3);toast(`${on?'Topped up':'You drink'}: <b>${ELX[k][0]}</b>, ${ELX[k][1]} for three minutes.`,'g','potion');elH();sv()},
+ elU=dt=>{for(const k in ELB)if(!(ELB[k]>0)||(ELB[k]-=dt)<=0){delete ELB[k];hxD=1;bHP=min(bHP,bMax());hrt();toast(`The ${ELX[k][0]} wears off.`,'','potion')}elH()},
+ elH=()=>{const e=$('elx'),L=Object.keys(ELB),ks=L.join();if(e._k!==ks){e._k=ks;e.hidden=!L.length;e.innerHTML=L.map(k=>`<span title="${ELX[k][0]}: ${ELX[k][1]}">${PXI(ELX[k][3],ELX[k][2])}<b></b></span>`).join('');pxFill(e)}
+  L.forEach((k,i)=>{const t=Math.ceil(ELB[k]),s=`${t/60|0}:${String(t%60).padStart(2,'0')}`,b=e.children[i].lastChild;b.textContent!=s&&(b.textContent=s)})};
 // how many are out: brigands by day (none until the first day is a few minutes old), one by night; the dead only by night, more as the
 // days go on. None near home or while he is down. At dawn every skeleton still standing crumbles
 let fhT=3;
@@ -5138,7 +5236,9 @@ heroMenu=()=>{const t=czTab;$('cmh').textContent=FARM||'Your Hero';[['cmtc',0],[
   const lk=qSel=='s'&&!it&&ohWhy();d.innerHTML=`<span class="fr big" style="${rcs(it)}">${IC(lk?'lock':slIc(qSel))}</span><div class="ivd">${it?itCard(it):lk?`<h4>Off hand</h4><p class="rk">${lk}.</p>`:`<h4>No ${SLN[qSel].toLowerCase()} worn</h4><p class="rk">Anything for this slot in your pack is listed alongside, to put on.</p>`}<div class="bt">${it?`<button data-u="${qSel}">Take off</button>`+smB(it,`data-mq="${qSel}"`):''}<button data-x>Back</button></div></div><div class="cdp"><small>${c.length?`From your pack (${c.length}): click to wear`:`No ${SLN[qSel].toLowerCase()} in your pack`}</small><div class="ivg sm">${c.join('')}</div></div>`;return}
  if(t==1){const it=BAG[iSel];
   $('ivh').innerHTML=`<b>Pack</b><span>${BAG.length} / ${BGM}</span><span class="sp"></span><span class="gd">${IC('coin')} ${W|0}</span><span class="gd" title="Iron scrap">${IC('anvil')} ${MAT}</span><button data-k${BAG.length>1?'':' disabled'}>Sort</button><button data-j${BAG.some(b=>!b.r)?'':' disabled'}>Sell commons</button>`;
-  $('ivc').innerHTML=`<button class="it" data-p${POT&&bHP<bMax()?'':' disabled'} aria-label="Drink a healing draught (${POT} carried)">${IC('potion')}<i>${POT}</i></button><p><b>Healing draught</b> ×${POT}<br>${POT?(bHP<bMax()?'Drink one here for a third of your Health back, or with Q in the field.':'You are at full health.'):'Buy them with gold on the skills page (K).'}</p><button class="it" data-gm${W>=gamP()&&BAG.length<BGM?'':' disabled'} aria-label="Buy an unknown piece from the Gambler for ${gamP()} gold">${IC('chest')}</button><p><b>The Gambler</b><br>An unknown piece for <b>${gamP()}</b> gold. One in ten comes up epic or better.</p>`;
+  $('ivc').innerHTML=`<button class="it" data-p${POT&&bHP<bMax()?'':' disabled'} aria-label="Drink a healing draught (${POT} carried)">${IC('potion')}<i>${POT}</i></button><p><b>Healing draught</b> ×${POT}<br>${POT?(bHP<bMax()?'Drink one here for a third of your Health back, or with Q in the field.':'You are at full health.'):'Buy them with gold on the skills page (K).'}</p><button class="it" data-gm${W>=gamP()&&BAG.length<BGM?'':' disabled'} aria-label="Buy an unknown piece from the Gambler for ${gamP()} gold">${IC('chest')}</button><p><b>The Gambler</b><br>An unknown piece for <b>${gamP()}</b> gold. One in ten comes up epic or better.</p>`
+   // the elixirs he carries, each drunk with a click (Mirra the provisioner sells them)
+   +Object.entries(ELX).filter(([k])=>ELC[k]>0).map(([k,[n,e,c,ic]])=>`<button class="it" data-el="${k}" style="color:${c}" aria-label="Drink the ${n} (${ELC[k]} carried)">${IC(ic)}<i>${ELC[k]}</i></button><p><b>${n}</b> ×${ELC[k]}<br>${e} for three minutes${ELB[k]>0?`; working, ${Math.ceil(ELB[k]/60)} min left. Another tops it up`:''}. Click to drink.</p>`).join('');
   $('ivg').innerHTML=Array.from({length:BGM},(_,i)=>BAG[i]?tile(BAG[i],i,'i'):'<span class="it em"></span>').join('');
   $('ivd').innerHTML=it?itCard(it,eqW(it))+`<div class="bt"><button class="pr" data-e="${iSel}"${canUse(it)&&!(it.s=='s'&&ohWhy())?'':' disabled'}>${eqW(it)?'Wear instead':'Wear'}</button><button data-s="${iSel}">Sell for ${sellP(it)}</button><button data-v="${iSel}">Salvage · ${salvN(it)} scrap</button>${smB(it,`data-mi="${iSel}"`)}</div>`:'<p class="rk">Pick a piece to see what it does and how it compares with what you wear. What foes drop and chests hold ends up here.</p>';return}
  if(t==2){menu();return}
@@ -5228,7 +5328,7 @@ newHero=async()=>{await new Promise(r=>tuOpen(run?2:-1,r,'Choose a class'));for(
 ask=(t,m,ok,o={})=>new Promise(r=>{const d=$('al'),v=$('alv');$('alt').textContent=t;$('alm').innerHTML=m;$('alo').textContent=ok;$('alc').textContent=o.c||'Cancel';$('alo').className=o.v?'pr':'dg';v.hidden=!o.v;v.innerHTML=o.v||'';d.classList.toggle('fi',!!o.v);d.returnValue='';d.onclose=()=>r(d.returnValue=='ok');d.showModal();o.v&&$('alo').focus()}),
 nfM=(lv,w,d)=>`<b>${escH(FARM||'Your Hero')}</b> starts again at level 1 on day 1${d>1?` (from day ${d})`:''}: the <b>${w|0}</b> gold, the gear and the pack, the bounties and the skills learned are all lost. Chests already opened stay opened.`,
 tfr=()=>{fcap=fcap?0:1;$('pfr').textContent='Frame rate: '+(fcap?'60':'max');try{localStorage.setItem(SK+'-fps',fcap?'60':'max')}catch(e){}},
-fresh=()=>{for(const k in EQ)EQ[k]=null;kit();BAG.length=0;W=0;LV=1;XP=0;POT=1;QN=0;BB=null;bbArm=1;dy=1;dT=0;for(const k in SKL)delete SKL[k];SP=1;dsT=dsC=wardT=0;MAT=0;rgV=wdV=gaT=lpT=bnT=avT=mmS=0;BNR.visible=false;ZON.length=0;alyClr();CLR[CLS]?.();for(const k in acCD)acCD[k]=0;hxD=1;bHP=bMax();wlfClr();foeClr();for(const q of LOOT)q.on=0;P.position.set(2,0,3);apply();hrt();sv();sho(0)};
+fresh=()=>{for(const k in EQ)EQ[k]=null;kit();BAG.length=0;W=0;LV=1;XP=0;POT=1;for(const k in ELX){delete ELC[k];delete ELB[k]}QN=0;BB=null;bbArm=1;dy=1;dT=0;for(const k in SKL)delete SKL[k];SP=1;dsT=dsC=wardT=0;MAT=0;rgV=wdV=gaT=lpT=bnT=avT=mmS=0;BNR.visible=false;ZON.length=0;alyClr();CLR[CLS]?.();for(const k in acCD)acCD[k]=0;hxD=1;bHP=bMax();wlfClr();foeClr();for(const q of LOOT)q.on=0;P.position.set(2,0,3);apply();hrt();sv();sho(0)};
 $('bf').onclick=()=>hero(2);$('bp').onclick=()=>sho(2);$('rs').onclick=()=>sho(0);$('po').onclick=()=>hero(2);$('bk').onclick=()=>hero(0);$('bc').onclick=()=>hero(1);$('cmx').onclick=()=>sho(0);$('cmtc').onclick=$('cmti').onclick=$('cmts').onclick=$('cmtk').onclick=e=>{const t={cmtc:0,cmti:1,cmtk:2,cmts:3}[e.currentTarget.id];if(t==czTab)return;czTab=t;qSel=null;iSel=-1;heroMenu();czFit()};
 // the hero screens' buttons: q picks a slot on the doll (x puts it back), u takes a piece off, e wears one from the pack, i picks one in the
 // inventory, s sells it, k sorts the pack (rarest first, then by slot), j sells every common piece, p drinks a draught
@@ -5244,6 +5344,7 @@ $('cm').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled||b.id==
  else if(d.v!=null){const it=BAG.splice(+d.v,1)[0];if(it){const n=salvN(it);MAT+=n;iSel=-1;sfx.dab();toast(`The ${escH(it.n)} is broken down for <b>${n}</b> iron scrap.`,'','anvil');sv()}}
  else if(d.mi!=null)smUp(BAG[+d.mi]);else if(d.mq)smUp(EQ[d.mq]);else if(d.gm!=null)gamble();
  else if(d.p!=null)drink(1);
+ else if(d.el!=null)elDrink(d.el);
  heroMenu();czFit();document.body.classList.contains('pd')&&gpF($('cm'))};$('ps').onclick=tgm;$('p32').onclick=t32;$('pfr').onclick=tfr;$('cb').onclick=swing;$('qb').onclick=()=>drink();$('cb').querySelector('small').textContent=mob?'Strike':'Space';$('pm').onclick=$('mp').onclick=e=>e.target.classList.contains('ov')&&sho(0);$('bmp').onclick=()=>sho(5);$('mpx').onclick=()=>sho(0);$('mzi').onclick=()=>mZ(1/1.5);$('mzo').onclick=()=>mZ(1.5);$('mzc').onclick=mMe;$('mzr').onclick=()=>{const[x,z]=rlw(1011,1014);mcx=x;mcz=z;mSp=12600;mDraw()};
 $('alc').onclick=()=>$('al').close();$('alo').onclick=()=>$('al').close('ok');$('prm').onclick=tgr;
 // the scroll edge: a list that runs past its panel fades out at whichever end has more to see, under the pinned header or above the foot
@@ -5553,7 +5654,7 @@ function loop(){if(dead)return;const now=performance.now();if(fcap&&now-last<10.
   U.dt.value=lv?dt:0;camU(dt);vwU();cull();if((ht-=dt)<0){ht=.2;if(run){hud();amb(.2)}else MU&&MU.tick(mof||!musGo?0:1)}renderer.compute(GL[0].cs);renderer.compute(GL[1].cs);GSW.a.value.w=0;CMP.render()}
  catch(e){dead=1;console.error(e);fail('The game stopped unexpectedly','Your quest is saved as you play, so reloading picks up close to where you left off.')}}
 $('go').onclick=()=>{if(!sd&&!clsOk){newHero().then(()=>{clsOk=1;$('go').onclick()});return}clsOk=0;if(!FARM){FARM=$('fn').value.trim().replace(/\s+/g,' ')||'Sir Aldric';try{localStorage.setItem(SK+'-name',FARM)}catch(e){}}AC||aud();
- if(sd){W=sd.W||0;LV=sd.LV||1;XP=sd.XP||0;POT=sd.POT??1;dy=sd.dy||1;QN=sd.QN|0;BB=bbOk(sd.BB)?sd.BB:null;sd.G&&Object.assign(EQ,sd.G);(sd.B||[]).forEach(it=>BAG.push(it));if(EQ.c){EQ.c.s='n';EQ.n=EQ.n||EQ.c}delete EQ.c;for(const it of BAG)it.s=='c'&&(it.s='n');
+ if(sd){W=sd.W||0;LV=sd.LV||1;XP=sd.XP||0;POT=sd.POT??1;for(const k in ELX){sd.E2?.[k]>0&&(ELC[k]=min(ELM,sd.E2[k]|0));sd.EB?.[k]>0&&(ELB[k]=min(ELT,+sd.EB[k]))}dy=sd.dy||1;QN=sd.QN|0;BB=bbOk(sd.BB)?sd.BB:null;sd.G&&Object.assign(EQ,sd.G);(sd.B||[]).forEach(it=>BAG.push(it));if(EQ.c){EQ.c.s='n';EQ.n=EQ.n||EQ.c}delete EQ.c;for(const it of BAG)it.s=='c'&&(it.s='n');
   CLS=CLD[sd.C]?sd.C:'war';LOOK=lkFix(sd.A);skS();MAT=sd.M|0;LV=min(LV,LVM);for(const k in EQ)EQ[k]=migIt(EQ[k]);for(let i=0;i<BAG.length;i++)BAG[i]=migIt(BAG[i]);clsWpn();
   // a Rogue saved before daggers were carried two at a time gets the starting kit's second, a common one, in the off hand (once: V 3)
   if((sd.V|0)<3&&CL().dw&&dwOk(EQ.w)&&!EQ.s)EQ.s=mkIt('w',0,1,CL().dw[0]);
