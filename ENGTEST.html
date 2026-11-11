@@ -2299,7 +2299,7 @@ rlParts=p=>{if(p.parts)return p.parts;const rng=rlRng(Math.abs(Math.round(p.x*13
     U.forEach(([x,z],k)=>put(rlStallV(cs[k]),x,z,SY,[4.4,2.8],0,k))}}
   for(let t=0;t<n*80&&hs.length<n;t++){const a=rng()*TAU,r=r0+rng()*(r1-r0),x=p.x+cos(a)*r,z=p.z+sin(a)*r;if(!flat(x,z,4.5*HS)||hs.some(q=>hypot(q[0]-x,q[1]-z)<10*HS))continue;
    // the whole of its roof (1.18x its walls) must clear the roads and their verge, not just its middle (flat)
-   const w=4.6+rng()*3,d=4+rng()*3,ry=atan2(-cos(a),-sin(a));if(!rdBox(x,z,ry,w*.59*HS,d*.59*HS))continue;hs.push([x,z]);put(rlHouseQ(w*HS,d*HS,(3.1+rng()*.9)*HS,zn,rng()<.6),x,z,ry,[w*HS,d*HS])}}
+   const w=4.6+rng()*3,d=4+rng()*3,ry=atan2(-cos(a),-sin(a));if(!rdBox(x,z,ry,w*.59*HS,d*.59*HS))continue;hs.push([x,z]);put(rlHouseQ(w*HS,d*HS,(3.1+rng()*.9)*HS,zn,rng()<.6),x,z,ry,[w*HS,d*HS]);P[P.length-1].dr=[Math.round(d*HS/.8)*.4,zn<0?0:zn]}}  // (dr: its door, for inU)
  return p.parts=P};
 
 function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometry(CS,CS,SN,SN).rotateX(-PI/2),p=g.attributes.position,nr=g.attributes.normal,S1=SN+1;
@@ -4720,7 +4720,7 @@ const VDK=[{n:'Bram',t:'Weaponsmith',ic:'sword',w:'weapons',hi:'Steel for the ro
    f.g.position.set(x,v.y,z);f.g.rotation.y=h0+v.yw;f.b.rotation.set(.04+br*.012,0,0);f.aL.rotation.x=-.55+br*.025;
    if(v.wv>0){v.wv=max(0,v.wv-dt);const e=sm(0,.3,1.8-v.wv)*sm(0,.3,v.wv);f.aR.rotation.x=-.5-2.2*e;f.aR.rotation.z=-e*(.25+.3*sin(tm*11))}else{f.aR.rotation.x=-.5+br*.02;f.aR.rotation.z=0}
    // the shop opens as he steps up to the counter's front facing it, and not again until he has stepped away
-   const dd=hypot(p.x-(v.x-s*2.05),p.z-(v.z-c*2.05));if(dd>3)v.arm=1;else if(dd<1.3&&v.arm&&fs*s+fc*c>.5&&!ov&&!bDead&&!tuOn){v.arm=0;VD=v;sho(6)}}},
+   const dd=hypot(p.x-(v.x-s*2.05),p.z-(v.z-c*2.05));if(dd>3)v.arm=1;else if(dd<1.3&&v.arm&&fs*s+fc*c>.5&&!ov&&!bDead&&!tuOn&&!INS){v.arm=0;VD=v;sho(6)}}},
  // the window's header: its icon, the place, the title and what its close button says
  bbHd=(ic,s,t,x)=>{const b=$('bb'),m=b.querySelector('.tum');m.dataset.i!=ic&&(m.dataset.i=ic,m.innerHTML=PXI(ic));b.querySelector('.tus').textContent=s;$('bbt').textContent=t;$('bbx').setAttribute('aria-label',x)},
  vdStk=v=>{(!v.st||v.dy!=dy||v.lv!=LV||v.cl!=CLS)&&(v.st=VDK[v.k].mk().sort((a,b)=>'hnakgrlbws'.indexOf(a.s)-'hnakgrlbws'.indexOf(b.s)||b.r-a.r),v.dy=dy,v.lv=LV,v.cl=CLS);return v.st},
@@ -4766,7 +4766,8 @@ function foeU(dt,p,safe){const nt=dT>=DAY,hol=rlz(p.x,p.z)==3,camp=RLP.some(q=>q
  for(const h of HUM){if(!h.on)continue;if(h.k&&!nt&&!hol&&h.st<6){h.st=6;h.t=0;emit(h.x,h.y+1.4,h.z,18,0xd9d0b4,3,3,.8,6,.4)}h.st<6&&(h.k?ls++:lb++)}
  if((fhT-=dt)<=0){fhT=4+R()*4;lb<nB?foeNew(0):ls<nS&&foeNew(1)}
  for(const h of HUM){if(!h.on)continue;bDead||foeAI(h,dt*fSpd(h),p,safe);h.on&&foePose(h,dt*max(.15,fSpd(h)))}}
-// ---- inside: buildings the knight can enter, each a map of its own behind a load card (Greywatch Keep's great hall, for now). An interior is an
+// ---- inside: buildings the knight can enter, each a map of its own behind a load card (Greywatch Keep's great hall, and every town house, with a
+// room in its zone's way of building, below). An interior is an
 // instance: a scene apart (INT) that the post chain's one scene pass is pointed at while he is in it (scenePass.scene), so nothing of the realm is
 // drawn while he is in, and no pass is built twice. Its rooms are laid out in the building's own frame (f: [x, z, turn] of the frame's origin, as
 // cot's) and set where the building stands, so his position stays true to the realm: the minimap, the map, the zone, the streaming and the safe
@@ -4774,44 +4775,54 @@ function foeU(dt,p,safe){const nt=dT>=DAY,hol=rlz(p.x,p.z)==3,camp=RLP.some(q=>q
 // builds the rooms and warms their pipelines behind the card. Inside, he and his hound walk its floor (fl) against its colliders alone (INC, colIN);
 // the world's foes, loot, board and stalls can't reach him; his weapons stay sheathed (a hall at peace); and the realm's weather is kept out of the
 // picture (inDraw). The realm carries on unseen (its day, weather and foes), its streaming, chunk culling and grass paused. INS is the interior he
-// is in (null in the realm); IL is set while a card is up, when no input reaches him
-const INT=new THREE.Scene(),IG=new THREE.Group();INT.background=new THREE.Color(0x030304);INT.add(IG);
-let INS=null,IL=0,inCD=0,inHn=0,inPc=0,inZm=54,inFT=0,inEA=0,inEI=0;
+// is in (null in the realm): an interior itself (the keep) or, for a house, one made from its zone's (dp) with that house's frames (f inside, fo its
+// door outside). IL is set while a card is up, when no input reaches him. Each interior is built into a group of its own (d.g, shown alone while he
+// is in it); IG is the group being built and IB its interior, whose flames (FL) and fires' lights (PL) flicker while he is there
+const INT=new THREE.Scene();INT.background=new THREE.Color(0x030304);
+let INS=null,IL=0,IG=null,IB=null,inCD=0,inHn=0,inHh=0,inHT=0,inPc=0,inZm=54,inFT=0,inEA=0,inEI=0;
 // a point of the realm into a frame f and back (o receives [x, z]); a frame's x runs along the building's face, its z out of its door
 const IFr=(f,X,Z,o)=>{const dx=X-f[0],dz=Z-f[1],c=cos(f[2]),s=sin(f[2]);o[0]=dx*c-dz*s;o[1]=dx*s+dz*c;return o},
  IFw=(f,x,z,o)=>{const c=cos(f[2]),s=sin(f[2]);o[0]=f[0]+x*c+z*s;o[1]=f[1]-x*s+z*c;return o},IFo=[0,0],
  // the light inside: a key through the west windows (the day's, or the moon's by night, coloured by the hour in inU) that alone casts shadows,
- // shut out everywhere else by a roof only the shadow sees (IRF); a dim warm fill; and the fires (IPL: the hearth, the dais's candles, the
- // nave's torches, the braziers at the door and the armoury's torch, each flickering; on phones only the first, second and fourth)
- IKL=new THREE.DirectionalLight(0xcfd8ff,1),IHL=new THREE.HemisphereLight(0x8d7c66,0x2b231c,.62),IPL=[],
- // the flames: cubes in the fire's colours, unlit and bright enough to bloom (IFM, four frames of them, IFG), each with a soft glow (IGM); the
+ // shut out everywhere else by a roof only the shadow sees (IRF); a dim fill (its colours each interior's, lt); and its fires' flickering lights
+ // (PL; on phones only the chief of them). The key, the fill and the embers are shared, moved into the interior he enters (inSwap)
+ IKL=new THREE.DirectionalLight(0xcfd8ff,1),IHL=new THREE.HemisphereLight(0x8d7c66,0x2b231c,.62),
+ // the flames: cubes in the fire's colours, unlit and bright enough to bloom (IFM, four frames of them, IFG; the Hollow's green, IFGG), each with a
+ // soft glow (IGM, IGMG); the
  // windows' glass lit from outside by the hour (IWM, IWC); the shafts of that light down through the air (ISM, ISK their strength)
  IFM=new THREE.MeshBasicNodeMaterial({fog:false}),IWC=uniform(new THREE.Color(1,.96,.86)),ISK=uniform(.06),IWM=new THREE.MeshBasicNodeMaterial({fog:false}),
  ISM=new THREE.MeshBasicNodeMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,fog:false}),
  IGM=new THREE.SpriteNodeMaterial({map:DOT,color:0xffa04a,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:.5,fog:false}),
- IFG=[],IFL=[],IEN=48,IEM=spr(IEN,IG),IEX=new Float32Array(IEN*3),IEV=new Float32Array(IEN*3),IEL=new Float32Array(IEN*2);
+ IGMG=new THREE.SpriteNodeMaterial({map:DOT,color:0x4aff86,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:.45,fog:false}),
+ IFG=[],IFGG=[],IEC=[1.7,.62,.14],IEN=48,IEM=spr(IEN,INT),IEX=new Float32Array(IEN*3),IEV=new Float32Array(IEN*3),IEL=new Float32Array(IEN*2);
 IFM.colorNode=attribute('color','vec3').mul(3.2);IWM.colorNode=IWC.mul(1.6);ISM.colorNode=IWC;ISM.opacityNode=attribute('aA','float').mul(Sin(uv().x.mul(PI))).mul(ISK);
 {const s=IKL.shadow,z=mob?1024:2048;IKL.castShadow=true;s.mapSize.set(z,z);Object.assign(s.camera,{left:-19,right:19,top:19,bottom:-19,near:1,far:110});s.camera.updateProjectionMatrix();
- s.bias=-.0005;s.normalBias=.04;s.radius=2;s.camera.layers.enable(1);IG.add(IKL,IKL.target,IHL)}
+ s.bias=-.0005;s.normalBias=.04;s.radius=2;s.camera.layers.enable(1)}
 const IRF=new THREE.MeshBasicNodeMaterial(),
  // a box only the key light's shadow sees (layer 1; the camera keeps to layer 0): the roof, and the walls where they are cut away for the camera,
  // whose stepped heads and the floor beside them otherwise caught the daylight coming in over the cut
  irf=(x0,x1,y0,y1,z0,z1)=>{const m=new THREE.Mesh(B(x1-x0,y1-y0,z1-z0),IRF);m.position.set((x0+x1)/2,(y0+y1)/2,(z0+z1)/2);m.layers.set(1);m.castShadow=true;IG.add(m)};
-// a prop of cubes set in the frame (shared geometries are fine: VBK meshes are never disposed), a flame (with its glow) and a fire's light
+// a prop of cubes set in the frame (shared geometries are fine: VBK meshes are never disposed), one that glows (ipe: unlit, as the flames), a flame
+// (with its glow; fs its frames, gm its glow) and a fire's light
 const ipm=(g,x,y,z,ry=0)=>{const m=new THREE.Mesh(g,VC);m.position.set(x,y,z);m.rotation.y=ry;m.castShadow=m.receiveShadow=true;IG.add(m);return m},
- ifl=(x,y,z,s)=>{const m=new THREE.Mesh(IFG[0],IFM),g=new THREE.Sprite(IGM);m.position.set(x,y,z);m.scale.setScalar(s);g.position.set(x,y+.22*s,z);g.scale.setScalar(2.4*s**.7);IG.add(m,g);IFL.push({m,g,s})},
- ipl=(x,y,z,c,i,d,ph)=>{if(mob&&!ph)return;const l=new THREE.PointLight(c,i,d,2);l.position.set(x,y,z);IG.add(l);IPL.push({l,i,p:R()*9})},
- // a flame of cubes (.05m): a tapering tongue, white-gold at its heart through orange to red at its tips, its outline wavering by frame k
- ifG=k=>{const V=VBK(-5,0,-5,4,11,4);for(let J=0;J<12;J++){const y=(J+.5)/12,r=.22*(1-y)**.7*(1+.2*sin(k*2.1+J*1.3)),ox=.035*sin(k*1.7+J*.9)*y,oz=.035*cos(k*2.3+J*.7)*y;
-  for(let I=-5;I<5;I++)for(let K=-5;K<5;K++){const d=hypot((I+.5)*.05-ox,(K+.5)*.05-oz);if(d>r)continue;const t=d/max(r,.01);V.put(I,J,K,y>.8?0xd04a1c:t<.5&&y<.55?0xfff0b8:t<.8&&y<.72?0xffb43c:0xff7424)}}
-  return V.mesh({dk:0})};
+ ipe=(g,x,y,z,ry=0)=>{const m=new THREE.Mesh(g,IFM);m.position.set(x,y,z);m.rotation.y=ry;IG.add(m);return m},
+ ifl=(x,y,z,s,fs=IFG,gm=IGM)=>{const m=new THREE.Mesh(fs[0],IFM),g=new THREE.Sprite(gm);m.position.set(x,y,z);m.scale.setScalar(s);g.position.set(x,y+.22*s,z);g.scale.setScalar(2.4*s**.7);IG.add(m,g);IB.FL.push({m,g,s,fs})},
+ ipl=(x,y,z,c,i,d,ph)=>{if(mob&&!ph)return;const l=new THREE.PointLight(c,i,d,2);l.position.set(x,y,z);IG.add(l);IB.PL.push({l,i,p:R()*9})},
+ // a flame of cubes (.05m): a tapering tongue, white-gold at its heart through orange to red at its tips (C: the colours, heart to tips), its
+ // outline wavering by frame k
+ ifG=(k,C=[0xfff0b8,0xffb43c,0xff7424,0xd04a1c])=>{const V=VBK(-5,0,-5,4,11,4);for(let J=0;J<12;J++){const y=(J+.5)/12,r=.22*(1-y)**.7*(1+.2*sin(k*2.1+J*1.3)),ox=.035*sin(k*1.7+J*.9)*y,oz=.035*cos(k*2.3+J*.7)*y;
+  for(let I=-5;I<5;I++)for(let K=-5;K<5;K++){const d=hypot((I+.5)*.05-ox,(K+.5)*.05-oz);if(d>r)continue;const t=d/max(r,.01);V.put(I,J,K,y>.8?C[3]:t<.5&&y<.55?C[0]:t<.8&&y<.72?C[1]:C[2])}}
+  return V.mesh({dk:0})},
+ // building an interior: its group (shown only while he is in it), its flames and lights, and its builder; the flames' frames are cut the first time
+ inMk=d=>{const q0=VBZ;IB=d;IG=d.g=new THREE.Group();d.FL=[];d.PL=[];INT.add(IG);VBZ=.05;if(!IFG.length)for(let k=0;k<4;k++)IFG.push(ifG(k)),IFGG.push(ifG(k,[0xe4ffd8,0x7aff9a,0x2ad06a,0x1a7a4a]));
+  VBZ=q0;try{d.bld(d)}finally{VBZ=q0}IG.visible=false};
 // ---- Greywatch Keep's great hall (IND.keep): the gate opens on its south end (z 3, the camera's side) and it runs 20m north to a dais under a rose
 // window. An arcade of four bays down each side carries the (unseen) roof; the west aisle is lit by three tall windows, the hearth burns at the head of
 // the east one, and a door leads from it into the armoury. Of cubes as the keep is (VBK at .1m, the furniture at .05), in the keep's grey ashlar. It is a
 // diorama cut away for the camera: the walls on its side (the south) are cut down to a metre and the side walls step down toward them; there is
 // no roof (the dark above is the hall's own); every cut shows the wall's darker core. Frame metres: the hall x -9..9, z -17..3; the armoury x 9.8..16.4,
 // z -8.6..1; walls .8 thick, 7.2 high; the dais .3 then .6 up from z -12.6
-const kpB=d=>{IG.position.set(d.f[0],0,d.f[1]);IG.rotation.y=d.f[2];const q0=VBZ,c=m=>Math.round(m/VBZ),cx=I=>(I+.5)*VBZ,
+const kpB=d=>{const q0=VBZ,c=m=>Math.round(m/VBZ),cx=I=>(I+.5)*VBZ,
  vk=(x0,x1,y0,y1,z0,z1)=>{const V=VBK(c(x0),c(y0),c(z0),c(x1)-1,c(y1)-1,c(z1)-1);V.b=(a0,a1,b0,b1,d0,d1,f)=>V.box(c(a0),c(a1)-1,c(b0),c(b1)-1,c(d0),c(d1)-1,f);return V},
  TRM=0x7d786e,CORE=0x34302b,OAK=0x6a4428,OKD=0x48301d,IRN=0x2e2d2c,STL=0xa9aeb5,LIN=0xd9d0b8,PWT=0x9b9a97,WH=7.2,CUT=1,FLC=[0x6f6a62,0x78736a,0x645f58,0x7e786e,0x6b665d],
  ash=(I,J,K)=>{const cr=Math.floor(J/6),u=I+K+(cr&1)*6,b=Math.floor(u/12),col=vbT(STN[vbH(b,cr,0,31)*5|0],.84+.16*vbH(b,cr,0,32));return J-cr*6==0||u-b*12==0?vbT(col,.78):col},
@@ -4876,7 +4887,7 @@ const kpB=d=>{IG.position.set(d.f[0],0,d.f[1]);IG.rotation.y=d.f[2];const q0=VBZ
    y0=2.5,y1=5.4,z0=zc-.45,z1=zc+.45;q([y1,z0],[y1,z1]);q([y0,z0],[y0,z1]);q([y0,z0],[y1,z0]);q([y0,z1],[y1,z1])}
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setAttribute('aA',new THREE.Float32BufferAttribute(A,1));g.setAttribute('uv',new THREE.Float32BufferAttribute(Uv,2));g.setIndex(Ix);
   const m=new THREE.Mesh(g,ISM);m.renderOrder=3;m.frustumCulled=false;IG.add(m)}
- VBZ=.05;for(let k=0;k<4;k++)IFG.push(ifG(k));
+ VBZ=.05;
  // the furniture, at .05m. Long tables of oak on trestles with pewter and candles along them, and benches either side; the high table on the dais
  // under linen with two gilt candelabra; the high seat behind it (with a walk of 1.2m between them, round the table's ends)
  {const T=vk(-.6,.6,0,.95,-4.5,4.5);T.b(-.55,.55,.75,.85,-4.4,4.4,(I,J,K)=>vbT(OAK,(Math.floor(cx(I)/.22+5)&1?1:.9)*(.92+.12*vbH(I,J,K>>2,70))));
@@ -4947,7 +4958,6 @@ const kpB=d=>{IG.position.set(d.f[0],0,d.f[1]);IG.rotation.y=d.f[2];const q0=VBZ
  // the west aisle's torches
  ipl(7.45,1.3,-15.7,0xff8a3c,36,17,1);ipl(0,2.8,-14,0xffb262,30,15,1);ipl(-3.6,3,-4.4,0xffa252,18,12);ipl(3.6,3,-4.4,0xffa252,18,12);ipl(0,2.6,2,0xffa04a,22,13,1);ipl(14.4,3,-4.2,0xffa252,20,12);
  ipl(-8,3,-6.3,0xffa252,20,12);
- IKL.position.set(3.5-.64*40,.76*40,-7-.13*40);IKL.target.position.set(3.5,0,-7);
  // the colliders: the walls (the doors left open), the piers, the tables with their benches, the high table and seat, the hearth and the fire,
  // the braziers, the casks and crates, and the armoury's racks, stands, grindstone and anvil
  const L=[],cb=(x0,x1,z0,z1)=>L.push(B(x1-x0,3,z1-z0).translate((x0+x1)/2,1.5,(z0+z1)/2));
@@ -4955,12 +4965,256 @@ const kpB=d=>{IG.position.set(d.f[0],0,d.f[1]);IG.rotation.y=d.f[2];const q0=VBZ
  for(const s of[-1,1]){for(const zp of[-.6,-4.4,-8.2,-12])cb(s*5.4-.5,s*5.4+.5,zp-.5,zp+.5);cb(s>0?1.6:-4.2,s>0?4.2:-1.6,-11.1,-2.1);cb(s*2.4-.3,s*2.4+.3,1.9,2.5)}
  cb(-3.1,3.1,-14.35,-13.35);cb(-.9,.9,-16.8,-15.55);cb(5.95,9,-17,-15.9);cb(-9,-6.5,.2,2.95);cb(14.6,16.4,-.8,1);
  cb(15.85,16.4,-7.5,-1.3);cb(10.8,15.4,-8.6,-7.5);cb(10.7,11.7,-1.4,-.2);cb(12.9,13.9,-4.6,-3.8);
- INC.length=0;INC.push(mkCol(L.map(g=>g.rotateY(d.f[2]).translate(d.f[0],0,d.f[1]))))},
-// the interiors by key: n the name on the card, s the line under it, o the name on the card going out; f the frame; fl the floor's height and ex the
-// way out (frame metres); dr the doorway outside (in the frame) that takes him in when he walks into it; sp and so where he stands coming in and
-// going out ([x, z, heading in the frame]); zm the camera's zoom inside; fi where its hearth burns (its embers and crackle)
-IND={keep:{n:'Greywatch Keep',o:'Greywatch',f:[...cw(KX,0),PI/4],bld:kpB,zm:44,
- fl:(x,z)=>abs(x)<5.2&&z<-13.2?.6:abs(x)<5.8&&z<-12.6?.3:0,fi:[7.45,-16.4],ex:(x,z)=>z>3.35&&abs(x)<1.6,dr:(x,z)=>abs(x)<1.25&&z>3.4&&z<4.8,sp:[0,1.5,PI],so:[0,5.2,0]}},
+ d.cl=L},
+// ---- the town houses inside (IND.h0..h5, one for each zone's way of building): a single room 12m across and 10 deep (x -6..6, z -10..0 in its frame,
+// the door in the middle of the south wall, the camera's side), walls .6 thick and 5.6 high, cut away as the keep's hall is (the south wall down to a
+// metre, the sides stepping down to it from z -3, no roof), two windows in the west wall letting in the hour's light, the hearth on the north wall
+// where the camera sees into it. The room's frame is the camera's (turned as the keep's is), not the house's, so the cutaway works whichever way the
+// house faces: only the way in and out (fo) is the house's own door. Every house of a zone has the same room
+// a grid of cubes over a box in metres (at the VBZ of the moment): b fills a box in metres, lt a turned solid (radius rf(y) about x, z; colour cf(I, J,
+// K, y, e), e the share of the radius out, or a colour), sp an ellipsoid (cf(I, J, K, e, u, v, w), u v w across it from -1 to 1)
+ivq=m=>Math.round(m/VBZ),icx=I=>(I+.5)*VBZ,HIR=0x2e2d2c,iwd=(I,J,K,c0)=>vbT(c0,.9+.14*vbH(I>>1,J,K>>3,70)),
+ivk=(x0,x1,y0,y1,z0,z1)=>{const c=ivq,cx=icx,V=VBK(c(x0),c(y0),c(z0),c(x1)-1,c(y1)-1,c(z1)-1),fc=(f,...a)=>typeof f=='function'?f(...a):f;
+ V.b=(a0,a1,b0,b1,d0,d1,f)=>V.box(c(a0),c(a1)-1,c(b0),c(b1)-1,c(d0),c(d1)-1,f);
+ V.lt=(x,z,y0,y1,rf,cf)=>{for(let J=c(y0);J<c(y1);J++){const y=cx(J),r=rf(y);if(!(r>0))continue;const n=Math.ceil(r/VBZ)+1,I0=c(x),K0=c(z);
+  for(let I=I0-n;I<=I0+n;I++)for(let K=K0-n;K<=K0+n;K++){const e=hypot(cx(I)-x,cx(K)-z);e<r&&V.put(I,J,K,fc(cf,I,J,K,y,e/r))}}};
+ V.sp=(x,y,z,a,b,d,cf)=>V.box(c(x-a),c(x+a),c(y-b),c(y+b),c(z-d),c(z+d),(I,J,K)=>{const u=(cx(I)-x)/a,v=(cx(J)-y)/b,w=(cx(K)-z)/d,e=u*u+v*v+w*w;return e<1?fc(cf,I,J,K,e,u,v,w):-1});
+ return V},
+// small furniture at .05m (each returns its grid, for the caller to add to and mesh): a table w x d, h high (tc its top, lc its legs); a bench along x; a
+// stool; a bed with its head to -z (qf the quilt's colour by cell, pc the pillow's); a cask; a crate; a turned pot (pf its profile); a sack; a pumpkin; a
+// candle on its dish; logs for a fire, along x
+pTb=(w,d,h,tc,lc)=>{const V=ivk(-w/2,w/2,0,h,-d/2,d/2);V.b(-w/2,w/2,h-.1,h,-d/2,d/2,(I,J,K)=>vbT(tc,(Math.floor(icx(K)/.2+50)&1?1:.9)*(.92+.12*vbH(I>>2,J,K,81))));
+ for(const sx of[-1,1])for(const sz of[-1,1])V.b(sx*(w/2-.15)-.05,sx*(w/2-.15)+.05,0,h-.1,sz*(d/2-.15)-.05,sz*(d/2-.15)+.05,lc);return V},
+pBn=(l,h,c)=>{const V=ivk(-l/2,l/2,0,h,-.2,.2);V.b(-l/2,l/2,h-.08,h,-.2,.2,(I,J,K)=>vbT(c,.9+.14*vbH(I>>3,J,K,82)));for(const s of[-1,1])V.b(s*(l/2-.2)-.04,s*(l/2-.2)+.04,0,h-.08,-.15,.15,vbT(c,.8));return V},
+pSl=(c,h=.48)=>{const V=ivk(-.25,.25,0,h,-.25,.25);V.lt(0,0,0,h,()=>.2,(I,J,K,y,e)=>y>h-.06?vbT(c,1.12-.2*e):vbT(c,.82+.16*vbH(I,J>>1,K,83)));return V},
+pBd=(w,l,fc,qf,pc=0xe8e0cc)=>{const V=ivk(-w/2,w/2,0,1.3,-l/2,l/2);V.b(-w/2,w/2,.15,.45,-l/2,l/2,fc);for(const s of[-1,1])V.b(s*(w/2-.06)-.06,s*(w/2-.06)+.06,0,.15,-l/2,l/2,vbT(fc,.8));
+ V.b(-w/2,w/2,.45,1.25,-l/2,-l/2+.12,fc);V.b(-w/2,w/2,.45,.8,l/2-.12,l/2,fc);V.b(-w/2+.08,w/2-.08,.45,.62,-l/2+.12,l/2-.12,0xe6dcc4);
+ V.b(-w/2+.05,w/2-.05,.62,.7,-l/2+.75,l/2-.12,(I,J,K)=>qf(I,K));for(const s of[-1,1])V.b(s*(w/2-.05)-.03,s*(w/2-.05)+.03,.35,.7,-l/2+.75,l/2-.12,(I,J,K)=>qf(I,K));
+ V.b(-w/2+.2,w/2-.2,.62,.78,-l/2+.18,-l/2+.6,pc);return V},
+pCs=(r=.38,h=.95,wc=0x6a4428)=>{const V=ivk(-r-.05,r+.05,0,h,-r-.05,r+.05);V.lt(0,0,0,h,y=>r*(.84+.16*sin(y/h*PI)),(I,J,K,y)=>abs(y-.1)<.04||abs(y-h+.12)<.04||abs(y-h/2)<.03?HIR:y>h-.05?vbT(wc,.75):vbT(wc,Math.floor((atan2(icx(K),icx(I))+PI)/.32)&1?.84:1));return V},
+pCr=(s=.8,c=0x8a6a45)=>{const V=ivk(-s/2,s/2,0,s,-s/2,s/2),q=s/2-.07;V.b(-s/2,s/2,0,s,-s/2,s/2,(I,J,K)=>{const n=(abs(icx(I))>q)+(abs(icx(J)-s/2)>q)+(abs(icx(K))>q);return n>=2?vbT(c,.7):vbT(c,(J>>2)&1?.95:1.05)});return V},
+pPt=(h,pf,c,bd)=>{const V=ivk(-.7,.7,0,h,-.7,.7);V.lt(0,0,0,h,pf,(I,J,K,y)=>bd&&abs(y-bd)<.05?vbT(c,.55):vbT(c,.86+.18*vbH(I,J>>1,K,84)));return V},
+pSk=(c=0xc8b48a)=>{const V=ivk(-.4,.4,0,.85,-.4,.4);V.lt(0,0,0,.85,y=>y<.62?.3+.06*sin(y/.62*PI):.12+(.85-y)*.4,(I,J,K,y)=>y>.6&&y<.66?0x6a5a40:vbT(c,.86+.18*vbH(I,J,K,85)));return V},
+pPm=(r,c=0xd8701e)=>{const h=r*1.5,V=ivk(-r-.05,r+.05,0,h+.15,-r-.05,r+.05);V.sp(0,h/2,0,r,h/2,r,(I,J,K,e,u,v,w)=>vbT(c,(Math.floor((atan2(w,u)+PI)/.52)&1?.84:1)*(.9+.1*vbH(I,J,K,86))));V.b(-.04,.04,h-.05,h+.12,-.04,.04,0x4a6a28);return V},
+pCn=(h=.22)=>{const V=ivk(-.12,.12,0,h,-.12,.12);V.b(-.1,.1,0,.04,-.1,.1,0x8a7a5a);V.b(-.04,.04,.04,h,-.04,.04,0xe8dcc0);return V},
+pLg=(w,c=0x3a2516)=>{const V=ivk(-w/2,w/2,0,.4,-.3,.3);for(const[z,y,a]of[[-.12,.12,.25],[.13,.12,-.2],[0,.27,.05]])V.b(-w/2+.05,w/2-.05,0,.4,-.3,.3,(I,J,K)=>{const x=icx(I),u=icx(K)-z-x*a*.15,v=icx(J)-y,e=u*u+v*v;
+  return e<.012?e<.005&&abs(x)>w/2-.15?0x8a6a44:vbT(c,.8+.4*vbH(I,J,K>>2,73)):-1});return V},
+// a candle (or a lantern, hsLn) set down with its flame
+hsCn=(x,y,z,h=.22)=>{ipm(pCn(h).mesh({dk:0}),x,y,z);ifl(x,y+h,z,.18)},
+hsLn=(x,y,z)=>{const L=ivk(-.12,.12,0,.42,-.12,.12);L.b(-.11,.11,0,.04,-.11,.11,HIR);L.b(-.11,.11,.3,.34,-.11,.11,HIR);for(const a of[-1,1])for(const b of[-1,1])L.b(a*.09-.02,a*.09+.02,0,.34,b*.09-.02,b*.09+.02,HIR);
+ L.b(-.05,.05,.34,.4,-.05,.05,HIR);L.b(-.02,.02,.04,.12,-.02,.02,0xe8dcc0);ipm(L.mesh({dk:0}),x,y,z);ifl(x,y+.12,z,.18)},
+// the room's shell, at .1m (o: H the walls' height, wl their colour by cell, co the core a cut shows, fl the floor's colour (x, z, I, K), bs the plinth's,
+// ws square windows rather than arched, sl the sills'): the floor on its plinth, the walls (the door's gap in the south one), the west windows opened right
+// through, splaying into the room. Returned for the zone to add to (its hearth with hsH, a frame, beams) before hsF meshes and finishes it
+hsW=6,hsD=10,hsT=.6,
+hsS=o=>{VBZ=.1;const H=o.H||5.6,W=hsW,D=hsD,T=hsT,cx=icx,V=ivk(-W-T,W+T,-.6,H+.1,-D-T,T),top=z=>z<-3?H:max(1,H-Math.ceil((z+3)/.6)*H/6),
+  wl=t=>(I,J,K)=>{const y=cx(J),h=t(cx(K));return y>h?-1:y>h-VBZ?o.co:o.wl(I,J,K)},wF=wl(()=>H),wC=wl(()=>1),wS=wl(top);
+ V.b(-W-T,W+T,-.6,0,-D-T,T,(I,J,K)=>J<-1?vbSt(o.bs||0x4a4036,I,J,K,6,3,.3,80):cx(K)>0?vbSt(0x8a857a,I,0,K,4,1,.2,87):o.fl(cx(I),cx(K),I,K));
+ V.b(-W-T,-W,0,H,-D-T,T,wS);V.b(W,W+T,0,H,-D-T,T,wS);V.b(-W-T,W+T,0,H,-D-T,-D,wF);V.b(-W-T,W+T,0,1,0,T,(I,J,K)=>abs(cx(I))<1.2?-1:wC(I,J,K));
+ for(const zc of[-3,-7])V.b(-W-T,-W+.1,1.8,4.8,zc-1,zc+1,(I,J,K)=>{const x=cx(I),y=cx(J),u=abs(cx(K)-zc),e=.5+max(0,x+W+.3)*.6,
+  ins=y>2&&(o.ws?y<4.2&&u<e:y<3.75&&u<e||hypot(u,y-3.75)<e);return ins?0:x>-W&&y<2&&y>1.8&&u<.8?o.sl||0x8a8070:-1});
+ return V},
+// the hearth: a chimney breast w wide standing .6 out from the north wall at hx, to the wall's head; its fire-box (fw by fh) into the wall, sooted,
+// under a lintel (lc) and with a mantel shelf at mh; bc the breast's colour
+hsH=(V,hx,w,fw,fh,bc,lc,mh,H=5.6)=>{const D=hsD,cx=icx,L=typeof lc=='function'?lc:()=>lc;V.b(hx-w/2,hx+w/2,0,H,-D-.5,-D+.6,(I,J,K)=>{const x=cx(I),y=cx(J),z=cx(K),a=abs(x-hx),fb=a<fw/2&&y<fh;
+  if(z<-D)return fb?z<-D-.4?0x161311:0:-1;if(y>H-VBZ)return 0x34302b;if(fb)return 0;if(a<fw/2+.12&&y<fh+.12)return vbT(0x1d1915,.9+.2*vbH(I,J,K,62));if(a<fw/2+.3&&y<fh+.35)return L(I,J,K);return bc(I,J,K)});
+ V.b(hx-w/2-.1,hx+w/2+.1,mh,mh+.15,-D+.6,-D+.85,L)},
+// the west windows' light slanting down through the air along the key light (IKL: from x -.64, y .76, z -.13) to the floor: a prism from each window
+// (in the wall at wx, at zs, from y0 to y1, hw either side) to its patch of floor, its sides drawn additive (ISM), brightest at the glass, soft at its edges
+inSh=(wx,zs,y0,y1,hw)=>{const L=[-.64,.76,-.13],P=[],A=[],Uv=[],Ix=[];for(const zc of zs){const T=(y,z)=>[wx,y,z],Bt=(y,z)=>{const t=y/L[1];return[wx-L[0]*t,0,z-L[2]*t]},
+  q=(a,b)=>{const o=P.length/3;for(const[p,al,u]of[[T(...a),1,0],[T(...b),1,1],[Bt(...b),.12,1],[Bt(...a),.12,0]]){P.push(...p);A.push(al);Uv.push(u,al)}Ix.push(o,o+1,o+2,o,o+2,o+3)},z0=zc-hw,z1=zc+hw;
+  q([y1,z0],[y1,z1]);q([y0,z0],[y0,z1]);q([y0,z0],[y1,z0]);q([y0,z1],[y1,z1])}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setAttribute('aA',new THREE.Float32BufferAttribute(A,1));g.setAttribute('uv',new THREE.Float32BufferAttribute(Uv,2));g.setIndex(Ix);
+ const m=new THREE.Mesh(g,ISM);m.renderOrder=3;m.frustumCulled=false;IG.add(m)},
+// finishing the room: its mesh, the windows' glow (a plane in each, halfway through the wall), the shadow's roof and cut walls, the shafts, the key's aim,
+// and the colliders (the walls, the door left open, and the zone's own pieces, o.cb: [x0, x1, z0, z1])
+hsF=(d,V,o)=>{const W=hsW,D=hsD,T=hsT,H=o.H||5.6;ipm(V.mesh({dc:o.dc||0x2a241e,dh:.8,dk:.15}),0,0,0);
+ for(const zc of[-3,-7]){const g=new THREE.Shape();g.moveTo(-.9,2);g.lineTo(.9,2);if(o.ws){g.lineTo(.9,4.2);g.lineTo(-.9,4.2)}else{g.lineTo(.9,3.75);g.absarc(0,3.75,.9,0,PI)}g.lineTo(-.9,2);
+  const m=new THREE.Mesh(new THREE.ShapeGeometry(g,10),IWM);m.rotation.y=PI/2;m.position.set(-W-.3,0,zc);IG.add(m)}
+ irf(-W-T-.3,W+T+.3,H,H+.3,-D-T-.3,T+.3);irf(-W-T,-W,0,H,-3,T);irf(W,W+T,0,H,-3,T);irf(-W-T,W+T,0,H,0,T);inSh(-W,[-3,-7],2.1,4.1,.45);
+ d.kl=[-1,-5,12];const L=[],cb=(x0,x1,z0,z1)=>L.push(B(x1-x0,3,z1-z0).translate((x0+x1)/2,1.5,(z0+z1)/2));
+ cb(-W-T,-W,-D-T,T);cb(W,W+T,-D-T,T);cb(-W-T,W+T,-D-T,-D);cb(-W-T,-1.2,0,T);cb(1.2,W+T,0,T);for(const b of o.cb||[])cb(...b);d.cl=L},
+// a fire in a hearth at hx (logs w long and flames over them; fs, gm the flames' frames and glow)
+hsFi=(hx,w,fs=IFG,gm=IGM)=>{ipm(pLg(w).mesh({dk:0}),hx,0,-9.9);for(const[x,s]of[[-.32,1.1],[.08,1.4],[.4,1],[-.12,.8]])ifl(hx+x*w/1.6,.15,-9.9,s,fs,gm)},
+// a pot hanging in the fire, its brew (bc) at the top
+hsPot=(x,y,z,r,bc=0x1a1816)=>{const P=ivk(-r-.1,r+.1,0,r*2.2,-r-.1,r+.1);P.lt(0,0,.08,r*1.9,yy=>yy<r*1.7?r*sin(.35+yy/(r*1.7)*2.5):r*.82,(I,J,K,yy)=>yy>r*1.82?bc:vbT(0x242220,.9+.15*vbH(I,J,K,95)));
+ for(const a of[0,2.1,4.2])P.b(sin(a)*r*.7-.03,sin(a)*r*.7+.03,0,.12,cos(a)*r*.7-.03,cos(a)*r*.7+.03,HIR);ipm(P.mesh({dk:0}),x,y,z)},
+// ---- the Grasslands' farmhouse: lime plaster between dark oak posts, a rail and a plate; quarry tiles with a braided rag rug under the table; an
+// inglenook with a black pot on the fire; a dresser of blue-and-white plates; a patchwork bed; a spinning wheel by the window; flour sacks, a churn
+h0B=d=>{const TB=0x4e3828,o={co:0x3a3128,dc:0x4a3b2b,
+  wl:(I,J,K)=>{const u=((I+K)%24+24)%24,y=icx(J);return u<2||abs(y-2.45)<.12||y>5.35?vbT(TB,.85+.2*vbH(I>>1,J>>1,K>>1,90)):vbT(0xdccfa8,.9+.1*vn3(I*.2,J*.2,K*.2))},
+  fl:(x,z,I,K)=>{const u=(x-1.2)/2.1,v=(z+5)/1.5,e=sqrt(u*u+v*v);if(e<1)return vbT([0x9a4a3a,0x5a7a8a,0xc8a050,0x6a8a4a][Math.floor(e*7)%4],.9+.12*vbH(I,0,K,91));
+   const a=Math.floor(I/5),b=Math.floor(K/5);return I-a*5==0||K-b*5==0?0x5a4a3a:vbT((a+b)&1?0xa0583e:0x8e4c36,.88+.16*vbH(a,b,0,92))},
+  cb:[[-3.7,-.3,-10,-9.2],[-.1,2.5,-6.1,-3.9],[1.5,4.5,-10,-9.35],[3.4,6,-7.4,-5.6],[-4.9,-3.6,-5,-4.2],[-4.8,-3.4,-9.8,-8.1],[-5.3,-4.4,-1.7,-.8]]};
+ const V=hsS(o);hsH(V,-2,3.4,2.2,1.5,(I,J,K)=>vbSt(0x8a8478,I,J,K,4,3,.3,93),(I,J,K)=>vbT(TB,.9+.15*vbH(I>>2,J,K,94)),1.9);hsF(d,V,o);
+ VBZ=.05;hsFi(-2,1.9);hsPot(-2,.05,-9.85,.3);
+ {const Dr=ivk(-1.5,1.5,0,2.75,-.3,.3);Dr.b(-1.5,1.5,0,1,-.3,.3,(I,J,K)=>abs(icx(I))<.03||icx(K)>.27&&abs(abs(icx(I))-.75)<.03?vbT(TB,.7):iwd(I,J,K,0x6a4428));
+  Dr.b(-1.5,1.5,1,1.05,-.3,.3,vbT(0x6a4428,1.1));for(const x of[-1.5,1.42])Dr.b(x,x+.08,1,2.75,-.3,-.05,0x6a4428);Dr.b(-1.5,1.5,1,2.75,-.3,-.25,vbT(0x6a4428,.85));for(const y of[1.55,2.1,2.65])Dr.b(-1.5,1.5,y,y+.05,-.3,-.05,0x6a4428);
+  for(const y of[1.05,1.6,2.15])for(let x=-1.2;x<1.3;x+=.42){if(vbH(x*10,y*10,0,99)<.15)continue;Dr.b(x-.18,x+.18,y,y+.38,-.18,-.13,(I,J)=>{const e=hypot(icx(I)-x,icx(J)-y-.19);return e>.17?-1:e>.12||e<.05?0x3a5a9a:0xe8e4da})}
+  ipm(Dr.mesh({dk:0}),3,0,-9.68)}
+ {const T=pTb(2.4,1.2,.85,0x7a5232,TB);T.lt(-.5,.1,.85,1.05,y=>.26*sqrt(max(0,1-((y-.85)/.2)**2)),(I,J,K)=>vbT(0xc89a58,.85+.25*vbH(I,J,K,96)));
+  T.lt(.45,-.15,.85,.97,()=>.17,(I,J,K,y,e)=>e>.85?0xd8b850:0xf0d878);T.lt(.15,.3,.85,1.1,y=>y<1.02?.08+.03*sin((y-.85)*12):.05,0xe8e0d0);for(const x of[-.85,.85])T.b(x-.15,x+.15,.85,.88,-.35,-.05,0x9b9a97);
+  ipm(T.mesh({dk:0}),1.2,0,-5);hsCn(1.75,.85,-5.3);const bn=pBn(2.2,.48,0x6a4428).mesh({dk:0});ipm(bn,1.2,0,-5.85);ipm(bn,1.2,0,-4.15)}
+ ipm(pBd(1.8,2.6,0x6a4428,(I,K)=>vbT([0xb83a3a,0xe8dcc0,0x3a6a9a,0xd8a83a][(Math.floor(I/5)+Math.floor(K/5)*3)%4],.92+.1*vbH(I,0,K,97))).mesh({dk:0}),4.7,0,-6.5,-PI/2);
+ {const S=ivk(-.6,.6,0,1.6,-.3,.3);S.b(-.55,.55,.4,.5,-.12,.12,0x6a4428);for(const x of[-.45,.45])S.b(x-.04,x+.04,0,.45,-.1,.1,0x5a3a22);S.b(.25,.31,.45,.95,-.03,.03,0x5a3a22);
+  for(let I=ivq(-.3);I<ivq(.8);I++)for(let J=ivq(.45);J<ivq(1.55);J++){const u=icx(I)-.28,v=icx(J)-1,e=hypot(u,v);(abs(e-.5)<.04||e<.5&&(abs(u)<.025||abs(v)<.025||abs(u-v)<.035||abs(u+v)<.035))&&S.put(I,J,0,0x7a5232)}
+  S.b(-.45,-.4,.5,1.05,-.03,.03,0x5a3a22);S.b(-.5,-.35,1,1.12,-.06,.06,0xe8e0c8);ipm(S.mesh({dk:0}),-4.3,0,-4.6)}
+ {const sk=pSk().mesh({dk:0});ipm(sk,-4.3,0,-9.25,.4);ipm(sk,-3.8,0,-8.55,1.3);ipm(sk,-4.5,0,-8.5,2.2)}
+ {const C=ivk(-.3,.3,0,1.2,-.3,.3);C.lt(0,0,0,1.15,y=>y<.85?.22-.02*y:y<.95?.22-(y-.85)*1.2:.1,(I,J,K,y)=>abs(y-.15)<.03||abs(y-.7)<.03?0x6a6a6a:vbT(0xb8b4a8,.9+.12*vbH(I,J,K,98)));C.b(-.025,.025,1.1,1.2,-.025,.025,0x5a3a22);ipm(C.mesh({dk:0}),-4.85,0,-1.25)}
+ ipl(-2,1.2,-9,0xff8a3c,26,12,1);ipl(1.2,2.8,-5,0xffb262,17,11)},
+// ---- the Winterlands' log cabin: walls of logs chinked with moss-grey clay, wide planks, a white bear's hide before a round-stone hearth with a stag's
+// antlers over it, split logs stacked by it, skis and a snowshoe against the wall, a bed heaped with furs, a rough table with a lantern and stools of
+// stumps, a pelt stretched between the windows, a sled by the door
+h1B=d=>{const o={co:0x2e2620,dc:0x55565c,
+  wl:(I,J,K)=>{const r=Math.floor(J/3),j=J-r*3,s=vbH(r,(I+K)>>4,0,100);return j==0?vbT(0x9a9488,.9+.1*vbH(I,J,K,101)):vbT(0x6b5a48,(.8+.3*s)*(j==2?.86:1.04)*(.94+.08*vbH(I,J>>1,K,102)))},
+  fl:(x,z,I,K)=>{const u=x/1.6,v=(z+7.7)/1.1,e=u*u+v*v;if(e<1+.3*(vbH(I>>1,0,K>>1,103)-.5))return vbT(0xeae6dc,.86+.14*vbH(I,0,K,104));
+   const p=Math.floor(I/3);return I-p*3==0?0x3a2c20:vbT(0x7a5a3a,(.82+.26*vbH(p,Math.floor(K/24+p*.37),0,105))*(.94+.08*vbH(I,0,K,106)))},
+  cb:[[-1.8,1.8,-10,-9.2],[2.1,3.7,-10,-9.1],[-4.1,-2.9,-10,-9.5],[3.4,6,-7.5,-5.5],[-3.2,-.6,-5.6,-3.4],[3.2,5.2,-2,-.8],[-5.5,-4.5,-2.4,-1.3]]};
+ const V=hsS(o);hsH(V,0,3.6,2.4,1.6,(I,J,K)=>vbT([0x8a8a88,0x6f7680,0x9a948a,0x5f6268][vbH(I>>1,J>>1,K>>1,107)*4|0],.85+.25*vbH(I,J,K,108)),(I,J,K)=>vbT(0x7a7670,.95+.1*vbH(I>>2,J,K,109)),2);hsF(d,V,o);
+ VBZ=.05;hsFi(0,2.1);
+ {const A=ivk(-1.1,1.1,0,1.3,-.1,.1),ln=(x0,y0,x1,y1)=>{const n=Math.ceil(hypot(x1-x0,y1-y0)/.03);for(let i=0;i<=n;i++){const t=i/n,x=x0+(x1-x0)*t,y=y0+(y1-y0)*t;A.b(x-.03,x+.03,y-.03,y+.03,0,.05,0xd8ccb0)}};
+  A.b(-.18,.18,0,.4,-.05,.05,0x6a4a30);A.b(-.12,.12,.08,.32,.05,.1,0xe8dcc0);for(const s of[-1,1]){ln(s*.12,.3,s*.55,.9);ln(s*.55,.9,s*.75,1.25);ln(s*.38,.65,s*.2,1.05);ln(s*.6,1,s*.95,1.1);ln(s*.47,.77,s*.85,.75)}
+  ipm(A.mesh({dk:0}),0,2.6,-9.36)}
+ {const L=ivk(-.8,.8,0,1.4,-.4,.4);for(let r=0;r<5;r++)for(let k=0;k<5;k++){const x=-.64+k*.32+(r&1)*.16,y=.15+r*.26;if(x>.7)continue;
+   L.b(x-.15,x+.15,y-.14,y+.14,-.35,.35,(I,J,K)=>{const e=hypot(icx(I)-x,icx(J)-y);return e>.14?-1:icx(K)>.3?e>.1?0x6a4a2c:vbT(0xb89868,.9+.15*vbH(I,J,0,110)):vbT(0x5a4030,.85+.2*vbH(I,J,K>>2,111))})}
+  ipm(L.mesh({dk:0}),2.9,0,-9.55)}
+ {const S=ivk(-.5,.6,0,2.2,-.1,.1);for(const x of[-.35,-.15])S.b(x-.06,x+.06,0,1.95,-.02,.02,(I,J)=>vbT(0x8a6a44,.95+.1*vbH(I,J>>2,0,112)));S.b(-.45,-.05,1.95,2.05,-.04,.04,0x8a6a44);
+  for(let I=ivq(.05);I<ivq(.5);I++)for(let J=ivq(.6);J<ivq(1.5);J++){const u=(icx(I)-.27)/.2,v=(icx(J)-1.05)/.42,e=u*u+v*v;e<1&&(e>.72||(I+J)%3==0||(I-J)%3==0)&&S.put(I,J,0,e>.72?0x6a4a2c:0x9a8a6a)}
+  ipm(S.mesh({dk:0}),-3.5,0,-9.9)}
+ ipm(pBd(2,2.6,0x5a4636,(I,K)=>vbT(vbH(I>>1,0,K>>1,113)<.5?0xd8d4cc:0x8a7a68,.9+.12*vbH(I,0,K,114)),0xb8a890).mesh({dk:0}),4.7,0,-6.5,-PI/2);
+ {const T=pTb(2.2,1.2,.85,0x7a5a3a,0x5a4030);T.lt(.4,.1,.85,.97,y=>.18-(y-.85)*.6,0x6a5a4a);T.lt(.4,.1,.93,.97,()=>.12,0x8a5a2a);T.lt(-.3,-.25,.85,1,()=>.06,0x9a7a50);
+  ipm(T.mesh({dk:0}),-1.9,0,-4.5);hsLn(-2.55,.85,-4.75);const st=pSl(0x6a4a30).mesh({dk:0});ipm(st,-1.9,0,-5.4);ipm(st,-1.9,0,-3.6);ipm(st,-3,0,-4.5)}
+ {const P=ivk(-.05,.1,0,1.6,-.7,.7);P.b(0,.05,0,1.6,-.7,.7,(I,J,K)=>{const u=icx(K)/.6,v=(icx(J)-.8)/.75,e=u*u+v*v+.2*sin(u*7)*sin(v*5);return e<1?vbT(0x7a5a3a,.85+.25*vn3(I*.3,J*.2,K*.2)):-1});ipm(P.mesh({dk:0}),-5.98,1.6,-5)}
+ {const S=ivk(-.5,.5,0,.6,-1,1);for(const s of[-1,1]){S.b(s*.4-.04,s*.4+.04,0,.08,-.9,.9,0x5a4030);S.b(s*.4-.04,s*.4+.04,.08,.35,.85,1,0x5a4030);for(const z of[-.6,0,.6])S.b(s*.4-.03,s*.4+.03,.08,.3,z-.03,z+.03,0x5a4030)}
+  for(let z=-.8;z<.9;z+=.25)S.b(-.45,.45,.3,.36,z-.08,z+.08,0x8a6a44);ipm(S.mesh({dk:0}),4.2,0,-1.4,PI/2)}
+ ipm(pCs(.4,1).mesh({dk:0}),-5,0,-1.85);ipl(0,1.2,-9,0xff8a3c,30,13,1);ipl(-1.5,2.6,-4.8,0xffb262,16,11)},
+// ---- the Autumn Grasslands' harvest house: oak boards to the waist and warm plaster over them, oak posts; wide boards underfoot, straw and fallen leaves
+// blown in at the door; a brick hearth with a pot of stew; pumpkins and gourds heaped in a corner and two by the door; baskets of apples, a cider press;
+// a long table of pies, bread and preserves; shelves of jars, and corn cobs and garlic hung from a rail; a bale of straw
+h2B=d=>{const OK=0x6a4428,o={co:0x3a2a1c,dc:0x4f3a26,
+  wl:(I,J,K)=>{const y=icx(J),u=((I+K)%30+30)%30;if(u<2&&y>1.3)return vbT(0x4f3520,.85+.2*vbH(I>>1,J>>1,K>>1,120));if(y<1.3)return y>1.18?vbT(0x4f3520,1.05):vbT(OK,(Math.floor((I+K)/2)&1?1:.86)*(.92+.1*vbH(I,J>>2,K,121)));
+   return vbT(0xd2b488,.9+.1*vn3(I*.2+3,J*.2,K*.2))},
+  fl:(x,z,I,K)=>{const p=Math.floor(K/3);if(z>-3&&vbH(I,0,K,122)<.06)return[0xd8651e,0xb84a1a,0xe0a030][vbH(I,1,K,123)*3|0];if(vbH(I>>2,0,K>>2,124)<.05)return vbT(0xd8b860,.9+.2*vbH(I,0,K,125));
+   return K-p*3==0?0x3a2a1c:vbT(0x8a5a32,(.84+.24*vbH(p,Math.floor(I/30+p*.41),0,126))*(.94+.08*vbH(I,0,K,127)))},
+  cb:[[-4.1,-.7,-10,-9.2],[3.2,6,-10,-6.8],[4.7,6,-6.2,-4.2],[4,5.6,-3.4,-1.8],[-2.1,1.3,-6.1,-3.9],[.3,2.3,-10,-9.45],[-5.3,-3.9,-1.9,-1.1],[-2.35,-1.45,-1.35,-.45],[1.85,2.55,-1.15,-.45]]};
+ const V=hsS(o);hsH(V,-2.4,3.4,2.2,1.5,(I,J,K)=>{const u=I+K+(J&1)*2;return u%3==0?0x6a5a4a:vbT([0x9a4a32,0x8a4030,0xa85a3a][vbH(Math.floor(u/3),J,0,128)*3|0],.9+.12*vbH(I,J,K,129))},(I,J,K)=>vbT(0x4f3520,.9+.15*vbH(I>>2,J,K,94)),1.9);hsF(d,V,o);
+ VBZ=.05;hsFi(-2.4,1.9);hsPot(-2.4,.05,-9.85,.32,0xc8701e);
+ for(const[x,z,r,c]of[[3.8,-9.3,.45,0xd8701e],[4.85,-9.25,.55,0xe0a050],[5.45,-8.3,.4,0xd8701e],[4.35,-8.4,.35,0x6a8a3a],[5.35,-7.35,.3,0xe8d8a8],[3.6,-8.3,.28,0xc8601a],[-1.9,-.9,.38,0xd8701e],[2.2,-.8,.3,0xe0a050]])
+  ipm(pPm(r,c).mesh({dk:0}),x,0,z,x*3);
+ {const Bk=ivk(-.45,.45,0,.75,-.45,.45);Bk.lt(0,0,0,.55,y=>.3+y*.1,(I,J,K,y,e)=>e>.82?vbT(0xb08a50,(I+J)&1?.86:1.05):0x8a6a3a);
+  for(let k=0;k<9;k++){const a=k*2.4,r=k?.2:0,x=cos(a)*r,z=sin(a)*r;Bk.sp(x,.6,z,.11,.1,.11,k%3?0xb82a1a:0x7aa83a)}const bg=Bk.mesh({dk:0});ipm(bg,5.35,0,-5.6);ipm(bg,5.35,0,-4.75,1)}
+ {const Pr=ivk(-.8,.8,0,1.9,-.5,.5);Pr.lt(0,0,0,.55,()=>.45,(I,J,K,y,e)=>e>.85?vbT(0x6a4428,Math.floor((atan2(icx(K),icx(I))+PI)/.3)&1?.84:1):0x6a2a3a);for(const s of[-1,1])Pr.b(s*.6-.07,s*.6+.07,0,1.7,-.07,.07,0x5a3a22);
+  Pr.b(-.7,.7,1.6,1.75,-.08,.08,0x5a3a22);for(let J=ivq(.7);J<ivq(1.6);J++)Pr.b(-.05,.05,icx(J)-.025,icx(J)+.025,-.05,.05,J%3?0x8a8a88:0x4a4a48);Pr.b(-.4,.4,.65,.72,-.4,.4,0x7a5232);ipm(Pr.mesh({dk:0}),4.8,0,-2.6)}
+ {const T=pTb(3.2,1.2,.85,0x7a5232,0x4f3520);for(const x of[-.9,.6])T.lt(x,0,.85,.95,()=>.25,(I,J,K,y,e)=>y>.92&&((I+K)%4<1||(I-K)%4<1)?0x9a6a2a:vbT(0xd8a050,.9+.12*vbH(I,J,K,130)));
+  T.lt(-.15,.1,.85,1.02,y=>.22*sqrt(max(0,1-((y-.85)/.17)**2)),(I,J,K)=>vbT(0xc89a58,.85+.25*vbH(I,J,K,96)));for(const[x,c]of[[1.2,0xd86a1e],[1.35,0x6a2a5a],[1.05,0xb82a2a]])T.lt(x,-.3+(x-1.2),.85,1.05,y=>y>1?.05:.07,(I,J,K,y)=>y>1?0xd8ccaa:c);
+  ipm(T.mesh({dk:0}),-.4,0,-5);hsCn(-.4,.85,-5.3);const bn=pBn(3,.48,OK).mesh({dk:0});ipm(bn,-.4,0,-5.85);ipm(bn,-.4,0,-4.15)}
+ {const S=ivk(-1,1,0,2.2,-.3,.05);S.b(-1,1,0,2.2,-.3,-.25,0x5a3a22);for(const x of[-1,.95])S.b(x,x+.05,0,2.2,-.3,.05,0x5a3a22);for(const y of[0,.7,1.4,2.15])S.b(-1,1,y,y+.05,-.3,.05,0x5a3a22);
+  for(const y of[.05,.75,1.45])for(let x=-.85;x<.9;x+=.24)S.lt(x,-.12,y,y+.28,yy=>yy>y+.22?.06:.08,(I,J,K,yy)=>yy>y+.22?0xd8ccaa:[0xd86a1e,0x6a2a5a,0xb82a2a,0xc8a83a][((x*10|0)+(y*10|0))&3]);
+  ipm(S.mesh({dk:0}),1.3,0,-9.7)}
+ {const Rk=ivk(-1.9,1.9,1.9,3.6,-.15,.1);Rk.b(-1.9,1.9,3.4,3.55,-.12,.05,0x4f3520);for(let k=0;k<11;k++){const x=-1.7+k*.34,cr=k&1,len=.5+.25*vbH(k,0,0,131);
+   Rk.b(x-.02,x+.02,3.4-len*.3,3.4,-.02,.02,0x8a7a4a);cr?Rk.sp(x,3.4-len*.6,0,.07,len*.32,.07,(I,J,K,e,u,v)=>abs(v)>.85?0x4a6a28:vbT(0xe0b030,(J&1?1:.84))):Rk.sp(x,3.4-len*.55,0,.09,len*.3,.09,(I,J)=>vbT(0xe8e0cc,(J&1)?.9:1.05))}
+  ipm(Rk.mesh({dk:0}),2.6,0,-9.85)}
+ {const Hb=ivk(-.7,.7,0,.75,-.35,.35);Hb.b(-.7,.7,0,.72,-.35,.35,(I,J,K)=>abs(abs(icx(I))-.35)<.03?0x6a5a3a:vbT(0xd8b860,.8+.3*vbH(I>>1,J,K,132)));ipm(Hb.mesh({dk:0}),-4.6,0,-1.5)}
+ ipl(-2.4,1.2,-9,0xff8a3c,26,12,1);ipl(1.2,2.8,-5,0xffb262,17,11)},
+// ---- the Haunted Hollow's house: dark rubble, moss low on it and cobwebs in the corners; slate flags, cracked, some gone to the earth; an open hearth of
+// green fire under a cauldron of glowing brew; shelves of glowing bottles; a bookcase of old tomes; a table with a skull, an open book and a candle; a
+// coffin stood against the wall with candles before it
+h3B=d=>{const o={co:0x1e1c22,dc:0x2e2d30,
+  wl:(I,J,K)=>{const c=vbSt(0x4e4a56,I,J,K,3,2,.4,130);return J<9&&vn3(I*.16,J*.07,K*.16)>.5?vbM(c,0x3f5f4a,.5):c},
+  fl:(x,z,I,K)=>{const r=Math.floor(K/6),u=I+(r&1)*4,b=Math.floor(u/8);if(vbH(b,r,0,131)<.12)return vbT(0x2a241e,.8+.3*vbH(I,0,K,132));return K-r*6==0||u-b*8==0?0x1a181c:vbT(0x46434c,.82+.24*vbH(b,r,0,133))},
+  cb:[[-1.8,1.8,-10,-9.2],[1.8,4.6,-10,-9.4],[-5.2,-2.4,-10,-9.4],[-3.5,-1.7,-5.75,-4.65],[5.25,6,-6.6,-5.4],[4.5,5.3,-7.5,-4.6]]};
+ const V=hsS(o);hsH(V,0,3.6,2.4,1.6,(I,J,K)=>vbSt(0x3a3742,I,J,K,3,2,.4,134),0x2a2830,2);hsF(d,V,o);
+ VBZ=.05;hsFi(0,2.1,IFGG,IGMG);hsPot(0,.05,-9.75,.5);
+ {const G=ivk(-.45,.45,0,.1,-.45,.45);G.lt(0,0,0,.05,()=>.38,(I,J,K)=>vbH(I,0,K,136)<.1?0xa0ffb0:0x40c060);ipe(G.mesh({dk:0}),0,.95,-9.75)}
+ const cs=(x0,x1,h,n)=>{const C=ivk(x0,x1,0,h,-.3,.05);C.b(x0,x1,0,h,-.3,-.25,0x2a2420);for(const x of[x0,x1-.05])C.b(x,x+.05,0,h,-.3,.05,0x2a2420);for(let i=0;i<=n;i++){const y=i*(h-.05)/n;C.b(x0,x1,y,y+.05,-.3,.05,0x2a2420)}return C};
+ {ipm(cs(-1.4,1.4,2.8,3).mesh({dk:0}),3.2,0,-9.7);const Bt=ivk(-1.4,1.4,0,2.7,-.3,.05),BC=[0x1a7a3a,0x5a2a8a,0x8a5a1a,0x1a5a7a];
+  for(const y of[.05,.96,1.86])for(let x=-1.2;x<1.3;x+=.3){const h=vbH(x*10,y*10,0,137);if(h<.2)continue;const ht=.2+.25*vbH(x*10,y*10,1,138),r=.07+.05*vbH(x*10,y*10,2,139),c=BC[vbH(x*10,y*10,3,140)*4|0];
+   Bt.lt(x,-.12,y,y+ht,yy=>yy<y+ht*.65?r:.035,c)}ipe(Bt.mesh({dk:0}),3.2,0,-9.7)}
+ {const C=cs(-1.4,1.4,3,4);for(const y of[.05,.8,1.55,2.3])for(let x=-1.3;x<1.3;){const k=x*10+y*7,w=.07+.06*vbH(k,0,0,141),h=.4+.25*vbH(k,1,0,142),c=[0x5a1a1a,0x1a3a2a,0x3a2a1a,0x2a2a4a,0x5a4a2a][vbH(k,2,0,143)*5|0];
+   if(x+w>1.3)break;if(vbH(k,3,0,144)<.12){x+=.12;continue}C.b(x,x+w,y,y+h,-.24,0,(I,J)=>abs(icx(J)-y-h*.8)<.02?0xb8962a:c);x+=w+.01}
+  ipm(C.mesh({dk:0}),-3.8,0,-9.7)}
+ {const T=pTb(1.8,1.1,.82,0x3a2e26,0x2a221c);T.sp(-.4,.97,0,.13,.12,.15,(I,J,K,e,u,v,w)=>w>.4&&v>-.2&&v<.35&&abs(abs(u)-.42)<.22?0x141214:0xd8d0b8);T.b(-.48,-.32,.82,.9,.05,.17,0xc8c0a8);
+  T.b(.1,.6,.82,.86,-.25,.15,(I)=>abs(icx(I)-.35)<.02?0x3a2a20:0xd8ccaa);T.b(.1,.6,.86,.88,-.25,.15,(I,J,K)=>abs(icx(I)-.35)<.03?-1:K&1?0xb8ab8a:0xd8ccaa);for(const x of[-.7,.75])T.b(x-.12,x+.12,.82,.86,.25,.31,0xd8d0b8);
+  ipm(T.mesh({dk:0}),-2.6,0,-5.2);hsCn(-2.1,.82,-5.5,.18)}
+ {const C=ivk(-.3,.3,0,2.5,-.5,.5);C.b(-.25,.25,0,2.4,-.45,.45,(I,J,K)=>{const y=icx(J),z=abs(icx(K)),w=y<1.7?.22+y*.13:.44-(y-1.7)*.42;if(z>w)return-1;return icx(I)<-.18?z>w-.06?0x2a1e18:0x3a2a20:vbT(0x2a1e18,.85+.2*vbH(I,J>>2,K,145))});
+  C.b(-.3,-.25,1.3,1.9,-.05,.05,0xb0a070);C.b(-.3,-.25,1.62,1.7,-.17,.17,0xb0a070);ipm(C.mesh({dk:0}),5.65,0,-6)}
+ for(const[x,z,h]of[[4.9,-7.2,.2],[5.05,-4.9,.14],[4.75,-5.25,.24]])hsCn(x,0,z,h);
+ {const Cw=ivk(0,1.4,0,1.4,0,.05);for(let k=0;k<7;k++){const a=k/6*PI/2;for(let t=0;t<1.35;t+=.04)Cw.b(cos(a)*t,cos(a)*t+.05,1.35-sin(a)*t-.05,1.35-sin(a)*t,0,.05,0xb8b8b0)}
+  for(const r of[.35,.7,1.05])for(let k=0;k<30;k++){const a=k/29*PI/2;Cw.b(cos(a)*r,cos(a)*r+.05,1.35-sin(a)*r-.05,1.35-sin(a)*r,0,.05,0xa8a8a0)}
+  const cg=Cw.mesh({dk:0});ipm(cg,-5.98,4.15,-9.95);ipm(cg,5.98,4.15,-9.9,PI)}
+ ipl(0,1.2,-9,0x4aff7a,24,12,1);ipl(-1.2,2.2,-5.5,0xffa050,10,9)},
+// ---- the Dry grasslands' clay house: sun-baked render, a terracotta dado under a band of blue, the ends of the roof's beams over it; packed earth with a
+// woven rug; a beehive hearth of render in the corner of the north wall; tall storage jars and pots; a plastered bench along the east wall under striped
+// blankets; a loom with its weaving half done between the windows; strings of red peppers by the door; a water jar on a stand
+h4B=d=>{const RN=0xdcc191,o={co:0x6a4a2c,dc:0x8a6a48,ws:1,sl:0xb06a40,
+  wl:(I,J,K)=>{const y=icx(J);if(y<.9)return vbT(0xb06a40,.9+.08*vn3(I*.2,J*.2,K*.2));if(y<1.05)return y>.95?vbT(0x2f7a78,.95+.1*vbH(I,0,K,150)):vbT(0xb06a40,.95);return vbT(RN,.92+.1*vn3(I*.13+4,J*.13,K*.13))},
+  fl:(x,z,I,K)=>{const u=(x-.5)/1.6,v=(z+4.6)/2.2;if(abs(u)<1&&abs(v)<1){const b=Math.floor((v+1)*6),zg=abs(((u*3+v*6+20)%2)-1);return vbT(b%3==0?0x8a2a1a:b%3==1?zg<.35?0x1a1a1a:0xe8d8b0:0xc8661e,.9+.1*vbH(I,0,K,151))}
+   return vbT(0x9a6a3e,.82+.16*vn3(I*.15,0,K*.15)+.06*vbH(I,0,K,152))},
+  cb:[[-4.6,-1.4,-10,-8.4],[.6,4.4,-10,-8.9],[5,6,-8,-2.6],[-6,-5,-5.9,-4.1],[-5.3,-4.3,-2,-1]]};
+ const V=hsS(o);
+ // the beehive hearth: half a dome of render against the north wall at x -3, its mouth an arch to the south, sooted within, its flue rising up the wall
+ V.b(-4.7,-1.3,0,5.6,-10,-8.4,(I,J,K)=>{const x=icx(I)+3,y=icx(J),z=icx(K)+10,R=1.55*sqrt(max(0,1-(y/2.3)**2)),e=hypot(x,z),fl=hypot(x,z*1.5)<.6&&y>=1.5;
+   if(e>=R&&!fl)return-1;if(y>5.5)return 0x6a4a2c;if(abs(x)<.6&&(y<1||hypot(x,y-1)<.6)&&z>.3||e<R-.25&&y<1.5)return 0;
+   return e<R-.12&&y<1.6&&e<1.42?vbT(0x1d1915,.9+.2*vbH(I,J,K,153)):vbT(0xd8b888,.9+.1*vn3(I*.2,J*.2,K*.2))});
+ for(let x=-5.4;x<5.5;x+=1.2)V.b(x-.15,x+.15,5,5.3,-10,-9.8,(I,J,K)=>icx(K)>-9.85?0x8a6a44:0x5a4030);hsF(d,V,o);
+ VBZ=.05;ipm(pLg(1).mesh({dk:0}),-3,0,-9.35);for(const[x,s]of[[-.2,1],[.15,1.2],[0,.8]])ifl(-3+x,.15,-9.3,s);
+ {const am=y=>y<.2?.18+y*1.2:y<.9?.42-.15*((y-.55)/.35)**2:y<1.15?.27-(y-.9)*.5:.15;for(const[x,s]of[[1.2,1],[2.35,.85],[3.6,1.1]]){const g=pPt(1.25*s,y=>am(y/s)*s,0xb8653a,.8*s);ipm(g.mesh({dk:0}),x,0,-9.4)}
+  for(const[x,z]of[[4.6,-9.5],[.3,-9.6],[-.9,-8.9]])ipm(pPt(.5,y=>y<.35?.2+y*.3:.3-(y-.35)*1.2,0xc87a48,.3).mesh({dk:0}),x,0,z)}
+ {const Bc=ivk(-.5,.5,0,.6,-2.7,2.7);Bc.b(-.5,.5,0,.45,-2.7,2.7,(I,J,K)=>vbT(0xd8b888,.9+.1*vn3(I*.2,J*.2,K*.2)));Bc.b(-.48,.4,.45,.5,-1.9,2.6,(I,J,K)=>[0x8a2a1a,0xe8d8b0,0x1a1a1a,0x2f7a78][Math.floor(icx(K)/.2+40)%4]);
+  for(const z of[-2.4,-1.85])Bc.b(-.4,.35,.45,.65,z-.22,z+.22,z<-2?0x2f7a78:0xc8661e);ipm(Bc.mesh({dk:0}),5.5,0,-5.3)}
+ {const Lm=ivk(-.1,.1,0,2.3,-.8,.8);for(const z of[-.7,.7])Lm.b(-.06,.06,0,2.3,z-.06,z+.06,0x6a4a2c);for(const y of[.25,2.1])Lm.b(-.06,.06,y,y+.1,-.7,.7,0x6a4a2c);
+  Lm.b(-.02,.02,.35,2.1,-.62,.62,(I,J,K)=>{const y=icx(J);if(y>1.25)return K&1?0xe8dcc0:-1;const b=Math.floor(y/.12);return[0x8a2a1a,0xe8d8b0,0x1a1a1a,0x2f7a78,0xe8d8b0][b%5]});ipm(Lm.mesh({dk:0}),-5.85,0,-5,0)}
+ {const Pp=ivk(-.05,.1,1.8,3.3,-.5,.5);for(const z of[-.35,0,.35])for(let y=1.9;y<3.2;y+=.07){const k=y*10+z*7;Pp.b(0,.08,y,y+.06,z-.05+.02*sin(y*20),z+.05+.02*sin(y*20),vbH(k,0,0,154)<.15?0x4a6a28:vbT(0xb82a1a,.85+.25*vbH(k,1,0,155)))}
+  ipm(Pp.mesh({dk:0}),5.9,0,-1.4)}
+ {const J=ivk(-.35,.35,0,1.3,-.35,.35);for(const a of[0,2.1,4.2])J.b(sin(a)*.25-.03,sin(a)*.25+.03,0,.6,cos(a)*.25-.03,cos(a)*.25+.03,0x6a4a2c);J.lt(0,0,.55,1.25,y=>y<1.05?.28*sin(.3+(y-.55)/.5*2.4):.12,(I,J2,K,y)=>vbT(0xc87a48,.88+.16*vbH(I,J2,K,156)));ipm(J.mesh({dk:0}),-4.8,0,-1.5)}
+ ipl(-3,1.1,-8.9,0xff8a3c,24,12,1);ipl(1.5,2.8,-5,0xffc070,16,11)},
+// ---- the Cliffs and coastline's fisher's cottage: whitewashed fieldstone over a tarred foot; grey-blue planks and a rug of coiled rope; a small stone hearth
+// with a kettle on the fire and a ship in a bottle on the mantel; nets with their floats hung on the north wall; a ship's wheel between the windows; oars
+// crossed on the east wall; a bed under a blue-and-white quilt with a sea chest at its foot; a table with a lantern and a chart; lobster pots and a cask
+// of fish by the door
+h5B=d=>{const o={co:0x4a4640,dc:0x4a4640,
+  wl:(I,J,K)=>{const y=icx(J);if(y<.5)return vbT(0x2e3238,.9+.15*vbH(I>>1,J,K>>1,160));const c=vbSt(0xdcd8cc,I,J,K,3,2,.12,161);return vbH(I>>2,J>>1,K>>2,162)<.04?vbM(c,0x9b968a,.6):c},
+  fl:(x,z,I,K)=>{const u=(x-2.2)/.9,v=(z+5.2)/.7,e=u*u+v*v;if(e<1)return vbT(Math.floor(sqrt(e)*6)&1?0xb8a07a:0x9a845e,.9+.1*vbH(I,0,K,163));
+   const p=Math.floor(I/3);return I-p*3==0?0x2e3036:vbT(0x6f7a84,(.86+.2*vbH(p,Math.floor(K/26+p*.53),0,164))*(.94+.08*vbH(I,0,K,165)))},
+  cb:[[-4.3,-1.3,-10,-9.2],[3.4,6,-8.5,-6.7],[3.9,5.5,-6.5,-5.5],[-2.3,.3,-5.6,-3.4],[-5.4,-3.8,-2.2,-.6],[4.3,5.3,-1.7,-.7],[-5.4,-4.2,-9.4,-8.2]]};
+ const V=hsS(o);hsH(V,-2.8,3,1.8,1.3,(I,J,K)=>vbSt(0x8a8478,I,J,K,4,3,.35,166),0x3a4048,1.7);hsF(d,V,o);
+ VBZ=.05;hsFi(-2.8,1.5);
+ {const K2=ivk(-.3,.35,0,1.6,-.3,.3);K2.b(-.02,.02,.5,1.55,-.02,.02,HIR);K2.lt(0,0,.2,.55,y=>y<.45?.2*sin(.4+(y-.2)/.25*2.2):.1,(I,J,K,y)=>y>.5?HIR:vbT(0x2a2a2c,.9+.12*vbH(I,J,K,167)));K2.b(.18,.32,.35,.42,-.03,.03,HIR);ipm(K2.mesh({dk:0}),-2.8,.1,-9.85)}
+ {const Sb=ivk(-.3,.3,0,.2,-.1,.1);Sb.b(-.28,.22,0,.16,-.08,.08,(I,J,K)=>{const x=icx(I),y=icx(J)-.08,r=hypot(y,icx(K));return r>.08?-1:r>.065?0x3a7a5a:abs(x)<.12&&y>-.04&&y<.05?y>0?0xe8e4da:0x6a4a2c:-1});Sb.b(.22,.28,.05,.11,-.03,.03,0x6a4a2c);ipm(Sb.mesh({dk:0}),-2.8,1.85,-9.3)}
+ {const N=ivk(-2.4,2.4,1.2,4.4,-.1,.12);for(let I=ivq(-2.3);I<ivq(2.3);I++){const x=icx(I);for(let J=ivq(1.4);J<ivq(4.1);J++){const y=icx(J)+.25*(1-(x/2.3)**2)*(4.1-icx(J))/2.7;
+    ((x+5)%.15<.05||y%.15<.05)&&N.put(I,J,0,vbT(0x4a5a3a,.85+.2*vbH(I,J,0,168)))}}
+  for(let x=-2.2;x<2.3;x+=.45)N.sp(x,4.15,.05,.09,.06,.06,0xd8c89a);N.b(-2.4,2.4,4.2,4.28,0,.05,0x8a7a5a);ipm(N.mesh({dk:0}),2.6,0,-9.92)}
+ {const Wh=ivk(-.08,.08,0,1.6,-.8,.8),c=.8;for(let J=0;J<ivq(1.6);J++)for(let K=ivq(-.8);K<ivq(.8);K++){const u=icx(K),v=icx(J)-c,e=hypot(u,v),a=atan2(v,u),sp=abs(((a/PI*4%1)+1)%1-.5)<.08;
+   (abs(e-.5)<.05||e<.13||e<.5&&sp||e>=.5&&e<.78&&sp&&abs(((a/PI*4%1)+1)%1-.5)<.05)&&Wh.b(-.05,.05,icx(J)-.025,icx(J)+.025,u-.025,u+.025,e<.13?0x3a2a1c:0x8a6a44)}
+  ipm(Wh.mesh({dk:0}),-5.9,1.4,-5)}
+ {const Oa=ivk(-.08,.08,1.6,4.8,-1.4,1.4);for(const s of[-1,1])for(let t=0;t<1;t+=.012){const y=1.8+t*2.8,z=s*(-1.1+t*2.2),bl=t<.25;Oa.b(-.04,.04,y-.04,y+.04,z-(bl?.12:.03),z+(bl?.12:.03),bl?0xb08a5a:0x8a6a44)}ipm(Oa.mesh({dk:0}),5.92,0,-3)}
+ ipm(pBd(1.8,2.6,0x4a5a6a,(I,K)=>vbT((Math.floor(I/4)+Math.floor(K/4))&1?0x3a5a9a:0xe8e4da,.92+.1*vbH(I,0,K,169))).mesh({dk:0}),4.7,0,-7.6,-PI/2);
+ {const Ch=ivk(-.75,.75,0,.7,-.45,.45);Ch.b(-.75,.75,0,.6,-.45,.45,(I,J,K)=>abs(abs(icx(I))-.45)<.04||abs(icx(J)-.3)<.03?HIR:vbT(0x2a5a8a,.9+.12*vbH(I>>2,J,K>>2,170)));Ch.sp(0,.6,0,.74,.12,.44,(I,J,K,e,u,v)=>v<0?-1:abs(abs(icx(I))-.45)<.04?HIR:0x2a5a8a);
+  ipm(Ch.mesh({dk:0}),4.7,0,-6,PI/2)}
+ {const T=pTb(2,1.1,.85,0x6a5a4a,0x4a4038);T.b(-.6,.2,.85,.87,-.35,.25,(I,J,K)=>{const x=icx(I),z=icx(K);return z<-.1+.15*sin(x*6)?0x5a8aa8:0xd8c89a});T.lt(.6,.2,.85,1.0,()=>.06,0x7a7a78);
+  ipm(T.mesh({dk:0}),-1,0,-4.5);hsLn(-.55,.85,-4.75);const st=pSl(0x5a5048).mesh({dk:0});ipm(st,-1,0,-5.4);ipm(st,-1,0,-3.6)}
+ {const Lp=ivk(-.5,.5,0,1.2,-.5,.5),pot=y0=>Lp.lt(0,0,y0,y0+.5,y=>.42*sqrt(max(0,1-((y-y0)/.5)**2))+.02,(I,J,K,y,e)=>e>.85&&((Math.floor((atan2(icx(K),icx(I))+PI)/.35))&1||J%3==0)||y<y0+.05?0x8a6a44:-1);pot(0);pot(.55);
+  const lp=Lp.mesh({dk:0});ipm(lp,-4.6,0,-1.4);ipm(lp,-4.75,0,-.85,.6)}
+ {const F=pCs(.4,.95,0x5a4a3a);for(let k=0;k<7;k++){const a=k*.9,r=k?.18:0;F.sp(cos(a)*r,.98,sin(a)*r,.08,.05,.13,(I,J,K,e,u,v,w)=>w>.6?0x1a1a1a:0xb8c4cc)}ipm(F.mesh({dk:0}),4.8,0,-1.2)}
+ {const Rp=ivk(-.6,.6,0,.25,-.6,.6);Rp.b(-.6,.6,0,.25,-.6,.6,(I,J,K)=>{const r=hypot(icx(I),icx(K)),y=icx(J);return(r-.38)**2+(y-.1)**2<.012+(y<.06?.004:0)?vbT(0xb8a07a,(Math.floor(atan2(icx(K),icx(I))*3+r*20)&1?1:.84)):-1});ipm(Rp.mesh({dk:0}),-4.8,0,-8.8)}
+ ipl(-2.8,1.1,-9,0xff8a3c,22,11,1);ipl(.5,2.6,-4.75,0xffb262,16,11)},
+// the houses' interiors by the zone they stand in (rlz), and what makes one from a house: its door outside (fo, worked out with the house, q.df) and the
+// room set at that door, square to the camera, on the ground the house stands on
+hsDef=(n,bld,lt,hx,o)=>Object.assign({n,bld,lt,zm:39,fl:()=>0,ex:(x,z)=>z>.35&&abs(x)<1.2,sp:[0,-1.4,PI],so:[0,1.6,0],fi:[hx,-9.75],px:'Steel stays sheathed under another\'s roof.',lm:'Stirring the fire…'},o),
+inHo=(q,o)=>{const D=IND['h'+q.dr[1]]||IND.h0,f=q.df;return Object.assign(Object.create(D),{dp:D,fo:f,f:[f[0],f[1],PI/4,Hm(q.x,q.z)],o:o.n||'the town',w:'Entering · '+(o.n||'the town')})},inHs=[],
+// the interiors by key: n the name on the card (w the line over it going in, o the name going out); f the frame ([x, z, turn, ground height]); fl the
+// floor's height and ex the way out (frame metres); dr the doorway outside (in the frame) that takes him in when he walks into it; sp and so where he
+// stands coming in and going out ([x, z, heading in the frame]); zm the camera's zoom inside; fi where its hearth burns (its embers, ec their colour,
+// and its crackle); kl the key light's aim ([x, z] in the frame) and its shadow's half-width; lt its fill ([sky, ground, strength] of the hemisphere,
+// f the characters' fill, x the exposure); kx how strong its window light is; px what a stroke there says; lm the card's line while it is built
+IND={keep:{n:'Greywatch Keep',o:'Greywatch',f:[...cw(KX,0),PI/4,0],bld:kpB,zm:44,kl:[3.5,-7,19],lt:{h:[0x8d7c66,0x2b231c,.62],f:[.3,.24,.19],x:1.42},
+ px:'Steel stays sheathed in the keep\'s hall.',lm:'Lighting the torches…',
+ fl:(x,z)=>abs(x)<5.2&&z<-13.2?.6:abs(x)<5.8&&z<-12.6?.3:0,fi:[7.45,-16.4],ex:(x,z)=>z>3.35&&abs(x)<1.6,dr:(x,z)=>abs(x)<1.25&&z>3.4&&z<4.8,sp:[0,1.5,PI],so:[0,5.2,0]},
+ // the town houses' rooms, by the zone the house stands in (RLMZN's order)
+ h0:hsDef('The Farmhouse',h0B,{h:[0x9a8a70,0x2e261c,.86],f:[.36,.3,.23],x:1.62},-2),h1:hsDef('The Log Cabin',h1B,{h:[0x7d8aa0,0x2a2620,.84],f:[.26,.28,.34],x:1.6},0),
+ h2:hsDef('The Harvest House',h2B,{h:[0x9a7a50,0x3a2a18,.86],f:[.38,.29,.18],x:1.62},-2.4),
+ h3:hsDef('The Hollow House',h3B,{h:[0x3a4a50,0x14161a,.6],f:[.12,.2,.2],x:1.45},0,{ec:[.35,1.7,.8],kx:.6,lm:'Stirring the cauldron…'}),
+ h4:hsDef('The Clay House',h4B,{h:[0xb89a70,0x5a3a20,.9],f:[.4,.32,.23],x:1.62},-3,{kx:1.35}),h5:hsDef('The Fisher\'s Cottage',h5B,{h:[0x8aa0b0,0x2a3038,.88],f:[.26,.3,.34],x:1.62},-2.8)},
 // a word under the load card's bar: the realm's ways, one at random
 ITP=['Bounties are taken and paid at the board before the keep\'s gate, in gold and experience.','Clear all ten bounties on the board for 500 gold and a piece of gear.',
  'The dead rise when night falls, and crumble at dawn.','No foe follows you onto the ground round Greywatch\'s well, and wounds close fast there.',
@@ -4974,52 +5228,64 @@ inBar=(x,t,s=.6)=>{const e=$('ilf');e.style.transition=`transform ${s}s cubic-be
 inTl={},inCard=(on,k,t,s)=>{const e=$('ilc');if(!on){e.classList.remove('on');setTimeout(()=>e.classList.contains('on')||(e.hidden=true),420);return}
  $('ils').textContent=k;$('ilh').textContent=s;$('ilm').textContent='';const h=inTl[t]||(inTl[t]=Object.assign(document.createElement('h1'),{textContent:t}));$('ilt').replaceChildren(h);
  const f=$('ilf');f.style.transition='none';f.style.transform='translateX(-100%)';e.hidden=false;h.dataset.px||(h.dataset.px=1,pxTitle(h));e.offsetWidth;e.classList.add('on')},
-// in or out at once (d the interior, or null for the realm): he, his hound and the camera are set at the door, the scene pass is pointed at its
-// scene, and whatever was moving him (a stroke, a dash, a knockback) is stopped
-inSwap=d=>{const I=d||INS,f=I.f,o=d?I.sp:I.so,p=P.position;IFw(f,o[0],o[1],IFo);p.set(IFo[0],0,IFo[1]);P.rotation.y=o[2]+f[2];
- if(d){inZm=ZMt;ZM=ZMt=I.zm;INT.add(P,dog);INS=d;p.y=d.fl(o[0],o[1])}else{sc.add(P,dog);INS=null;ZM=ZMt=inZm;p.y=max(Hm(p.x,p.z),WL-1.2)}
+// in or out at once (d the interior, or null for the realm): he, his hound and the camera are set at the door (inside, at the room's; outside, at the
+// building's own, fo), the scene pass is pointed at its scene, and whatever was moving him (a stroke, a dash, a knockback) is stopped. Going in, the
+// interior's group alone is shown and set at its frame, the shared key light, fill and embers moved into it and aimed, and its colliders laid where it stands
+inSwap=d=>{const I=d||INS,D=I.dp||I,f=d?I.f:I.fo||I.f,o=d?I.sp:I.so,p=P.position,fy=I.f[3]||0;IFw(f,o[0],o[1],IFo);p.set(IFo[0],0,IFo[1]);P.rotation.y=o[2]+f[2];
+ if(d){const g=D.g,k=D.kl,c=IKL.shadow.camera;for(const q of INT.children)q.isGroup&&(q.visible=q===g);g.position.set(f[0],fy,f[1]);g.rotation.y=f[2];
+  g.add(IKL,IKL.target,IHL,IEM.s);IKL.position.set(k[0]-.64*30,.76*30,k[1]-.13*30);IKL.target.position.set(k[0],0,k[1]);c.left=c.bottom=-k[2];c.right=c.top=k[2];c.updateProjectionMatrix();
+  IHL.color.setHex(D.lt.h[0]);IHL.groundColor.setHex(D.lt.h[1]);IHL.intensity=D.lt.h[2];IEL.fill(0);
+  INC.length=0;INC.push(mkCol(D.cl.map(b=>b.clone().rotateY(f[2]).translate(f[0],fy,f[1]))));
+  inZm=ZMt;ZM=ZMt=D.zm;INT.add(P,dog);INS=d;p.y=fy+D.fl(o[0],o[1])}else{sc.add(P,dog);INS=null;ZM=ZMt=inZm;p.y=max(Hm(p.x,p.z),WL-1.2)}
  IFw(f,o[0]+.9,o[1]+(d?.8:-.8),IFo);dog.position.set(IFo[0],p.y,IFo[1]);dog.rotation.y=P.rotation.y;dgT=null;dsp=0;
  cvx=cvz=0;dsT=0;pkx=pkz=0;swT=-1;inPc=0;scenePass.scene=d?INT:sc;
  const pit=.48+.36*cl((ZM-38)/62,0,1)+(d?.12:0);CO.set(cos(pit)*.7071,sin(pit),cos(pit)*.7071);cam.position.copy(p).addScaledVector(CO,ZM*.675);LK.set(p.x,p.y+1.5,p.z);cam.lookAt(LK);cam.updateMatrixWorld()},
-inGo=async d=>{if(IL||INS)return;IL=1;const t0=performance.now(),nw=!d.b;inCard(1,'Entering',d.n,ITP[R()*ITP.length|0]);inBar(nw?.15:.55,nw?'Opening the doors…':'',nw?1.6:.5);await inSl(380);
- try{if(nw){await inSl(30);d.bld(d);d.b=1;inBar(.7,'Lighting the torches…',2.4);await inSl(40)}inSwap(d);if(nw)await inRc(renderer.compileAsync(INT,cam),20000);inBar(1,null,.35);await inSl(max(450,1250-(performance.now()-t0)))}
- catch(e){console.error(e);INS&&inSwap(null);toast('The keep\'s doors would not open.','w','castle')}
+inGo=async d=>{if(IL||INS)return;IL=1;const D=d.dp||d,t0=performance.now(),nw=!D.g;inCard(1,d.w||'Entering',D.n,ITP[R()*ITP.length|0]);inBar(nw?.15:.55,nw?'Opening the door…':'',nw?1.6:.5);await inSl(380);
+ try{if(nw){await inSl(30);inMk(D);inBar(.7,D.lm,2.4);await inSl(40)}inSwap(d);if(nw)await inRc(renderer.compileAsync(INT,cam),20000);inBar(1,null,.35);await inSl(max(450,1250-(performance.now()-t0)))}
+ catch(e){console.error(e);INS&&inSwap(null);toast('The door would not open.','w','castle')}
  inCard(0);inCD=1;await inSl(300);IL=0},
 inOut=async()=>{if(IL||!INS)return;IL=1;const t0=performance.now();inCard(1,'Leaving',INS.o,ITP[R()*ITP.length|0]);inBar(.55,'',.5);await inSl(380);
  inSwap(null);inBar(1,null,.4);await inSl(max(450,1000-(performance.now()-t0)));inCard(0);inCD=1;await inSl(300);IL=0},
 // weapons stay sheathed in a hall at peace: a stroke or a skill does nothing there but say so, once a visit
-inPx=()=>{if(!INS)return 0;inPc||(inPc=1,toast('Steel stays sheathed in the keep\'s hall.','','shield'));return 1},
+inPx=()=>{if(!INS)return 0;inPc||(inPc=1,toast(INS.px,'','shield'));return 1},
 // his feet (or his hound's) on the interior's floor, easing up and down its steps
-inGl=(p,dt)=>{IFr(INS.f,p.x,p.z,IFo);p.y+=(INS.fl(IFo[0],IFo[1])-p.y)*min(1,dt*14)},
+inGl=(p,dt)=>{IFr(INS.f,p.x,p.z,IFo);p.y+=((INS.f[3]||0)+INS.fl(IFo[0],IFo[1])-p.y)*min(1,dt*14)},
 // drawing the frame inside: the realm's weather and grade are its own, kept in the uniforms and integrated by wxU from them (the wet soaks in and
 // dries from U.wet itself), so they are set aside for the draw and put back after rather than overwritten: no wet, puddles, clouds' shadows, heavy
 // fog or sun shafts indoors, an exposure, fill and grade of the hall's own, and a little more of the ambient occlusion in its corners
-IST=new Float32Array(12),ISC=[new THREE.Color(),new THREE.Color()],IFC=new THREE.Color(.3,.24,.19),
-inDraw=()=>{if(!INS){CMP.render();return}const s=IST,f=U.fill.value,h=U.stHigh.value;
+IST=new Float32Array(12),ISC=[new THREE.Color(),new THREE.Color()],
+inDraw=()=>{if(!INS){CMP.render();return}const s=IST,f=U.fill.value,h=U.stHigh.value,lt=INS.lt;
  s[0]=U.wet.value;s[1]=U.pud.value;s[2]=U.cov.value;s[3]=U.hf.value;s[4]=U.rays.value;s[5]=U.sat.value;s[6]=U.stS.value;s[7]=U.stH.value;s[8]=renderer.toneMappingExposure;s[9]=U.aoAmt.value;ISC[0].copy(f);ISC[1].copy(h);
- U.wet.value=U.pud.value=U.hf.value=U.rays.value=0;U.cov.value=-2;U.sat.value=1.1;U.stS.value=.42;U.stH.value=.5;renderer.toneMappingExposure=EXB*1.42;U.aoAmt.value=.85;f.copy(IFC);h.setRGB(1,.78,.5);
+ U.wet.value=U.pud.value=U.hf.value=U.rays.value=0;U.cov.value=-2;U.sat.value=1.1;U.stS.value=.42;U.stH.value=.5;renderer.toneMappingExposure=EXB*lt.x;U.aoAmt.value=.85;f.setRGB(lt.f[0],lt.f[1],lt.f[2]);h.setRGB(1,.78,.5);
  CMP.render();
  U.wet.value=s[0];U.pud.value=s[1];U.cov.value=s[2];U.hf.value=s[3];U.rays.value=s[4];U.sat.value=s[5];U.stS.value=s[6];U.stH.value=s[7];renderer.toneMappingExposure=s[8];U.aoAmt.value=s[9];f.copy(ISC[0]);h.copy(ISC[1])},
 // a crack from the fire, louder the nearer he stands
 inCk=v=>{if(!AC||!NB)return;const t=AC.currentTime,s=AC.createBufferSource(),b=AC.createBiquadFilter(),g=AC.createGain(),d=.015+R()*.05;s.buffer=NB;b.type='bandpass';b.frequency.value=900+R()*3400;b.Q.value=1.3;
  g.gain.setValueAtTime(v*(.4+R()*.6),t);g.gain.exponentialRampToValueAtTime(.001,t+d);s.connect(b).connect(g);pan(g,(R()-.5)*.5);s.start(t,R()*1.5);s.stop(t+d+.02)};
-// every frame. In the realm: the keep's open gate (walking into it takes him in; the first time he comes near it, a word on it). Inside: the fires
-// (each flame a new frame of cubes every ~.08s, its glow and light flickering), embers off the hearth and its crackle, the hour's light at the
-// windows, the zoom kept to the hall's range, and the door out
+// every frame. In the realm: the keep's open gate and the doors of the town houses near him (walking into one takes him in; the first time he comes
+// near the gate, or a house's door, a word on it). Inside: the fires (each flame a new frame of cubes every ~.08s, its glow and light flickering),
+// embers off the hearth and its crackle, the hour's light at the windows, the zoom kept to the room's range, and the door out
 function inU(dt){const p=P.position;inCD-=dt;
- if(!INS){if(IL||!run||ov||bDead||inCD>0)return;const d=IND.keep,f=d.f;IFr(f,p.x,p.z,IFo);const x=IFo[0],z=IFo[1];
+ if(!INS){if(IL||!run||ov||bDead||inCD>0)return;{const d=IND.keep,f=d.f;IFr(f,p.x,p.z,IFo);const x=IFo[0],z=IFo[1];
   if(d.dr(x,z)&&cvx*sin(f[2])+cvz*cos(f[2])<-1.5){inGo(d);return}
-  if(!inHn&&abs(x)<4.5&&z>3.4&&z<11){inHn=1;toast(`The keep's gate stands open: walk in to enter <b>${d.n}</b>.`,'','castle')}return}
+  if(!inHn&&abs(x)<4.5&&z>3.4&&z<11){inHn=1;toast(`The keep's gate stands open: walk in to enter <b>${d.n}</b>.`,'','castle')}}
+  // the town houses within 24m (gathered every .4s, inHs); each door's frame (q.df: at .1 along the house's face, its plane dr[0] out, turned as the
+  // house is) worked out once
+  if((inHT-=dt)<=0){inHT=.4;inHs.length=0;for(const o of RLP)if(o.k=='c'&&hypot(o.x-p.x,o.z-p.z)<o.r+40)for(const q of rlParts(o))q.dr&&hypot(q.x-p.x,q.z-p.z)<24&&inHs.push([q,o])}
+  for(const[q,o]of inHs){const f=q.df||(q.df=(IFw([q.x,q.z,q.ry],.1,q.dr[0],IFo),[IFo[0],IFo[1],q.ry]));IFr(f,p.x,p.z,IFo);const x=IFo[0],z=IFo[1];
+   if(abs(x)<1.1&&z>-.4&&z<1.5&&cvx*sin(f[2])+cvz*cos(f[2])<-1.5){inGo(inHo(q,o));return}
+   if(!inHh&&abs(x)<3&&z>0&&z<5){inHh=1;toast('Townsfolk leave their doors unbarred: walk into one to go inside.','','castle')}}
+  return}
  const d=INS;ZMt=cl(ZMt,38,60);IFr(d.f,p.x,p.z,IFo);const x=IFo[0],z=IFo[1];
- if((inFT-=dt)<=0){inFT=.07+R()*.03;for(const o of IFL){o.m.geometry=IFG[R()*IFG.length|0];const k=o.s*(.88+.24*R());o.m.scale.set(o.s*(.9+.2*R()),k,o.s*(.9+.2*R()));o.g.scale.setScalar(2.4*o.s**.7*(.9+.2*R()))}}
- for(const o of IPL)o.l.intensity=o.i*(1+.11*sin(tm*9.3+o.p)+.07*sin(tm*23.1+o.p*2)+.06*(R()-.5));
+ if((inFT-=dt)<=0){inFT=.07+R()*.03;for(const o of d.FL){o.m.geometry=o.fs[R()*o.fs.length|0];const k=o.s*(.88+.24*R());o.m.scale.set(o.s*(.9+.2*R()),k,o.s*(.9+.2*R()));o.g.scale.setScalar(2.4*o.s**.7*(.9+.2*R()))}}
+ for(const o of d.PL)o.l.intensity=o.i*(1+.11*sin(tm*9.3+o.p)+.07*sin(tm*23.1+o.p*2)+.06*(R()-.5));
  // the hour at the windows: the day's white-gold, dimmer under cloud, or the moon's blue by night; the key light and the shafts follow it
  const dl=sm(-.06,.2,SDp.y),cv=1-.45*wx.c;IWC.value.setRGB(.3,.38,.68).lerp(C1.setRGB(1.05,.97,.84),dl).multiplyScalar((.3+.95*dl)*cv);
- IKL.color.setRGB(.55,.66,1).lerp(C1.setRGB(1,.9,.74),dl);IKL.intensity=(.6+3*dl)*cv;ISK.value=(.006+.022*dl)*cv;
+ IKL.color.setRGB(.55,.66,1).lerp(C1.setRGB(1,.9,.74),dl);IKL.intensity=(.6+3*dl)*cv*(d.kx||1);ISK.value=(.006+.022*dl)*cv*(d.kx||1);
  // embers rising off the fire, drifting out of the fire-box and up its breast
  if((inEA+=dt*7)>=1){inEA-=1;const i=inEI,o=i*3;inEI=(inEI+1)%IEN;IEX[o]=d.fi[0]+(R()-.5)*1.7;IEX[o+1]=.3+R()*.5;IEX[o+2]=d.fi[1]-.4+R()*.5;IEV[o]=(R()-.5)*.25;IEV[o+1]=.6+R()*.9;IEV[o+2]=.2+R()*.4;IEL[i*2]=IEL[i*2+1]=1.2+R()*1.6}
- for(let i=0;i<IEN;i++){const o=i*3,c=i*4;let l=IEL[i*2];if(l<=0){IEM.p[o+1]=1e6;IEM.c[c+3]=0;continue}l-=dt;IEL[i*2]=l;const k=max(l/IEL[i*2+1],0);IEV[o]+=sin(tm*3+i)*.4*dt;
-  for(let j=0;j<3;j++){IEX[o+j]+=IEV[o+j]*dt;IEM.p[o+j]=IEX[o+j]}IEM.c[c]=1.7*k;IEM.c[c+1]=.62*k*k;IEM.c[c+2]=.14*k;IEM.c[c+3]=.07+.05*k}
+ const E=d.ec||IEC;for(let i=0;i<IEN;i++){const o=i*3,c=i*4;let l=IEL[i*2];if(l<=0){IEM.p[o+1]=1e6;IEM.c[c+3]=0;continue}l-=dt;IEL[i*2]=l;const k=max(l/IEL[i*2+1],0);IEV[o]+=sin(tm*3+i)*.4*dt;
+  for(let j=0;j<3;j++){IEX[o+j]+=IEV[o+j]*dt;IEM.p[o+j]=IEX[o+j]}IEM.c[c]=E[0]*k;IEM.c[c+1]=E[1]*k*k;IEM.c[c+2]=E[2]*k;IEM.c[c+3]=.07+.05*k}
  IEM.P.needsUpdate=IEM.C.needsUpdate=true;
  {const h=hypot(x-d.fi[0],z-d.fi[1]);h<15&&R()<dt*(4+5*R())&&inCk(.06*(1-h/15)**1.5)}
  if(!IL&&inCD<=0&&run&&!ov&&!bDead&&d.ex(x,z))inOut()}
@@ -5214,7 +5480,7 @@ function wv(dt){const p=P.position,pa=PS.p,ca=PS.c,wdv=U.wd.value,ws=.35+.7*wx.w
   dgB-=dt;if(dgT&&hypot(dgT.x-d.x,dgT.z-d.z)<1.9&&dgB<=0){dgB=1.1;sfx.bark();WLF.includes(dgT)?wlfHit(dgT,1):foeHit(dgT,1)}
   const hx=dgT?dgT.x:p.x-sin(f)*2.3+cos(f)*1.4,hz=dgT?dgT.z:p.z-cos(f)*2.3-sin(f)*1.4,x=hx-d.x,z=hz-d.z,l=hypot(x,z);dsp+=((l>.5?min(l*1.68,10.5):0)-dsp)*min(1,dt*4);
   if(l>40){d.set(hx,p.y,hz);dsp=0}else{let mx=0,mz=0;if(dsp>.05&&l>.01){mx=x/l*min(dsp*dt,l);mz=z/l*min(dsp*dt,l);dog.rotation.y+=wa(atan2(x,z)-dog.rotation.y)*min(1,dt*8)}else dog.rotation.y+=wa(atan2(p.x-d.x,p.z-d.z)-dog.rotation.y)*min(1,dt*2);const ex=d.x-p.x,ez=d.z-p.z,e=hypot(ex,ez);if(e<1.2&&e>.01){mx+=ex/e*(1.2-e);mz+=ez/e*(1.2-e)}d.y=INS?p.y:Hm(d.x,d.z);const dbx=d.x,dbz=d.z;colIN=INS?1:0;sweep(d,mx,mz,.45,1.5,1);colIN=0;INS||wade(d,dbx,dbz)}
-  const w=min(dsp/5,1);dph+=dsp*dt*1.9;d.y=(INS?(IFr(INS.f,d.x,d.z,IFo),INS.fl(IFo[0],IFo[1])):max(Hm(d.x,d.z),WL-.8))+abs(sin(dph))*.1*w;const A=sin(dph)*.85*w;DU.dl.value.set(A,-A,-A,A);DU.dt.value=sin(tm*(w>.3?9:6))*(.2+.4*(1-w));DU.dh.value.set(sin(tm*.7)*.35*(1-w),w>.3?.16:sin(tm*1.1)*.07);dhd.rotation.set(DU.dh.value.y,DU.dh.value.x,0)}
+  const w=min(dsp/5,1);dph+=dsp*dt*1.9;d.y=(INS?(IFr(INS.f,d.x,d.z,IFo),(INS.f[3]||0)+INS.fl(IFo[0],IFo[1])):max(Hm(d.x,d.z),WL-.8))+abs(sin(dph))*.1*w;const A=sin(dph)*.85*w;DU.dl.value.set(A,-A,-A,A);DU.dt.value=sin(tm*(w>.3?9:6))*(.2+.4*(1-w));DU.dh.value.set(sin(tm*.7)*.35*(1-w),w>.3?.16:sin(tm*1.1)*.07);dhd.rotation.set(DU.dh.value.y,DU.dh.value.x,0)}
  {const tr=TRU.array;let k=0;tr[k++].set(p.x,p.z,1.7,pvel>.3?1.5:1.1);dog.visible&&tr[k++].set(dog.position.x,dog.position.z,1.3,1.1);for(const w of WLF)w.on&&k<TRN&&tr[k++].set(w.x,w.z,1.6,1.2);for(const h of HUM)h.on&&k<TRN&&tr[k++].set(h.x,h.z,1.4,1.1);for(;k<TRN;k++)tr[k].set(1e5,1e5,1,0)}
  LGS.visible=LGS2.visible=LT>.01;LGS.material.opacity=(.62+sin(tm*9)*.07+sin(tm*23.7)*.05)*LT}
 let czK=0,camM=0,seeK=0;
@@ -5227,7 +5493,7 @@ function camU(dt){ZM+=(ZMt-ZM)*min(1,dt*6);const p=P.position,pit=.48+.36*cl((ZM
  if(m==2){// the knight head to toe, from a little to his right, framed in the clear part of the screen
   const t=Math.tan(cam.fov*PI/360),a=cam.aspect,fy=P.rotation.y+.55,dx=sin(fy),dz=cos(fy),d=max(6.5,3.7/(2*t*czF.h),2.4/(2*t*a*czF.w)),ox=czF.x*d*t*a,oy=czF.y*d*t,px=p.x,py=p.y+1.65,pq=p.z;
   tv.set(px+dx*d*.985,py+d*.17,pq+dz*d*.985);cmP(3);tv.set(px-dz*ox,py-oy,pq+dx*ox);cmL(4)}
- else if(run){tv.copy(p).addScaledVector(CO,ZM*.675);cmP(3);{const g=max(H(cam.position.x,cam.position.z),WL)+2.5,mx=(cam.position.x+p.x)/2,mz=(cam.position.z+p.z)/2,gm=max(H(mx,mz),WL)+2,my=(cam.position.y+p.y)/2;if(cam.position.y<g)cam.position.y=g;if(my<gm)cam.position.y+=(gm-my)*2}tv.set(p.x,p.y+1.5,p.z);cmL(6)}else if(FLY)flyCam(dt);else{const a=tm*.05;cam.position.set(cos(a)*78,50,sin(a)*78)}cam.lookAt(LK);cam.updateMatrixWorld();SKM.position.copy(cam.position);U.focus.value=cam.position.distanceTo(LK)+18*(1-czK);U.tsW.value=.1+.26*czK;
+ else if(run){tv.copy(p).addScaledVector(CO,ZM*.675);cmP(3);if(!INS){const g=max(H(cam.position.x,cam.position.z),WL)+2.5,mx=(cam.position.x+p.x)/2,mz=(cam.position.z+p.z)/2,gm=max(H(mx,mz),WL)+2,my=(cam.position.y+p.y)/2;if(cam.position.y<g)cam.position.y=g;if(my<gm)cam.position.y+=(gm-my)*2}tv.set(p.x,p.y+1.5,p.z);cmL(6)}else if(FLY)flyCam(dt);else{const a=tm*.05;cam.position.set(cos(a)*78,50,sin(a)*78)}cam.lookAt(LK);cam.updateMatrixWorld();SKM.position.copy(cam.position);U.focus.value=cam.position.distanceTo(LK)+18*(1-czK);U.tsW.value=.1+.26*czK;
  // the trees thin out over the ground round the knight (seeKeep): a disc 12.6% as wide as the camera is far from him, off in the menus
  seeK+=((run&&!m?1:0)-seeK)*min(1,dt*4);U.seeK.value=seeK;U.seeC.value.copy(cam.position);U.seeT.value.set(p.x,p.y+.8,p.z);U.seeR.value=cl(cam.position.distanceTo(P.position)*.126,4.1,8.6)}
 // every frame, paused or not, after camU: the grass field, the sun's shadow box, the lake and the far terrain ring gather round where
@@ -5962,7 +6228,7 @@ const stage=async(k,t)=>{ldp(k,t);await new Promise(r=>setTimeout(r,30))};
  // real frames (a third of a second on a desktop), which otherwise stalled the title's fade-in
  AC||aud();renderer.setAnimationLoop(loop);
  // development: ?dev puts the game's insides in the console as q (q.tp(x,z) walks the knight there; q.f(x,z) reads the realm at a point)
- QS.has('dev')&&(window.q={flyTo:k=>FLY&&flyTo(k),P,H,Hm,vn,sm,WL,RLM,xpR,sho,WCH,WMK,WQ,ZS,wcFlush,wcPaint,RLP,RLS,RLR,rlRoad,rlz,rlw,rlParts,inGo:()=>inGo(IND.keep),inOut,ins:()=>INS,tp:(x,z)=>P.position.set(x,Hm(x,z),z),f:(x,z)=>{rlf(x,z);return{d:rlD,c:rlC,h:rlH,A:rlA,M:rlM,E:rlE,y:H(x,z)}}});
+ QS.has('dev')&&(window.q={flyTo:k=>FLY&&flyTo(k),P,H,Hm,vn,sm,WL,RLM,xpR,sho,WCH,WMK,WQ,ZS,wcFlush,wcPaint,RLP,RLS,RLR,rlRoad,rlz,rlw,rlParts,inGo:()=>inGo(IND.keep),inOut,ins:()=>INS,inH:z=>{const p=P.position;let b=null,bd=1e9;for(const o of RLP)if(o.k=='c')for(const q of rlParts(o))if(q.dr&&(z==null||q.dr[1]==z)){const d=hypot(q.x-p.x,q.z-p.z);d<bd&&(bd=d,b=[q,o])}if(b){const[q,o]=b;q.df||(IFw([q.x,q.z,q.ry],.1,q.dr[0],IFo),q.df=[IFo[0],IFo[1],q.ry]);inGo(inHo(q,o))}return b&&[b[1].n,Math.round(bd)]},tp:(x,z)=>P.position.set(x,Hm(x,z),z),f:(x,z)=>{rlf(x,z);return{d:rlD,c:rlC,h:rlH,A:rlA,M:rlM,E:rlE,y:H(x,z)}}});
  await within(document.fonts.ready.then(()=>Promise.all(['400 1em "Pixelify Sans"','600 1em "Pixelify Sans"','700 1em UnifrakturCook'].map(f=>document.fonts.load(f)))),5000).catch(()=>{});
  await new Promise(r=>{let n=0,ok=0,t=performance.now();const t0=t,f=now=>{ok=now-t<50?ok+1:0;t=now;++n>=12&&ok>=8||now-t0>15000||dead?r():requestAnimationFrame(f)};requestAnimationFrame(f)});
  if(dead)return;

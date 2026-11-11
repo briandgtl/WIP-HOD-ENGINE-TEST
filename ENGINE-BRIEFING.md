@@ -567,7 +567,7 @@ and 17 (hearts, `bDmg` = 1 + crook level, `roll` by a flat rarity table, the bla
 - **Not done yet:** a horse for Steed Charge, a real draw-to-the-cheek on the string arm, foes attacking summons, Temporal Echo's
   taunt, and balance: the numbers follow the doc but have not been played through to 50.
 
-## 20. Interiors: entering buildings (Nov 2026; Greywatch Keep's great hall for now)
+## 20. Interiors: entering buildings (Nov 2026: Greywatch Keep's great hall and every town house)
 
 Everything is in one block headed `// ---- inside:` (just above `// ---- the knight ----`), plus one-line hooks elsewhere. It was built fresh for
 Quest: the sheep game's old indoor scene was not used as a model.
@@ -608,6 +608,29 @@ Quest: the sheep game's old indoor scene was not used as a model.
   hanging, casks and crates, and an armoury (racks, plate on stands, shields, grindstone, anvil). It is ~190k faces in ~110 objects.
 - **Outside**, the keep's gate stands open: a passage 1.6 m deep with the oak leaves folded back. It is dark by day and glows by night (a `WIN`
   plane and a half disc). The first time he comes near it, a toast says to walk in.
-- **Adding a building:** give it an `IND` entry with its frame (the building's frame with its door at local z +), a `bld` that builds into `IG`
-  (set `IG`'s transform from `f`) and fills `INC`, then call its door check from `inU`. That check is hard-wired to the keep now. Interiors with
-  foes would need their own foe set inside `INT`: the realm's foes simulate outside and can't enter.
+- **Many interiors.** Each interior is built once, on its first visit, into a group of its own (`inMk`: `d.g`, its flames `d.FL` and fire
+  lights `d.PL`; `IG`/`IB` are the group and interior being built). On entry only that group is shown and set at the frame. The shared key
+  light, fill and embers move into it and are aimed by its `kl`. Its colliders are laid where it stands from its local boxes (`d.cl`, cloned
+  through the frame into `INC`). `INS` can be an *instance*: an object made from an interior (`dp`) with its own frames. `f` is the room inside
+  (`[x, z, turn, ground y]`) and `fo` is the building's own door outside. Per interior: `lt` (fill colours and exposure), `kx` (window
+  strength), `ec` (ember colour), `px` (what a stroke says), `lm` (the card's line while it builds).
+- **Town houses (`IND.h0`..`h5`, by zone).** `rlParts` tags every town house with its door (`q.dr`: the face's plane, rounded as `rlHouseQ`
+  rounds it, and the zone). `inU` gathers the houses within 24 m every 0.4 s (`inHs`), works out each door's frame once (`q.df`), and
+  walking into a door makes an instance (`inHo`). The room is set at the door but turned to the camera (PI/4), whichever way the house faces,
+  so the cutaway always works. Only the way out (`so` in `fo`) is the house's own. Every house of a zone shares one room: a single room, 12 x 10 m,
+  `hsS` (shell: floor, walls cut as the hall's, two west windows) + `hsH` (a hearth on the north wall) + `hsF` (mesh, window glow, shadow
+  boxes, shafts `inSh`, colliders). Furniture comes from small makers at 0.05 m on `ivk` (`pTb` table, `pBn` bench, `pSl` stool, `pBd` bed,
+  `pCs` cask, `pCr` crate, `pPt` pot, `pSk` sack, `pPm` pumpkin, `pCn`/`hsCn` candle, `hsLn` lantern, `pLg` logs, `hsFi` fire, `hsPot`).
+  The rooms:
+  - Grasslands farmhouse: timber-framed plaster, quarry tiles, inglenook, plate dresser, patchwork bed, spinning wheel.
+  - Winterlands log cabin: logs, bear hide, antlers, woodpile, skis, furs, a sled.
+  - Autumn harvest house: wainscot, brick hearth, pumpkins, apples, a cider press, corn and garlic, preserves.
+  - Haunted Hollow house: rubble, a green-fire cauldron (`IFGG`, `IGMG`), glowing potions (`ipe`), tomes, a skull, a coffin, cobwebs.
+  - Dry-grasslands clay house: render with a blue band and beam ends, a beehive hearth, jars, a striped bench, a loom, peppers.
+  - Cliffs fisher's cottage: whitewashed fieldstone, nets, a ship's wheel, oars, a checked bed, a sea chest, lobster pots.
+
+  A first visit to the first house compiles a new lighting variant (the houses have two fire lights, the keep seven), so it takes a few seconds
+  behind the card. Later houses reuse it.
+- **Adding a building:** give it an `IND` entry (`bld` builds into `IG` with `ipm`/`ifl`/`ipl`/`irf` and sets `d.cl`, `d.kl`; for one set of
+  rooms shared by many buildings, use `hsDef` and make instances as `inHo` does), and a door check in `inU`. Interiors with foes would need
+  their own foe set inside `INT`: the realm's foes simulate outside and can't enter.
