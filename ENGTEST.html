@@ -2299,7 +2299,8 @@ rlParts=p=>{if(p.parts)return p.parts;const rng=rlRng(Math.abs(Math.round(p.x*13
     U.forEach(([x,z],k)=>put(rlStallV(cs[k]),x,z,SY,[4.4,2.8],0,k))}}
   for(let t=0;t<n*80&&hs.length<n;t++){const a=rng()*TAU,r=r0+rng()*(r1-r0),x=p.x+cos(a)*r,z=p.z+sin(a)*r;if(!flat(x,z,4.5*HS)||hs.some(q=>hypot(q[0]-x,q[1]-z)<10*HS))continue;
    // the whole of its roof (1.18x its walls) must clear the roads and their verge, not just its middle (flat)
-   const w=4.6+rng()*3,d=4+rng()*3,ry=atan2(-cos(a),-sin(a));if(!rdBox(x,z,ry,w*.59*HS,d*.59*HS))continue;hs.push([x,z]);put(rlHouseQ(w*HS,d*HS,(3.1+rng()*.9)*HS,zn,rng()<.6),x,z,ry,[w*HS,d*HS]);P[P.length-1].dr=[Math.round(d*HS/.8)*.4,zn<0?0:zn]}}  // (dr: its door, for inU)
+   // every house's door faces south, down the screen toward the camera (2026-11-11: they faced the well, so many doors stood behind their houses)
+   const w=4.6+rng()*3,d=4+rng()*3,ry=PI/4;if(!rdBox(x,z,ry,w*.59*HS,d*.59*HS))continue;hs.push([x,z]);put(rlHouseQ(w*HS,d*HS,(3.1+rng()*.9)*HS,zn,rng()<.6),x,z,ry,[w*HS,d*HS]);P[P.length-1].dr=[Math.round(d*HS/.8)*.4,zn<0?0:zn]}}  // (dr: its door, for inU)
  return p.parts=P};
 
 function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometry(CS,CS,SN,SN).rotateX(-PI/2),p=g.attributes.position,nr=g.attributes.normal,S1=SN+1;
@@ -4779,7 +4780,7 @@ function foeU(dt,p,safe){const nt=dT>=DAY,hol=rlz(p.x,p.z)==3,camp=RLP.some(q=>q
 // door outside). IL is set while a card is up, when no input reaches him. Each interior is built into a group of its own (d.g, shown alone while he
 // is in it); IG is the group being built and IB its interior, whose flames (FL) and fires' lights (PL) flicker while he is there
 const INT=new THREE.Scene();INT.background=new THREE.Color(0x030304);
-let INS=null,IL=0,IG=null,IB=null,inCD=0,inHn=0,inHh=0,inHT=0,inPc=0,inZm=54,inFT=0,inEA=0,inEI=0;
+let INS=null,IL=0,IG=null,IB=null,inAr=null,inCD=0,inHn=0,inHh=0,inHT=0,inPc=0,inZm=54,inFT=0,inEA=0,inEI=0;
 // a point of the realm into a frame f and back (o receives [x, z]); a frame's x runs along the building's face, its z out of its door
 const IFr=(f,X,Z,o)=>{const dx=X-f[0],dz=Z-f[1],c=cos(f[2]),s=sin(f[2]);o[0]=dx*c-dz*s;o[1]=dx*s+dz*c;return o},
  IFw=(f,x,z,o)=>{const c=cos(f[2]),s=sin(f[2]);o[0]=f[0]+x*c+z*s;o[1]=f[1]-x*s+z*c;return o},IFo=[0,0],
@@ -5245,7 +5246,7 @@ inGo=async d=>{if(IL||INS)return;IL=1;const D=d.dp||d,t0=performance.now(),nw=!D
  catch(e){console.error(e);INS&&inSwap(null);toast('The door would not open.','w','castle')}
  inCard(0);inCD=1;await inSl(300);IL=0},
 inOut=async()=>{if(IL||!INS)return;IL=1;const t0=performance.now();inCard(1,'Leaving',INS.o,ITP[R()*ITP.length|0]);inBar(.55,'',.5);await inSl(380);
- inSwap(null);inBar(1,null,.4);await inSl(max(450,1000-(performance.now()-t0)));inCard(0);inCD=1;await inSl(300);IL=0},
+ inSwap(null);inAr=[P.position.x,P.position.z];inBar(1,null,.4);await inSl(max(450,1000-(performance.now()-t0)));inCard(0);inCD=1;await inSl(300);IL=0},
 // weapons stay sheathed in a hall at peace: a stroke or a skill does nothing there but say so, once a visit
 inPx=()=>{if(!INS)return 0;inPc||(inPc=1,toast(INS.px,'','shield'));return 1},
 // his feet (or his hound's) on the interior's floor, easing up and down its steps
@@ -5266,14 +5267,17 @@ inCk=v=>{if(!AC||!NB)return;const t=AC.currentTime,s=AC.createBufferSource(),b=A
 // near the gate, or a house's door, a word on it). Inside: the fires (each flame a new frame of cubes every ~.08s, its glow and light flickering),
 // embers off the hearth and its crackle, the hour's light at the windows, the zoom kept to the room's range, and the door out
 function inU(dt){const p=P.position;inCD-=dt;
- if(!INS){if(IL||!run||ov||bDead||inCD>0)return;{const d=IND.keep,f=d.f;IFr(f,p.x,p.z,IFo);const x=IFo[0],z=IFo[1];
-  if(d.dr(x,z)&&cvx*sin(f[2])+cvz*cos(f[2])<-1.5){inGo(d);return}
+ if(!INS){if(IL||!run||ov||bDead||inCD>0)return;inAr&&hypot(p.x-inAr[0],p.z-inAr[1])>2.5&&(inAr=null);
+  // (a door doesn't take him in again until he has stepped away from the one he came out of, inAr: he came out facing away, and the key that brought
+  // him out of a room is down the screen, which outside may point straight back at the door)
+  {const d=IND.keep,f=d.f;IFr(f,p.x,p.z,IFo);const x=IFo[0],z=IFo[1];
+  if(!inAr&&d.dr(x,z)&&cvx*sin(f[2])+cvz*cos(f[2])<-1.5){inGo(d);return}
   if(!inHn&&abs(x)<4.5&&z>3.4&&z<11){inHn=1;toast(`The keep's gate stands open: walk in to enter <b>${d.n}</b>.`,'','castle')}}
   // the town houses within 24m (gathered every .4s, inHs); each door's frame (q.df: at .1 along the house's face, its plane dr[0] out, turned as the
   // house is) worked out once
   if((inHT-=dt)<=0){inHT=.4;inHs.length=0;for(const o of RLP)if(o.k=='c'&&hypot(o.x-p.x,o.z-p.z)<o.r+40)for(const q of rlParts(o))q.dr&&hypot(q.x-p.x,q.z-p.z)<24&&inHs.push([q,o])}
   for(const[q,o]of inHs){const f=q.df||(q.df=(IFw([q.x,q.z,q.ry],.1,q.dr[0],IFo),[IFo[0],IFo[1],q.ry]));IFr(f,p.x,p.z,IFo);const x=IFo[0],z=IFo[1];
-   if(abs(x)<1.1&&z>-.4&&z<1.5&&cvx*sin(f[2])+cvz*cos(f[2])<-1.5){inGo(inHo(q,o));return}
+   if(!inAr&&abs(x)<1.1&&z>-.4&&z<1.5&&cvx*sin(f[2])+cvz*cos(f[2])<-1.5){inGo(inHo(q,o));return}
    if(!inHh&&abs(x)<3&&z>0&&z<5){inHh=1;toast('Townsfolk leave their doors unbarred: walk into one to go inside.','','castle')}}
   return}
  const d=INS;ZMt=cl(ZMt,38,60);IFr(d.f,p.x,p.z,IFo);const x=IFo[0],z=IFo[1];

@@ -629,6 +629,9 @@ Quest: the sheep game's old indoor scene was not used as a model.
   - Dry-grasslands clay house: render with a blue band and beam ends, a beehive hearth, jars, a striped bench, a loom, peppers.
   - Cliffs fisher's cottage: whitewashed fieldstone, nets, a ship's wheel, oars, a checked bed, a sea chest, lobster pots.
 
+  Every town house faces south (`ry = PI/4`, its door toward the camera). They used to face their wells, and a door facing away hid the
+  knight behind the house as he came out, which players read as being stuck in it. Buildings don't thin out over the knight (only trees do, by
+  the user's choice). A door won't take him in again until he is 2.5 m from where he came out (`inAr`).
   A first visit to the first house compiles a new lighting variant (the houses have two fire lights, the keep seven), so it takes a few seconds
   behind the card. Later houses reuse it.
 - **Adding a building:** give it an `IND` entry (`bld` builds into `IG` with `ipm`/`ifl`/`ipl`/`irf` and sets `d.cl`, `d.kl`; for one set of
