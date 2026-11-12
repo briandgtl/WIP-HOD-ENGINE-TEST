@@ -1793,7 +1793,7 @@ vbMason=(V,x0,z0,x1,z1,th,top,holes,col)=>{const dx=x1-x0,dz=z1-z0,L=hypot(dx,dz
  for(let I=Math.floor((min(x0,x1)-e)/VBZ);I<=Math.ceil((max(x0,x1)+e)/VBZ);I++)for(let K=Math.floor((min(z0,z1)-e)/VBZ);K<=Math.ceil((max(z0,z1)+e)/VBZ);K++){const x=(I+.5)*VBZ-x0,z=(K+.5)*VBZ-z0,u=x*ux+z*uz,v=-x*uz+z*ux;
   if(u<-.1||u>L+.1||abs(v)>th/2)continue;const tp=top(u)-(vbH(I,0,K,77)<.3?VBZ:0);for(let J=-4;(J+.5)*VBZ<tp;J++){const y=(J+.5)*VBZ;if(holes&&holes.some(h=>u>h[0]&&u<h[1]&&y>h[2]&&y<h[3]))continue;V.put(I,J,K,col(I,J,K,u))}}},
 // ---- the windmills of the dry grasslands: a whitewashed drum of render (patched, the plaster fallen to the stone in places, dirt splashed up it),
-// a door and two little windows, a gallery rail, a dark conical cap of boards and the windshaft's hub sticking out of it toward +z; the sails turn
+// a door (under the sails, at +z) and two little windows, a gallery rail, a dark conical cap of boards and the windshaft's hub sticking out of it toward +z; the sails turn
 // on their own geometry (MLSL, its middle on the hub at MLH), lattice frames of timber with cloth on them, four about the shaft
 MLH=[0,9.7,3.25],
 MILL=(()=>{const V=VBK(-20,-8,-20,20,72,20),WH=0xe8e0cc,ST=0xa89a80;
@@ -1802,7 +1802,7 @@ MILL=(()=>{const V=VBK(-20,-8,-20,20,72,20),WH=0xe8e0cc,ST=0xa89a80;
  vbDrum(V,0,0,47,47,()=>2.65,(I,J,K,d)=>d<2.4?-1:vbSec(I,K,0,0,20)&1?-1:0x5a3a22,3.2);
  vbDrum(V,0,0,45,62,y=>2.3*(1-(y-9)/3.6),(I,J,K)=>vbT(0x5a4632,(.82+.3*vbH(vbSec(I,K,0,0,16),J>>1,0,4))*(J&1?1:.88)),3);
  V.box(-1,0,47,48,0,15,(I,J,K)=>K>9?vbT(0x4a3220,1.1):0x4a3220);V.box(-2,1,46,49,14,15,0x3a3632);
- vbSlit(V,0,0,2.7,PI,0,11,(l,J)=>vbT(0x6a4428,(l&1?1:.84)*(J==3||J==8?.6:1)),5);vbSlit(V,0,0,2.4,1.9,20,5,0x2a2520,3);vbSlit(V,0,0,2.2,4.2,32,5,0x2a2520,3);
+ vbSlit(V,0,0,2.7,0,0,11,(l,J)=>vbT(0x6a4428,(l&1?1:.84)*(J==3||J==8?.6:1)),5);vbSlit(V,0,0,2.4,1.9,20,5,0x2a2520,3);vbSlit(V,0,0,2.2,4.2,32,5,0x2a2520,3);
  return V.mesh({dc:0x8a6a48,dk:.6})})(),
 MLSL=(()=>{const V=VBK(-50,-50,-3,50,50,3);
  for(let s=0;s<4;s++){const a=s*PI/2,c=cos(a),n=sin(a),P=(u,v,k,col)=>V.put(Math.floor((c*u-n*v)/VBZ),Math.floor((n*u+c*v)/VBZ),k,col);
@@ -2279,8 +2279,9 @@ WHM=new THREE.MeshBasicNodeMaterial({color:0x000000}),rlHole=()=>new THREE.Cylin
 rlParts=p=>{if(p.parts)return p.parts;const rng=rlRng(Math.abs(Math.round(p.x*13+p.z*7))%2147483646+1),zn=rlz(p.x,p.z),pal=RLPAL[zn<0?0:zn],P=[],put=(g,x,z,ry,c,m,vk)=>P.push({g:Array.isArray(g)?mg(rdKeep(g,x,z,ry)):g,x,z,ry,c,m,vk});
  // flat enough, dry, clear of the roads
  const flat=(x,z,r)=>{const y=H(x,z);if(y<WL+1.2)return false;for(const[a,b]of[[r,0],[-r,0],[0,r],[0,-r]])if(abs(H(x+a,z+b)-y)>2.2)return false;return rlRoad(x,z)>r+1};
- if(p.k=='m')put(rlTowerV(Math.round(14+rng()*4)),p.x,p.z,0,[0,0,3.6]);
- else if(p.k=='e')p.s?put(rlCamp(rng),p.x,p.z,rng()*TAU):put(rlRing(rng),p.x,p.z,0);
+ // every way in faces south, down the screen toward the camera (PI/4: a model's +z there), as the keep's gate and the houses' doors do (2026-11-11)
+ if(p.k=='m')put(rlTowerV(Math.round(14+rng()*4)),p.x,p.z,PI/4,[0,0,3.6]);
+ else if(p.k=='e')p.s?put(rlCamp(rng),p.x,p.z,(rng(),PI/4)):put(rlRing(rng),p.x,p.z,0);
  else if(p.k=='h')put(rlPlot(),p.x,p.z,rng()*PI);
  else{const n=[0,6,11,12][p.s],r0=[0,13,18,58][p.s],r1=[0,46,66,104][p.s],hs=[],HS=2.476;  // HS: the houses are 2.476x (1.3 x 1.15 x 1.2 x 1.15 x 1.2) the size they were first modelled at (built at that size by rlHouseQ), with their spacing and ground checks to match
   if(p.s>1){put(rlWellV(),p.x,p.z,0,[0,0,1.5]);put(rlHole(),p.x,p.z,0,null,WHM);
@@ -2336,7 +2337,7 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
  syc=(x,z)=>tree(r()<.7?0:1,x,z,(.8+r()*.6)*1.54),
  // a lone field tree for the ground it stands on: pine, thorn or a windswept one up high; oak, sycamore, thorn or ash below
  lone=(x,z,h)=>h*977%1>rlTD(x,z)?0:H(x,z)>9?h<.4?tree(6,x,z,1.45+r()*.45):h<.7?thorn(x,z,.25):tree(1,x,z,(.8+r()*.6)*1.54):h<.3?tree(2,x,z,1.15+r()*.45):h<.52?syc(x,z):h<.8?thorn(x,z,.45):tree(3,x,z,1.25+r()*.45);
- // ---- places to search, laid out square to the field lattice round the field's middle; each piece is built by the chunk it stands in ----
+ // ---- places to search, laid out round the field's middle with their fronts to the south; each piece is built by the chunk it stands in ----
  // the ruined cottages are built 1.4x their modelled plan (RUK) and 1.2x its height (RUY), roomier inside and with 4.5m gaps through
  // the middle of their long walls (their old 1.1m door, barely wider than the shepherd, had him wedged on its jambs). RUB, their walls'
  // blocks (gapped to match), and all they place round them scale with them
@@ -2360,13 +2361,14 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
   RU[k].push(...new THREE.Matrix4().makeTranslation(q[0],y-.1,q[1]).multiply(Sh).multiply(new THREE.Matrix4().makeRotationY(R)).scale(V(RUK,RUY,RUK)).elements);
   for(const[bw,bh,bd,u,v]of RUB)cg.push(B(bw,bh,bd).translate(u,bh/2,v).rotateY(R).applyMatrix4(Sh).translate(q[0],y,q[1]))},
  scrub=(p,t)=>ok(p[0],p[1],1.4)&&rlDW(p[0],p[1])<.5&&A[1].push([p[0],Hm(p[0],p[1])+.35,p[1],.9+r()*.6,r()*7,.8+r()*.5,0,t||0xc4d4b4]),
- poiPut=(t,i,j,c,f)=>{const ry=.42+(f(91)*4|0)*PI/2,cs=cos(ry),sn=sin(ry),w=(a,b)=>[c[0]+cs*a+sn*b,c[1]-sn*a+cs*b],
+ poiPut=(t,i,j,c,f)=>{const ry=PI/4,cs=cos(ry),sn=sin(ry),  // (every front, +z in its frame, faces south: they were square to the field lattice, .42 + a quarter turn)
+  w=(a,b)=>[c[0]+cs*a+sn*b,c[1]-sn*a+cs*b],
   // a building at (a, b) in the place's frame, turned r0 more: set on the lowest ground of its footprint, with a frame W(u, v) of its own
   place=(a,b,r0,hw,hd,fn)=>{const q=w(a,b),R=ry+r0,c1=cos(R),s1=sin(R),W=(u,v)=>[q[0]+c1*u+s1*v,q[1]-s1*u+c1*v];let y=1e9;for(const[u,v]of[[-hw,-hd],[hw,-hd],[hw,hd],[-hw,hd],[0,0]]){const p=W(u,v);y=min(y,Hm(p[0],p[1]))}y>WL+.8&&fn(q,y,R,W,ok(q[0],q[1],hypot(hw,hd)+3))};
   if(t==1){// a deserted farmstead: the house and its byre across the yard from a few old bales, a cart tipped on its shafts, the yard wall's gap
    // where a gate once hung, and nettle, bramble and elder over all
    place(0,-7,0,3.9*RUK,2.4*RUK,(q,y,R,W0,o)=>{const W=(u,v)=>W0(u*RUK,v*RUK);o&&ruinAt(0,q,R);let p=W(-2.2,-.9);FIND(1,i,j,p[0],p[1],R);p=W(4.8,-3.4);tree(0,p[0],p[1],(.8+r()*.6)*1.54)});
-   place(9.5,.5,PI/2,3.4,2.1,(q,y,R,W,o)=>{o&&(PX.byre.push([q[0],y-.1,q[1],1,R]),boxes(q,y,R,[[1.8,2.2,.6,-2.3,1.6],[1.8,2.2,.6,2.3,1.6],[1.8,2.2,.6,-2.3,-1.6],[1.8,2.2,.6,2.3,-1.6],[.6,2.6,3.2,-2.95,0],[.6,1.2,3.2,2.95,0]]));const p=W(1.6,-.3);tree(0,p[0],p[1],(.9+r()*.4)*1.54)});
+   place(9.5,.5,0,3.4,2.1,(q,y,R,W,o)=>{o&&(PX.byre.push([q[0],y-.1,q[1],1,R]),boxes(q,y,R,[[1.8,2.2,.6,-2.3,1.6],[1.8,2.2,.6,2.3,1.6],[1.8,2.2,.6,-2.3,-1.6],[1.8,2.2,.6,2.3,-1.6],[.6,2.6,3.2,-2.95,0],[.6,1.2,3.2,2.95,0]]));const p=W(1.6,-.3);tree(0,p[0],p[1],(.9+r()*.4)*1.54)});
    // three round bales left out in the yard
    place(-10.5,1.5,0,4.4,3.2,(q,y,R,W,o)=>{if(!o)return;for(const[u,v]of[[-2.6,-1.2],[-1.2,-1.4],[-2,.3]]){const p=W(u,v),y=Hm(p[0],p[1]),ry=R+r()*.4;BL.push([p[0],y-.08,p[1],1,ry,1,0,0xcdc2aa]);cg.push(B(1.2,1.2,1.24).rotateY(ry).translate(p[0],y+.6,p[1]))}});
    place(3,7,.6,1.6,1,(q,y,R,W,o)=>{o&&(PX.cart.push([q[0],y,q[1],1,R]),boxes(q,y,R,[[2.2,1.2,1.4,0,0]]))});
@@ -2416,16 +2418,16 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
   const poi=poiT(i,j,c,hc);
   if(plant(i,j,c))for(let a=0;a<9;a++)for(let b=0;b<9;b++){const q=fcp(i,j,.1+(a+ih(i*9+a,j*9+b)*.25)*.09,.1+(b+ih(j*9+b+7,i*9+a)*.25)*.09);tree(8,q[0],q[1],1.3+r()*.4,r()*7,(r()-.5)*.05)}
   else if(poi)poiPut(poi,i,j,c,f);
-  // a windmill in about one in fourteen of the dry grasslands' fields well out from home, on its own in the field: its drum (MILL) turned to face
-  // the field's draw, its sails (MLSL) on the hub, turning (MILLS); solid to the knight
-  else if(far>150&&f(97)<.07&&rlZW(4,c[0],c[1])>.6&&hc>WL+2){if(ok(c[0],c[1],4)&&nf(c[0],c[1])){const ry=f(98)*TAU;let y=1e9;for(const[a,b]of[[0,0],[2.7,0],[-2.7,0],[0,2.7],[0,-2.7]])y=min(y,Hm(c[0]+a,c[1]+b));
+  // a windmill in about one in fourteen of the dry grasslands' fields well out from home, on its own in the field: its drum (MILL) turned so its
+  // door and sails face south, its sails (MLSL) on the hub, turning (MILLS); solid to the knight
+  else if(far>150&&f(97)<.07&&rlZW(4,c[0],c[1])>.6&&hc>WL+2){if(ok(c[0],c[1],4)&&nf(c[0],c[1])){const ry=PI/4;let y=1e9;for(const[a,b]of[[0,0],[2.7,0],[-2.7,0],[0,2.7],[0,-2.7]])y=min(y,Hm(c[0]+a,c[1]+b));
     PX.mill.push([c[0],y-.1,c[1],1,ry]);cg.push(Cy(2.8,2.8,10,10).translate(c[0],y+4,c[1]));
     const m=new THREE.Mesh(MLSL,VC);m.rotation.order='YXZ';m.rotation.y=ry;m.userData.ph=f(99)*TAU;m.userData.ck=k;m.position.set(c[0]+sin(ry)*MLH[2],y-.1+MLH[1],c[1]+cos(ry)*MLH[2]);m.castShadow=m.receiveShadow=true;G.add(m);MILLS.push(m);
     for(let n=0;n<3;n++){const a=f(100+n)*TAU,d=5+f(103+n)*4;scrub([c[0]+cos(a)*d,c[1]+sin(a)*d])}}}
   else{for(let k=0,n=f(20)<.45?1:f(20)<.72?2:0;k<n;k++){const q=fcp(i,j,.2+f(21+k)*.6,.2+f(24+k)*.6);lone(q[0],q[1],f(27+k))}
    if(hc>5&&f(33)<.13*(1-.7*rlDW(c[0],c[1]))){const q=fcp(i,j,.3+f(34)*.4,.3+f(35)*.4);for(let k=0;k<2+f(36)*3;k++)tree(6,q[0]+(f(50+k)-.5)*12,q[1]+(f(55+k)-.5)*12,1.45+r()*.45)}
    const ruin=far>100&&f(31)<.07;OFL.push([i,j]);
-   if(ruin){const q=fcp(i,j,.3+f(37)*.4,.3+f(38)*.4),ry=.42+(f(39)<.5?0:PI/2)+(f(40)-.5)*.3,cs=cos(ry)*RUK,sn=sin(ry)*RUK,w=(a,b)=>[q[0]+cs*a+sn*b,q[1]-sn*a+cs*b];
+   if(ruin){const q=fcp(i,j,.3+f(37)*.4,.3+f(38)*.4),ry=PI/4,cs=cos(ry)*RUK,sn=sin(ry)*RUK,w=(a,b)=>[q[0]+cs*a+sn*b,q[1]-sn*a+cs*b];
     if(ok(q[0],q[1],8)){let y=1e9;for(const[a,b]of[[-3.7,-2.3],[3.7,-2.3],[3.7,2.3],[-3.7,2.3],[0,0]]){const p=w(a,b);y=min(y,Hm(p[0],p[1]))}
      if(y>WL+.8)ruinAt(f(41)<.5?0:1,q,ry)}
     // an ash seeded in the fallen corner, a thorn by the standing gable, elder scrub round the tumble
@@ -2505,11 +2507,13 @@ function mkC(cx,cz){const k=cx+','+cz,ox=cx*CS,oz=cz*CS,g=new THREE.PlaneGeometr
   if(wh>.45&&r()<.17){const cx0=ox+(r()-.5)*(CS-50),cz0=oz+(r()-.5)*(CS-50),n=1+(r()*2.5|0);
    for(let i=0;i<n;i++){const x=cx0+(n>1?(r()-.5)*22:0),z=cz0+(n>1?(r()-.5)*22:0),k=r()*4|0,s=.8+r()*.5,hh=[15,24,10,19][k]*s,w=[2.3,2.9,3.4,2.8][k]*s*.8;if(!ok(x,z,w*1.1)||!nf(x,z)||rlZW(3,x,z)<.5)continue;const y=Hm(x,z);
     if(y<WL+1.5||abs(Hm(x+3,z)-Hm(x-3,z))>2.4||abs(Hm(x,z+3)-Hm(x,z-3))>2.4)continue;PX.cr[k].push([x,y-1,z,s,r()*7,s,0]);cg.push(Cy(w,w*1.1,hh,8).translate(x,y+hh/2,z))}}}}
- for(const l of RLDT){if(abs(l.x-ox)>=CS/2||abs(l.z-oz)>=CS/2)continue;PX.dt.push([l.x,l.y,l.z,1,0,1,0]);cg.push(Cy(6.4,6.9,18,12).translate(l.x,l.y+7,l.z),Cy(8.6,10.6,6,10).translate(l.x,l.y-2.5,l.z),Cy(5,5.2,6,12).translate(l.x-10.5,l.y+3,l.z+3),Cy(2.1,2.2,20,8).translate(l.x+5.6,l.y+10,l.z+1.6));
-  for(const[y,a]of DTWIN){const r=dtr(y),m=new THREE.Mesh(cvn(new THREE.PlaneGeometry(.55,1.5)),WGM);m.position.set(l.x+sin(a)*(r+.24),l.y+y,l.z+cos(a)*(r+.24));m.rotation.y=a;G.add(m)}}
+ for(const l of RLDT){if(abs(l.x-ox)>=CS/2||abs(l.z-oz)>=CS/2)continue;const t=PI/4,o=(u,v)=>[l.x+u*cos(t)+v*sin(t),l.z-u*sin(t)+v*cos(t)],an=o(-10.5,3),tu=o(5.6,1.6);  // (turned so its door faces south)
+  PX.dt.push([l.x,l.y,l.z,1,t,1,0]);cg.push(Cy(6.4,6.9,18,12).translate(l.x,l.y+7,l.z),Cy(8.6,10.6,6,10).translate(l.x,l.y-2.5,l.z),Cy(5,5.2,6,12).translate(an[0],l.y+3,an[1]),Cy(2.1,2.2,20,8).translate(tu[0],l.y+10,tu[1]));
+  for(const[y,a0]of DTWIN){const a=a0+t,r=dtr(y),m=new THREE.Mesh(cvn(new THREE.PlaneGeometry(.55,1.5)),WGM);m.position.set(l.x+sin(a)*(r+.24),l.y+y,l.z+cos(a)*(r+.24));m.rotation.y=a;G.add(m)}}
  // the lighthouse towers on this chunk's ground: the model, its collider, its windows' glow by night and its two beams
- for(const l of RLH){if(abs(l.x-ox)>=CS/2||abs(l.z-oz)>=CS/2)continue;const k=LHS;PX.lh.push([l.x,l.y,l.z,k,0,k,0]);cg.push(Cy(4.5*k,4.7*k,16*k,10).translate(l.x,l.y+7*k,l.z),Cy(6*k,6.6*k,5*k,8).translate(l.x,l.y-2*k,l.z));
-  for(const[y,a]of LHWIN){const r=(lhr(y)+.24)*k,m=new THREE.Mesh(cvn(new THREE.PlaneGeometry(.5*k,1.2*k)),WGM);m.position.set(l.x+sin(a)*r,l.y+y*k,l.z+cos(a)*r);m.rotation.y=a;G.add(m)}
+ for(const l of RLH){if(abs(l.x-ox)>=CS/2||abs(l.z-oz)>=CS/2)continue;const k=LHS;PX.lh.push([l.x,l.y,l.z,k,PI/4,k,0]);  // (turned so its door faces south)
+ cg.push(Cy(4.5*k,4.7*k,16*k,10).translate(l.x,l.y+7*k,l.z),Cy(6*k,6.6*k,5*k,8).translate(l.x,l.y-2*k,l.z));
+  for(const[y,a0]of LHWIN){const a=a0+PI/4,r=(lhr(y)+.24)*k,m=new THREE.Mesh(cvn(new THREE.PlaneGeometry(.5*k,1.2*k)),WGM);m.position.set(l.x+sin(a)*r,l.y+y*k,l.z+cos(a)*r);m.rotation.y=a;G.add(m)}
   for(const ph of[0,PI]){const b=new THREE.Mesh(LHBG,lhBeam);b.position.set(l.x,l.y+24*k,l.z);b.userData.ph=ph;b.frustumCulled=false;LHB.push(b);G.add(b)}}
  // the Cliffs and coastline, drawn last from the chunk's stream: boulders on the cliff tops and heaped along the foot of the cliffs at the sea's edge, drifts of white flowers, twisted olives near the
  // cliff edge, and out at sea the stacks (alone or in a group, now and then an arch)
